@@ -3,46 +3,46 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>The Banished Intranet</title>
+    <title>The Banished Internal Portal</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="shell">
       <aside class="sidebar" aria-label="Primary navigation">
-        <a class="brand" href="#" aria-label="The Banished intranet home">
+        <a class="brand" href="#overview" data-section-link="overview" aria-label="The Banished internal portal home">
           <span class="brand-mark">TB</span>
           <span>
             <strong>The Banished</strong>
-            <small>Intranet</small>
+            <small>Internal Portal</small>
           </span>
         </a>
 
         <nav class="nav">
-          <a class="nav-link active" href="#overview">
+          <a class="nav-link active" href="#overview" data-section-link="overview">
             <span aria-hidden="true">01</span>
             Overview
           </a>
-          <a class="nav-link" href="#announcements">
+          <a class="nav-link" href="#announcements" data-section-link="announcements">
             <span aria-hidden="true">02</span>
             Announcements
           </a>
-          <a class="nav-link" href="#documents">
+          <a class="nav-link" href="#documents" data-section-link="documents">
             <span aria-hidden="true">03</span>
             Documents
           </a>
-          <a class="nav-link" href="#bonuses">
+          <a class="nav-link" href="#bonuses" data-section-link="bonuses">
             <span aria-hidden="true">04</span>
             Bonuses
           </a>
-          <a class="nav-link" href="#training">
+          <a class="nav-link" href="#training" data-section-link="training">
             <span aria-hidden="true">05</span>
             Training
           </a>
-          <a class="nav-link" href="#it-requests">
+          <a class="nav-link" href="#it-requests" data-section-link="it-requests">
             <span aria-hidden="true">06</span>
             IT Requests
           </a>
-          <a class="nav-link" href="#hr-requests">
+          <a class="nav-link" href="#hr-requests" data-section-link="hr-requests">
             <span aria-hidden="true">07</span>
             HR Requests
           </a>
@@ -50,219 +50,325 @@
 
         <div class="sidebar-note">
           <strong>Internal access</strong>
-          <p>Prototype space for private updates, resources, requests, and internal operations.</p>
+          <p>One place for company updates, documents, benefits, training, and employee requests.</p>
         </div>
       </aside>
 
       <main class="workspace">
         <header class="topbar">
           <div>
-            <p class="eyebrow">Internal portal</p>
-            <h1>The Banished internal operations</h1>
-          </div>
-          <div class="topbar-actions">
-            <button class="icon-button" type="button" aria-label="Search">
-              <span aria-hidden="true">⌕</span>
-            </button>
-            <button class="primary-button" type="button">New update</button>
+            <p class="eyebrow">Internal Portal</p>
+            <h1 data-page-title>The Banished employee hub</h1>
           </div>
         </header>
 
-        <section class="summary-grid" id="overview" aria-label="Intranet summary">
-          <article class="metric">
-            <span>Open requests</span>
-            <strong>18</strong>
-            <small>IT and HR queue</small>
-          </article>
-          <article class="metric">
-            <span>Documents</span>
-            <strong>42</strong>
-            <small>12 updated recently</small>
-          </article>
-          <article class="metric">
-            <span>Training modules</span>
-            <strong>9</strong>
-            <small>3 assigned this month</small>
-          </article>
-          <article class="metric">
-            <span>Bonus cycle</span>
-            <strong>Q2</strong>
-            <small>Review in progress</small>
+        <section class="portal-section active" id="overview" data-section="overview" aria-labelledby="overview-title">
+          <div class="intro-panel">
+            <p class="eyebrow">Overview</p>
+            <h2 id="overview-title">Why employees use this portal</h2>
+            <p>
+              The Internal Portal is the central place for day-to-day company information. Employees can find official
+              updates, access key documents, review bonus and training information, and submit IT or HR requests without
+              searching through messages or asking multiple people where to go.
+            </p>
+          </div>
+
+          <div class="purpose-grid" aria-label="Portal purpose">
+            <article class="purpose-card">
+              <span>01</span>
+              <h3>Find trusted information</h3>
+              <p>Use one approved source for policies, announcements, documents, and internal procedures.</p>
+            </article>
+            <article class="purpose-card">
+              <span>02</span>
+              <h3>Submit requests correctly</h3>
+              <p>Send IT and HR requests with the details each team needs to respond faster.</p>
+            </article>
+            <article class="purpose-card">
+              <span>03</span>
+              <h3>Stay aligned</h3>
+              <p>Keep track of internal updates, future training, and employee resources as the company grows.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="portal-section" id="announcements" data-section="announcements" aria-labelledby="announcements-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Latest</p>
+              <h2 id="announcements-title">Announcements</h2>
+            </div>
+          </div>
+
+          <div class="announcement-list">
+            <article class="announcement">
+              <div class="date-badge">
+                <span>12</span>
+                <small>May</small>
+              </div>
+              <div>
+                <h3>Internal Portal draft is live</h3>
+                <p>Use this space for company updates, policy changes, operational notes, and employee-wide notices.</p>
+                <div class="tags">
+                  <span>Project</span>
+                  <span>Internal</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="announcement">
+              <div class="date-badge">
+                <span>15</span>
+                <small>May</small>
+              </div>
+              <div>
+                <h3>Content inventory review</h3>
+                <p>Collect documents, onboarding notes, policies, and recurring company links for the next version.</p>
+                <div class="tags">
+                  <span>Docs</span>
+                  <span>Review</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="portal-section" id="documents" data-section="documents" aria-labelledby="documents-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Library</p>
+              <h2 id="documents-title">Documents</h2>
+            </div>
+          </div>
+
+          <div class="document-list">
+            <a class="document" href="#">
+              <span class="document-icon">PDF</span>
+              <span>
+                <strong>Company policies</strong>
+                <small>Official internal policy documents</small>
+              </span>
+            </a>
+            <a class="document" href="#">
+              <span class="document-icon">DOC</span>
+              <span>
+                <strong>Onboarding checklist</strong>
+                <small>New employee setup and first-week guidance</small>
+              </span>
+            </a>
+            <a class="document" href="#">
+              <span class="document-icon">XLS</span>
+              <span>
+                <strong>Production schedule</strong>
+                <small>Current planning and delivery references</small>
+              </span>
+            </a>
+          </div>
+        </section>
+
+        <section class="portal-section" id="bonuses" data-section="bonuses" aria-labelledby="bonuses-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Compensation</p>
+              <h2 id="bonuses-title">Bonuses</h2>
+            </div>
+          </div>
+
+          <button class="policy-card" type="button" data-policy-toggle="bonus-policy">
+            <span class="policy-number">01</span>
+            <span>
+              <strong>Discretionary Bonuses</strong>
+              <small>How The Banished recognizes work that goes beyond expectations</small>
+            </span>
+          </button>
+
+          <article class="policy-document" id="bonus-policy" hidden>
+            <header class="policy-hero">
+              <p class="eyebrow">How we recognize</p>
+              <h3>Going the Extra Mile</h3>
+              <p>
+                Discretionary bonuses are extra payments on top of regular salary or fee. They are not automatic or
+                guaranteed. The Company may choose to award one when someone has done something genuinely worth
+                recognizing.
+              </p>
+            </header>
+
+            <div class="policy-callout">
+              <strong>Earn monthly, get paid annually</strong>
+              <p>
+                Bonus credit can be earned any month of the year. Everything is collected and paid once per year, in
+                October or December, as a year-end thank-you for contributions made along the way.
+              </p>
+            </div>
+
+            <div class="policy-section">
+              <span>01</span>
+              <div>
+                <h4>The big picture</h4>
+                <p>
+                  Bonuses are open to everyone at The Banished: full-time employees, part-time employees, remote
+                  contractors, and freelancers. If you contribute, you are eligible.
+                </p>
+              </div>
+            </div>
+
+            <div class="policy-section">
+              <span>02</span>
+              <div>
+                <h4>What can earn a bonus</h4>
+                <ul>
+                  <li><strong>Going beyond scope:</strong> work clearly outside the original agreement or role, delivered well.</li>
+                  <li><strong>Driving a company win:</strong> actions, decisions, or creative output that led to measurable revenue, growth, or savings.</li>
+                  <li><strong>Doing something remarkable:</strong> work that stood out, even if it does not fit a neat category.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="policy-section">
+              <span>03</span>
+              <div>
+                <h4>The approval process</h4>
+                <ol>
+                  <li>Your direct manager spots the contribution and prepares a recommendation.</li>
+                  <li>The recommendation is reviewed through the appropriate leadership chain.</li>
+                  <li>Finance confirms approval and schedules payment for the next available window.</li>
+                </ol>
+                <p>You do not need to nominate yourself. If something is worth recognizing, your manager will know.</p>
+              </div>
+            </div>
+
+            <div class="policy-section">
+              <span>04</span>
+              <div>
+                <h4>Payment windows</h4>
+                <div class="policy-grid">
+                  <div>
+                    <strong>October</strong>
+                    <p>If everything is approved and ready, the bonus arrives before the end of October.</p>
+                  </div>
+                  <div>
+                    <strong>December</strong>
+                    <p>If October is not feasible, Finance will confirm and payment moves to December.</p>
+                  </div>
+                </div>
+                <p>You will hear from us at least 10 business days before the payment date.</p>
+              </div>
+            </div>
+
+            <div class="policy-section">
+              <span>05</span>
+              <div>
+                <h4>Taxes and practical notes</h4>
+                <ul>
+                  <li>W-2 employee bonuses go through payroll and taxes are handled automatically.</li>
+                  <li>Contractors and freelancers receive the full amount and handle their own taxes.</li>
+                  <li>A bonus one year does not guarantee one the next. Each review is independent.</li>
+                  <li>The amount is always at the Company's discretion, with no set minimum or maximum.</li>
+                </ul>
+              </div>
+            </div>
+
+            <footer class="policy-footer">
+              <strong>Questions?</strong>
+              <span>Contact HR at <a href="mailto:hr@the-banished.com">hr@the-banished.com</a>.</span>
+            </footer>
           </article>
         </section>
 
-        <section class="content-grid">
-          <div class="main-column">
-            <section class="panel" id="announcements">
-              <div class="section-heading">
-                <div>
-                  <p class="eyebrow">Latest</p>
-                  <h2>Announcements</h2>
-                </div>
-                <button class="text-button" type="button">View all</button>
-              </div>
-
-              <div class="announcement-list">
-                <article class="announcement">
-                  <div class="date-badge">
-                    <span>12</span>
-                    <small>May</small>
-                  </div>
-                  <div>
-                  <h3>Internal portal draft is live</h3>
-                  <p>Use this space to gather company updates, policies, request workflows, and internal resources.</p>
-                    <div class="tags">
-                      <span>Project</span>
-                      <span>Internal</span>
-                    </div>
-                  </div>
-                </article>
-
-                <article class="announcement">
-                  <div class="date-badge">
-                    <span>15</span>
-                    <small>May</small>
-                  </div>
-                  <div>
-                    <h3>Content inventory review</h3>
-                    <p>Collect documents, onboarding notes, policies, and recurring team links for the next version.</p>
-                    <div class="tags">
-                      <span>Docs</span>
-                      <span>Review</span>
-                    </div>
-                  </div>
-                </article>
-              </div>
-            </section>
-
-            <section class="panel" id="documents">
-              <div class="section-heading">
-                <div>
-                  <p class="eyebrow">Library</p>
-                  <h2>Key documents</h2>
-                </div>
-                <button class="text-button" type="button">Upload</button>
-              </div>
-
-              <div class="document-list">
-                <a class="document" href="#">
-                  <span class="document-icon">PDF</span>
-                  <span>
-                    <strong>Company policies</strong>
-                    <small>Updated today</small>
-                  </span>
-                </a>
-                <a class="document" href="#">
-                  <span class="document-icon">DOC</span>
-                  <span>
-                    <strong>Onboarding checklist</strong>
-                    <small>Updated yesterday</small>
-                  </span>
-                </a>
-                <a class="document" href="#">
-                  <span class="document-icon">XLS</span>
-                  <span>
-                    <strong>Production schedule</strong>
-                    <small>Updated May 10</small>
-                  </span>
-                </a>
-              </div>
-            </section>
+        <section class="portal-section" id="training" data-section="training" aria-labelledby="training-title">
+          <div class="intro-panel">
+            <p class="eyebrow">Learning</p>
+            <h2 id="training-title">Training</h2>
+            <p>Training resources will be added in a future update.</p>
           </div>
+        </section>
 
-          <aside class="side-column" aria-label="Internal resources">
-            <section class="panel compact" id="bonuses">
-              <div class="section-heading">
-                <div>
-                  <p class="eyebrow">Compensation</p>
-                  <h2>Bonuses</h2>
-                </div>
-              </div>
+        <section class="portal-section" id="it-requests" data-section="it-requests" aria-labelledby="it-title">
+          <div class="request-layout">
+            <div class="intro-panel">
+              <p class="eyebrow">Support</p>
+              <h2 id="it-title">IT Requests</h2>
+              <p>Contact IT for account access, password or login issues, device problems, software access, email setup, security concerns, and technical troubleshooting.</p>
+            </div>
 
-              <div class="resource-list">
-                <article class="resource-item">
-                  <span class="status-dot active"></span>
-                  <span>
-                    <strong>Q2 performance cycle</strong>
-                    <small>Manager review open</small>
-                  </span>
-                </article>
-                <article class="resource-item">
-                  <span class="status-dot"></span>
-                  <span>
-                    <strong>Bonus policy</strong>
-                    <small>Eligibility and timing</small>
-                  </span>
-                </article>
-              </div>
-            </section>
+            <form class="request-form" data-request-form data-recipient="support@the-banished.com" data-label="IT Request">
+              <label>
+                Full name
+                <input name="name" type="text" autocomplete="name" placeholder="Your name" />
+              </label>
+              <label>
+                Request type
+                <select name="type">
+                  <option value="">Select request type</option>
+                  <option>Account access</option>
+                  <option>Password or login issue</option>
+                  <option>Device issue</option>
+                  <option>Software access</option>
+                  <option>Email setup</option>
+                  <option>Security concern</option>
+                  <option>Other technical issue</option>
+                </select>
+              </label>
+              <label>
+                Priority
+                <select name="priority">
+                  <option>Normal</option>
+                  <option>Urgent</option>
+                  <option>Blocking work</option>
+                </select>
+              </label>
+              <label>
+                Details
+                <textarea name="details" rows="6" placeholder="Describe what you need help with"></textarea>
+              </label>
+              <button class="primary-button" type="submit">Send to IT</button>
+              <p class="form-fallback" data-mail-fallback hidden></p>
+            </form>
+          </div>
+        </section>
 
-            <section class="panel compact" id="training">
-              <div class="section-heading">
-                <div>
-                  <p class="eyebrow">Learning</p>
-                  <h2>Training</h2>
-                </div>
-              </div>
+        <section class="portal-section" id="hr-requests" data-section="hr-requests" aria-labelledby="hr-title">
+          <div class="request-layout">
+            <div class="intro-panel">
+              <p class="eyebrow">People Ops</p>
+              <h2 id="hr-title">HR Requests</h2>
+              <p>Contact HR for employment documents, time off questions, benefits, payroll questions, policy clarification, onboarding, and employee record updates.</p>
+            </div>
 
-              <div class="resource-list">
-                <article class="resource-item">
-                  <span class="status-dot active"></span>
-                  <span>
-                    <strong>Security basics</strong>
-                    <small>Required for all staff</small>
-                  </span>
-                </article>
-                <article class="resource-item">
-                  <span class="status-dot"></span>
-                  <span>
-                    <strong>Production tools</strong>
-                    <small>New workflow module</small>
-                  </span>
-                </article>
-              </div>
-            </section>
-
-            <section class="panel compact" id="it-requests">
-              <div class="section-heading">
-                <div>
-                  <p class="eyebrow">Support</p>
-                  <h2>IT Requests</h2>
-                </div>
-              </div>
-
-              <ol class="request-list">
-                <li>
-                  <time>Open</time>
-                  <span>Account access</span>
-                </li>
-                <li>
-                  <time>Open</time>
-                  <span>Device or software issue</span>
-                </li>
-              </ol>
-            </section>
-
-            <section class="panel compact" id="hr-requests">
-              <div class="section-heading">
-                <div>
-                  <p class="eyebrow">People Ops</p>
-                  <h2>HR Requests</h2>
-                </div>
-              </div>
-
-              <ol class="request-list">
-                <li>
-                  <time>Open</time>
-                  <span>Time off request</span>
-                </li>
-                <li>
-                  <time>Open</time>
-                  <span>Employment document</span>
-                </li>
-              </ol>
-            </section>
-          </aside>
+            <form class="request-form" data-request-form data-recipient="hr@the-banished.com" data-label="HR Request">
+              <label>
+                Full name
+                <input name="name" type="text" autocomplete="name" placeholder="Your name" />
+              </label>
+              <label>
+                Request type
+                <select name="type">
+                  <option value="">Select request type</option>
+                  <option>Employment document</option>
+                  <option>Time off question</option>
+                  <option>Benefits</option>
+                  <option>Payroll question</option>
+                  <option>Policy clarification</option>
+                  <option>Onboarding</option>
+                  <option>Employee record update</option>
+                </select>
+              </label>
+              <label>
+                Priority
+                <select name="priority">
+                  <option>Normal</option>
+                  <option>Urgent</option>
+                  <option>Time-sensitive</option>
+                </select>
+              </label>
+              <label>
+                Details
+                <textarea name="details" rows="6" placeholder="Describe what you need from HR"></textarea>
+              </label>
+              <button class="primary-button" type="submit">Send to HR</button>
+              <p class="form-fallback" data-mail-fallback hidden></p>
+            </form>
+          </div>
         </section>
       </main>
     </div>
