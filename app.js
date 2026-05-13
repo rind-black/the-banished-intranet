@@ -63,10 +63,46 @@ const titles = {
   bonuses: "Bonus information",
   holidays: "Holidays and days off",
   training: "Training resources",
+  internship: "Internship resources",
   "it-requests": "IT request center",
   "hr-requests": "HR request center",
   admin: "Admin console",
   profile: "Profile settings",
+};
+
+const holidayDescriptions = {
+  "The Banished Foundation Day": "The company's own anniversary and a shared pause to mark the day The Banished began.",
+  "Pride Day": "A company observance honoring LGBTQ+ communities and the anniversary of the Stonewall uprising.",
+  "New Year's Day": "The first day of the calendar year and a clean reset after the winter holiday period.",
+  "Martin Luther King Jr. Day": "A US federal holiday honoring Dr. King's civil rights leadership and public service.",
+  "Presidents' Day": "A US federal holiday connected to the legacy of George Washington and other American presidents.",
+  "Memorial Day": "A US day of remembrance for military service members who died in service.",
+  Juneteenth: "A US federal holiday commemorating the end of slavery in the United States.",
+  "Independence Day": "The US national holiday marking the adoption of the Declaration of Independence.",
+  "Labor Day": "A US holiday recognizing workers and the labor movement.",
+  "Columbus Day": "A US federal observance; some communities use this period to recognize Indigenous Peoples' Day instead.",
+  "Veterans Day": "A US holiday honoring military veterans and their service.",
+  "Thanksgiving Day": "A US holiday centered on gratitude, family, and time away from regular work.",
+  "Day After Thanksgiving": "A company-added day to extend the Thanksgiving break and reduce fragmented work time.",
+  "Christmas Day": "A widely observed holiday connected to Christmas traditions and year-end time with family.",
+  "Rosa Parks Day": "A California observance honoring Rosa Parks and her role in the civil rights movement.",
+  "Cesar Chavez Day": "A California holiday honoring Cesar Chavez and farm worker labor rights.",
+  "Good Friday": "A Christian observance before Easter Sunday, recognized as a statutory holiday in many Canadian provinces.",
+  "Victoria Day": "A Canadian holiday marking Queen Victoria's birthday and the unofficial start of summer.",
+  "Canada Day": "Canada's national day, marking Canadian Confederation.",
+  "Civic Holiday": "A summer public holiday observed by many Canadian provinces under different local names.",
+  "Labour Day": "A Canadian holiday recognizing workers and the labor movement.",
+  "Thanksgiving (Canada)": "Canada's Thanksgiving holiday, observed earlier than the US holiday.",
+  "Remembrance Day": "A Canadian day of remembrance for military service members who died in service.",
+  "Boxing Day": "A post-Christmas holiday observed in Canada and several Commonwealth countries.",
+  "Saint-Jean-Baptiste Day": "Quebec's national holiday and a celebration of French-Canadian culture.",
+  "Simcoe Day": "An Ontario civic holiday honoring John Graves Simcoe and local heritage.",
+  "Winter Break": "A company-wide week off to let the team fully disconnect at year end.",
+  "Birthday Off": "A personal day off so each team member can mark their birthday without work obligations.",
+  "Mental Health Day": "A flexible day to step away, recover, and protect personal wellbeing.",
+  "Volunteer Day": "A paid day for employees to support a community or cause they care about.",
+  "Floating Holiday": "A flexible holiday employees can use for a cultural, religious, or personal observance.",
+  "International Holiday": "A manager-approved day for a home-country observance not already listed in the company calendar.",
 };
 
 const roleSlugs = {
@@ -596,6 +632,36 @@ document.querySelectorAll("[data-policy-toggle]").forEach((button) => {
 
     policy.hidden = !policy.hidden;
     button.classList.toggle("open", !policy.hidden);
+  });
+});
+
+document.querySelectorAll(".holiday-list article").forEach((card) => {
+  const title = card.querySelector("span")?.textContent?.trim();
+  const description = holidayDescriptions[title] || "A scheduled company observance or approved day away from regular work.";
+  const detail = document.createElement("p");
+
+  card.setAttribute("role", "button");
+  card.setAttribute("tabindex", "0");
+  card.setAttribute("aria-expanded", "false");
+  detail.className = "holiday-popover";
+  detail.hidden = true;
+  detail.textContent = description;
+  card.append(detail);
+
+  const toggleHoliday = () => {
+    const isOpen = !detail.hidden;
+
+    detail.hidden = isOpen;
+    card.classList.toggle("open", !isOpen);
+    card.setAttribute("aria-expanded", String(!isOpen));
+  };
+
+  card.addEventListener("click", toggleHoliday);
+  card.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggleHoliday();
+    }
   });
 });
 

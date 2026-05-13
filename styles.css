@@ -902,9 +902,24 @@ h3 {
 }
 
 .holiday-list article {
+  position: relative;
   padding: 16px;
   border: 1px solid var(--line);
   background: rgba(247, 243, 234, 0.045);
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.holiday-list article:hover,
+.holiday-list article:focus-visible,
+.holiday-list article.open {
+  border-color: rgba(203, 169, 92, 0.48);
+  background: rgba(203, 169, 92, 0.09);
+}
+
+.holiday-list article:focus-visible {
+  outline: 2px solid rgba(203, 169, 92, 0.55);
+  outline-offset: 3px;
 }
 
 .holiday-list strong,
@@ -930,6 +945,58 @@ h3 {
   margin-top: 6px;
   color: rgba(247, 243, 234, 0.58);
   line-height: 1.45;
+}
+
+.holiday-popover {
+  margin: 14px 0 0;
+  padding: 13px;
+  border: 1px solid rgba(247, 243, 234, 0.14);
+  background: rgba(7, 7, 8, 0.76);
+  color: rgba(247, 243, 234, 0.78);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.5;
+}
+
+.internship-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) repeat(3, minmax(0, 0.65fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+.internship-panel {
+  min-height: 100%;
+}
+
+.internship-card {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  background: rgba(17, 17, 19, 0.94);
+  box-shadow: var(--shadow);
+}
+
+.internship-card span {
+  width: fit-content;
+  border-bottom: 1px solid var(--gold);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.internship-card h3 {
+  margin: 0;
+  color: var(--ink-strong);
+  text-transform: uppercase;
+}
+
+.internship-card p {
+  margin: 0;
+  color: rgba(247, 243, 234, 0.68);
+  line-height: 1.62;
 }
 
 .request-layout {
@@ -1153,6 +1220,7 @@ h3 {
   .role-selector,
   .holiday-list,
   .holiday-list.compact,
+  .internship-grid,
   .admin-grid {
     grid-template-columns: 1fr;
   }
@@ -1187,6 +1255,7 @@ h3 {
   .purpose-card,
   .announcement,
   .policy-card,
+  .internship-card,
   .policy-hero,
   .request-form,
   .profile-form,
