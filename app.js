@@ -13,6 +13,14 @@ const signOutButton = document.querySelector("[data-sign-out]");
 const profileName = document.querySelector("[data-profile-name]");
 const profileRole = document.querySelector("[data-profile-role]");
 const profileInitials = document.querySelector("[data-profile-initials]");
+const profileBonusCredits = document.querySelector("[data-profile-bonus-credits]");
+const profileBonusPotential = document.querySelector("[data-profile-bonus-potential]");
+const challengeMonth = document.querySelector("[data-challenge-month]");
+const challengeCategory = document.querySelector("[data-challenge-category]");
+const challengeTitle = document.querySelector("[data-challenge-title]");
+const challengeSummary = document.querySelector("[data-challenge-summary]");
+const challengeDetails = document.querySelector("[data-challenge-details]");
+const challengeCredits = document.querySelector("[data-challenge-credits]");
 const inviteForm = document.querySelector("[data-invite-form]");
 const inviteStatus = document.querySelector("[data-invite-status]");
 const userRows = document.querySelector("[data-user-rows]");
@@ -29,6 +37,20 @@ const requestsStoreKey = "tb-internal-requests";
 const contentStoreKey = "tb-internal-content";
 const inviteTempPassword = "PortalInvite12!";
 const companyEmailDomain = "@the-banished.com";
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 const defaultUsers = {
   "support@the-banished.com": {
@@ -39,6 +61,7 @@ const defaultUsers = {
     timezone: "America/New_York",
     admin: true,
     status: "Active",
+    bonusCredits: 0,
   },
   "general@the-banished.com": {
     password: inviteTempPassword,
@@ -48,6 +71,7 @@ const defaultUsers = {
     timezone: "America/New_York",
     admin: false,
     status: "Active",
+    bonusCredits: 0,
   },
   "pm@the-banished.com": {
     password: inviteTempPassword,
@@ -57,6 +81,7 @@ const defaultUsers = {
     timezone: "America/New_York",
     admin: false,
     status: "Active",
+    bonusCredits: 0,
   },
 };
 
@@ -71,6 +96,7 @@ const titles = {
   culture: "Culture and operating principles",
   training: "Training resources",
   internship: "Internship resources",
+  "monthly-challenge": "Challenge of the Month",
   "it-requests": "IT request center",
   "hr-requests": "HR request center",
   admin: "Admin console",
@@ -88,6 +114,7 @@ const editableSections = {
   culture: "Culture",
   training: "Training",
   internship: "Internship",
+  "monthly-challenge": "Challenge of the Month",
   "it-requests": "IT Requests",
   "hr-requests": "HR Requests",
 };
@@ -126,6 +153,93 @@ const holidayDescriptions = {
   "Floating Holiday": "A flexible day for religious, cultural, family, or personal observances that may not appear on the standard company calendar.",
   "International Holiday": "A home-country or cultural observance requested individually so employees can honor meaningful holidays from their own background.",
 };
+
+const monthlyChallenges = [
+  {
+    title: "Make the Portal Smarter",
+    category: "Internal tools",
+    credits: 10,
+    summary: "Submit one practical improvement that makes the Internal Portal easier to use.",
+    details: "Eligible work includes a clearer workflow, a missing document, a useful automation idea, or a better way to route employee requests. The strongest submissions are specific, useful, and simple to implement.",
+  },
+  {
+    title: "Pitch a Film Process Upgrade",
+    category: "Film",
+    credits: 12,
+    summary: "Identify one production workflow that could be faster, clearer, or easier to hand off.",
+    details: "Explain the current friction, who it affects, and what would change. Bonus consideration goes to ideas that help creative and technical teams collaborate with less ambiguity.",
+  },
+  {
+    title: "Build the Comics Knowledge Base",
+    category: "Comics",
+    credits: 10,
+    summary: "Add a useful reference, character note, style note, or process suggestion for comics and IP work.",
+    details: "The goal is to make the creative universe easier to navigate. Strong contributions help future collaborators understand tone, continuity, character logic, or production standards.",
+  },
+  {
+    title: "Improve a Support Request",
+    category: "Operations",
+    credits: 8,
+    summary: "Find one IT or HR request type that needs a better form, clearer instructions, or faster routing.",
+    details: "A good submission names the request, explains what information is usually missing, and suggests the fields or instructions that would reduce back-and-forth.",
+  },
+  {
+    title: "Document a Hidden Rule",
+    category: "Culture",
+    credits: 9,
+    summary: "Turn an unwritten team habit into a clear, kind, useful note for newcomers.",
+    details: "The best entries make the company easier to understand without creating bureaucracy. Think handoffs, feedback norms, meeting etiquette, or how to ask for help.",
+  },
+  {
+    title: "Prototype a Creative Tech Idea",
+    category: "Technology",
+    credits: 15,
+    summary: "Sketch or prototype a small tool that supports film, comics, casting, or internal operations.",
+    details: "The prototype can be lightweight: a workflow map, clickable mockup, data model, or working proof of concept. The point is to make an idea concrete enough to review.",
+  },
+  {
+    title: "Strengthen Onboarding",
+    category: "People",
+    credits: 10,
+    summary: "Create one improvement that helps a new employee, intern, contractor, or manager understand what to do next.",
+    details: "Examples include a checklist, first-week guide, glossary, training note, or mentor prompt. It should reduce confusion for someone joining the company.",
+  },
+  {
+    title: "Find a Quality Gap",
+    category: "Production",
+    credits: 12,
+    summary: "Catch and clearly explain one quality risk before it reaches a wider audience.",
+    details: "This can be a content issue, workflow risk, inconsistent document, unclear approval path, or user-facing problem. Useful prevention counts.",
+  },
+  {
+    title: "Make Remote Work Cleaner",
+    category: "Remote work",
+    credits: 8,
+    summary: "Improve async collaboration, timezone handoffs, or meeting hygiene for distributed teams.",
+    details: "Strong submissions make work easier across locations: clearer updates, fewer unnecessary meetings, better decision logs, or better handoff expectations.",
+  },
+  {
+    title: "Elevate a Partner Experience",
+    category: "Partnerships",
+    credits: 12,
+    summary: "Suggest one way to make partners, vendors, schools, or collaborators experience The Banished as sharper and easier to work with.",
+    details: "Focus on communication, onboarding, deliverables, approvals, or relationship moments that make the company feel more professional.",
+  },
+  {
+    title: "Create a Learning Asset",
+    category: "Training",
+    credits: 10,
+    summary: "Build or outline a practical learning asset the team can reuse.",
+    details: "This can be a short guide, micro-training, checklist, explainer, example library, or walkthrough for a tool, process, or creative standard.",
+  },
+  {
+    title: "Year-End Knowledge Save",
+    category: "Knowledge",
+    credits: 14,
+    summary: "Capture something important the company learned this year before it disappears into old messages.",
+    details: "Summarize the lesson, where it came from, who it helps, and what should change next time. Clear documentation can become bonus-worthy impact.",
+  },
+];
 
 const roleSlugs = {
   General: "general",
@@ -217,6 +331,39 @@ function currentProfile() {
   return getProfile();
 }
 
+function currentMonthlyChallenge() {
+  return monthlyChallenges[new Date().getMonth()];
+}
+
+function renderMonthlyChallenge() {
+  const challenge = currentMonthlyChallenge();
+  const month = monthNames[new Date().getMonth()];
+
+  if (challengeMonth) {
+    challengeMonth.textContent = month;
+  }
+
+  if (challengeCategory) {
+    challengeCategory.textContent = challenge.category;
+  }
+
+  if (challengeTitle) {
+    challengeTitle.textContent = challenge.title;
+  }
+
+  if (challengeSummary) {
+    challengeSummary.textContent = challenge.summary;
+  }
+
+  if (challengeDetails) {
+    challengeDetails.textContent = challenge.details;
+  }
+
+  if (challengeCredits) {
+    challengeCredits.textContent = `+${challenge.credits}`;
+  }
+}
+
 function syncProfileFromDirectory(profile) {
   if (!profile?.email) {
     return profile;
@@ -236,6 +383,7 @@ function syncProfileFromDirectory(profile) {
     department: user.department,
     timezone: user.timezone,
     admin: Boolean(user.admin),
+    bonusCredits: Number(user.bonusCredits || 0),
   };
 }
 
@@ -271,6 +419,14 @@ function applyProfile(profile) {
     profileInitials.textContent = initialsFromName(profile.name || profile.email || "TB");
   }
 
+  if (profileBonusCredits) {
+    profileBonusCredits.textContent = Number(profile.bonusCredits || 0);
+  }
+
+  if (profileBonusPotential) {
+    profileBonusPotential.textContent = `+${currentMonthlyChallenge().credits}`;
+  }
+
   if (profileForm) {
     profileForm.elements.profileName.value = profile.name || "";
     profileForm.elements.profileEmail.value = profile.email || "";
@@ -279,8 +435,10 @@ function applyProfile(profile) {
     profileForm.elements.profileTimezone.value = profile.timezone || "";
   }
 
+  renderMonthlyChallenge();
   updateAdminVisibility(profile);
   configureRoleSelector(profile);
+  renderSectionAdminTools(profile);
   renderAdmin();
 }
 
@@ -345,6 +503,8 @@ function showSection(sectionId) {
   if (pageTitle) {
     pageTitle.textContent = titles[nextSection] || titles.overview;
   }
+
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
 function renderUsers() {
@@ -373,6 +533,9 @@ function renderUsers() {
           </td>
           <td>
             <input type="checkbox" data-user-admin="${email}" ${user.admin ? "checked" : ""} />
+          </td>
+          <td>
+            <input type="number" min="0" step="1" data-user-bonus="${email}" value="${Number(user.bonusCredits || 0)}" />
           </td>
           <td>${user.status || "Active"}</td>
         </tr>
@@ -448,16 +611,129 @@ function createPublishedCard(item) {
   return card;
 }
 
+function createProjectCard(item) {
+  const card = document.createElement("article");
+  const button = document.createElement("button");
+  const label = document.createElement("span");
+  const title = document.createElement("h3");
+  const summary = document.createElement("p");
+  const detail = document.createElement("div");
+
+  card.className = "project-card";
+  button.type = "button";
+  button.className = "project-button";
+  label.textContent = item.label || "Project";
+  title.textContent = item.title;
+  summary.textContent = item.summary;
+  detail.className = "project-popover";
+  detail.hidden = true;
+  appendTextBlock(detail, item.body);
+  button.append(label, title, summary);
+  card.append(button, detail);
+
+  button.addEventListener("click", () => {
+    const isOpen = !detail.hidden;
+    document.querySelectorAll(".project-card.open").forEach((project) => {
+      project.classList.remove("open");
+      project.querySelector(".project-popover").hidden = true;
+    });
+
+    if (!isOpen) {
+      card.classList.add("open");
+      detail.hidden = false;
+    }
+  });
+
+  return card;
+}
+
+function createDocumentCard(item) {
+  const link = document.createElement("a");
+  const icon = document.createElement("span");
+  const text = document.createElement("span");
+  const title = document.createElement("strong");
+  const summary = document.createElement("small");
+
+  link.className = "document";
+  link.href = "#";
+  icon.className = "document-icon";
+  icon.textContent = "DOC";
+  title.textContent = item.title;
+  summary.textContent = item.summary;
+  text.append(title, summary);
+  link.append(icon, text);
+
+  return link;
+}
+
+function renderProjectItems() {
+  const list = document.querySelector("[data-project-list]");
+
+  if (!list) {
+    return;
+  }
+
+  list.querySelectorAll("[data-admin-project]").forEach((element) => element.remove());
+
+  getContentItems()
+    .filter((item) => item.section === "projects" && item.type === "project")
+    .forEach((item) => {
+      const card = createProjectCard(item);
+      card.dataset.adminProject = item.id;
+      list.append(card);
+    });
+}
+
+function renderDocumentItems() {
+  document.querySelectorAll("[data-admin-document]").forEach((element) => element.remove());
+  document.querySelectorAll("[data-doc-role]").forEach((group) => {
+    const emptyState = group.querySelector(".document-empty.inline");
+
+    if (emptyState) {
+      emptyState.hidden = Boolean(group.querySelector(".document"));
+    }
+  });
+
+  getContentItems()
+    .filter((item) => item.section === "documents")
+    .forEach((item) => {
+      const role = item.role || "general";
+      const group = document.querySelector(`[data-doc-role="${role}"]`);
+
+      if (!group) {
+        return;
+      }
+
+      const card = createDocumentCard(item);
+      card.dataset.adminDocument = item.id;
+      group.append(card);
+
+      const emptyState = group.querySelector(".document-empty.inline");
+      if (emptyState) {
+        emptyState.hidden = true;
+      }
+    });
+}
+
 function renderContentItems() {
   document.querySelectorAll("[data-admin-content-rendered]").forEach((element) => {
     element.remove();
   });
 
+  renderProjectItems();
+  renderDocumentItems();
+
   const items = getContentItems();
 
   Object.keys(editableSections).forEach((sectionId) => {
     const target = document.querySelector(`[data-section="${sectionId}"]`);
-    const sectionItems = items.filter((item) => item.section === sectionId);
+    const sectionItems = items.filter((item) => {
+      if (item.section === "documents" || item.type === "project") {
+        return false;
+      }
+
+      return item.section === sectionId;
+    });
 
     if (!target || !sectionItems.length) {
       return;
@@ -522,7 +798,7 @@ function renderContentRows() {
       const deleteButton = document.createElement("button");
 
       sectionCell.textContent = editableSections[item.section] || item.section;
-      typeCell.textContent = item.type === "document" ? "Document" : "Update";
+      typeCell.textContent = contentTypeLabel(item.type);
       titleCell.textContent = item.title;
       createdCell.textContent = item.createdAt;
       deleteButton.className = "table-action";
@@ -533,6 +809,206 @@ function renderContentRows() {
       row.append(sectionCell, typeCell, titleCell, createdCell, actionCell);
       contentRows.append(row);
     });
+}
+
+function contentTypeLabel(type) {
+  if (type === "document") {
+    return "Document";
+  }
+
+  if (type === "project") {
+    return "Project";
+  }
+
+  return "Update";
+}
+
+function typeOptionsForSection(sectionId) {
+  if (sectionId === "documents") {
+    return [
+      ["document", "Document"],
+    ];
+  }
+
+  if (sectionId === "projects") {
+    return [
+      ["project", "Project"],
+      ["update", "Update"],
+      ["document", "Document"],
+    ];
+  }
+
+  return [
+    ["update", "Update"],
+    ["document", "Document"],
+  ];
+}
+
+function normalizeContentPayload(formData, fallbackSection = "overview") {
+  const section = String(formData.get("contentSection") || fallbackSection);
+  let type = String(formData.get("contentType") || "update");
+  const title = String(formData.get("contentTitle") || "").trim();
+  const summary = String(formData.get("contentSummary") || "").trim();
+  const body = String(formData.get("contentBody") || "").trim();
+  const label = String(formData.get("contentLabel") || "").trim();
+  const role = String(formData.get("contentRole") || "general");
+
+  if (section === "documents") {
+    type = "document";
+  }
+
+  if (section !== "projects" && type === "project") {
+    type = "update";
+  }
+
+  return {
+    section,
+    type,
+    label,
+    title,
+    summary,
+    body,
+    role,
+  };
+}
+
+function publishContentItem(payload) {
+  const items = getContentItems();
+  const createdAt = new Date().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  const item = {
+    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    createdAt,
+    ...payload,
+  };
+
+  items.push(item);
+  setContentItems(items);
+  renderContentRows();
+  renderContentItems();
+
+  return item;
+}
+
+function syncContentRoleVisibility(form) {
+  const section = form.dataset.fixedSection || form.elements.contentSection?.value || "overview";
+  const roleField = form.querySelector("[data-content-role-field]");
+
+  if (roleField) {
+    roleField.hidden = section !== "documents";
+  }
+}
+
+function createSectionAdminForm(sectionId) {
+  const sectionTitle = editableSections[sectionId];
+  const form = document.createElement("form");
+  const typeOptions = typeOptionsForSection(sectionId)
+    .map(([value, label]) => `<option value="${value}">${label}</option>`)
+    .join("");
+
+  form.className = "section-admin-tools";
+  form.dataset.sectionAdminTools = sectionId;
+  form.dataset.fixedSection = sectionId;
+  form.innerHTML = `
+    <div class="section-admin-head">
+      <div>
+        <p class="eyebrow">Admin tools</p>
+        <h3>Add or edit ${sectionTitle}</h3>
+      </div>
+      <span>Visible to admins only</span>
+    </div>
+    <div class="section-admin-grid">
+      <label>
+        Type
+        <select name="contentType">
+          ${typeOptions}
+        </select>
+      </label>
+      <label data-content-role-field>
+        Document role
+        <select name="contentRole">
+          <option value="general">General</option>
+          <option value="admin">Admin</option>
+          <option value="project-manager">Project Manager</option>
+        </select>
+      </label>
+      <label>
+        Label
+        <input name="contentLabel" type="text" placeholder="Policy, guide, project, memo" />
+      </label>
+      <label>
+        Title
+        <input name="contentTitle" type="text" placeholder="Title employees will see" required />
+      </label>
+    </div>
+    <label>
+      Short summary
+      <input name="contentSummary" type="text" placeholder="One clear sentence" required />
+    </label>
+    <label>
+      Details
+      <textarea name="contentBody" rows="5" placeholder="Add the content, document description, project details, or page update" required></textarea>
+    </label>
+    <button class="primary-button" type="submit">Publish to this section</button>
+    <p class="request-status" data-section-admin-status hidden></p>
+  `;
+
+  syncContentRoleVisibility(form);
+
+  form.addEventListener("change", () => {
+    syncContentRoleVisibility(form);
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+    formData.set("contentSection", sectionId);
+    const payload = normalizeContentPayload(formData, sectionId);
+    const status = form.querySelector("[data-section-admin-status]");
+
+    if (!payload.title || !payload.summary || !payload.body) {
+      setRequestStatus(status, "Content was not published. Add a title, summary, and details.", "error");
+      return;
+    }
+
+    publishContentItem(payload);
+    setRequestStatus(status, `Published to ${editableSections[sectionId] || sectionId}.`);
+    form.reset();
+    syncContentRoleVisibility(form);
+  });
+
+  return form;
+}
+
+function renderSectionAdminTools(profile) {
+  document.querySelectorAll("[data-section-admin-tools]").forEach((tool) => tool.remove());
+
+  if (!profile?.admin) {
+    return;
+  }
+
+  Object.keys(editableSections).forEach((sectionId) => {
+    const target = document.querySelector(`[data-section="${sectionId}"]`);
+
+    if (!target) {
+      return;
+    }
+
+    const tool = createSectionAdminForm(sectionId);
+    const anchor = target.querySelector(".section-heading, .intro-panel");
+
+    if (anchor) {
+      anchor.insertAdjacentElement("afterend", tool);
+    } else {
+      target.prepend(tool);
+    }
+  });
 }
 
 function renderAdmin() {
@@ -638,6 +1114,7 @@ authForm?.addEventListener("submit", (event) => {
     department: user.department,
     timezone: user.timezone,
     admin: Boolean(user.admin),
+    bonusCredits: Number(user.bonusCredits || 0),
   };
 
   if (authError) {
@@ -674,10 +1151,12 @@ profileForm?.addEventListener("submit", (event) => {
     department: formData.get("profileDepartment") || "",
     timezone: formData.get("profileTimezone") || "",
     admin: Boolean(previousProfile.admin),
+    bonusCredits: Number(previousProfile.bonusCredits || 0),
   };
   const users = getUsers();
 
   if (profile.email && users[profile.email]) {
+    profile.bonusCredits = Number(users[profile.email].bonusCredits || 0);
     users[profile.email] = {
       ...users[profile.email],
       name: profile.name,
@@ -722,6 +1201,7 @@ inviteForm?.addEventListener("submit", async (event) => {
     timezone: users[email]?.timezone || "",
     admin: isAdmin,
     status: "Invited",
+    bonusCredits: Number(users[email]?.bonusCredits || 0),
   };
 
   setRequestStatus(inviteStatus, `Sending invitation to ${email}...`, "pending");
@@ -757,8 +1237,13 @@ saveUsersButton?.addEventListener("click", () => {
     users[email].admin = checkbox.checked;
 
     if (checkbox.checked && users[email].role !== "Admin") {
-      users[email].role = users[email].role || "Admin";
+      users[email].role = "Admin";
     }
+  });
+
+  userRows?.querySelectorAll("[data-user-bonus]").forEach((input) => {
+    const email = input.dataset.userBonus;
+    users[email].bonusCredits = Math.max(0, Number(input.value || 0));
   });
 
   setUsers(users);
@@ -774,42 +1259,17 @@ contentForm?.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const formData = new FormData(contentForm);
-  const items = getContentItems();
-  const section = String(formData.get("contentSection") || "overview");
-  const type = String(formData.get("contentType") || "update");
-  const title = String(formData.get("contentTitle") || "").trim();
-  const summary = String(formData.get("contentSummary") || "").trim();
-  const body = String(formData.get("contentBody") || "").trim();
-  const label = String(formData.get("contentLabel") || "").trim();
+  const payload = normalizeContentPayload(formData);
 
-  if (!title || !summary || !body) {
+  if (!payload.title || !payload.summary || !payload.body) {
     setRequestStatus(contentStatus, "Content was not published. Add a title, summary, and details.", "error");
     return;
   }
 
-  const createdAt = new Date().toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  });
-
-  items.push({
-    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-    section,
-    type,
-    label,
-    title,
-    summary,
-    body,
-    createdAt,
-  });
-
-  setContentItems(items);
-  renderContentRows();
-  renderContentItems();
-  setRequestStatus(contentStatus, `Published to ${editableSections[section] || section}.`);
+  publishContentItem(payload);
+  setRequestStatus(contentStatus, `Published to ${editableSections[payload.section] || payload.section}.`);
   contentForm.reset();
+  syncContentRoleVisibility(contentForm);
 });
 
 contentRows?.addEventListener("click", (event) => {
@@ -823,6 +1283,10 @@ contentRows?.addEventListener("click", (event) => {
   setContentItems(nextItems);
   renderContentRows();
   renderContentItems();
+});
+
+contentForm?.addEventListener("change", () => {
+  syncContentRoleVisibility(contentForm);
 });
 
 document.querySelectorAll("[data-announcement-toggle]").forEach((button) => {
@@ -847,6 +1311,33 @@ document.querySelectorAll("[data-policy-toggle]").forEach((button) => {
 
     policy.hidden = !policy.hidden;
     button.classList.toggle("open", !policy.hidden);
+  });
+});
+
+document.querySelectorAll("[data-project-toggle]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const target = document.getElementById(button.dataset.projectToggle);
+    const card = button.closest(".project-card");
+
+    if (!target || !card) {
+      return;
+    }
+
+    const isOpen = !target.hidden;
+
+    document.querySelectorAll(".project-card.open").forEach((project) => {
+      project.classList.remove("open");
+      const detail = project.querySelector(".project-popover");
+
+      if (detail) {
+        detail.hidden = true;
+      }
+    });
+
+    if (!isOpen) {
+      card.classList.add("open");
+      target.hidden = false;
+    }
   });
 });
 
@@ -911,6 +1402,47 @@ document.querySelectorAll("[data-internship-toggle]").forEach((button) => {
     if (!isOpen) {
       target.hidden = false;
       button.classList.add("open");
+    }
+  });
+});
+
+const internshipPopupCards = document.querySelectorAll("[data-internship-popup]");
+
+function toggleInternshipPopup(card) {
+  const detail = card.querySelector(".internship-popover");
+
+  if (!detail) {
+    return;
+  }
+
+  const isOpen = !detail.hidden;
+
+  internshipPopupCards.forEach((item) => {
+    item.classList.remove("open");
+    item.setAttribute("aria-expanded", "false");
+    const popover = item.querySelector(".internship-popover");
+
+    if (popover) {
+      popover.hidden = true;
+    }
+  });
+
+  if (!isOpen) {
+    card.classList.add("open");
+    card.setAttribute("aria-expanded", "true");
+    detail.hidden = false;
+  }
+}
+
+internshipPopupCards.forEach((card) => {
+  card.addEventListener("click", () => {
+    toggleInternshipPopup(card);
+  });
+
+  card.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggleInternshipPopup(card);
     }
   });
 });
@@ -984,6 +1516,12 @@ document.querySelectorAll("[data-request-form]").forEach((form) => {
 window.addEventListener("hashchange", () => {
   showSection(window.location.hash.replace("#", "") || "overview");
 });
+
+if (contentForm) {
+  syncContentRoleVisibility(contentForm);
+}
+
+renderMonthlyChallenge();
 
 const savedProfile = getProfile();
 

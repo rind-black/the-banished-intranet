@@ -60,36 +60,40 @@
             <span aria-hidden="true">05</span>
             Bonuses
           </a>
-          <a class="nav-link" href="#benefits" data-section-link="benefits">
+          <a class="nav-link" href="#monthly-challenge" data-section-link="monthly-challenge">
             <span aria-hidden="true">06</span>
+            Challenge
+          </a>
+          <a class="nav-link" href="#benefits" data-section-link="benefits">
+            <span aria-hidden="true">07</span>
             Benefits
           </a>
           <a class="nav-link" href="#holidays" data-section-link="holidays">
-            <span aria-hidden="true">07</span>
+            <span aria-hidden="true">08</span>
             Holidays
           </a>
           <a class="nav-link" href="#culture" data-section-link="culture">
-            <span aria-hidden="true">08</span>
+            <span aria-hidden="true">09</span>
             Culture
           </a>
           <a class="nav-link" href="#training" data-section-link="training">
-            <span aria-hidden="true">09</span>
+            <span aria-hidden="true">10</span>
             Training
           </a>
           <a class="nav-link" href="#internship" data-section-link="internship">
-            <span aria-hidden="true">10</span>
+            <span aria-hidden="true">11</span>
             Internship
           </a>
           <a class="nav-link" href="#it-requests" data-section-link="it-requests">
-            <span aria-hidden="true">11</span>
+            <span aria-hidden="true">12</span>
             IT Requests
           </a>
           <a class="nav-link" href="#hr-requests" data-section-link="hr-requests">
-            <span aria-hidden="true">12</span>
+            <span aria-hidden="true">13</span>
             HR Requests
           </a>
           <a class="nav-link" href="#admin" data-section-link="admin" data-admin-only hidden>
-            <span aria-hidden="true">13</span>
+            <span aria-hidden="true">14</span>
             Admin
           </a>
         </nav>
@@ -253,21 +257,81 @@
             </div>
           </div>
 
-          <div class="company-grid wide">
-            <article class="company-card">
-              <span>Film</span>
-              <h3>Film projects</h3>
-              <p>Track active and upcoming screen work: development, production prep, post-production, screenings, and release milestones.</p>
+          <div class="project-list" data-project-list>
+            <article class="project-card">
+              <button class="project-button" type="button" data-project-toggle="project-ai-casting">
+                <span>IT / Product</span>
+                <h3>AI Casting Platform</h3>
+                <p>Internal casting intelligence for film and television talent discovery.</p>
+              </button>
+              <div class="project-popover" id="project-ai-casting" hidden>
+                <h4>Project detail</h4>
+                <p>
+                  A technology project focused on structured talent data, smarter matching, casting research, and
+                  production workflows. Internal work includes access systems, profile quality, search logic, and the
+                  operational tools that make casting decisions easier to review.
+                </p>
+              </div>
             </article>
-            <article class="company-card">
-              <span>Comics</span>
-              <h3>Comics and IP</h3>
-              <p>Follow comics, graphic stories, character development, and IP materials that support The Banished creative universe.</p>
+            <article class="project-card">
+              <button class="project-button" type="button" data-project-toggle="project-banished">
+                <span>Film / Comics</span>
+                <h3>The Banished</h3>
+                <p>The core creative universe behind the company name.</p>
+              </button>
+              <div class="project-popover" id="project-banished" hidden>
+                <h4>Project detail</h4>
+                <p>
+                  A dark fantasy story world centered on banished demons navigating a human world without magic while
+                  trying to restore balance. Internal work can include canon notes, character logic, visual references,
+                  production planning, and cross-format development.
+                </p>
+              </div>
             </article>
-            <article class="company-card">
-              <span>Technology</span>
-              <h3>IT projects</h3>
-              <p>See internal tools, portal work, automation, access systems, and technical projects that support creative operations.</p>
+            <article class="project-card">
+              <button class="project-button" type="button" data-project-toggle="project-colorblind">
+                <span>Film</span>
+                <h3>Colorblind</h3>
+                <p>A screen project set inside the pressure and image logic of advertising.</p>
+              </button>
+              <div class="project-popover" id="project-colorblind" hidden>
+                <h4>Project detail</h4>
+                <p>
+                  A film concept about a successful creative director whose career and identity are disrupted when he
+                  realizes he can no longer perceive color. Internal work may include script development, visual
+                  language, pitch assets, casting research, and production packaging.
+                </p>
+              </div>
+            </article>
+            <article class="project-card">
+              <button class="project-button" type="button" data-project-toggle="project-incompatibility">
+                <span>Film</span>
+                <h3>Incompatibility</h3>
+                <p>A dark romantic comedy about emotional mismatch and control.</p>
+              </button>
+              <div class="project-popover" id="project-incompatibility" hidden>
+                <h4>Project detail</h4>
+                <p>
+                  A relationship project built around a businessman who struggles to recognize emotions and a partner
+                  whose need for control turns intimacy into conflict. Internal work can include tone calibration,
+                  character arcs, market references, and pitch materials.
+                </p>
+              </div>
+            </article>
+            <article class="project-card">
+              <button class="project-button" type="button" data-project-toggle="project-four-horsemen">
+                <span>Comics / IP</span>
+                <h3>Four Horsemen of the Apocalypse</h3>
+                <p>A mythology-driven property with franchise and comics potential.</p>
+              </button>
+              <div class="project-popover" id="project-four-horsemen" hidden>
+                <h4>Project detail</h4>
+                <p>
+                  A supernatural ensemble concept about ordinary college students who receive mythic Horsemen powers
+                  and are pulled into escalating chaos. Internal work can include issue planning, lore rules, character
+                  sheets, visual standards, and adaptation strategy.
+                </p>
+              </div>
             </article>
           </div>
         </section>
@@ -378,6 +442,39 @@
               <strong>Questions?</strong>
               <span>Contact HR at <a href="mailto:hr@the-banished.com">hr@the-banished.com</a>.</span>
             </footer>
+          </article>
+        </section>
+
+        <section class="portal-section" id="monthly-challenge" data-section="monthly-challenge" aria-labelledby="monthly-challenge-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Bonus opportunity</p>
+              <h2 id="monthly-challenge-title">Challenge of the Month</h2>
+            </div>
+          </div>
+
+          <article class="monthly-challenge-card">
+            <div class="challenge-main">
+              <div class="challenge-meta">
+                <span data-challenge-month>Month</span>
+                <span data-challenge-category>Category</span>
+              </div>
+              <h3 data-challenge-title>Challenge title</h3>
+              <p data-challenge-summary></p>
+              <div class="challenge-detail">
+                <strong>How to earn the bonus credits</strong>
+                <p data-challenge-details></p>
+                <ul>
+                  <li>Complete the challenge during the current calendar month.</li>
+                  <li>Send a concise note, link, file, or screenshot to your manager with the impact explained.</li>
+                  <li>Your manager confirms whether the contribution is useful, complete, and eligible for bonus credit.</li>
+                </ul>
+              </div>
+            </div>
+            <aside class="challenge-score">
+              <span data-challenge-credits>+0</span>
+              <small>potential bonus credits</small>
+            </aside>
           </article>
         </section>
 
@@ -827,54 +924,149 @@
             </div>
           </div>
 
-          <div class="internship-grid">
+          <div class="internship-layout">
             <article class="internship-panel intro-panel">
               <p class="eyebrow">For interns</p>
               <h3>Start here</h3>
               <p>
-                This section is for team members completing an internship with The Banished. It keeps the first weeks
-                clear: who to ask, what to focus on, and how to move work forward without guessing.
+                This section is for team members completing an internship with The Banished. Every step below opens into
+                the practical detail an intern needs before, during, and after the program.
               </p>
             </article>
-            <button class="internship-card" type="button" data-internship-toggle="internship-week-one">
-              <span>01</span>
-              <h3>Week one</h3>
-              <p>Access, orientation, schedule, and first assignment.</p>
-            </button>
-            <article class="internship-detail" id="internship-week-one" hidden>
-              <h4>What happens first</h4>
-              <ul>
-                <li>Confirm corporate email, portal access, and core tools.</li>
-                <li>Meet your manager and mentor, then agree on preferred communication rhythm.</li>
-                <li>Review assigned documents and understand what success looks like for the internship.</li>
-              </ul>
-            </article>
-            <button class="internship-card" type="button" data-internship-toggle="internship-mentor">
-              <span>02</span>
-              <h3>Mentor and manager</h3>
-              <p>Who guides the work, who gives feedback, and where to escalate blockers.</p>
-            </button>
-            <article class="internship-detail" id="internship-mentor" hidden>
-              <h4>Who does what</h4>
-              <ul>
-                <li>Your manager owns priorities, performance expectations, and formal feedback.</li>
-                <li>Your mentor helps with day-to-day context, team norms, and practical questions.</li>
-                <li>If something blocks your work for more than one business day, raise it with both.</li>
-              </ul>
-            </article>
-            <button class="internship-card" type="button" data-internship-toggle="internship-growth">
-              <span>03</span>
-              <h3>Growth path</h3>
-              <p>How progress is reviewed and what makes an internship successful.</p>
-            </button>
-            <article class="internship-detail" id="internship-growth" hidden>
-              <h4>How progress is measured</h4>
-              <ul>
-                <li>Clear communication, reliable follow-through, and willingness to ask smart questions.</li>
-                <li>Quality of work on assigned tasks, not performative busyness.</li>
-                <li>A final review captures strengths, next steps, and potential future fit.</li>
-              </ul>
-            </article>
+            <div class="internship-step-grid">
+              <article class="internship-step" role="button" tabindex="0" aria-expanded="false" data-internship-popup>
+                <span>01</span>
+                <h3>Offer accepted</h3>
+                <p>Confirm the internship, start date, location, manager, and program track.</p>
+                <div class="internship-popover" hidden>
+                  <h4>Before anything else</h4>
+                  <ul>
+                    <li>Reply to the offer email confirming the start date, expected end date, work location, and weekly schedule.</li>
+                    <li>Confirm your legal name, preferred name, phone number, and emergency contact with HR.</li>
+                    <li>Ask HR which documents must be completed before your first paid workday.</li>
+                  </ul>
+                </div>
+              </article>
+              <article class="internship-step" role="button" tabindex="0" aria-expanded="false" data-internship-popup>
+                <span>02</span>
+                <h3>Documents and signatures</h3>
+                <p>Complete every required signature before systems and production work are opened.</p>
+                <div class="internship-popover" hidden>
+                  <h4>Professional signing checklist</h4>
+                  <ul>
+                    <li>Sign the offer letter or internship confirmation, internship agreement, NDA, confidentiality terms, IP assignment, and handbook acknowledgment.</li>
+                    <li>Complete payroll and tax forms such as W-4, I-9, direct deposit, local equivalents, and any school credit paperwork that applies.</li>
+                    <li>Review code of conduct, anti-harassment, device responsibility, data security, and project confidentiality acknowledgments.</li>
+                    <li>Submit signatures through the approved signing link only. Do not email unsigned personal documents unless HR specifically requests it.</li>
+                    <li>HR confirms completion. Missing signatures can delay email, equipment, repository access, and assignment to confidential projects.</li>
+                  </ul>
+                </div>
+              </article>
+              <article class="internship-step" role="button" tabindex="0" aria-expanded="false" data-internship-popup>
+                <span>03</span>
+                <h3>Corporate access</h3>
+                <p>Activate company email, portal access, collaboration tools, and basic security.</p>
+                <div class="internship-popover" hidden>
+                  <h4>Access rules</h4>
+                  <ul>
+                    <li>Use only your The Banished company email for portal access, company files, requests, and approvals.</li>
+                    <li>Set up multi-factor authentication, password manager access, calendar, chat, file storage, and required project tools.</li>
+                    <li>Report blocked access through IT Requests with screenshots, device type, browser, and urgency.</li>
+                  </ul>
+                </div>
+              </article>
+              <article class="internship-step" role="button" tabindex="0" aria-expanded="false" data-internship-popup>
+                <span>04</span>
+                <h3>Equipment and setup</h3>
+                <p>Make sure the working environment is ready before the first assignment.</p>
+                <div class="internship-popover" hidden>
+                  <h4>Setup standard</h4>
+                  <ul>
+                    <li>Confirm whether you use a company device, a loaner, or an approved personal device.</li>
+                    <li>Install approved software only and keep production files inside company-approved storage.</li>
+                    <li>Test camera, audio, screen sharing, VPN if required, design tools, document access, and repository access before day one.</li>
+                  </ul>
+                </div>
+              </article>
+              <article class="internship-step" role="button" tabindex="0" aria-expanded="false" data-internship-popup>
+                <span>05</span>
+                <h3>First day orientation</h3>
+                <p>Meet the company, understand the culture, and learn how decisions are made.</p>
+                <div class="internship-popover" hidden>
+                  <h4>Day one agenda</h4>
+                  <ul>
+                    <li>Meet HR, your manager, mentor, and the team members you will interact with most.</li>
+                    <li>Review company culture, communication norms, confidentiality expectations, and the difference between questions, blockers, and decisions.</li>
+                    <li>Confirm working hours, meeting expectations, time tracking if required, and how to request time away.</li>
+                  </ul>
+                </div>
+              </article>
+              <article class="internship-step" role="button" tabindex="0" aria-expanded="false" data-internship-popup>
+                <span>06</span>
+                <h3>Week one work plan</h3>
+                <p>Turn the internship into clear deliverables, milestones, and feedback points.</p>
+                <div class="internship-popover" hidden>
+                  <h4>What good alignment includes</h4>
+                  <ul>
+                    <li>Agree on one primary learning objective, one practical deliverable, and one stretch opportunity.</li>
+                    <li>Document success criteria, expected check-ins, review dates, and what must be done before asking for approval.</li>
+                    <li>Keep a running work log with links, decisions, open questions, and blockers.</li>
+                  </ul>
+                </div>
+              </article>
+              <article class="internship-step" role="button" tabindex="0" aria-expanded="false" data-internship-popup>
+                <span>07</span>
+                <h3>Mentor rhythm</h3>
+                <p>Use the mentor relationship for context, judgment, and practical learning.</p>
+                <div class="internship-popover" hidden>
+                  <h4>How to use your mentor well</h4>
+                  <ul>
+                    <li>Bring specific questions, drafts, options, or decisions. Mentors help faster when the request is concrete.</li>
+                    <li>Ask for context before assuming how a creative, technical, or production standard works.</li>
+                    <li>Escalate blockers that sit longer than one business day to both mentor and manager.</li>
+                  </ul>
+                </div>
+              </article>
+              <article class="internship-step" role="button" tabindex="0" aria-expanded="false" data-internship-popup>
+                <span>08</span>
+                <h3>Midpoint review</h3>
+                <p>Check progress early enough to improve the outcome.</p>
+                <div class="internship-popover" hidden>
+                  <h4>Review preparation</h4>
+                  <ul>
+                    <li>Prepare a short summary of completed work, what changed, what you learned, and where you need clearer direction.</li>
+                    <li>Your manager reviews quality, communication, reliability, judgment, and fit with the assigned work.</li>
+                    <li>Agree on what must be finished, improved, or stopped before the final review.</li>
+                  </ul>
+                </div>
+              </article>
+              <article class="internship-step" role="button" tabindex="0" aria-expanded="false" data-internship-popup>
+                <span>09</span>
+                <h3>Final presentation</h3>
+                <p>Close the internship with useful work, clear learning, and documented handoff.</p>
+                <div class="internship-popover" hidden>
+                  <h4>Final package</h4>
+                  <ul>
+                    <li>Present the final deliverable, key decisions, unresolved questions, files, and recommended next steps.</li>
+                    <li>Clean up drafts, rename files clearly, and make sure another team member can continue the work.</li>
+                    <li>Include a one-page reflection on skills built, feedback received, and what you would improve next time.</li>
+                  </ul>
+                </div>
+              </article>
+              <article class="internship-step" role="button" tabindex="0" aria-expanded="false" data-internship-popup>
+                <span>10</span>
+                <h3>Conversion review</h3>
+                <p>Understand how return offers, references, and future opportunities are evaluated.</p>
+                <div class="internship-popover" hidden>
+                  <h4>What leadership considers</h4>
+                  <ul>
+                    <li>Business need, role availability, quality of work, communication, reliability, confidentiality, and growth potential.</li>
+                    <li>Managers may recommend a return offer, extended internship, freelance project, reference, or no immediate next step.</li>
+                    <li>HR communicates the outcome and any next actions after manager and leadership review.</li>
+                  </ul>
+                </div>
+              </article>
+            </div>
           </div>
         </section>
 
@@ -1015,6 +1207,7 @@
                       <th>User</th>
                       <th>Role</th>
                       <th>Admin</th>
+                      <th>Bonus credits</th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -1043,6 +1236,7 @@
                     <option value="culture">Culture</option>
                     <option value="training">Training</option>
                     <option value="internship">Internship</option>
+                    <option value="monthly-challenge">Challenge of the Month</option>
                     <option value="it-requests">IT Requests</option>
                     <option value="hr-requests">HR Requests</option>
                   </select>
@@ -1052,6 +1246,15 @@
                   <select name="contentType">
                     <option value="update">Update</option>
                     <option value="document">Document</option>
+                    <option value="project">Project</option>
+                  </select>
+                </label>
+                <label data-content-role-field>
+                  Document role
+                  <select name="contentRole">
+                    <option value="general">General</option>
+                    <option value="admin">Admin</option>
+                    <option value="project-manager">Project Manager</option>
                   </select>
                 </label>
               </div>
@@ -1124,6 +1327,19 @@
               <p class="eyebrow">Account</p>
               <h2 id="profile-title">Profile settings</h2>
             </div>
+          </div>
+
+          <div class="profile-bonus-grid" aria-label="Bonus credits">
+            <article>
+              <span>Current bonus credits</span>
+              <strong data-profile-bonus-credits>0</strong>
+              <p>Credits recorded by an admin for approved contributions.</p>
+            </article>
+            <article>
+              <span>This month can earn</span>
+              <strong data-profile-bonus-potential>+0</strong>
+              <p>Potential credits available through the current Challenge of the Month.</p>
+            </article>
           </div>
 
           <form class="profile-form" data-profile-form>
