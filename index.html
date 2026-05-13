@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Banished Intranet</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <a class="brand" href="#" aria-label="The Banished intranet home">
+          <span class="brand-mark">TB</span>
+          <span>
+            <strong>The Banished</strong>
+            <small>Intranet</small>
+          </span>
+        </a>
+
+        <nav class="nav">
+          <a class="nav-link active" href="#overview">
+            <span aria-hidden="true">⌂</span>
+            Overview
+          </a>
+          <a class="nav-link" href="#announcements">
+            <span aria-hidden="true">!</span>
+            Announcements
+          </a>
+          <a class="nav-link" href="#documents">
+            <span aria-hidden="true">▣</span>
+            Documents
+          </a>
+          <a class="nav-link" href="#team">
+            <span aria-hidden="true">◎</span>
+            Team
+          </a>
+          <a class="nav-link" href="#calendar">
+            <span aria-hidden="true">◷</span>
+            Calendar
+          </a>
+        </nav>
+
+        <div class="sidebar-note">
+          <strong>Internal access</strong>
+          <p>Prototype space for private updates, resources, and team operations.</p>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Internal portal</p>
+            <h1>Team hub for The Banished</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="icon-button" type="button" aria-label="Search">
+              <span aria-hidden="true">⌕</span>
+            </button>
+            <button class="primary-button" type="button">New update</button>
+          </div>
+        </header>
+
+        <section class="summary-grid" id="overview" aria-label="Intranet summary">
+          <article class="metric">
+            <span>Open tasks</span>
+            <strong>18</strong>
+            <small>6 due this week</small>
+          </article>
+          <article class="metric">
+            <span>Documents</span>
+            <strong>42</strong>
+            <small>12 updated recently</small>
+          </article>
+          <article class="metric">
+            <span>Team members</span>
+            <strong>9</strong>
+            <small>3 online now</small>
+          </article>
+          <article class="metric">
+            <span>Next event</span>
+            <strong>May 17</strong>
+            <small>Production sync</small>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <div class="main-column">
+            <section class="panel" id="announcements">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Latest</p>
+                  <h2>Announcements</h2>
+                </div>
+                <button class="text-button" type="button">View all</button>
+              </div>
+
+              <div class="announcement-list">
+                <article class="announcement">
+                  <div class="date-badge">
+                    <span>12</span>
+                    <small>May</small>
+                  </div>
+                  <div>
+                    <h3>First intranet draft is live</h3>
+                    <p>Use this space to gather internal updates before the section is moved into the main website.</p>
+                    <div class="tags">
+                      <span>Project</span>
+                      <span>Internal</span>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="announcement">
+                  <div class="date-badge">
+                    <span>15</span>
+                    <small>May</small>
+                  </div>
+                  <div>
+                    <h3>Content inventory review</h3>
+                    <p>Collect documents, onboarding notes, policies, and recurring team links for the next version.</p>
+                    <div class="tags">
+                      <span>Docs</span>
+                      <span>Review</span>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="panel" id="documents">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Library</p>
+                  <h2>Key documents</h2>
+                </div>
+                <button class="text-button" type="button">Upload</button>
+              </div>
+
+              <div class="document-list">
+                <a class="document" href="#">
+                  <span class="document-icon">PDF</span>
+                  <span>
+                    <strong>Brand guide</strong>
+                    <small>Updated today</small>
+                  </span>
+                </a>
+                <a class="document" href="#">
+                  <span class="document-icon">DOC</span>
+                  <span>
+                    <strong>Onboarding checklist</strong>
+                    <small>Updated yesterday</small>
+                  </span>
+                </a>
+                <a class="document" href="#">
+                  <span class="document-icon">XLS</span>
+                  <span>
+                    <strong>Production schedule</strong>
+                    <small>Updated May 10</small>
+                  </span>
+                </a>
+              </div>
+            </section>
+          </div>
+
+          <aside class="side-column" aria-label="Team and schedule">
+            <section class="panel compact" id="team">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">People</p>
+                  <h2>Team</h2>
+                </div>
+              </div>
+
+              <div class="people-list">
+                <article class="person">
+                  <span class="avatar">RK</span>
+                  <span>
+                    <strong>Rind Black</strong>
+                    <small>Owner</small>
+                  </span>
+                </article>
+                <article class="person">
+                  <span class="avatar">HB</span>
+                  <span>
+                    <strong>Helga</strong>
+                    <small>Operations</small>
+                  </span>
+                </article>
+                <article class="person">
+                  <span class="avatar">TB</span>
+                  <span>
+                    <strong>The Banished</strong>
+                    <small>Team channel</small>
+                  </span>
+                </article>
+              </div>
+            </section>
+
+            <section class="panel compact" id="calendar">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Schedule</p>
+                  <h2>This week</h2>
+                </div>
+              </div>
+
+              <ol class="event-list">
+                <li>
+                  <time>Tue 14:00</time>
+                  <span>Content review</span>
+                </li>
+                <li>
+                  <time>Thu 11:30</time>
+                  <span>Production sync</span>
+                </li>
+                <li>
+                  <time>Fri 16:00</time>
+                  <span>Launch planning</span>
+                </li>
+              </ol>
+            </section>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
