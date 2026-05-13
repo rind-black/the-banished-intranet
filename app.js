@@ -18,6 +18,19 @@ const profileBonusPotential = document.querySelector("[data-profile-bonus-potent
 const challengeMonth = document.querySelector("[data-challenge-month]");
 const challengeCredits = document.querySelector("[data-challenge-credits]");
 const challengeList = document.querySelector("[data-challenge-list]");
+const challengeLevel = document.querySelector("[data-challenge-level]");
+const challengeProgress = document.querySelector("[data-challenge-progress]");
+const challengePlayerCredits = document.querySelector("[data-challenge-player-credits]");
+const projectDetailLabel = document.querySelector("[data-project-detail-label]");
+const projectDetailTitle = document.querySelector("[data-project-detail-title]");
+const projectDetailSummary = document.querySelector("[data-project-detail-summary]");
+const projectDetailStage = document.querySelector("[data-project-detail-stage]");
+const projectDetailOwner = document.querySelector("[data-project-detail-owner]");
+const projectDetailPriority = document.querySelector("[data-project-detail-priority]");
+const projectDetailRequirements = document.querySelector("[data-project-detail-requirements]");
+const projectDetailDeliverables = document.querySelector("[data-project-detail-deliverables]");
+const projectDetailNotes = document.querySelector("[data-project-detail-notes]");
+const bonusDetailContent = document.querySelector("[data-bonus-detail-content]");
 const inviteForm = document.querySelector("[data-invite-form]");
 const inviteStatus = document.querySelector("[data-invite-status]");
 const createUserForm = document.querySelector("[data-create-user-form]");
@@ -89,7 +102,9 @@ const titles = {
   announcements: "Company announcements",
   documents: "Company documents",
   projects: "Current projects",
+  "project-detail": "Project detail",
   bonuses: "Bonus information",
+  "bonus-detail": "Bonus document",
   benefits: "Benefits and support",
   holidays: "Holidays and days off",
   culture: "Culture and operating principles",
@@ -380,6 +395,114 @@ const monthlyChallenges = [
   ],
 ];
 
+const projectPages = {
+  "ai-casting": {
+    label: "IT / Product",
+    title: "AI Casting Platform",
+    summary: "Internal casting intelligence for film and television talent discovery, talent data quality, and production-ready matching workflows.",
+    stage: "Product discovery and workflow design",
+    owner: "Technology / Casting Operations",
+    priority: "High",
+    requirements: [
+      "Define the minimum talent profile fields needed for reliable comparison.",
+      "Map the casting search workflow from role brief to shortlist review.",
+      "Create quality rules for profile completeness, duplicate prevention, and data consistency.",
+      "Identify access permissions for admins, casting reviewers, and project teams.",
+    ],
+    deliverables: [
+      "Casting workflow map",
+      "Talent profile data checklist",
+      "Reviewer dashboard requirements",
+      "Security and access notes",
+    ],
+    notes: "This project connects the company's creative studio work with practical internal tooling. The immediate goal is clarity: who uses it, what data matters, and what decisions the platform should support first.",
+  },
+  "the-banished": {
+    label: "Film / Comics",
+    title: "The Banished",
+    summary: "The core dark fantasy universe behind the company name, built for cross-format development across story, visual references, and production planning.",
+    stage: "Creative development",
+    owner: "Creative / IP",
+    priority: "Flagship",
+    requirements: [
+      "Maintain clear canon rules for characters, magic absence, world logic, and tone.",
+      "Organize reference material for visual language, character arcs, and story continuity.",
+      "Track which elements belong to film, comics, pitch, and internal reference materials.",
+      "Keep approvals clear before any external collaborator receives confidential materials.",
+    ],
+    deliverables: [
+      "Canon and continuity notes",
+      "Character reference sheets",
+      "Pitch package outline",
+      "Production planning checklist",
+    ],
+    notes: "The Banished should function as a living universe, not a loose folder of ideas. The portal page gives employees one place to understand what exists, what is approved, and what is still in development.",
+  },
+  colorblind: {
+    label: "Film",
+    title: "Colorblind",
+    summary: "A film project about a successful advertising creative director whose identity and career are disrupted when he realizes he can no longer perceive color.",
+    stage: "Script and packaging",
+    owner: "Film Development",
+    priority: "Active",
+    requirements: [
+      "Refine story tone between workplace pressure, identity shift, and visual subjectivity.",
+      "Build visual references that communicate color perception without becoming gimmicky.",
+      "Prepare casting research for lead, agency team, and key personal relationships.",
+      "Collect market comps and positioning notes for pitch conversations.",
+    ],
+    deliverables: [
+      "Updated script notes",
+      "Visual treatment references",
+      "Casting research shortlist",
+      "Pitch positioning memo",
+    ],
+    notes: "The project depends on precision: the visual concept has to support character and theme. Internal work should keep creative ambition aligned with production feasibility.",
+  },
+  incompatibility: {
+    label: "Film",
+    title: "Incompatibility",
+    summary: "A dark romantic comedy about emotional mismatch, control, obsession, and the everyday absurdity of trying to make an impossible relationship work.",
+    stage: "Tone and character development",
+    owner: "Film Development",
+    priority: "Active",
+    requirements: [
+      "Clarify the emotional rules of both leads so conflict feels intentional, not random.",
+      "Balance dark comedy with empathy and avoid flattening either character into a trope.",
+      "Identify key set pieces, recurring motifs, and escalation points.",
+      "Build a concise pitch summary that makes the relationship engine clear quickly.",
+    ],
+    deliverables: [
+      "Character arc notes",
+      "Tone references",
+      "Set-piece list",
+      "Pitch summary draft",
+    ],
+    notes: "This project needs clean tonal control. The portal page should help anyone joining the project understand the premise, the comic engine, and what still needs creative decisions.",
+  },
+  "four-horsemen": {
+    label: "Comics / IP",
+    title: "Four Horsemen of the Apocalypse",
+    summary: "A supernatural ensemble property about ordinary college students who receive mythic Horsemen powers and are pulled into escalating chaos.",
+    stage: "IP architecture",
+    owner: "Comics / Franchise Development",
+    priority: "Development",
+    requirements: [
+      "Define the mythology rules for each Horseman power and its personal cost.",
+      "Map the ensemble relationships, conflict loops, and season or issue arcs.",
+      "Create visual standards for powers, symbols, settings, and character silhouettes.",
+      "Identify which story elements are comics-first and which could support adaptation.",
+    ],
+    deliverables: [
+      "Mythology rulebook",
+      "Issue or episode arc map",
+      "Character and power sheets",
+      "Adaptation opportunity notes",
+    ],
+    notes: "The project has franchise potential, so internal documentation should protect consistency early: rules, visuals, and character logic need to be easy to reuse.",
+  },
+};
+
 const roleSlugs = {
   General: "general",
   Admin: "admin",
@@ -478,16 +601,52 @@ function currentMonthlyCreditTotal() {
   return currentMonthlyChallenges().reduce((total, challenge) => total + Number(challenge.credits || 0), 0);
 }
 
+function challengeLevelFromCredits(credits) {
+  if (credits >= 150) {
+    return "Level 5 / Producer";
+  }
+
+  if (credits >= 100) {
+    return "Level 4 / Lead";
+  }
+
+  if (credits >= 50) {
+    return "Level 3 / Specialist";
+  }
+
+  if (credits >= 20) {
+    return "Level 2 / Builder";
+  }
+
+  return "Level 1 / Scout";
+}
+
 function renderMonthlyChallenge() {
   const challenges = currentMonthlyChallenges();
   const month = monthNames[new Date().getMonth()];
+  const profile = currentProfile();
+  const approvedCredits = Number(profile?.bonusCredits || 0);
+  const pool = currentMonthlyCreditTotal();
+  const progress = pool ? Math.min(100, Math.round((approvedCredits / pool) * 100)) : 0;
 
   if (challengeMonth) {
     challengeMonth.textContent = month;
   }
 
   if (challengeCredits) {
-    challengeCredits.textContent = `+${currentMonthlyCreditTotal()}`;
+    challengeCredits.textContent = `+${pool}`;
+  }
+
+  if (challengeLevel) {
+    challengeLevel.textContent = challengeLevelFromCredits(approvedCredits);
+  }
+
+  if (challengePlayerCredits) {
+    challengePlayerCredits.textContent = approvedCredits;
+  }
+
+  if (challengeProgress) {
+    challengeProgress.style.width = `${progress}%`;
   }
 
   if (!challengeList) {
@@ -505,7 +664,9 @@ function renderMonthlyChallenge() {
     const title = document.createElement("strong");
     const summary = document.createElement("small");
     const credits = document.createElement("em");
+    const action = document.createElement("span");
     const detail = document.createElement("div");
+    const difficulty = challenge.credits >= 15 ? "Boss mission" : challenge.credits >= 12 ? "Advanced quest" : "Core quest";
 
     card.className = "challenge-card";
     button.type = "button";
@@ -514,11 +675,13 @@ function renderMonthlyChallenge() {
     icon.className = "challenge-icon";
     icon.textContent = challenge.icon || String(index + 1).padStart(2, "0");
     content.className = "challenge-card-copy";
-    meta.textContent = `${challenge.category} / ${month}`;
+    meta.textContent = `${difficulty} / ${challenge.category}`;
     title.textContent = challenge.title;
     summary.textContent = challenge.summary;
     credits.className = "challenge-credit-pill";
-    credits.textContent = `+${challenge.credits} credits`;
+    credits.textContent = `Reward +${challenge.credits} / $${challenge.credits}`;
+    action.className = "challenge-action";
+    action.textContent = "Open mission";
     detail.className = "challenge-card-detail";
     detail.hidden = true;
 
@@ -541,7 +704,7 @@ function renderMonthlyChallenge() {
     detail.append(detailTitle, detailText, detailList);
 
     content.append(meta, title, summary);
-    button.append(icon, content, credits);
+    button.append(icon, content, credits, action);
     card.append(button, detail);
     challengeList.append(card);
 
@@ -687,6 +850,10 @@ function showSection(sectionId) {
   const profile = currentProfile();
   const nextSection = sectionId === "admin" && !profile?.admin ? "overview" : sectionId;
   const target = document.querySelector(`[data-section="${nextSection}"]`);
+  const navSection = {
+    "project-detail": "projects",
+    "bonus-detail": "bonuses",
+  }[nextSection] || nextSection;
 
   if (!target) {
     return;
@@ -697,7 +864,7 @@ function showSection(sectionId) {
   });
 
   navLinks.forEach((link) => {
-    link.classList.toggle("active", link.dataset.sectionLink === nextSection);
+    link.classList.toggle("active", link.dataset.sectionLink === navSection);
   });
 
   if (nextSection === "documents") {
@@ -786,6 +953,107 @@ function appendTextBlock(parent, text) {
     });
 }
 
+function renderTextList(target, items) {
+  if (!target) {
+    return;
+  }
+
+  target.replaceChildren();
+  items.forEach((text) => {
+    const item = document.createElement("li");
+    item.textContent = text;
+    target.append(item);
+  });
+}
+
+function openProjectDetail(project) {
+  if (!project) {
+    return;
+  }
+
+  if (projectDetailLabel) {
+    projectDetailLabel.textContent = project.label || "Project";
+  }
+
+  if (projectDetailTitle) {
+    projectDetailTitle.textContent = project.title;
+  }
+
+  if (projectDetailSummary) {
+    projectDetailSummary.textContent = project.summary;
+  }
+
+  if (projectDetailStage) {
+    projectDetailStage.textContent = project.stage || "Planning";
+  }
+
+  if (projectDetailOwner) {
+    projectDetailOwner.textContent = project.owner || "Project owner TBD";
+  }
+
+  if (projectDetailPriority) {
+    projectDetailPriority.textContent = project.priority || "Normal";
+  }
+
+  renderTextList(projectDetailRequirements, project.requirements || []);
+  renderTextList(projectDetailDeliverables, project.deliverables || []);
+
+  if (projectDetailNotes) {
+    projectDetailNotes.textContent = project.notes || "No internal notes have been added yet.";
+  }
+
+  showSection("project-detail");
+
+  if (pageTitle) {
+    pageTitle.textContent = project.title;
+  }
+
+  history.replaceState(null, "", "#project-detail");
+}
+
+function projectFromContentItem(item) {
+  const bodyLines = String(item.body || "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  return {
+    label: item.label || "Project",
+    title: item.title,
+    summary: item.summary,
+    stage: "Admin-added project",
+    owner: "Assigned by admin",
+    priority: "Review",
+    requirements: bodyLines.length ? bodyLines : ["Review the project brief and confirm what is required next."],
+    deliverables: ["Confirm owner", "Confirm next milestone", "Add supporting documents or links"],
+    notes: "This project was added manually by an admin. Use the details above as the current internal brief.",
+  };
+}
+
+function openBonusDetail(documentId) {
+  const source = document.getElementById(documentId);
+
+  if (!source || !bonusDetailContent) {
+    return;
+  }
+
+  const detail = source.cloneNode(true);
+  const heading = detail.querySelector("h3");
+  const title = heading?.textContent || "Bonus document";
+
+  detail.hidden = false;
+  detail.removeAttribute("id");
+  heading?.setAttribute("id", "bonus-detail-title");
+  bonusDetailContent.replaceChildren(detail);
+  showSection("bonus-detail");
+
+  if (pageTitle) {
+    pageTitle.textContent = title;
+  }
+
+  history.replaceState(null, "", "#bonus-detail");
+}
+
 function createPublishedCard(item) {
   const card = document.createElement("article");
   const header = document.createElement("div");
@@ -821,7 +1089,6 @@ function createProjectCard(item) {
   const label = document.createElement("span");
   const title = document.createElement("h3");
   const summary = document.createElement("p");
-  const detail = document.createElement("div");
 
   card.className = "project-card";
   button.type = "button";
@@ -829,23 +1096,11 @@ function createProjectCard(item) {
   label.textContent = item.label || "Project";
   title.textContent = item.title;
   summary.textContent = item.summary;
-  detail.className = "project-popover";
-  detail.hidden = true;
-  appendTextBlock(detail, item.body);
   button.append(label, title, summary);
-  card.append(button, detail);
+  card.append(button);
 
   button.addEventListener("click", () => {
-    const isOpen = !detail.hidden;
-    document.querySelectorAll(".project-card.open").forEach((project) => {
-      project.classList.remove("open");
-      project.querySelector(".project-popover").hidden = true;
-    });
-
-    if (!isOpen) {
-      card.classList.add("open");
-      detail.hidden = false;
-    }
+    openProjectDetail(projectFromContentItem(item));
   });
 
   return card;
@@ -1560,44 +1815,23 @@ document.querySelectorAll("[data-announcement-toggle]").forEach((button) => {
   });
 });
 
-document.querySelectorAll("[data-policy-toggle]").forEach((button) => {
+document.querySelectorAll("[data-bonus-page]").forEach((button) => {
   button.addEventListener("click", () => {
-    const documentId = button.dataset.policyToggle;
-    const policy = document.getElementById(documentId);
-
-    if (!policy) {
-      return;
-    }
-
-    policy.hidden = !policy.hidden;
-    button.classList.toggle("open", !policy.hidden);
+    openBonusDetail(button.dataset.bonusPage);
   });
 });
 
-document.querySelectorAll("[data-project-toggle]").forEach((button) => {
+document.querySelectorAll("[data-project-page]").forEach((button) => {
   button.addEventListener("click", () => {
-    const target = document.getElementById(button.dataset.projectToggle);
-    const card = button.closest(".project-card");
+    openProjectDetail(projectPages[button.dataset.projectPage]);
+  });
+});
 
-    if (!target || !card) {
-      return;
-    }
-
-    const isOpen = !target.hidden;
-
-    document.querySelectorAll(".project-card.open").forEach((project) => {
-      project.classList.remove("open");
-      const detail = project.querySelector(".project-popover");
-
-      if (detail) {
-        detail.hidden = true;
-      }
-    });
-
-    if (!isOpen) {
-      card.classList.add("open");
-      target.hidden = false;
-    }
+document.querySelectorAll("[data-return-section]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const sectionId = button.dataset.returnSection || "overview";
+    showSection(sectionId);
+    history.replaceState(null, "", `#${sectionId}`);
   });
 });
 

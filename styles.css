@@ -767,10 +767,6 @@ h3 {
   position: relative;
 }
 
-.project-card.open {
-  z-index: 45;
-}
-
 .project-button {
   display: grid;
   align-content: start;
@@ -788,8 +784,7 @@ h3 {
   cursor: pointer;
 }
 
-.project-button:hover,
-.project-card.open .project-button {
+.project-button:hover {
   border-color: rgba(203, 169, 92, 0.52);
   background:
     linear-gradient(90deg, rgba(231, 55, 47, 0.12), transparent 48%),
@@ -815,40 +810,147 @@ h3 {
   line-height: 1.62;
 }
 
-.project-popover {
-  position: absolute;
-  top: calc(100% + 12px);
-  right: 12px;
-  left: 12px;
-  z-index: 60;
-  max-height: min(440px, 70vh);
-  overflow: auto;
-  padding: 20px;
-  border: 1px solid rgba(203, 169, 92, 0.52);
-  background: rgba(8, 8, 9, 0.9);
-  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.58);
-  backdrop-filter: blur(14px);
+.detail-page {
+  max-width: 1180px;
 }
 
-.project-popover h4 {
-  margin-bottom: 10px;
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  margin-bottom: 16px;
+  padding: 0 14px;
+  border: 1px solid rgba(203, 169, 92, 0.42);
+  background: rgba(203, 169, 92, 0.08);
   color: var(--gold);
-  font-size: 12px;
+  cursor: pointer;
+  font-size: 11px;
   font-weight: 950;
   text-transform: uppercase;
 }
 
-.project-popover p {
+.back-button:hover {
+  border-color: rgba(203, 169, 92, 0.68);
+  background: rgba(203, 169, 92, 0.16);
+  color: var(--ink-strong);
+}
+
+.project-detail-page,
+.bonus-detail-shell {
+  border: 1px solid var(--line);
+  background: rgba(17, 17, 19, 0.96);
+  box-shadow: var(--shadow);
+}
+
+.detail-hero {
+  padding: 38px;
+  border-bottom: 1px solid var(--line);
+  background:
+    linear-gradient(90deg, rgba(231, 55, 47, 0.2), transparent 54%),
+    #050506;
+}
+
+.detail-hero h2 {
+  max-width: 850px;
+  margin-bottom: 18px;
+  font-size: 56px;
+  line-height: 0.98;
+}
+
+.detail-hero p:not(.eyebrow) {
+  max-width: 900px;
   margin: 0;
-  color: rgba(247, 243, 234, 0.72);
-  font-size: 14px;
-  font-weight: 750;
+  color: rgba(247, 243, 234, 0.68);
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.project-status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--line);
+  border-right: 0;
+  border-left: 0;
+  background: var(--line);
+}
+
+.project-status-grid article {
+  padding: 22px;
+  background: rgba(7, 7, 8, 0.9);
+}
+
+.project-status-grid span,
+.project-status-grid strong {
+  display: block;
+}
+
+.project-status-grid span {
+  margin-bottom: 10px;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.project-status-grid strong {
+  color: var(--ink-strong);
+  font-size: 17px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.project-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  padding: 26px;
+}
+
+.project-detail-grid section {
+  min-height: 260px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(247, 243, 234, 0.045), transparent 70%),
+    rgba(7, 7, 8, 0.76);
+}
+
+.project-detail-grid h3 {
+  margin-bottom: 16px;
+  color: var(--ink-strong);
+  font-size: 16px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.project-detail-grid ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.project-detail-grid li,
+.project-detail-grid p {
+  color: rgba(247, 243, 234, 0.64);
   line-height: 1.62;
 }
 
-.challenge-month-panel {
+.project-detail-grid p {
+  margin: 0;
+}
+
+.bonus-detail-shell .policy-document {
+  margin-top: 0;
+  border: 0;
+  box-shadow: none;
+}
+
+.challenge-game-panel {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px;
+  grid-template-columns: minmax(0, 0.9fr) minmax(260px, 1.1fr) minmax(0, 0.8fr);
   gap: 1px;
   margin-bottom: 14px;
   border: 1px solid var(--line);
@@ -856,57 +958,66 @@ h3 {
   box-shadow: var(--shadow);
 }
 
-.challenge-month-panel > div,
-.challenge-month-panel aside {
+.challenge-player-card,
+.challenge-reward-card {
+  padding: 28px;
   background:
-    linear-gradient(135deg, rgba(231, 55, 47, 0.12), transparent 56%),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.13), transparent 54%),
     rgba(17, 17, 19, 0.96);
 }
 
-.challenge-month-panel > div {
-  padding: 30px;
+.challenge-player-card span,
+.challenge-reward-card span,
+.challenge-player-card strong,
+.challenge-reward-card strong,
+.challenge-player-card p,
+.challenge-reward-card small {
+  display: block;
 }
 
-.challenge-month-panel h3 {
-  margin-bottom: 10px;
-  font-size: 42px;
-  font-weight: 950;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.challenge-month-panel p {
-  max-width: 720px;
-  margin: 0;
-  color: rgba(247, 243, 234, 0.64);
-  font-size: 17px;
-  font-weight: 780;
-  line-height: 1.56;
-}
-
-.challenge-month-panel aside {
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  padding: 28px;
-  text-align: center;
-}
-
-.challenge-month-panel aside span {
+.challenge-player-card span,
+.challenge-reward-card span {
   color: var(--gold);
-  font-size: 62px;
-  font-weight: 950;
-  line-height: 0.92;
-}
-
-.challenge-month-panel aside small {
-  max-width: 150px;
-  margin-top: 12px;
-  color: rgba(247, 243, 234, 0.58);
   font-size: 11px;
   font-weight: 950;
-  line-height: 1.35;
   text-transform: uppercase;
+}
+
+.challenge-player-card strong,
+.challenge-reward-card strong {
+  margin: 12px 0 10px;
+  color: var(--ink-strong);
+  font-size: 36px;
+  font-weight: 950;
+  line-height: 0.98;
+  text-transform: uppercase;
+}
+
+.challenge-reward-card strong {
+  color: var(--gold);
+  font-size: 62px;
+}
+
+.challenge-player-card p,
+.challenge-reward-card small {
+  margin: 0;
+  color: rgba(247, 243, 234, 0.62);
+  line-height: 1.52;
+}
+
+.challenge-progress {
+  height: 8px;
+  margin-top: 18px;
+  border: 1px solid rgba(203, 169, 92, 0.38);
+  background: #050506;
+  overflow: hidden;
+}
+
+.challenge-progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
 }
 
 .challenge-card-grid {
@@ -924,6 +1035,7 @@ h3 {
 }
 
 .challenge-card-button {
+  position: relative;
   display: grid;
   grid-template-columns: 58px minmax(0, 1fr);
   gap: 16px;
@@ -938,6 +1050,16 @@ h3 {
   text-align: left;
   box-shadow: var(--shadow);
   cursor: pointer;
+}
+
+.quest-board .challenge-card-button::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  content: "";
 }
 
 .challenge-card-button:hover,
@@ -1006,17 +1128,23 @@ h3 {
   text-transform: uppercase;
 }
 
+.challenge-action {
+  grid-column: 1 / -1;
+  width: fit-content;
+  margin-top: -4px;
+  color: rgba(247, 243, 234, 0.72);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
 .challenge-card-detail {
-  position: absolute;
-  top: calc(100% + 12px);
-  right: 10px;
-  left: 10px;
-  z-index: 55;
+  margin-top: 1px;
   padding: 20px;
   border: 1px solid rgba(203, 169, 92, 0.52);
+  border-top: 0;
   background: rgba(8, 8, 9, 0.92);
   box-shadow: 0 22px 54px rgba(0, 0, 0, 0.58);
-  backdrop-filter: blur(14px);
 }
 
 .challenge-card-detail h4 {
@@ -2109,7 +2237,9 @@ h3 {
   .holiday-list,
   .holiday-list.compact,
   .project-list,
-  .challenge-month-panel,
+  .project-status-grid,
+  .project-detail-grid,
+  .challenge-game-panel,
   .challenge-card-grid,
   .internship-grid,
   .internship-step-grid,
@@ -2165,7 +2295,9 @@ h3 {
   .project-button,
   .challenge-card-button,
   .section-admin-tools,
-  .challenge-month-panel > div,
+  .detail-hero,
+  .challenge-player-card,
+  .challenge-reward-card,
   .policy-hero,
   .request-form,
   .profile-form,

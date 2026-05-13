@@ -258,81 +258,82 @@
 
           <div class="project-list" data-project-list>
             <article class="project-card">
-              <button class="project-button" type="button" data-project-toggle="project-ai-casting">
+              <button class="project-button" type="button" data-project-page="ai-casting">
                 <span>IT / Product</span>
                 <h3>AI Casting Platform</h3>
                 <p>Internal casting intelligence for film and television talent discovery.</p>
               </button>
-              <div class="project-popover" id="project-ai-casting" hidden>
-                <h4>Project detail</h4>
-                <p>
-                  A technology project focused on structured talent data, smarter matching, casting research, and
-                  production workflows. Internal work includes access systems, profile quality, search logic, and the
-                  operational tools that make casting decisions easier to review.
-                </p>
-              </div>
             </article>
             <article class="project-card">
-              <button class="project-button" type="button" data-project-toggle="project-banished">
+              <button class="project-button" type="button" data-project-page="the-banished">
                 <span>Film / Comics</span>
                 <h3>The Banished</h3>
                 <p>The core creative universe behind the company name.</p>
               </button>
-              <div class="project-popover" id="project-banished" hidden>
-                <h4>Project detail</h4>
-                <p>
-                  A dark fantasy story world centered on banished demons navigating a human world without magic while
-                  trying to restore balance. Internal work can include canon notes, character logic, visual references,
-                  production planning, and cross-format development.
-                </p>
-              </div>
             </article>
             <article class="project-card">
-              <button class="project-button" type="button" data-project-toggle="project-colorblind">
+              <button class="project-button" type="button" data-project-page="colorblind">
                 <span>Film</span>
                 <h3>Colorblind</h3>
                 <p>A screen project set inside the pressure and image logic of advertising.</p>
               </button>
-              <div class="project-popover" id="project-colorblind" hidden>
-                <h4>Project detail</h4>
-                <p>
-                  A film concept about a successful creative director whose career and identity are disrupted when he
-                  realizes he can no longer perceive color. Internal work may include script development, visual
-                  language, pitch assets, casting research, and production packaging.
-                </p>
-              </div>
             </article>
             <article class="project-card">
-              <button class="project-button" type="button" data-project-toggle="project-incompatibility">
+              <button class="project-button" type="button" data-project-page="incompatibility">
                 <span>Film</span>
                 <h3>Incompatibility</h3>
                 <p>A dark romantic comedy about emotional mismatch and control.</p>
               </button>
-              <div class="project-popover" id="project-incompatibility" hidden>
-                <h4>Project detail</h4>
-                <p>
-                  A relationship project built around a businessman who struggles to recognize emotions and a partner
-                  whose need for control turns intimacy into conflict. Internal work can include tone calibration,
-                  character arcs, market references, and pitch materials.
-                </p>
-              </div>
             </article>
             <article class="project-card">
-              <button class="project-button" type="button" data-project-toggle="project-four-horsemen">
+              <button class="project-button" type="button" data-project-page="four-horsemen">
                 <span>Comics / IP</span>
                 <h3>Four Horsemen of the Apocalypse</h3>
                 <p>A mythology-driven property with franchise and comics potential.</p>
               </button>
-              <div class="project-popover" id="project-four-horsemen" hidden>
-                <h4>Project detail</h4>
-                <p>
-                  A supernatural ensemble concept about ordinary college students who receive mythic Horsemen powers
-                  and are pulled into escalating chaos. Internal work can include issue planning, lore rules, character
-                  sheets, visual standards, and adaptation strategy.
-                </p>
-              </div>
             </article>
           </div>
+        </section>
+
+        <section class="portal-section detail-page" id="project-detail" data-section="project-detail" aria-labelledby="project-detail-title">
+          <button class="back-button" type="button" data-return-section="projects">Back to projects</button>
+          <article class="project-detail-page">
+            <header class="detail-hero">
+              <p class="eyebrow" data-project-detail-label>Project</p>
+              <h2 id="project-detail-title" data-project-detail-title>Project title</h2>
+              <p data-project-detail-summary></p>
+            </header>
+
+            <div class="project-status-grid">
+              <article>
+                <span>Stage</span>
+                <strong data-project-detail-stage></strong>
+              </article>
+              <article>
+                <span>Owner lane</span>
+                <strong data-project-detail-owner></strong>
+              </article>
+              <article>
+                <span>Priority</span>
+                <strong data-project-detail-priority></strong>
+              </article>
+            </div>
+
+            <div class="project-detail-grid">
+              <section>
+                <h3>What is required</h3>
+                <ul data-project-detail-requirements></ul>
+              </section>
+              <section>
+                <h3>Next deliverables</h3>
+                <ul data-project-detail-deliverables></ul>
+              </section>
+              <section>
+                <h3>Internal notes</h3>
+                <p data-project-detail-notes></p>
+              </section>
+            </div>
+          </article>
         </section>
 
         <section class="portal-section" id="bonuses" data-section="bonuses" aria-labelledby="bonuses-title">
@@ -343,7 +344,7 @@
             </div>
           </div>
 
-          <button class="policy-card" type="button" data-policy-toggle="bonus-policy">
+          <button class="policy-card" type="button" data-bonus-page="bonus-policy">
             <span class="policy-number">01</span>
             <span>
               <strong>Discretionary Bonuses</strong>
@@ -351,7 +352,7 @@
             </span>
           </button>
 
-          <button class="policy-card" type="button" data-policy-toggle="challenge-bonus-policy">
+          <button class="policy-card" type="button" data-bonus-page="challenge-bonus-policy">
             <span class="policy-number">02</span>
             <span>
               <strong>Challenge Bonuses</strong>
@@ -359,7 +360,7 @@
             </span>
           </button>
 
-          <button class="policy-card" type="button" data-policy-toggle="portal-credit-policy">
+          <button class="policy-card" type="button" data-bonus-page="portal-credit-policy">
             <span class="policy-number">03</span>
             <span>
               <strong>Internal Portal Credits</strong>
@@ -563,27 +564,48 @@
           </article>
         </section>
 
+        <section class="portal-section detail-page" id="bonus-detail" data-section="bonus-detail" aria-labelledby="bonus-detail-title">
+          <button class="back-button" type="button" data-return-section="bonuses">Back to bonuses</button>
+          <div class="bonus-detail-shell" data-bonus-detail-content>
+            <article class="policy-document">
+              <header class="policy-hero">
+                <p class="eyebrow">Bonus document</p>
+                <h2 id="bonus-detail-title">Select a bonus document</h2>
+              </header>
+            </article>
+          </div>
+        </section>
+
         <section class="portal-section" id="monthly-challenge" data-section="monthly-challenge" aria-labelledby="monthly-challenge-title">
           <div class="section-heading">
             <div>
               <p class="eyebrow">Bonus opportunity</p>
-              <h2 id="monthly-challenge-title">Challenge of the Month</h2>
+              <h2 id="monthly-challenge-title">Mission Board</h2>
             </div>
           </div>
 
-          <div class="challenge-month-panel">
-            <div>
-              <p class="eyebrow">Current month</p>
-              <h3 data-challenge-month>Month</h3>
-              <p>Each challenge is worth at least 10 bonus credits. One bonus credit equals one US dollar.</p>
-            </div>
-            <aside>
-              <span data-challenge-credits>+0</span>
-              <small>total potential credits</small>
-            </aside>
+          <div class="challenge-game-panel">
+            <article class="challenge-player-card">
+              <span>Player level</span>
+              <strong data-challenge-level>Level 1</strong>
+              <p>Complete monthly missions, get manager approval, and convert credits into real bonus dollars.</p>
+            </article>
+            <article class="challenge-reward-card">
+              <span data-challenge-month>Month</span>
+              <strong data-challenge-credits>+0</strong>
+              <small>available reward pool</small>
+              <div class="challenge-progress" aria-label="Monthly reward progress">
+                <span data-challenge-progress></span>
+              </div>
+            </article>
+            <article class="challenge-player-card">
+              <span>Your credits</span>
+              <strong data-challenge-player-credits>0</strong>
+              <p>Approved balance in your profile. 1 credit = $1.</p>
+            </article>
           </div>
 
-          <div class="challenge-card-grid" data-challenge-list></div>
+          <div class="challenge-card-grid quest-board" data-challenge-list></div>
         </section>
 
         <section class="portal-section" id="benefits" data-section="benefits" aria-labelledby="benefits-title">
