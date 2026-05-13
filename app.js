@@ -60,10 +60,16 @@ const titles = {
   overview: "The Banished employee hub",
   announcements: "Company announcements",
   documents: "Company documents",
+  directory: "People directory",
+  projects: "Current projects",
   bonuses: "Bonus information",
+  benefits: "Benefits and support",
   holidays: "Holidays and days off",
+  culture: "Culture and operating principles",
   training: "Training resources",
   internship: "Internship resources",
+  security: "Security center",
+  feedback: "Feedback and ideas",
   "it-requests": "IT request center",
   "hr-requests": "HR request center",
   admin: "Admin console",
@@ -635,7 +641,9 @@ document.querySelectorAll("[data-policy-toggle]").forEach((button) => {
   });
 });
 
-document.querySelectorAll(".holiday-list article").forEach((card) => {
+const holidayCards = document.querySelectorAll(".holiday-list article");
+
+holidayCards.forEach((card) => {
   const title = card.querySelector("span")?.textContent?.trim();
   const description = holidayDescriptions[title] || "A scheduled company observance or approved day away from regular work.";
   const detail = document.createElement("p");
@@ -651,9 +659,17 @@ document.querySelectorAll(".holiday-list article").forEach((card) => {
   const toggleHoliday = () => {
     const isOpen = !detail.hidden;
 
-    detail.hidden = isOpen;
-    card.classList.toggle("open", !isOpen);
-    card.setAttribute("aria-expanded", String(!isOpen));
+    holidayCards.forEach((holidayCard) => {
+      holidayCard.classList.remove("open");
+      holidayCard.setAttribute("aria-expanded", "false");
+      holidayCard.querySelector(".holiday-popover").hidden = true;
+    });
+
+    if (!isOpen) {
+      detail.hidden = false;
+      card.classList.add("open");
+      card.setAttribute("aria-expanded", "true");
+    }
   };
 
   card.addEventListener("click", toggleHoliday);
@@ -661,6 +677,31 @@ document.querySelectorAll(".holiday-list article").forEach((card) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       toggleHoliday();
+    }
+  });
+});
+
+document.querySelectorAll("[data-internship-toggle]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const target = document.getElementById(button.dataset.internshipToggle);
+
+    if (!target) {
+      return;
+    }
+
+    const isOpen = !target.hidden;
+
+    document.querySelectorAll("[data-internship-toggle]").forEach((item) => {
+      item.classList.remove("open");
+    });
+
+    document.querySelectorAll(".internship-detail").forEach((detail) => {
+      detail.hidden = true;
+    });
+
+    if (!isOpen) {
+      target.hidden = false;
+      button.classList.add("open");
     }
   });
 });

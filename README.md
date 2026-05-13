@@ -8,11 +8,12 @@ Prototype internal portal for The Banished, built with dependency-free frontend 
 - Sign-in screen for invited employees
 - Clickable announcement details
 - Role-based document library preview for General, Admin, and Project Manager
+- Directory, projects, benefits, culture, security, and feedback sections
 - Bonuses section
 - Holidays section based on `Holiday_Guide.docx`
 - Clickable holiday meaning popovers
 - Training placeholder
-- Internship section for interns and early talent
+- Expandable internship section for interns and early talent
 - IT request form that sends an email to `support@the-banished.com`
 - HR request form that sends an email to `hr@the-banished.com`
 - Admin console with invitations, user roles, admin permissions, and local request log
