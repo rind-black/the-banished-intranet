@@ -747,6 +747,109 @@ h3 {
   line-height: 1.62;
 }
 
+.benefit-key {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1px;
+  margin: 26px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+
+.benefit-key span {
+  min-height: 48px;
+  padding: 15px 12px;
+  background: rgba(7, 7, 8, 0.86);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 950;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.benefit-stack {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.benefit-stack.compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.benefit-stack article {
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: rgba(247, 243, 234, 0.045);
+}
+
+.benefit-stack strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink-strong);
+  font-size: 13px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.culture-values {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1px;
+  margin: 26px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+
+.culture-values article {
+  min-height: 160px;
+  padding: 18px;
+  background: rgba(7, 7, 8, 0.9);
+}
+
+.culture-values span,
+.culture-values strong,
+.culture-values small {
+  display: block;
+}
+
+.culture-values span {
+  margin-bottom: 22px;
+  color: var(--accent);
+  font-size: 30px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.culture-values strong {
+  margin-bottom: 8px;
+  color: var(--ink-strong);
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.culture-values small {
+  color: rgba(247, 243, 234, 0.58);
+  line-height: 1.45;
+}
+
+.anti-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.anti-values span {
+  padding: 10px 12px;
+  border: 1px solid rgba(231, 55, 47, 0.38);
+  background: rgba(231, 55, 47, 0.08);
+  color: #ffb7b2;
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
 .policy-card {
   display: grid;
   grid-template-columns: 64px minmax(0, 1fr);
@@ -1311,6 +1414,10 @@ h3 {
   .policy-grid,
   .company-grid,
   .company-grid.wide,
+  .benefit-key,
+  .benefit-stack,
+  .benefit-stack.compact,
+  .culture-values,
   .role-selector,
   .holiday-list,
   .holiday-list.compact,
@@ -1352,6 +1459,8 @@ h3 {
   .intro-panel,
   .purpose-card,
   .company-card,
+  .benefit-stack article,
+  .culture-values article,
   .announcement,
   .policy-card,
   .internship-card,

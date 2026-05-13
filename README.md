@@ -8,7 +8,9 @@ Prototype internal portal for The Banished, built with dependency-free frontend 
 - Sign-in screen for invited employees
 - Clickable announcement details
 - Role-based document library preview for General, Admin, and Project Manager
-- Directory, projects, benefits, culture, security, and feedback sections
+- Film, comics, and IT projects section
+- Benefits section based on `Benefits.docx`
+- Culture section based on `The Banished Culture.pptx`
 - Bonuses section
 - Holidays section based on `Holiday_Guide.docx`
 - Clickable holiday meaning popovers
