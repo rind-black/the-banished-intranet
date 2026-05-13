@@ -1,6 +1,6 @@
 # The Banished Internal Portal
 
-Prototype internal portal for The Banished, built as a dependency-free static site so it can be reviewed quickly and later moved into the main website stack.
+Prototype internal portal for The Banished, built with dependency-free frontend assets and a small local Node server for email delivery testing.
 
 ## What is included
 
@@ -11,21 +11,42 @@ Prototype internal portal for The Banished, built as a dependency-free static si
 - Bonuses section
 - Holidays section based on `Holiday_Guide.docx`
 - Training placeholder
-- IT request form that opens an email to `support@the-banished.com`
-- HR request form that opens an email to `hr@the-banished.com`
+- IT request form that sends an email to `support@the-banished.com`
+- HR request form that sends an email to `hr@the-banished.com`
 - Admin console with invitations, user roles, admin permissions, and local request log
 - Employee profile settings
 - Responsive desktop and mobile layout
 
 ## Open locally
 
-Open `index.html` in a browser, or run a small static server from this folder:
+Run the local portal server from this folder:
 
 ```bash
-python3 -m http.server 4173
+node server.js
 ```
 
-Then visit `http://localhost:4173`.
+Then visit `http://127.0.0.1:4173`.
+
+The portal needs a mail provider before invitations and request forms can send real email. Configure either Resend:
+
+```bash
+RESEND_API_KEY=your_key \
+PORTAL_MAIL_FROM=support@the-banished.com \
+node server.js
+```
+
+Or SMTP:
+
+```bash
+SMTP_HOST=smtp.example.com \
+SMTP_PORT=587 \
+SMTP_USER=support@the-banished.com \
+SMTP_PASS=your_password \
+SMTP_FROM=support@the-banished.com \
+node server.js
+```
+
+If the mail provider is not configured, the portal will show an error instead of saying that an email was sent.
 
 ## Test access
 

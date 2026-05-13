@@ -363,6 +363,47 @@ function companyEmailFromPrefix(prefix) {
   return `${cleanPrefix}${companyEmailDomain}`;
 }
 
+function setRequestStatus(element, message, state = "success") {
+  if (!element) {
+    return;
+  }
+
+  element.hidden = false;
+  element.classList.toggle("error", state === "error");
+  element.classList.toggle("pending", state === "pending");
+  element.textContent = message;
+}
+
+async function postPortalEmail(endpoint, payload) {
+  let response;
+
+  try {
+    response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new Error("Email service is not running. Start the portal backend before sending email.");
+  }
+
+  let data = null;
+
+  try {
+    data = await response.json();
+  } catch {
+    data = null;
+  }
+
+  if (!response.ok || !data?.ok) {
+    throw new Error(data?.error || "Email service did not confirm delivery.");
+  }
+
+  return data;
+}
+
 navLinks.forEach((link) => {
   link.addEventListener("click", (event) => {
     event.preventDefault();
@@ -456,7 +497,7 @@ roleButtons.forEach((button) => {
   });
 });
 
-inviteForm?.addEventListener("submit", (event) => {
+inviteForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const formData = new FormData(inviteForm);
@@ -465,15 +506,14 @@ inviteForm?.addEventListener("submit", (event) => {
   const isAdmin = formData.get("inviteAdmin") === "on" || role === "Admin";
 
   if (!email.endsWith(companyEmailDomain) || email === companyEmailDomain) {
-    inviteStatus.hidden = false;
-    inviteStatus.classList.add("error");
-    inviteStatus.textContent = "Invitation failed. Enter a valid The Banished company email.";
+    setRequestStatus(inviteStatus, "Invitation failed. Enter a valid The Banished company email.", "error");
     return;
   }
 
   const users = getUsers();
+  const temporaryPassword = users[email]?.password || inviteTempPassword;
   users[email] = {
-    password: users[email]?.password || inviteTempPassword,
+    password: temporaryPassword,
     name: users[email]?.name || createDisplayName(email),
     role,
     department: users[email]?.department || "",
@@ -481,31 +521,24 @@ inviteForm?.addEventListener("submit", (event) => {
     admin: isAdmin,
     status: "Invited",
   };
-  const subject = "Your The Banished Internal Portal invitation";
-  const body = [
-    "You have been invited to The Banished Internal Portal.",
-    "",
-    `Company email: ${email}`,
-    `Temporary password: ${users[email].password}`,
-    `Assigned role: ${role}`,
-    "",
-    "Please sign in and update your profile after first access.",
-  ].join("\n");
-  const mailto = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-  setUsers(users);
-  inviteStatus.hidden = false;
-  inviteStatus.classList.remove("error");
-  inviteStatus.textContent = `Invitation email sent to ${email}.`;
-  inviteForm.reset();
-  renderUsers();
+  setRequestStatus(inviteStatus, `Sending invitation to ${email}...`, "pending");
 
   try {
-    window.location.assign(mailto);
-  } catch {
-    inviteStatus.hidden = false;
-    inviteStatus.classList.add("error");
-    inviteStatus.textContent = `Invitation failed. Email could not be sent to ${email}.`;
+    await postPortalEmail("/api/invitations", {
+      email,
+      role,
+      isAdmin,
+      temporaryPassword,
+      invitedBy: currentProfile()?.email || "",
+    });
+
+    setUsers(users);
+    setRequestStatus(inviteStatus, `Invitation email sent to ${email}.`);
+    inviteForm.reset();
+    renderUsers();
+  } catch (error) {
+    setRequestStatus(inviteStatus, `Invitation failed. ${error.message}`, "error");
   }
 });
 
@@ -561,7 +594,7 @@ document.querySelectorAll("[data-policy-toggle]").forEach((button) => {
 });
 
 document.querySelectorAll("[data-request-form]").forEach((form) => {
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const formData = new FormData(form);
@@ -590,24 +623,39 @@ document.querySelectorAll("[data-request-form]").forEach((form) => {
       hour: "numeric",
       minute: "2-digit",
     });
-    const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const from = profile?.email || "";
 
-    requests.push({
-      createdAt,
-      from: profile?.email || "Unknown",
-      type,
-      recipient,
-      label,
-    });
-    setRequests(requests);
-    renderRequests();
+    setRequestStatus(status, `Sending ${label.toLowerCase()} to ${recipient}...`, "pending");
 
-    if (status) {
-      status.hidden = false;
-      status.textContent = `Request logged. Corporate mail draft prepared for ${recipient}.`;
+    try {
+      await postPortalEmail("/api/requests", {
+        recipient,
+        label,
+        subject,
+        body,
+        from,
+        request: {
+          type,
+          priority,
+          name,
+          details,
+        },
+      });
+
+      requests.push({
+        createdAt,
+        from: from || "Unknown",
+        type,
+        recipient,
+        label,
+      });
+      setRequests(requests);
+      renderRequests();
+      setRequestStatus(status, `${label} email sent to ${recipient}.`);
+      form.reset();
+    } catch (error) {
+      setRequestStatus(status, `${label} failed. ${error.message}`, "error");
     }
-
-    window.location.assign(mailto);
   });
 });
 
