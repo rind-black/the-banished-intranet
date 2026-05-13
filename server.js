@@ -280,7 +280,8 @@ async function sendEmail(message) {
     return;
   }
 
-  throw new HttpError(503, "Email service is not configured. Set RESEND_API_KEY or SMTP_HOST, SMTP_USER, SMTP_PASS, and SMTP_FROM.");
+  console.warn("Email service is not configured. Set RESEND_API_KEY or SMTP_HOST, SMTP_USER, SMTP_PASS, and SMTP_FROM.");
+  throw new HttpError(503, "Email service is not configured yet. Please contact the portal administrator.");
 }
 
 async function handleInvitation(request, response) {

@@ -50,6 +50,8 @@ node server.js
 
 If the mail provider is not configured, the portal will show an error instead of saying that an email was sent.
 
+For local testing, the message `Email service is not configured yet` means the portal backend is running correctly, but no mail provider credentials have been supplied.
+
 ## Test access
 
 - Company email field: `support`
