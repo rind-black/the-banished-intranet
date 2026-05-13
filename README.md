@@ -12,6 +12,7 @@ Prototype internal portal for The Banished, built as a dependency-free static si
 - Training placeholder
 - IT request form that opens an email to `support@the-banished.com`
 - HR request form that opens an email to `hr@the-banished.com`
+- Admin console with invitations, user roles, admin permissions, and local request log
 - Employee profile settings
 - Responsive desktop and mobile layout
 
@@ -27,7 +28,7 @@ Then visit `http://localhost:4173`.
 
 ## Test access
 
-- Email: `admin@the-banished.com`
+- Email: `support@the-banished.com`
 - Password: `BanishedAdmin12!`
 
 ## Suggested next steps

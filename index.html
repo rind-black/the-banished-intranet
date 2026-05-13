@@ -65,6 +65,10 @@
             <span aria-hidden="true">07</span>
             HR Requests
           </a>
+          <a class="nav-link" href="#admin" data-section-link="admin" data-admin-only hidden>
+            <span aria-hidden="true">08</span>
+            Admin
+          </a>
         </nav>
 
         <div class="sidebar-note">
@@ -160,7 +164,7 @@
           </div>
 
           <div class="role-selector" aria-label="Document role selector">
-            <button class="role-button active" type="button" data-role-button="general">General</button>
+            <button class="role-button" type="button" data-role-button="general">General</button>
             <button class="role-button" type="button" data-role-button="admin">Admin</button>
             <button class="role-button" type="button" data-role-button="project-manager">Project Manager</button>
             <button class="role-button" type="button" data-role-button="production">Production</button>
@@ -169,7 +173,11 @@
             <button class="role-button" type="button" data-role-button="hr">HR</button>
           </div>
 
-          <div class="document-list active" data-doc-role="general">
+          <div class="document-empty" data-doc-empty>
+            <p>Select a role to view available documents.</p>
+          </div>
+
+          <div class="document-list" data-doc-role="general">
             <a class="document" href="#">
               <span class="document-icon">PDF</span>
               <span>
@@ -466,6 +474,7 @@
                 <textarea name="details" rows="6" placeholder="Describe what you need help with"></textarea>
               </label>
               <button class="primary-button" type="submit">Send to IT</button>
+              <p class="request-status" data-request-status hidden></p>
             </form>
           </div>
         </section>
@@ -509,7 +518,89 @@
                 <textarea name="details" rows="6" placeholder="Describe what you need from HR"></textarea>
               </label>
               <button class="primary-button" type="submit">Send to HR</button>
+              <p class="request-status" data-request-status hidden></p>
             </form>
+          </div>
+        </section>
+
+        <section class="portal-section" id="admin" data-section="admin" data-admin-only hidden aria-labelledby="admin-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Administration</p>
+              <h2 id="admin-title">Admin Console</h2>
+            </div>
+          </div>
+
+          <div class="admin-grid">
+            <form class="admin-card" data-invite-form>
+              <div>
+                <p class="eyebrow">Invite</p>
+                <h3>Invite user</h3>
+              </div>
+              <label>
+                Company email
+                <input name="inviteEmail" type="text" inputmode="email" placeholder="name@the-banished.com" required />
+              </label>
+              <label>
+                Initial role
+                <select name="inviteRole">
+                  <option>General</option>
+                  <option>Project Manager</option>
+                  <option>Production</option>
+                  <option>Casting</option>
+                  <option>Finance</option>
+                  <option>HR</option>
+                  <option>Admin</option>
+                </select>
+              </label>
+              <label class="checkbox-row">
+                <input name="inviteAdmin" type="checkbox" />
+                Grant admin access
+              </label>
+              <button class="primary-button" type="submit">Send invitation</button>
+              <p class="request-status" data-invite-status hidden></p>
+            </form>
+
+            <div class="admin-card wide">
+              <div>
+                <p class="eyebrow">Users</p>
+                <h3>Directory and permissions</h3>
+              </div>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Role</th>
+                      <th>Admin</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody data-user-rows></tbody>
+                </table>
+              </div>
+              <button class="primary-button" type="button" data-save-users>Save permissions</button>
+            </div>
+
+            <div class="admin-card wide">
+              <div>
+                <p class="eyebrow">Requests</p>
+                <h3>Local request log</h3>
+              </div>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Created</th>
+                      <th>From</th>
+                      <th>Type</th>
+                      <th>Recipient</th>
+                    </tr>
+                  </thead>
+                  <tbody data-request-rows></tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </section>
 
