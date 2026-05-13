@@ -16,13 +16,12 @@ const profileInitials = document.querySelector("[data-profile-initials]");
 const profileBonusCredits = document.querySelector("[data-profile-bonus-credits]");
 const profileBonusPotential = document.querySelector("[data-profile-bonus-potential]");
 const challengeMonth = document.querySelector("[data-challenge-month]");
-const challengeCategory = document.querySelector("[data-challenge-category]");
-const challengeTitle = document.querySelector("[data-challenge-title]");
-const challengeSummary = document.querySelector("[data-challenge-summary]");
-const challengeDetails = document.querySelector("[data-challenge-details]");
 const challengeCredits = document.querySelector("[data-challenge-credits]");
+const challengeList = document.querySelector("[data-challenge-list]");
 const inviteForm = document.querySelector("[data-invite-form]");
 const inviteStatus = document.querySelector("[data-invite-status]");
+const createUserForm = document.querySelector("[data-create-user-form]");
+const createUserStatus = document.querySelector("[data-create-user-status]");
 const userRows = document.querySelector("[data-user-rows]");
 const requestRows = document.querySelector("[data-request-rows]");
 const saveUsersButton = document.querySelector("[data-save-users]");
@@ -155,90 +154,230 @@ const holidayDescriptions = {
 };
 
 const monthlyChallenges = [
-  {
-    title: "Make the Portal Smarter",
-    category: "Internal tools",
-    credits: 10,
-    summary: "Submit one practical improvement that makes the Internal Portal easier to use.",
-    details: "Eligible work includes a clearer workflow, a missing document, a useful automation idea, or a better way to route employee requests. The strongest submissions are specific, useful, and simple to implement.",
-  },
-  {
-    title: "Pitch a Film Process Upgrade",
-    category: "Film",
-    credits: 12,
-    summary: "Identify one production workflow that could be faster, clearer, or easier to hand off.",
-    details: "Explain the current friction, who it affects, and what would change. Bonus consideration goes to ideas that help creative and technical teams collaborate with less ambiguity.",
-  },
-  {
-    title: "Build the Comics Knowledge Base",
-    category: "Comics",
-    credits: 10,
-    summary: "Add a useful reference, character note, style note, or process suggestion for comics and IP work.",
-    details: "The goal is to make the creative universe easier to navigate. Strong contributions help future collaborators understand tone, continuity, character logic, or production standards.",
-  },
-  {
-    title: "Improve a Support Request",
-    category: "Operations",
-    credits: 8,
-    summary: "Find one IT or HR request type that needs a better form, clearer instructions, or faster routing.",
-    details: "A good submission names the request, explains what information is usually missing, and suggests the fields or instructions that would reduce back-and-forth.",
-  },
-  {
-    title: "Document a Hidden Rule",
-    category: "Culture",
-    credits: 9,
-    summary: "Turn an unwritten team habit into a clear, kind, useful note for newcomers.",
-    details: "The best entries make the company easier to understand without creating bureaucracy. Think handoffs, feedback norms, meeting etiquette, or how to ask for help.",
-  },
-  {
-    title: "Prototype a Creative Tech Idea",
-    category: "Technology",
-    credits: 15,
-    summary: "Sketch or prototype a small tool that supports film, comics, casting, or internal operations.",
-    details: "The prototype can be lightweight: a workflow map, clickable mockup, data model, or working proof of concept. The point is to make an idea concrete enough to review.",
-  },
-  {
-    title: "Strengthen Onboarding",
-    category: "People",
-    credits: 10,
-    summary: "Create one improvement that helps a new employee, intern, contractor, or manager understand what to do next.",
-    details: "Examples include a checklist, first-week guide, glossary, training note, or mentor prompt. It should reduce confusion for someone joining the company.",
-  },
-  {
-    title: "Find a Quality Gap",
-    category: "Production",
-    credits: 12,
-    summary: "Catch and clearly explain one quality risk before it reaches a wider audience.",
-    details: "This can be a content issue, workflow risk, inconsistent document, unclear approval path, or user-facing problem. Useful prevention counts.",
-  },
-  {
-    title: "Make Remote Work Cleaner",
-    category: "Remote work",
-    credits: 8,
-    summary: "Improve async collaboration, timezone handoffs, or meeting hygiene for distributed teams.",
-    details: "Strong submissions make work easier across locations: clearer updates, fewer unnecessary meetings, better decision logs, or better handoff expectations.",
-  },
-  {
-    title: "Elevate a Partner Experience",
-    category: "Partnerships",
-    credits: 12,
-    summary: "Suggest one way to make partners, vendors, schools, or collaborators experience The Banished as sharper and easier to work with.",
-    details: "Focus on communication, onboarding, deliverables, approvals, or relationship moments that make the company feel more professional.",
-  },
-  {
-    title: "Create a Learning Asset",
-    category: "Training",
-    credits: 10,
-    summary: "Build or outline a practical learning asset the team can reuse.",
-    details: "This can be a short guide, micro-training, checklist, explainer, example library, or walkthrough for a tool, process, or creative standard.",
-  },
-  {
-    title: "Year-End Knowledge Save",
-    category: "Knowledge",
-    credits: 14,
-    summary: "Capture something important the company learned this year before it disappears into old messages.",
-    details: "Summarize the lesson, where it came from, who it helps, and what should change next time. Clear documentation can become bonus-worthy impact.",
-  },
+  [
+    {
+      icon: "TOOL",
+      title: "Make the Portal Smarter",
+      category: "Internal tools",
+      credits: 10,
+      summary: "Submit one practical improvement that makes the Internal Portal easier to use.",
+      details: "Eligible work includes a clearer workflow, a missing document, a useful automation idea, or a better way to route employee requests. The strongest submissions are specific, useful, and simple to implement.",
+    },
+    {
+      icon: "CAST",
+      title: "Improve Casting Data",
+      category: "AI casting",
+      credits: 12,
+      summary: "Find one way to make talent data cleaner, easier to compare, or easier to search.",
+      details: "Submit a field recommendation, data quality rule, matching signal, or review checklist. Explain who benefits and how it reduces casting friction.",
+    },
+  ],
+  [
+    {
+      icon: "FILM",
+      title: "Pitch a Film Process Upgrade",
+      category: "Film",
+      credits: 12,
+      summary: "Identify one production workflow that could be faster, clearer, or easier to hand off.",
+      details: "Explain the current friction, who it affects, and what would change. Bonus consideration goes to ideas that help creative and technical teams collaborate with less ambiguity.",
+    },
+    {
+      icon: "DOC",
+      title: "Write a Better Brief",
+      category: "Production",
+      credits: 10,
+      summary: "Turn a messy project request into a sharper brief template or example.",
+      details: "Include objective, owner, audience, deadline, constraints, open questions, and what a good first draft should include.",
+    },
+  ],
+  [
+    {
+      icon: "IP",
+      title: "Build the Comics Knowledge Base",
+      category: "Comics",
+      credits: 10,
+      summary: "Add a useful reference, character note, style note, or process suggestion for comics and IP work.",
+      details: "The goal is to make the creative universe easier to navigate. Strong contributions help future collaborators understand tone, continuity, character logic, or production standards.",
+    },
+    {
+      icon: "CANON",
+      title: "Catch a Continuity Risk",
+      category: "Comics",
+      credits: 12,
+      summary: "Identify one continuity issue before it creates confusion in story, art, or adaptation work.",
+      details: "Document the issue, the affected materials, the possible fix, and why it matters to future creative work.",
+    },
+  ],
+  [
+    {
+      icon: "OPS",
+      title: "Improve a Support Request",
+      category: "Operations",
+      credits: 10,
+      summary: "Find one IT or HR request type that needs a better form, clearer instructions, or faster routing.",
+      details: "A good submission names the request, explains what information is usually missing, and suggests the fields or instructions that would reduce back-and-forth.",
+    },
+    {
+      icon: "TIME",
+      title: "Reduce Meeting Waste",
+      category: "Operations",
+      credits: 10,
+      summary: "Replace one recurring meeting habit with a clearer async update, decision note, or agenda.",
+      details: "Show the before and after. The best submissions save time without hiding decisions or making collaboration harder.",
+    },
+  ],
+  [
+    {
+      icon: "RULE",
+      title: "Document a Hidden Rule",
+      category: "Culture",
+      credits: 10,
+      summary: "Turn an unwritten team habit into a clear, kind, useful note for newcomers.",
+      details: "The best entries make the company easier to understand without creating bureaucracy. Think handoffs, feedback norms, meeting etiquette, or how to ask for help.",
+    },
+    {
+      icon: "TECH",
+      title: "Prototype a Creative Tech Idea",
+      category: "Technology",
+      credits: 15,
+      summary: "Sketch or prototype a small tool that supports film, comics, casting, or internal operations.",
+      details: "The prototype can be lightweight: a workflow map, clickable mockup, data model, or working proof of concept. The point is to make an idea concrete enough to review.",
+    },
+    {
+      icon: "NEW",
+      title: "Strengthen Onboarding",
+      category: "People",
+      credits: 10,
+      summary: "Create one improvement that helps a new employee, intern, contractor, or manager understand what to do next.",
+      details: "Examples include a checklist, first-week guide, glossary, training note, or mentor prompt. It should reduce confusion for someone joining the company.",
+    },
+  ],
+  [
+    {
+      icon: "QA",
+      title: "Find a Quality Gap",
+      category: "Production",
+      credits: 12,
+      summary: "Catch and clearly explain one quality risk before it reaches a wider audience.",
+      details: "This can be a content issue, workflow risk, inconsistent document, unclear approval path, or user-facing problem. Useful prevention counts.",
+    },
+    {
+      icon: "SAFE",
+      title: "Clarify a Confidentiality Risk",
+      category: "Security",
+      credits: 10,
+      summary: "Identify one place where sensitive project information needs clearer handling.",
+      details: "Explain the risk, the affected workflow, and the practical rule that would help employees avoid mistakes.",
+    },
+  ],
+  [
+    {
+      icon: "REMOTE",
+      title: "Make Remote Work Cleaner",
+      category: "Remote work",
+      credits: 10,
+      summary: "Improve async collaboration, timezone handoffs, or meeting hygiene for distributed teams.",
+      details: "Strong submissions make work easier across locations: clearer updates, fewer unnecessary meetings, better decision logs, or better handoff expectations.",
+    },
+    {
+      icon: "HAND",
+      title: "Create a Handoff Standard",
+      category: "Remote work",
+      credits: 10,
+      summary: "Design a compact handoff format for work that crosses time zones or departments.",
+      details: "Include owner, status, last decision, next action, risks, links, and what the next person should do first.",
+    },
+  ],
+  [
+    {
+      icon: "PART",
+      title: "Elevate a Partner Experience",
+      category: "Partnerships",
+      credits: 12,
+      summary: "Suggest one way to make partners, vendors, schools, or collaborators experience The Banished as sharper and easier to work with.",
+      details: "Focus on communication, onboarding, deliverables, approvals, or relationship moments that make the company feel more professional.",
+    },
+    {
+      icon: "MAIL",
+      title: "Rewrite a Partner Email",
+      category: "Partnerships",
+      credits: 10,
+      summary: "Improve one repeatable partner communication so it is clearer, warmer, and easier to act on.",
+      details: "Submit the original problem, the revised message, and the reason the new version reduces confusion or delay.",
+    },
+  ],
+  [
+    {
+      icon: "LEARN",
+      title: "Create a Learning Asset",
+      category: "Training",
+      credits: 10,
+      summary: "Build or outline a practical learning asset the team can reuse.",
+      details: "This can be a short guide, micro-training, checklist, explainer, example library, or walkthrough for a tool, process, or creative standard.",
+    },
+    {
+      icon: "DEMO",
+      title: "Record a Process Walkthrough",
+      category: "Training",
+      credits: 12,
+      summary: "Create a short walkthrough for a repeated workflow, tool, or approval process.",
+      details: "Keep it practical: what the person needs, where to click, what good output looks like, and where to ask for help.",
+    },
+  ],
+  [
+    {
+      icon: "SPEED",
+      title: "Speed Up a Repeated Task",
+      category: "Automation",
+      credits: 12,
+      summary: "Find a repeated task that could be templated, automated, or made easier to review.",
+      details: "Describe the task, frequency, current time cost, proposed improvement, and what would be needed to test it.",
+    },
+    {
+      icon: "FIX",
+      title: "Fix a Portal Friction Point",
+      category: "Internal tools",
+      credits: 10,
+      summary: "Document one portal issue and propose a cleaner interaction or content structure.",
+      details: "The strongest entries include the problem, affected users, suggested fix, and a screenshot or mockup if useful.",
+    },
+  ],
+  [
+    {
+      icon: "THANK",
+      title: "Recognize a Team Contribution",
+      category: "Culture",
+      credits: 10,
+      summary: "Write a specific recognition note for a teammate whose work made a measurable difference.",
+      details: "Name the contribution, the impact, and what behavior should be reinforced. Recognition must be specific enough to be useful.",
+    },
+    {
+      icon: "CLEAN",
+      title: "Clean Up a Shared Folder",
+      category: "Knowledge",
+      credits: 10,
+      summary: "Organize one shared folder, document set, or reference area so employees can find what they need faster.",
+      details: "Include what changed, where it lives, naming rules used, and what should be archived or kept current.",
+    },
+  ],
+  [
+    {
+      icon: "SAVE",
+      title: "Year-End Knowledge Save",
+      category: "Knowledge",
+      credits: 14,
+      summary: "Capture something important the company learned this year before it disappears into old messages.",
+      details: "Summarize the lesson, where it came from, who it helps, and what should change next time. Clear documentation can become bonus-worthy impact.",
+    },
+    {
+      icon: "PLAN",
+      title: "Propose Next Year's First Fix",
+      category: "Planning",
+      credits: 12,
+      summary: "Recommend one practical improvement the company should prioritize early next year.",
+      details: "Include the problem, expected impact, owner type, first action, and how success should be measured.",
+    },
+  ],
 ];
 
 const roleSlugs = {
@@ -331,37 +470,102 @@ function currentProfile() {
   return getProfile();
 }
 
-function currentMonthlyChallenge() {
-  return monthlyChallenges[new Date().getMonth()];
+function currentMonthlyChallenges() {
+  return monthlyChallenges[new Date().getMonth()] || [];
+}
+
+function currentMonthlyCreditTotal() {
+  return currentMonthlyChallenges().reduce((total, challenge) => total + Number(challenge.credits || 0), 0);
 }
 
 function renderMonthlyChallenge() {
-  const challenge = currentMonthlyChallenge();
+  const challenges = currentMonthlyChallenges();
   const month = monthNames[new Date().getMonth()];
 
   if (challengeMonth) {
     challengeMonth.textContent = month;
   }
 
-  if (challengeCategory) {
-    challengeCategory.textContent = challenge.category;
-  }
-
-  if (challengeTitle) {
-    challengeTitle.textContent = challenge.title;
-  }
-
-  if (challengeSummary) {
-    challengeSummary.textContent = challenge.summary;
-  }
-
-  if (challengeDetails) {
-    challengeDetails.textContent = challenge.details;
-  }
-
   if (challengeCredits) {
-    challengeCredits.textContent = `+${challenge.credits}`;
+    challengeCredits.textContent = `+${currentMonthlyCreditTotal()}`;
   }
+
+  if (!challengeList) {
+    return;
+  }
+
+  challengeList.replaceChildren();
+
+  challenges.forEach((challenge, index) => {
+    const card = document.createElement("article");
+    const button = document.createElement("button");
+    const icon = document.createElement("span");
+    const content = document.createElement("span");
+    const meta = document.createElement("span");
+    const title = document.createElement("strong");
+    const summary = document.createElement("small");
+    const credits = document.createElement("em");
+    const detail = document.createElement("div");
+
+    card.className = "challenge-card";
+    button.type = "button";
+    button.className = "challenge-card-button";
+    button.setAttribute("aria-expanded", "false");
+    icon.className = "challenge-icon";
+    icon.textContent = challenge.icon || String(index + 1).padStart(2, "0");
+    content.className = "challenge-card-copy";
+    meta.textContent = `${challenge.category} / ${month}`;
+    title.textContent = challenge.title;
+    summary.textContent = challenge.summary;
+    credits.className = "challenge-credit-pill";
+    credits.textContent = `+${challenge.credits} credits`;
+    detail.className = "challenge-card-detail";
+    detail.hidden = true;
+
+    const detailTitle = document.createElement("h4");
+    const detailText = document.createElement("p");
+    const detailList = document.createElement("ul");
+    const detailSteps = [
+      `Complete the challenge during ${month}.`,
+      "Send the artifact, link, screenshot, or short summary to your manager.",
+      "Approved credits are added to your profile by an admin. 1 credit = $1.",
+    ];
+
+    detailTitle.textContent = "How to complete";
+    detailText.textContent = challenge.details;
+    detailSteps.forEach((step) => {
+      const item = document.createElement("li");
+      item.textContent = step;
+      detailList.append(item);
+    });
+    detail.append(detailTitle, detailText, detailList);
+
+    content.append(meta, title, summary);
+    button.append(icon, content, credits);
+    card.append(button, detail);
+    challengeList.append(card);
+
+    button.addEventListener("click", () => {
+      const isOpen = !detail.hidden;
+
+      challengeList.querySelectorAll(".challenge-card.open").forEach((openCard) => {
+        const openButton = openCard.querySelector(".challenge-card-button");
+        const openDetail = openCard.querySelector(".challenge-card-detail");
+        openCard.classList.remove("open");
+        openButton?.setAttribute("aria-expanded", "false");
+
+        if (openDetail) {
+          openDetail.hidden = true;
+        }
+      });
+
+      if (!isOpen) {
+        card.classList.add("open");
+        button.setAttribute("aria-expanded", "true");
+        detail.hidden = false;
+      }
+    });
+  });
 }
 
 function syncProfileFromDirectory(profile) {
@@ -424,7 +628,7 @@ function applyProfile(profile) {
   }
 
   if (profileBonusPotential) {
-    profileBonusPotential.textContent = `+${currentMonthlyChallenge().credits}`;
+    profileBonusPotential.textContent = `+${currentMonthlyCreditTotal()}`;
   }
 
   if (profileForm) {
@@ -906,14 +1110,21 @@ function syncContentRoleVisibility(form) {
 
 function createSectionAdminForm(sectionId) {
   const sectionTitle = editableSections[sectionId];
+  const panel = document.createElement("div");
+  const toggle = document.createElement("button");
   const form = document.createElement("form");
   const typeOptions = typeOptionsForSection(sectionId)
     .map(([value, label]) => `<option value="${value}">${label}</option>`)
     .join("");
 
+  panel.className = "section-admin-panel";
+  panel.dataset.sectionAdminTools = sectionId;
+  toggle.className = "section-admin-toggle";
+  toggle.type = "button";
+  toggle.textContent = `Edit ${sectionTitle}`;
   form.className = "section-admin-tools";
-  form.dataset.sectionAdminTools = sectionId;
   form.dataset.fixedSection = sectionId;
+  form.hidden = true;
   form.innerHTML = `
     <div class="section-admin-head">
       <div>
@@ -958,6 +1169,13 @@ function createSectionAdminForm(sectionId) {
     <p class="request-status" data-section-admin-status hidden></p>
   `;
 
+  toggle.addEventListener("click", () => {
+    const isOpening = form.hidden;
+    form.hidden = !isOpening;
+    panel.classList.toggle("open", isOpening);
+    toggle.textContent = isOpening ? `Close ${sectionTitle} editor` : `Edit ${sectionTitle}`;
+  });
+
   syncContentRoleVisibility(form);
 
   form.addEventListener("change", () => {
@@ -983,7 +1201,8 @@ function createSectionAdminForm(sectionId) {
     syncContentRoleVisibility(form);
   });
 
-  return form;
+  panel.append(toggle, form);
+  return panel;
 }
 
 function renderSectionAdminTools(profile) {
@@ -1222,6 +1441,47 @@ inviteForm?.addEventListener("submit", async (event) => {
   } catch (error) {
     setRequestStatus(inviteStatus, `Invitation failed. ${error.message}`, "error");
   }
+});
+
+createUserForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(createUserForm);
+  const email = companyEmailFromPrefix(formData.get("createEmailPrefix"));
+  const role = formData.get("createRole") || "General";
+  const isAdmin = formData.get("createAdmin") === "on" || role === "Admin";
+  const name = String(formData.get("createName") || "").trim();
+  const password = String(formData.get("createPassword") || inviteTempPassword).trim();
+  const bonusCredits = Math.max(0, Number(formData.get("createBonusCredits") || 0));
+
+  if (!email.endsWith(companyEmailDomain) || email === companyEmailDomain) {
+    setRequestStatus(createUserStatus, "User was not added. Enter a valid The Banished company email.", "error");
+    return;
+  }
+
+  if (!name || !password) {
+    setRequestStatus(createUserStatus, "User was not added. Add a name and temporary password.", "error");
+    return;
+  }
+
+  const users = getUsers();
+  users[email] = {
+    password,
+    name,
+    role,
+    department: users[email]?.department || "",
+    timezone: users[email]?.timezone || "America/New_York",
+    admin: isAdmin,
+    status: users[email]?.status || "Active",
+    bonusCredits,
+  };
+
+  setUsers(users);
+  renderUsers();
+  setRequestStatus(createUserStatus, `User added: ${email}.`);
+  createUserForm.reset();
+  createUserForm.elements.createPassword.value = inviteTempPassword;
+  createUserForm.elements.createBonusCredits.value = 0;
 });
 
 saveUsersButton?.addEventListener("click", () => {

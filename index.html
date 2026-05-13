@@ -32,10 +32,9 @@
     <div class="shell" data-portal hidden>
       <aside class="sidebar" aria-label="Primary navigation">
         <a class="brand" href="#overview" data-section-link="overview" aria-label="The Banished internal portal home">
-          <span class="brand-mark">TB</span>
+          <img class="brand-logo" src="assets/banished-logo.jpg" alt="The Banished logo" />
           <span>
-            <strong>The Banished</strong>
-            <small>Internal Portal</small>
+            <strong>Internal Portal</strong>
           </span>
         </a>
 
@@ -352,6 +351,22 @@
             </span>
           </button>
 
+          <button class="policy-card" type="button" data-policy-toggle="challenge-bonus-policy">
+            <span class="policy-number">02</span>
+            <span>
+              <strong>Challenge Bonuses</strong>
+              <small>Monthly bonus opportunities employees can complete for portal credits</small>
+            </span>
+          </button>
+
+          <button class="policy-card" type="button" data-policy-toggle="portal-credit-policy">
+            <span class="policy-number">03</span>
+            <span>
+              <strong>Internal Portal Credits</strong>
+              <small>How earned credits convert into real money through payroll review</small>
+            </span>
+          </button>
+
           <article class="policy-document" id="bonus-policy" hidden>
             <header class="policy-hero">
               <p class="eyebrow">How we recognize</p>
@@ -443,6 +458,109 @@
               <span>Contact HR at <a href="mailto:hr@the-banished.com">hr@the-banished.com</a>.</span>
             </footer>
           </article>
+
+          <article class="policy-document" id="challenge-bonus-policy" hidden>
+            <header class="policy-hero">
+              <p class="eyebrow">Monthly challenges</p>
+              <h3>Challenge Bonuses</h3>
+              <p>
+                Challenge Bonuses are structured monthly opportunities inside the Internal Portal. Each challenge has a
+                published credit value, clear completion expectations, and a simple manager review path.
+              </p>
+            </header>
+
+            <div class="policy-callout">
+              <strong>Minimum value</strong>
+              <p>Every published challenge is worth at least 10 bonus credits. One bonus credit equals one US dollar.</p>
+            </div>
+
+            <div class="policy-section">
+              <span>01</span>
+              <div>
+                <h4>How employees participate</h4>
+                <ol>
+                  <li>Open Challenge of the Month and choose an active challenge.</li>
+                  <li>Complete the work during the calendar month listed on the card.</li>
+                  <li>Send the completed artifact, link, screenshot, or short summary to your manager.</li>
+                  <li>Your manager reviews usefulness, completeness, and whether the work matches the challenge brief.</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="policy-section">
+              <span>02</span>
+              <div>
+                <h4>What counts as complete</h4>
+                <p>
+                  A complete challenge should be specific, usable, and easy for another person to understand. Strong
+                  submissions include context, the work itself, the business or team impact, and any suggested next step.
+                </p>
+              </div>
+            </div>
+
+            <div class="policy-section">
+              <span>03</span>
+              <div>
+                <h4>Approval and credits</h4>
+                <p>
+                  Approved work is recorded as bonus credits in the employee profile. Admins can update the credit
+                  balance after manager confirmation, correction, or payroll reconciliation.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <article class="policy-document" id="portal-credit-policy" hidden>
+            <header class="policy-hero">
+              <p class="eyebrow">Portal credits</p>
+              <h3>Credits That Convert to Money</h3>
+              <p>
+                Internal Portal credits are the running record of approved challenge bonuses and portal-based reward
+                opportunities. They make small contributions visible before they are converted into cash.
+              </p>
+            </header>
+
+            <div class="policy-callout">
+              <strong>Conversion rate</strong>
+              <p>One bonus credit equals one US dollar. For example, 45 approved credits equals 45 dollars.</p>
+            </div>
+
+            <div class="policy-section">
+              <span>01</span>
+              <div>
+                <h4>Where credits appear</h4>
+                <p>
+                  Employees can see their current approved credit balance in Profile settings. Admins can edit credits
+                  in the Users and permissions table when a manager approves new credits or a correction is needed.
+                </p>
+              </div>
+            </div>
+
+            <div class="policy-section">
+              <span>02</span>
+              <div>
+                <h4>How credits become money</h4>
+                <ol>
+                  <li>Credits are earned through approved portal challenges or other approved portal reward programs.</li>
+                  <li>Admin records the credits in the employee profile.</li>
+                  <li>Finance reviews the credit balance before the next approved payout window.</li>
+                  <li>Approved credits are paid through the appropriate payroll, contractor, or vendor payment process.</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="policy-section">
+              <span>03</span>
+              <div>
+                <h4>Important notes</h4>
+                <ul>
+                  <li>Credits are not cash until approved and processed by Finance.</li>
+                  <li>Credits may be adjusted if a duplicate, error, or ineligible submission is found.</li>
+                  <li>Taxes, withholding, and payment timing depend on worker type, location, and applicable law.</li>
+                </ul>
+              </div>
+            </div>
+          </article>
         </section>
 
         <section class="portal-section" id="monthly-challenge" data-section="monthly-challenge" aria-labelledby="monthly-challenge-title">
@@ -453,29 +571,19 @@
             </div>
           </div>
 
-          <article class="monthly-challenge-card">
-            <div class="challenge-main">
-              <div class="challenge-meta">
-                <span data-challenge-month>Month</span>
-                <span data-challenge-category>Category</span>
-              </div>
-              <h3 data-challenge-title>Challenge title</h3>
-              <p data-challenge-summary></p>
-              <div class="challenge-detail">
-                <strong>How to earn the bonus credits</strong>
-                <p data-challenge-details></p>
-                <ul>
-                  <li>Complete the challenge during the current calendar month.</li>
-                  <li>Send a concise note, link, file, or screenshot to your manager with the impact explained.</li>
-                  <li>Your manager confirms whether the contribution is useful, complete, and eligible for bonus credit.</li>
-                </ul>
-              </div>
+          <div class="challenge-month-panel">
+            <div>
+              <p class="eyebrow">Current month</p>
+              <h3 data-challenge-month>Month</h3>
+              <p>Each challenge is worth at least 10 bonus credits. One bonus credit equals one US dollar.</p>
             </div>
-            <aside class="challenge-score">
+            <aside>
               <span data-challenge-credits>+0</span>
-              <small>potential bonus credits</small>
+              <small>total potential credits</small>
             </aside>
-          </article>
+          </div>
+
+          <div class="challenge-card-grid" data-challenge-list></div>
         </section>
 
         <section class="portal-section" id="benefits" data-section="benefits" aria-labelledby="benefits-title">
@@ -1195,10 +1303,53 @@
               <p class="request-status" data-invite-status hidden></p>
             </form>
 
+            <form class="admin-card" data-create-user-form>
+              <div>
+                <p class="eyebrow">Users</p>
+                <h3>Add user</h3>
+              </div>
+              <label>
+                Company email
+                <span class="email-field">
+                  <input name="createEmailPrefix" type="text" inputmode="email" placeholder="name" required />
+                  <span>@the-banished.com</span>
+                </span>
+              </label>
+              <label>
+                Full name
+                <input name="createName" type="text" placeholder="Employee name" required />
+              </label>
+              <div class="admin-form-grid">
+                <label>
+                  Role
+                  <select name="createRole">
+                    <option>General</option>
+                    <option>Project Manager</option>
+                    <option>Admin</option>
+                  </select>
+                </label>
+                <label>
+                  Starting credits
+                  <input name="createBonusCredits" type="number" min="0" step="1" value="0" />
+                </label>
+              </div>
+              <label class="checkbox-row">
+                <input name="createAdmin" type="checkbox" />
+                Grant admin access
+              </label>
+              <label>
+                Temporary password
+                <input name="createPassword" type="text" value="PortalInvite12!" required />
+              </label>
+              <button class="primary-button" type="submit">Add user</button>
+              <p class="request-status" data-create-user-status hidden></p>
+            </form>
+
             <div class="admin-card wide">
               <div>
                 <p class="eyebrow">Users</p>
                 <h3>Users and permissions</h3>
+                <p class="admin-note">Admins can edit roles, admin access, and bonus credits here. 1 credit = $1.</p>
               </div>
               <div class="admin-table-wrap">
                 <table class="admin-table">
@@ -1207,7 +1358,7 @@
                       <th>User</th>
                       <th>Role</th>
                       <th>Admin</th>
-                      <th>Bonus credits</th>
+                      <th>Credits ($)</th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -1333,7 +1484,7 @@
             <article>
               <span>Current bonus credits</span>
               <strong data-profile-bonus-credits>0</strong>
-              <p>Credits recorded by an admin for approved contributions.</p>
+              <p>Approved portal credits recorded by an admin. 1 credit = $1.</p>
             </article>
             <article>
               <span>This month can earn</span>
