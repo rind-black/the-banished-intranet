@@ -25,6 +25,11 @@ python3 -m http.server 4173
 
 Then visit `http://localhost:4173`.
 
+## Test access
+
+- Email: `admin@the-banished.com`
+- Password: `BanishedAdmin12!`
+
 ## Suggested next steps
 
 - Replace placeholder content with real internal sections.

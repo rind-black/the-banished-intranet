@@ -20,6 +20,7 @@
             Password
             <input name="password" type="password" autocomplete="current-password" placeholder="Password" required />
           </label>
+          <p class="auth-error" data-auth-error hidden>Invalid invitation credentials.</p>
           <button class="primary-button" type="submit">Sign in</button>
         </form>
       </div>
@@ -160,6 +161,7 @@
 
           <div class="role-selector" aria-label="Document role selector">
             <button class="role-button active" type="button" data-role-button="general">General</button>
+            <button class="role-button" type="button" data-role-button="admin">Admin</button>
             <button class="role-button" type="button" data-role-button="project-manager">Project Manager</button>
             <button class="role-button" type="button" data-role-button="production">Production</button>
             <button class="role-button" type="button" data-role-button="casting">Casting</button>
@@ -187,6 +189,30 @@
               <span>
                 <strong>IT and HR request guide</strong>
                 <small>Where to send common internal requests</small>
+              </span>
+            </a>
+          </div>
+
+          <div class="document-list" data-doc-role="admin">
+            <a class="document" href="#">
+              <span class="document-icon">PDF</span>
+              <span>
+                <strong>Portal administration guide</strong>
+                <small>User access, roles, announcements, and document governance</small>
+              </span>
+            </a>
+            <a class="document" href="#">
+              <span class="document-icon">XLS</span>
+              <span>
+                <strong>Role access matrix</strong>
+                <small>Permission groups and role-based document visibility</small>
+              </span>
+            </a>
+            <a class="document" href="#">
+              <span class="document-icon">DOC</span>
+              <span>
+                <strong>Internal content publishing checklist</strong>
+                <small>Review steps before new portal content is published</small>
               </span>
             </a>
           </div>
@@ -508,6 +534,7 @@
               Role
               <select name="profileRole">
                 <option>General</option>
+                <option>Admin</option>
                 <option>Project Manager</option>
                 <option>Production</option>
                 <option>Casting</option>

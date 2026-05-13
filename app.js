@@ -4,6 +4,7 @@ const pageTitle = document.querySelector("[data-page-title]");
 const authScreen = document.querySelector("[data-auth-screen]");
 const portal = document.querySelector("[data-portal]");
 const authForm = document.querySelector("[data-auth-form]");
+const authError = document.querySelector("[data-auth-error]");
 const profileForm = document.querySelector("[data-profile-form]");
 const roleButtons = document.querySelectorAll("[data-role-button]");
 const documentGroups = document.querySelectorAll("[data-doc-role]");
@@ -13,6 +14,16 @@ const profileRole = document.querySelector("[data-profile-role]");
 const profileInitials = document.querySelector("[data-profile-initials]");
 
 const profileStoreKey = "tb-internal-profile";
+
+const invitedUsers = {
+  "admin@the-banished.com": {
+    password: "BanishedAdmin12!",
+    name: "Test Admin",
+    role: "Admin",
+    department: "Administration",
+    timezone: "America/New_York",
+  },
+};
 
 const titles = {
   overview: "The Banished employee hub",
@@ -27,6 +38,7 @@ const titles = {
 
 const roleSlugs = {
   General: "general",
+  Admin: "admin",
   "Project Manager": "project-manager",
   Production: "production",
   Casting: "casting",
@@ -152,15 +164,29 @@ authForm?.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const formData = new FormData(authForm);
-  const email = String(formData.get("email") || "");
-  const name = email.split("@")[0].replace(/[._-]+/g, " ");
+  const email = String(formData.get("email") || "").trim().toLowerCase();
+  const password = String(formData.get("password") || "");
+  const invitedUser = invitedUsers[email];
+
+  if (!invitedUser || invitedUser.password !== password) {
+    if (authError) {
+      authError.hidden = false;
+    }
+
+    return;
+  }
+
   const profile = {
     email,
-    name: name.replace(/\b\w/g, (letter) => letter.toUpperCase()),
-    role: "General",
-    department: "",
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+    name: invitedUser.name,
+    role: invitedUser.role,
+    department: invitedUser.department,
+    timezone: invitedUser.timezone,
   };
+
+  if (authError) {
+    authError.hidden = true;
+  }
 
   setProfile(profile);
   unlockPortal(profile);
