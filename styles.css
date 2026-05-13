@@ -1209,6 +1209,210 @@ h3 {
   padding-left: 18px;
 }
 
+.benefits-infographic {
+  display: grid;
+  gap: 18px;
+  margin: 26px;
+}
+
+.benefit-snapshot {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+
+.benefit-snapshot article {
+  min-height: 218px;
+  padding: 22px;
+  background:
+    linear-gradient(145deg, rgba(203, 169, 92, 0.105), transparent 52%),
+    rgba(7, 7, 8, 0.9);
+}
+
+.benefit-snapshot span,
+.benefit-snapshot strong,
+.benefit-snapshot p {
+  display: block;
+}
+
+.benefit-snapshot span {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.benefit-snapshot strong {
+  margin: 20px 0 12px;
+  color: var(--ink-strong);
+  font-size: 38px;
+  font-weight: 860;
+  line-height: 1;
+}
+
+.benefit-snapshot p {
+  min-height: 70px;
+  margin: 0;
+  color: rgba(247, 243, 234, 0.64);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.benefit-meter {
+  height: 8px;
+  margin-top: 18px;
+  border: 1px solid rgba(203, 169, 92, 0.35);
+  background: #050506;
+  overflow: hidden;
+}
+
+.benefit-meter span {
+  display: block;
+  width: var(--value);
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+}
+
+.benefit-visual-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.06fr) minmax(360px, 0.94fr);
+  gap: 18px;
+}
+
+.benefit-timeline-card,
+.benefit-matrix-card {
+  padding: 24px;
+  border: 1px solid var(--line);
+  background:
+    var(--section-pattern),
+    linear-gradient(135deg, rgba(247, 243, 234, 0.04), transparent 54%),
+    rgba(17, 17, 19, 0.95);
+  box-shadow: var(--shadow);
+}
+
+.benefit-timeline-card h4,
+.benefit-matrix-card h4 {
+  margin: 0 0 18px;
+  color: var(--ink-strong);
+  font-size: 20px;
+  font-weight: 860;
+  text-transform: uppercase;
+}
+
+.benefit-timeline {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0 0 0 18px;
+  list-style: none;
+}
+
+.benefit-timeline::before {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 5px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--accent), var(--gold));
+  content: "";
+}
+
+.benefit-timeline li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 10px 16px;
+  padding: 14px;
+  border: 1px solid rgba(247, 243, 234, 0.1);
+  background: rgba(7, 7, 8, 0.72);
+}
+
+.benefit-timeline li::before {
+  position: absolute;
+  top: 20px;
+  left: -18px;
+  width: 11px;
+  height: 11px;
+  border: 1px solid rgba(203, 169, 92, 0.72);
+  background: #050506;
+  content: "";
+}
+
+.benefit-timeline span,
+.benefit-timeline strong,
+.benefit-timeline small {
+  display: block;
+}
+
+.benefit-timeline span {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.benefit-timeline strong {
+  color: var(--ink-strong);
+  font-size: 14px;
+  font-weight: 860;
+  text-transform: uppercase;
+}
+
+.benefit-timeline small {
+  grid-column: 2;
+  color: rgba(247, 243, 234, 0.62);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.benefit-matrix {
+  display: grid;
+  border: 1px solid var(--line);
+  background: var(--line);
+  overflow-x: auto;
+}
+
+.benefit-matrix [role="row"] {
+  display: grid;
+  grid-template-columns: minmax(118px, 1.15fr) repeat(4, minmax(76px, 0.8fr));
+  gap: 1px;
+}
+
+.benefit-matrix span,
+.benefit-matrix strong {
+  min-height: 44px;
+  padding: 13px 10px;
+  background: rgba(7, 7, 8, 0.84);
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.benefit-matrix [role="columnheader"] {
+  color: var(--gold);
+}
+
+.benefit-matrix strong {
+  color: var(--ink-strong);
+}
+
+.benefit-matrix .full {
+  color: #d8f2df;
+  background:
+    linear-gradient(135deg, rgba(69, 167, 133, 0.18), transparent 55%),
+    rgba(7, 7, 8, 0.84);
+}
+
+.benefit-matrix .some {
+  color: #ead1a5;
+  background:
+    linear-gradient(135deg, rgba(203, 169, 92, 0.16), transparent 55%),
+    rgba(7, 7, 8, 0.84);
+}
+
 .benefit-key {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -2263,6 +2467,8 @@ h3 {
   .company-grid,
   .company-grid.wide,
   .benefit-key,
+  .benefit-snapshot,
+  .benefit-visual-grid,
   .benefit-stack,
   .benefit-stack.compact,
   .culture-values,
@@ -2321,6 +2527,9 @@ h3 {
   .purpose-card,
   .company-card,
   .benefit-stack article,
+  .benefit-snapshot article,
+  .benefit-timeline-card,
+  .benefit-matrix-card,
   .culture-values article,
   .announcement,
   .policy-card,
@@ -2351,6 +2560,7 @@ h3 {
   }
 
   .policy-callout,
+  .benefits-infographic,
   .policy-section,
   .policy-footer {
     margin: 18px;
