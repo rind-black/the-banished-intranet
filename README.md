@@ -18,7 +18,7 @@ Prototype internal portal for The Banished, built with dependency-free frontend 
 - Expandable internship section for interns and early talent
 - IT request form that sends an email to `support@the-banished.com`
 - HR request form that sends an email to `hr@the-banished.com`
-- Admin console with invitations, user roles, admin permissions, and local request log
+- Admin console with invitations, user roles, admin permissions, manual content publishing, and local request log
 - Employee profile settings
 - Responsive desktop and mobile layout
 

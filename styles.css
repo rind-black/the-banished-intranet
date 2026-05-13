@@ -1304,6 +1304,16 @@ h3 {
   grid-column: span 1;
 }
 
+.content-admin-card {
+  grid-column: span 2;
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
 .admin-card h3 {
   text-transform: uppercase;
 }
@@ -1374,6 +1384,112 @@ h3 {
   color: var(--ink);
 }
 
+.table-action {
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid rgba(231, 55, 47, 0.42);
+  background: rgba(231, 55, 47, 0.08);
+  color: #ffb7b2;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.table-action:hover {
+  background: rgba(231, 55, 47, 0.18);
+}
+
+.admin-additions {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.section-heading.compact {
+  margin-bottom: 14px;
+}
+
+.section-heading.compact h2 {
+  font-size: 24px;
+}
+
+.admin-published-list {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-published {
+  padding: 22px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(90deg, rgba(247, 243, 234, 0.055), transparent 60%),
+    rgba(17, 17, 19, 0.95);
+  box-shadow: var(--shadow);
+}
+
+.admin-published.document-style {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border-color: rgba(203, 169, 92, 0.36);
+  background:
+    linear-gradient(90deg, rgba(203, 169, 92, 0.12), transparent 58%),
+    rgba(17, 17, 19, 0.96);
+}
+
+.admin-published-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.admin-published-header > span:not(.admin-published-icon) {
+  grid-column: 1 / -1;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.admin-published-icon {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1px solid rgba(203, 169, 92, 0.52);
+  background: #050506;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.admin-published h3 {
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.admin-published > p {
+  margin-bottom: 12px;
+  color: rgba(247, 243, 234, 0.68);
+  font-weight: 800;
+  line-height: 1.58;
+}
+
+.admin-published-body {
+  display: grid;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.admin-published-body p {
+  margin: 0;
+  color: rgba(247, 243, 234, 0.62);
+  line-height: 1.62;
+}
+
 @media (max-width: 1040px) {
   .shell {
     grid-template-columns: 1fr;
@@ -1418,12 +1534,17 @@ h3 {
   .benefit-stack,
   .benefit-stack.compact,
   .culture-values,
+  .admin-form-grid,
   .role-selector,
   .holiday-list,
   .holiday-list.compact,
   .internship-grid,
   .admin-grid {
     grid-template-columns: 1fr;
+  }
+
+  .content-admin-card {
+    grid-column: span 1;
   }
 
   .internship-panel {

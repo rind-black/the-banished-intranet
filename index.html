@@ -496,6 +496,31 @@
               </div>
             </div>
 
+            <div class="policy-section">
+              <span>05</span>
+              <div>
+                <h4>Additional support employees should know</h4>
+                <div class="benefit-stack compact">
+                  <article>
+                    <strong>Wellness and family care</strong>
+                    <p>Monthly wellness stipend, pet insurance subsidy, bereavement and family leave, gender-affirming care, parental leave, and paid family care days.</p>
+                  </article>
+                  <article>
+                    <strong>Devices and working environment</strong>
+                    <p>Company devices and gear, ergonomic setup support, home office stipend, coworking options, and remote IT support based on work location.</p>
+                  </article>
+                  <article>
+                    <strong>Career movement</strong>
+                    <p>Internal roles are posted before external hiring, promotion and lateral moves do not require a fixed tenure, and mentorship support is employee-directed.</p>
+                  </article>
+                  <article>
+                    <strong>Boundaries and sustainability</strong>
+                    <p>No-notification expectations protect local working hours. Therapy-First Fridays and mental health support reinforce sustainable work.</p>
+                  </article>
+                </div>
+              </div>
+            </div>
+
             <footer class="policy-footer">
               <strong>Note</strong>
               <span>This summary is informational and does not replace the full workforce benefits guide or local legal requirements.</span>
@@ -709,6 +734,27 @@
             <div class="policy-section">
               <span>03</span>
               <div>
+                <h4>Mental health and emotional safety</h4>
+                <div class="benefit-stack">
+                  <article>
+                    <strong>Balance matters</strong>
+                    <p>We do not glorify burnout. Breaks are normalized, resets are respected, and output is not valued over wellbeing.</p>
+                  </article>
+                  <article>
+                    <strong>Psychological safety</strong>
+                    <p>People should be able to speak up, ask for help, or admit uncertainty without fear of judgment.</p>
+                  </article>
+                  <article>
+                    <strong>Different processing is valid</strong>
+                    <p>People process pressure, conflict, and feedback differently. The culture makes room for that instead of punishing it.</p>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <div class="policy-section">
+              <span>04</span>
+              <div>
                 <h4>Creative freedom, responsible tech</h4>
                 <p>
                   Freedom without responsibility is noise. Responsibility without freedom is burnout. AI is a tool;
@@ -719,7 +765,7 @@
             </div>
 
             <div class="policy-section">
-              <span>04</span>
+              <span>05</span>
               <div>
                 <h4>Tech on the frontlines</h4>
                 <p>
@@ -730,7 +776,20 @@
             </div>
 
             <div class="policy-section">
-              <span>05</span>
+              <span>06</span>
+              <div>
+                <h4>How we work together</h4>
+                <ul>
+                  <li>No hero culture: we conduct as a team and focus on shared outcomes.</li>
+                  <li>Progress beats perfection, but ownership still includes follow-through.</li>
+                  <li>We explore, prototype, test, and improve instead of only implementing instructions.</li>
+                  <li>Retrospectives, user feedback, editors, actors, and viewers can all shape better tools and stories.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="policy-section">
+              <span>07</span>
               <div>
                 <h4>Anti-values</h4>
                 <div class="anti-values">
@@ -963,6 +1022,78 @@
                 </table>
               </div>
               <button class="primary-button" type="button" data-save-users>Save permissions</button>
+            </div>
+
+            <form class="admin-card wide content-admin-card" data-content-form>
+              <div>
+                <p class="eyebrow">Content</p>
+                <h3>Add to a portal section</h3>
+              </div>
+              <div class="admin-form-grid">
+                <label>
+                  Section
+                  <select name="contentSection">
+                    <option value="overview">Overview</option>
+                    <option value="announcements">Announcements</option>
+                    <option value="documents">Documents</option>
+                    <option value="projects">Projects</option>
+                    <option value="bonuses">Bonuses</option>
+                    <option value="benefits">Benefits</option>
+                    <option value="holidays">Holidays</option>
+                    <option value="culture">Culture</option>
+                    <option value="training">Training</option>
+                    <option value="internship">Internship</option>
+                    <option value="it-requests">IT Requests</option>
+                    <option value="hr-requests">HR Requests</option>
+                  </select>
+                </label>
+                <label>
+                  Type
+                  <select name="contentType">
+                    <option value="update">Update</option>
+                    <option value="document">Document</option>
+                  </select>
+                </label>
+              </div>
+              <label>
+                Label
+                <input name="contentLabel" type="text" placeholder="Policy, guide, memo, update" />
+              </label>
+              <label>
+                Title
+                <input name="contentTitle" type="text" placeholder="Document or update title" required />
+              </label>
+              <label>
+                Short summary
+                <input name="contentSummary" type="text" placeholder="One sentence employees will see first" required />
+              </label>
+              <label>
+                Details
+                <textarea name="contentBody" rows="6" placeholder="Add the content, notes, or document description" required></textarea>
+              </label>
+              <button class="primary-button" type="submit">Publish content</button>
+              <p class="request-status" data-content-status hidden></p>
+            </form>
+
+            <div class="admin-card wide">
+              <div>
+                <p class="eyebrow">Published</p>
+                <h3>Manual content</h3>
+              </div>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Section</th>
+                      <th>Type</th>
+                      <th>Title</th>
+                      <th>Created</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody data-content-rows></tbody>
+                </table>
+              </div>
             </div>
 
             <div class="admin-card wide">

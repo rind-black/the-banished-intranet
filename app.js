@@ -18,11 +18,15 @@ const inviteStatus = document.querySelector("[data-invite-status]");
 const userRows = document.querySelector("[data-user-rows]");
 const requestRows = document.querySelector("[data-request-rows]");
 const saveUsersButton = document.querySelector("[data-save-users]");
+const contentForm = document.querySelector("[data-content-form]");
+const contentStatus = document.querySelector("[data-content-status]");
+const contentRows = document.querySelector("[data-content-rows]");
 const adminOnlyElements = document.querySelectorAll("[data-admin-only]");
 
 const profileStoreKey = "tb-internal-profile";
 const usersStoreKey = "tb-internal-users";
 const requestsStoreKey = "tb-internal-requests";
+const contentStoreKey = "tb-internal-content";
 const inviteTempPassword = "PortalInvite12!";
 const companyEmailDomain = "@the-banished.com";
 
@@ -73,39 +77,54 @@ const titles = {
   profile: "Profile settings",
 };
 
+const editableSections = {
+  overview: "Overview",
+  announcements: "Announcements",
+  documents: "Documents",
+  projects: "Projects",
+  bonuses: "Bonuses",
+  benefits: "Benefits",
+  holidays: "Holidays",
+  culture: "Culture",
+  training: "Training",
+  internship: "Internship",
+  "it-requests": "IT Requests",
+  "hr-requests": "HR Requests",
+};
+
 const holidayDescriptions = {
-  "The Banished Foundation Day": "The company's own anniversary and a shared pause to mark the day The Banished began.",
-  "Pride Day": "A company observance honoring LGBTQ+ communities and the anniversary of the Stonewall uprising.",
-  "New Year's Day": "The first day of the calendar year and a clean reset after the winter holiday period.",
-  "Martin Luther King Jr. Day": "A US federal holiday honoring Dr. King's civil rights leadership and public service.",
-  "Presidents' Day": "A US federal holiday connected to the legacy of George Washington and other American presidents.",
-  "Memorial Day": "A US day of remembrance for military service members who died in service.",
-  Juneteenth: "A US federal holiday commemorating the end of slavery in the United States.",
-  "Independence Day": "The US national holiday marking the adoption of the Declaration of Independence.",
-  "Labor Day": "A US holiday recognizing workers and the labor movement.",
-  "Columbus Day": "A US federal observance; some communities use this period to recognize Indigenous Peoples' Day instead.",
-  "Veterans Day": "A US holiday honoring military veterans and their service.",
-  "Thanksgiving Day": "A US holiday centered on gratitude, family, and time away from regular work.",
-  "Day After Thanksgiving": "A company-added day to extend the Thanksgiving break and reduce fragmented work time.",
-  "Christmas Day": "A widely observed holiday connected to Christmas traditions and year-end time with family.",
-  "Rosa Parks Day": "A California observance honoring Rosa Parks and her role in the civil rights movement.",
-  "Cesar Chavez Day": "A California holiday honoring Cesar Chavez and farm worker labor rights.",
-  "Good Friday": "A Christian observance before Easter Sunday, recognized as a statutory holiday in many Canadian provinces.",
-  "Victoria Day": "A Canadian holiday marking Queen Victoria's birthday and the unofficial start of summer.",
-  "Canada Day": "Canada's national day, marking Canadian Confederation.",
-  "Civic Holiday": "A summer public holiday observed by many Canadian provinces under different local names.",
-  "Labour Day": "A Canadian holiday recognizing workers and the labor movement.",
-  "Thanksgiving (Canada)": "Canada's Thanksgiving holiday, observed earlier than the US holiday.",
-  "Remembrance Day": "A Canadian day of remembrance for military service members who died in service.",
-  "Boxing Day": "A post-Christmas holiday observed in Canada and several Commonwealth countries.",
-  "Saint-Jean-Baptiste Day": "Quebec's national holiday and a celebration of French-Canadian culture.",
-  "Simcoe Day": "An Ontario civic holiday honoring John Graves Simcoe and local heritage.",
-  "Winter Break": "A company-wide week off to let the team fully disconnect at year end.",
-  "Birthday Off": "A personal day off so each team member can mark their birthday without work obligations.",
-  "Mental Health Day": "A flexible day to step away, recover, and protect personal wellbeing.",
-  "Volunteer Day": "A paid day for employees to support a community or cause they care about.",
-  "Floating Holiday": "A flexible holiday employees can use for a cultural, religious, or personal observance.",
-  "International Holiday": "A manager-approved day for a home-country observance not already listed in the company calendar.",
+  "The Banished Foundation Day": "Marks the founding of The Banished and the beginning of its shared creative world: film, comics, technology, and the people building them together.",
+  "Pride Day": "Recognizes LGBTQ+ history, visibility, and civil rights. June 28 is tied to the Stonewall uprising, a major turning point in the modern Pride movement.",
+  "New Year's Day": "The first day of the Gregorian calendar year, widely used for rest, reflection, new goals, and time with family after year-end holidays.",
+  "Martin Luther King Jr. Day": "Honors Dr. Martin Luther King Jr.'s leadership in the US civil rights movement and his work toward racial justice, nonviolence, and public service.",
+  "Presidents' Day": "A US federal holiday rooted in George Washington's birthday and now commonly used to reflect on the history of the American presidency.",
+  "Memorial Day": "A US day of remembrance for military service members who died while serving. It is traditionally observed with memorials and moments of reflection.",
+  Juneteenth: "Commemorates June 19, 1865, when enslaved people in Galveston, Texas learned they were free, marking a profound milestone in the end of slavery in the US.",
+  "Independence Day": "Marks the adoption of the Declaration of Independence on July 4, 1776 and is widely associated with civic identity, community gatherings, and national history.",
+  "Labor Day": "Recognizes workers, labor rights, and the labor movement's role in shaping wages, working conditions, and the modern workweek.",
+  "Columbus Day": "A US federal observance connected to Christopher Columbus's 1492 voyage. Many communities also use this date to recognize Indigenous Peoples' Day and Native histories.",
+  "Veterans Day": "Honors military veterans and their service. It falls on November 11, the date associated with the armistice that ended World War I.",
+  "Thanksgiving Day": "A US holiday centered on gratitude and gathering. It also carries complex historical meaning connected to Indigenous peoples and colonial history.",
+  "Day After Thanksgiving": "The Friday after Thanksgiving is widely used for extended family time, travel, and recovery after the national holiday.",
+  "Christmas Day": "A Christian holiday celebrating the birth of Jesus Christ, also widely observed culturally with family gatherings, giving, and year-end traditions.",
+  "Rosa Parks Day": "Honors Rosa Parks, whose refusal to give up her bus seat became a defining act in the US civil rights movement and the Montgomery Bus Boycott.",
+  "Cesar Chavez Day": "Honors Cesar Chavez, labor leader and civil rights activist known for organizing farm workers and advancing worker dignity and fair treatment.",
+  "Good Friday": "A Christian observance marking the crucifixion of Jesus before Easter Sunday. It is a statutory holiday in many Canadian provinces.",
+  "Victoria Day": "A Canadian holiday honoring Queen Victoria's birthday and the Crown in Canada, often treated as the unofficial start of the summer season.",
+  "Canada Day": "Canada's national day, marking Canadian Confederation on July 1, 1867, when colonies united into the Dominion of Canada.",
+  "Civic Holiday": "A summer public holiday observed in many Canadian provinces under different names, often focused on local history and community life.",
+  "Labour Day": "Canada's Labour Day recognizes workers and the labor movement, similar in spirit to the US holiday but rooted in Canadian labor history.",
+  "Thanksgiving (Canada)": "A Canadian holiday for gratitude and harvest traditions, observed in October and distinct from the later US Thanksgiving.",
+  "Remembrance Day": "A Canadian day of remembrance for armed forces members who died in service, observed on November 11 with ceremonies and poppies.",
+  "Boxing Day": "Observed the day after Christmas in Canada and other Commonwealth countries, traditionally associated with giving, visiting, and post-holiday rest.",
+  "Saint-Jean-Baptiste Day": "Quebec's national holiday, celebrating French-Canadian culture, heritage, language, and community identity.",
+  "Simcoe Day": "An Ontario civic holiday named for John Graves Simcoe, the first lieutenant governor of Upper Canada, and often used to recognize local heritage.",
+  "Winter Break": "A year-end pause spanning major holiday observances and the transition into a new calendar year, allowing meaningful rest and reset.",
+  "Birthday Off": "A personal observance of an employee's birthday, recognizing an individual milestone rather than a public or national holiday.",
+  "Mental Health Day": "A dedicated day for rest, recovery, and emotional wellbeing, recognizing that sustainable work depends on mental health.",
+  "Volunteer Day": "A day for service and civic contribution, giving time to a cause, community, or organization that matters personally.",
+  "Floating Holiday": "A flexible day for religious, cultural, family, or personal observances that may not appear on the standard company calendar.",
+  "International Holiday": "A home-country or cultural observance requested individually so employees can honor meaningful holidays from their own background.",
 };
 
 const roleSlugs = {
@@ -166,6 +185,14 @@ function getRequests() {
 
 function setRequests(requests) {
   writeJson(requestsStoreKey, requests);
+}
+
+function getContentItems() {
+  return readJson(contentStoreKey, []);
+}
+
+function setContentItems(items) {
+  writeJson(contentStoreKey, items);
 }
 
 function initialsFromName(name) {
@@ -380,9 +407,139 @@ function renderRequests() {
     .join("");
 }
 
+function appendTextBlock(parent, text) {
+  String(text || "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .forEach((line) => {
+      const paragraph = document.createElement("p");
+      paragraph.textContent = line;
+      parent.append(paragraph);
+    });
+}
+
+function createPublishedCard(item) {
+  const card = document.createElement("article");
+  const header = document.createElement("div");
+  const label = document.createElement("span");
+  const title = document.createElement("h3");
+  const summary = document.createElement("p");
+  const body = document.createElement("div");
+
+  card.className = `admin-published ${item.type === "document" ? "document-style" : ""}`;
+  header.className = "admin-published-header";
+  label.textContent = item.label || (item.type === "document" ? "Document" : "Update");
+  title.textContent = item.title;
+  summary.textContent = item.summary;
+  body.className = "admin-published-body";
+
+  if (item.type === "document") {
+    const icon = document.createElement("span");
+    icon.className = "admin-published-icon";
+    icon.textContent = "DOC";
+    header.append(icon);
+  }
+
+  header.append(label, title);
+  appendTextBlock(body, item.body);
+  card.append(header, summary, body);
+
+  return card;
+}
+
+function renderContentItems() {
+  document.querySelectorAll("[data-admin-content-rendered]").forEach((element) => {
+    element.remove();
+  });
+
+  const items = getContentItems();
+
+  Object.keys(editableSections).forEach((sectionId) => {
+    const target = document.querySelector(`[data-section="${sectionId}"]`);
+    const sectionItems = items.filter((item) => item.section === sectionId);
+
+    if (!target || !sectionItems.length) {
+      return;
+    }
+
+    const wrapper = document.createElement("div");
+    const heading = document.createElement("div");
+    const eyebrow = document.createElement("p");
+    const title = document.createElement("h2");
+    const list = document.createElement("div");
+
+    wrapper.className = "admin-additions";
+    wrapper.dataset.adminContentRendered = sectionId;
+    heading.className = "section-heading compact";
+    eyebrow.className = "eyebrow";
+    eyebrow.textContent = "Admin added";
+    title.textContent = "Latest additions";
+    list.className = "admin-published-list";
+
+    sectionItems
+      .slice()
+      .reverse()
+      .forEach((item) => {
+        list.append(createPublishedCard(item));
+      });
+
+    heading.append(eyebrow, title);
+    wrapper.append(heading, list);
+    target.append(wrapper);
+  });
+}
+
+function renderContentRows() {
+  if (!contentRows) {
+    return;
+  }
+
+  const items = getContentItems();
+
+  contentRows.replaceChildren();
+
+  if (!items.length) {
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+    cell.colSpan = 5;
+    cell.textContent = "No admin content yet.";
+    row.append(cell);
+    contentRows.append(row);
+    return;
+  }
+
+  items
+    .slice()
+    .reverse()
+    .forEach((item) => {
+      const row = document.createElement("tr");
+      const sectionCell = document.createElement("td");
+      const typeCell = document.createElement("td");
+      const titleCell = document.createElement("td");
+      const createdCell = document.createElement("td");
+      const actionCell = document.createElement("td");
+      const deleteButton = document.createElement("button");
+
+      sectionCell.textContent = editableSections[item.section] || item.section;
+      typeCell.textContent = item.type === "document" ? "Document" : "Update";
+      titleCell.textContent = item.title;
+      createdCell.textContent = item.createdAt;
+      deleteButton.className = "table-action";
+      deleteButton.type = "button";
+      deleteButton.dataset.contentDelete = item.id;
+      deleteButton.textContent = "Remove";
+      actionCell.append(deleteButton);
+      row.append(sectionCell, typeCell, titleCell, createdCell, actionCell);
+      contentRows.append(row);
+    });
+}
+
 function renderAdmin() {
   renderUsers();
   renderRequests();
+  renderContentRows();
+  renderContentItems();
 }
 
 function createDisplayName(email) {
@@ -611,6 +768,61 @@ saveUsersButton?.addEventListener("click", () => {
     setProfile(profile);
     applyProfile(profile);
   }
+});
+
+contentForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(contentForm);
+  const items = getContentItems();
+  const section = String(formData.get("contentSection") || "overview");
+  const type = String(formData.get("contentType") || "update");
+  const title = String(formData.get("contentTitle") || "").trim();
+  const summary = String(formData.get("contentSummary") || "").trim();
+  const body = String(formData.get("contentBody") || "").trim();
+  const label = String(formData.get("contentLabel") || "").trim();
+
+  if (!title || !summary || !body) {
+    setRequestStatus(contentStatus, "Content was not published. Add a title, summary, and details.", "error");
+    return;
+  }
+
+  const createdAt = new Date().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  items.push({
+    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    section,
+    type,
+    label,
+    title,
+    summary,
+    body,
+    createdAt,
+  });
+
+  setContentItems(items);
+  renderContentRows();
+  renderContentItems();
+  setRequestStatus(contentStatus, `Published to ${editableSections[section] || section}.`);
+  contentForm.reset();
+});
+
+contentRows?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-content-delete]");
+
+  if (!button) {
+    return;
+  }
+
+  const nextItems = getContentItems().filter((item) => item.id !== button.dataset.contentDelete);
+  setContentItems(nextItems);
+  renderContentRows();
+  renderContentItems();
 });
 
 document.querySelectorAll("[data-announcement-toggle]").forEach((button) => {
