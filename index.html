@@ -14,7 +14,10 @@
         <form class="auth-form" data-auth-form>
           <label>
             Company email
-            <input name="email" type="text" inputmode="email" autocomplete="email" placeholder="name@the-banished.com" required />
+            <span class="email-field">
+              <input name="emailPrefix" type="text" inputmode="email" autocomplete="email" placeholder="name" required />
+              <span>@the-banished.com</span>
+            </span>
           </label>
           <label>
             Password
@@ -589,7 +592,10 @@
               </div>
               <label>
                 Company email
-                <input name="inviteEmail" type="text" inputmode="email" placeholder="name@the-banished.com" required />
+                <span class="email-field">
+                  <input name="inviteEmailPrefix" type="text" inputmode="email" placeholder="name" required />
+                  <span>@the-banished.com</span>
+                </span>
               </label>
               <label>
                 Initial role

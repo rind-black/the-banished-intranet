@@ -110,6 +110,33 @@ a {
   text-transform: none;
 }
 
+.email-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  border: 1px solid var(--line-strong);
+  background: #070708;
+}
+
+.email-field:focus-within {
+  border-color: var(--accent);
+}
+
+.email-field input,
+.admin-card .email-field input {
+  min-height: 48px;
+  border: 0;
+  background: transparent;
+}
+
+.email-field span {
+  padding: 0 13px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
 .auth-form input:focus,
 .profile-form input:focus,
 .profile-form select:focus {
@@ -991,6 +1018,12 @@ h3 {
   font-size: 12px;
   font-weight: 850;
   line-height: 1.45;
+}
+
+.request-status.error {
+  border-color: rgba(231, 55, 47, 0.48);
+  background: rgba(231, 55, 47, 0.1);
+  color: #ffb7b2;
 }
 
 .admin-grid {

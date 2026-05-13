@@ -29,7 +29,7 @@ Then visit `http://localhost:4173`.
 
 ## Test access
 
-- Email: `support@the-banished.com`
+- Company email field: `support`
 - Password: `BanishedAdmin12!`
 
 ## Suggested next steps

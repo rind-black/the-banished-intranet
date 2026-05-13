@@ -24,6 +24,7 @@ const profileStoreKey = "tb-internal-profile";
 const usersStoreKey = "tb-internal-users";
 const requestsStoreKey = "tb-internal-requests";
 const inviteTempPassword = "PortalInvite12!";
+const companyEmailDomain = "@the-banished.com";
 
 const defaultUsers = {
   "support@the-banished.com": {
@@ -352,6 +353,16 @@ function createDisplayName(email) {
     .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
+function companyEmailFromPrefix(prefix) {
+  const cleanPrefix = String(prefix || "")
+    .trim()
+    .toLowerCase()
+    .replace(companyEmailDomain, "")
+    .replace(/@.*/, "");
+
+  return `${cleanPrefix}${companyEmailDomain}`;
+}
+
 navLinks.forEach((link) => {
   link.addEventListener("click", (event) => {
     event.preventDefault();
@@ -365,7 +376,7 @@ authForm?.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const formData = new FormData(authForm);
-  const email = String(formData.get("email") || "").trim().toLowerCase();
+  const email = companyEmailFromPrefix(formData.get("emailPrefix"));
   const password = String(formData.get("password") || "");
   const user = getUsers()[email];
 
@@ -449,13 +460,14 @@ inviteForm?.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const formData = new FormData(inviteForm);
-  const email = String(formData.get("inviteEmail") || "").trim().toLowerCase();
+  const email = companyEmailFromPrefix(formData.get("inviteEmailPrefix"));
   const role = formData.get("inviteRole") || "General";
   const isAdmin = formData.get("inviteAdmin") === "on" || role === "Admin";
 
-  if (!email.endsWith("@the-banished.com")) {
+  if (!email.endsWith(companyEmailDomain) || email === companyEmailDomain) {
     inviteStatus.hidden = false;
-    inviteStatus.textContent = "Invitation must be sent to a @the-banished.com email address.";
+    inviteStatus.classList.add("error");
+    inviteStatus.textContent = "Invitation failed. Enter a valid The Banished company email.";
     return;
   }
 
@@ -469,12 +481,32 @@ inviteForm?.addEventListener("submit", (event) => {
     admin: isAdmin,
     status: "Invited",
   };
-  setUsers(users);
+  const subject = "Your The Banished Internal Portal invitation";
+  const body = [
+    "You have been invited to The Banished Internal Portal.",
+    "",
+    `Company email: ${email}`,
+    `Temporary password: ${users[email].password}`,
+    `Assigned role: ${role}`,
+    "",
+    "Please sign in and update your profile after first access.",
+  ].join("\n");
+  const mailto = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
+  setUsers(users);
   inviteStatus.hidden = false;
-  inviteStatus.textContent = `Invitation prepared for ${email}. Temporary password: ${inviteTempPassword}`;
+  inviteStatus.classList.remove("error");
+  inviteStatus.textContent = `Invitation email sent to ${email}.`;
   inviteForm.reset();
   renderUsers();
+
+  try {
+    window.location.assign(mailto);
+  } catch {
+    inviteStatus.hidden = false;
+    inviteStatus.classList.add("error");
+    inviteStatus.textContent = `Invitation failed. Email could not be sent to ${email}.`;
+  }
 });
 
 saveUsersButton?.addEventListener("click", () => {
