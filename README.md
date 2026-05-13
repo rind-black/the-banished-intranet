@@ -27,6 +27,8 @@ node server.js
 
 Then visit `http://127.0.0.1:4173`.
 
+Do not use `python3 -m http.server` for this version. It can show the pages, but it cannot handle `/api/invitations` or `/api/requests`, so email forms will fail.
+
 The portal needs a mail provider before invitations and request forms can send real email. Configure either Resend:
 
 ```bash

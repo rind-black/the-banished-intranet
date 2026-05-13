@@ -390,11 +390,17 @@ async function postPortalEmail(endpoint, payload) {
   }
 
   let data = null;
+  let rawResponse = "";
 
   try {
-    data = await response.json();
+    rawResponse = await response.text();
+    data = rawResponse ? JSON.parse(rawResponse) : null;
   } catch {
     data = null;
+  }
+
+  if (!data) {
+    throw new Error("Email backend is not connected on this URL. Open the portal through the Node server, not the static preview server.");
   }
 
   if (!response.ok || !data?.ok) {
