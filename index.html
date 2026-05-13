@@ -19,30 +19,38 @@
 
         <nav class="nav">
           <a class="nav-link active" href="#overview">
-            <span aria-hidden="true">⌂</span>
+            <span aria-hidden="true">01</span>
             Overview
           </a>
           <a class="nav-link" href="#announcements">
-            <span aria-hidden="true">!</span>
+            <span aria-hidden="true">02</span>
             Announcements
           </a>
           <a class="nav-link" href="#documents">
-            <span aria-hidden="true">▣</span>
+            <span aria-hidden="true">03</span>
             Documents
           </a>
-          <a class="nav-link" href="#team">
-            <span aria-hidden="true">◎</span>
-            Team
+          <a class="nav-link" href="#bonuses">
+            <span aria-hidden="true">04</span>
+            Bonuses
           </a>
-          <a class="nav-link" href="#calendar">
-            <span aria-hidden="true">◷</span>
-            Calendar
+          <a class="nav-link" href="#training">
+            <span aria-hidden="true">05</span>
+            Training
+          </a>
+          <a class="nav-link" href="#it-requests">
+            <span aria-hidden="true">06</span>
+            IT Requests
+          </a>
+          <a class="nav-link" href="#hr-requests">
+            <span aria-hidden="true">07</span>
+            HR Requests
           </a>
         </nav>
 
         <div class="sidebar-note">
           <strong>Internal access</strong>
-          <p>Prototype space for private updates, resources, and team operations.</p>
+          <p>Prototype space for private updates, resources, requests, and internal operations.</p>
         </div>
       </aside>
 
@@ -50,7 +58,7 @@
         <header class="topbar">
           <div>
             <p class="eyebrow">Internal portal</p>
-            <h1>Team hub for The Banished</h1>
+            <h1>The Banished internal operations</h1>
           </div>
           <div class="topbar-actions">
             <button class="icon-button" type="button" aria-label="Search">
@@ -62,9 +70,9 @@
 
         <section class="summary-grid" id="overview" aria-label="Intranet summary">
           <article class="metric">
-            <span>Open tasks</span>
+            <span>Open requests</span>
             <strong>18</strong>
-            <small>6 due this week</small>
+            <small>IT and HR queue</small>
           </article>
           <article class="metric">
             <span>Documents</span>
@@ -72,14 +80,14 @@
             <small>12 updated recently</small>
           </article>
           <article class="metric">
-            <span>Team members</span>
+            <span>Training modules</span>
             <strong>9</strong>
-            <small>3 online now</small>
+            <small>3 assigned this month</small>
           </article>
           <article class="metric">
-            <span>Next event</span>
-            <strong>May 17</strong>
-            <small>Production sync</small>
+            <span>Bonus cycle</span>
+            <strong>Q2</strong>
+            <small>Review in progress</small>
           </article>
         </section>
 
@@ -101,8 +109,8 @@
                     <small>May</small>
                   </div>
                   <div>
-                    <h3>First intranet draft is live</h3>
-                    <p>Use this space to gather internal updates before the section is moved into the main website.</p>
+                  <h3>Internal portal draft is live</h3>
+                  <p>Use this space to gather company updates, policies, request workflows, and internal resources.</p>
                     <div class="tags">
                       <span>Project</span>
                       <span>Internal</span>
@@ -140,7 +148,7 @@
                 <a class="document" href="#">
                   <span class="document-icon">PDF</span>
                   <span>
-                    <strong>Brand guide</strong>
+                    <strong>Company policies</strong>
                     <small>Updated today</small>
                   </span>
                 </a>
@@ -162,60 +170,95 @@
             </section>
           </div>
 
-          <aside class="side-column" aria-label="Team and schedule">
-            <section class="panel compact" id="team">
+          <aside class="side-column" aria-label="Internal resources">
+            <section class="panel compact" id="bonuses">
               <div class="section-heading">
                 <div>
-                  <p class="eyebrow">People</p>
-                  <h2>Team</h2>
+                  <p class="eyebrow">Compensation</p>
+                  <h2>Bonuses</h2>
                 </div>
               </div>
 
-              <div class="people-list">
-                <article class="person">
-                  <span class="avatar">RK</span>
+              <div class="resource-list">
+                <article class="resource-item">
+                  <span class="status-dot active"></span>
                   <span>
-                    <strong>Rind Black</strong>
-                    <small>Owner</small>
+                    <strong>Q2 performance cycle</strong>
+                    <small>Manager review open</small>
                   </span>
                 </article>
-                <article class="person">
-                  <span class="avatar">HB</span>
+                <article class="resource-item">
+                  <span class="status-dot"></span>
                   <span>
-                    <strong>Helga</strong>
-                    <small>Operations</small>
-                  </span>
-                </article>
-                <article class="person">
-                  <span class="avatar">TB</span>
-                  <span>
-                    <strong>The Banished</strong>
-                    <small>Team channel</small>
+                    <strong>Bonus policy</strong>
+                    <small>Eligibility and timing</small>
                   </span>
                 </article>
               </div>
             </section>
 
-            <section class="panel compact" id="calendar">
+            <section class="panel compact" id="training">
               <div class="section-heading">
                 <div>
-                  <p class="eyebrow">Schedule</p>
-                  <h2>This week</h2>
+                  <p class="eyebrow">Learning</p>
+                  <h2>Training</h2>
                 </div>
               </div>
 
-              <ol class="event-list">
+              <div class="resource-list">
+                <article class="resource-item">
+                  <span class="status-dot active"></span>
+                  <span>
+                    <strong>Security basics</strong>
+                    <small>Required for all staff</small>
+                  </span>
+                </article>
+                <article class="resource-item">
+                  <span class="status-dot"></span>
+                  <span>
+                    <strong>Production tools</strong>
+                    <small>New workflow module</small>
+                  </span>
+                </article>
+              </div>
+            </section>
+
+            <section class="panel compact" id="it-requests">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Support</p>
+                  <h2>IT Requests</h2>
+                </div>
+              </div>
+
+              <ol class="request-list">
                 <li>
-                  <time>Tue 14:00</time>
-                  <span>Content review</span>
+                  <time>Open</time>
+                  <span>Account access</span>
                 </li>
                 <li>
-                  <time>Thu 11:30</time>
-                  <span>Production sync</span>
+                  <time>Open</time>
+                  <span>Device or software issue</span>
+                </li>
+              </ol>
+            </section>
+
+            <section class="panel compact" id="hr-requests">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">People Ops</p>
+                  <h2>HR Requests</h2>
+                </div>
+              </div>
+
+              <ol class="request-list">
+                <li>
+                  <time>Open</time>
+                  <span>Time off request</span>
                 </li>
                 <li>
-                  <time>Fri 16:00</time>
-                  <span>Launch planning</span>
+                  <time>Open</time>
+                  <span>Employment document</span>
                 </li>
               </ol>
             </section>
