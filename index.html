@@ -7,7 +7,25 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="shell">
+    <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
+      <div class="auth-panel">
+        <p class="eyebrow">Invite only</p>
+        <h1 id="auth-title">Internal Portal access</h1>
+        <form class="auth-form" data-auth-form>
+          <label>
+            Company email
+            <input name="email" type="text" inputmode="email" autocomplete="email" placeholder="name@the-banished.com" required />
+          </label>
+          <label>
+            Password
+            <input name="password" type="password" autocomplete="current-password" placeholder="Password" required />
+          </label>
+          <button class="primary-button" type="submit">Sign in</button>
+        </form>
+      </div>
+    </section>
+
+    <div class="shell" data-portal hidden>
       <aside class="sidebar" aria-label="Primary navigation">
         <a class="brand" href="#overview" data-section-link="overview" aria-label="The Banished internal portal home">
           <span class="brand-mark">TB</span>
@@ -60,6 +78,16 @@
             <p class="eyebrow">Internal Portal</p>
             <h1 data-page-title>The Banished employee hub</h1>
           </div>
+          <div class="profile-controls">
+            <button class="profile-chip" type="button" data-section-link="profile" data-profile-button>
+              <span class="profile-avatar" data-profile-initials>TB</span>
+              <span>
+                <strong data-profile-name>Employee</strong>
+                <small data-profile-role>General</small>
+              </span>
+            </button>
+            <button class="ghost-button" type="button" data-sign-out>Sign out</button>
+          </div>
         </header>
 
         <section class="portal-section active" id="overview" data-section="overview" aria-labelledby="overview-title">
@@ -101,7 +129,7 @@
           </div>
 
           <div class="announcement-list">
-            <article class="announcement">
+            <button class="announcement" type="button" data-announcement-toggle="portal-created">
               <div class="date-badge">
                 <span>12</span>
                 <small>May</small>
@@ -110,6 +138,14 @@
                 <h3>Internal Portal created</h3>
                 <p>Created on May 12.</p>
               </div>
+            </button>
+            <article class="announcement-detail" id="portal-created" hidden>
+              <p class="eyebrow">Details</p>
+              <h3>Internal Portal created</h3>
+              <p>
+                The Banished Internal Portal was created on May 12 as the central access point for employee resources,
+                company announcements, role-based documents, bonus information, training updates, and support requests.
+              </p>
             </article>
           </div>
         </section>
@@ -122,26 +158,127 @@
             </div>
           </div>
 
-          <div class="document-list">
+          <div class="role-selector" aria-label="Document role selector">
+            <button class="role-button active" type="button" data-role-button="general">General</button>
+            <button class="role-button" type="button" data-role-button="project-manager">Project Manager</button>
+            <button class="role-button" type="button" data-role-button="production">Production</button>
+            <button class="role-button" type="button" data-role-button="casting">Casting</button>
+            <button class="role-button" type="button" data-role-button="finance">Finance</button>
+            <button class="role-button" type="button" data-role-button="hr">HR</button>
+          </div>
+
+          <div class="document-list active" data-doc-role="general">
             <a class="document" href="#">
               <span class="document-icon">PDF</span>
               <span>
-                <strong>Company policies</strong>
-                <small>Official internal policy documents</small>
+                <strong>Employee handbook</strong>
+                <small>Company-wide policies and expectations</small>
+              </span>
+            </a>
+            <a class="document" href="#">
+              <span class="document-icon">PDF</span>
+              <span>
+                <strong>Discretionary bonuses</strong>
+                <small>Recognition policy and payment windows</small>
               </span>
             </a>
             <a class="document" href="#">
               <span class="document-icon">DOC</span>
               <span>
-                <strong>Onboarding checklist</strong>
-                <small>New employee setup and first-week guidance</small>
+                <strong>IT and HR request guide</strong>
+                <small>Where to send common internal requests</small>
+              </span>
+            </a>
+          </div>
+
+          <div class="document-list" data-doc-role="project-manager">
+            <a class="document" href="#">
+              <span class="document-icon">DOC</span>
+              <span>
+                <strong>Project brief template</strong>
+                <small>Kickoff structure, owners, milestones, and scope</small>
               </span>
             </a>
             <a class="document" href="#">
               <span class="document-icon">XLS</span>
               <span>
                 <strong>Production schedule</strong>
-                <small>Current planning and delivery references</small>
+                <small>Timeline, dependencies, and delivery tracking</small>
+              </span>
+            </a>
+            <a class="document" href="#">
+              <span class="document-icon">PDF</span>
+              <span>
+                <strong>Vendor onboarding</strong>
+                <small>External partner intake and approval workflow</small>
+              </span>
+            </a>
+          </div>
+
+          <div class="document-list" data-doc-role="production">
+            <a class="document" href="#">
+              <span class="document-icon">PDF</span>
+              <span>
+                <strong>Call sheet guidelines</strong>
+                <small>Production day structure and distribution rules</small>
+              </span>
+            </a>
+            <a class="document" href="#">
+              <span class="document-icon">DOC</span>
+              <span>
+                <strong>Asset delivery checklist</strong>
+                <small>Final handoff requirements and naming standards</small>
+              </span>
+            </a>
+          </div>
+
+          <div class="document-list" data-doc-role="casting">
+            <a class="document" href="#">
+              <span class="document-icon">PDF</span>
+              <span>
+                <strong>Casting review workflow</strong>
+                <small>Submission review, shortlisting, and approvals</small>
+              </span>
+            </a>
+            <a class="document" href="#">
+              <span class="document-icon">DOC</span>
+              <span>
+                <strong>Talent notes template</strong>
+                <small>Structured review format for candidate feedback</small>
+              </span>
+            </a>
+          </div>
+
+          <div class="document-list" data-doc-role="finance">
+            <a class="document" href="#">
+              <span class="document-icon">XLS</span>
+              <span>
+                <strong>Expense report template</strong>
+                <small>Reimbursement submission and approval fields</small>
+              </span>
+            </a>
+            <a class="document" href="#">
+              <span class="document-icon">PDF</span>
+              <span>
+                <strong>Invoice requirements</strong>
+                <small>Required vendor invoice details and timing</small>
+              </span>
+            </a>
+          </div>
+
+          <div class="document-list" data-doc-role="hr">
+            <a class="document" href="#">
+              <span class="document-icon">PDF</span>
+              <span>
+                <strong>Benefits overview</strong>
+                <small>Eligibility, enrollment, and employee support</small>
+              </span>
+            </a>
+            <a class="document" href="#">
+              <span class="document-icon">DOC</span>
+              <span>
+                <strong>Employment document request</strong>
+                <small>Letters, confirmations, and record updates</small>
               </span>
             </a>
           </div>
@@ -348,6 +485,46 @@
               <button class="primary-button" type="submit">Send to HR</button>
             </form>
           </div>
+        </section>
+
+        <section class="portal-section" id="profile" data-section="profile" aria-labelledby="profile-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Account</p>
+              <h2 id="profile-title">Profile settings</h2>
+            </div>
+          </div>
+
+          <form class="profile-form" data-profile-form>
+            <label>
+              Full name
+              <input name="profileName" type="text" autocomplete="name" />
+            </label>
+            <label>
+              Company email
+              <input name="profileEmail" type="email" autocomplete="email" />
+            </label>
+            <label>
+              Role
+              <select name="profileRole">
+                <option>General</option>
+                <option>Project Manager</option>
+                <option>Production</option>
+                <option>Casting</option>
+                <option>Finance</option>
+                <option>HR</option>
+              </select>
+            </label>
+            <label>
+              Department
+              <input name="profileDepartment" type="text" placeholder="Department" />
+            </label>
+            <label>
+              Time zone
+              <input name="profileTimezone" type="text" placeholder="Time zone" />
+            </label>
+            <button class="primary-button" type="submit">Save profile</button>
+          </form>
         </section>
       </main>
     </div>

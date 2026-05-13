@@ -55,6 +55,73 @@ a {
   text-decoration: none;
 }
 
+[hidden] {
+  display: none !important;
+}
+
+.auth-screen {
+  display: grid;
+  min-height: 100vh;
+  padding: 42px;
+  place-items: center;
+}
+
+.auth-panel {
+  width: min(100%, 560px);
+  padding: 38px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(135deg, rgba(231, 55, 47, 0.15), transparent 48%),
+    rgba(17, 17, 19, 0.96);
+  box-shadow: var(--shadow);
+}
+
+.auth-panel h1 {
+  margin-bottom: 28px;
+  font-size: 54px;
+}
+
+.auth-form,
+.profile-form {
+  display: grid;
+  gap: 16px;
+}
+
+.auth-form label,
+.profile-form label {
+  display: grid;
+  gap: 9px;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.auth-form input,
+.profile-form input,
+.profile-form select {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 13px;
+  border: 1px solid var(--line-strong);
+  background: #070708;
+  color: var(--ink);
+  font: inherit;
+  text-transform: none;
+}
+
+.auth-form input:focus,
+.profile-form input:focus,
+.profile-form select:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.auth-form ::placeholder,
+.profile-form ::placeholder {
+  color: rgba(247, 243, 234, 0.32);
+}
+
 .shell {
   display: grid;
   grid-template-columns: 304px minmax(0, 1fr);
@@ -201,6 +268,74 @@ a {
   justify-content: space-between;
   gap: 24px;
   margin-bottom: 34px;
+}
+
+.profile-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-chip,
+.ghost-button {
+  border: 1px solid var(--line);
+  background: rgba(17, 17, 19, 0.92);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.profile-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 54px;
+  padding: 8px 12px 8px 8px;
+}
+
+.profile-chip:hover,
+.profile-chip.active,
+.ghost-button:hover {
+  border-color: var(--line-strong);
+  background: rgba(247, 243, 234, 0.07);
+}
+
+.profile-avatar {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  background: var(--ink);
+  color: #050506;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.profile-chip strong,
+.profile-chip small {
+  display: block;
+  text-align: left;
+}
+
+.profile-chip strong {
+  color: var(--ink-strong);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.profile-chip small {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.ghost-button {
+  min-height: 54px;
+  padding: 0 14px;
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
 }
 
 .eyebrow {
@@ -364,6 +499,14 @@ h3 {
   gap: 12px;
 }
 
+.document-list {
+  display: none;
+}
+
+.document-list.active {
+  display: grid;
+}
+
 .announcement {
   display: grid;
   grid-template-columns: 82px minmax(0, 1fr);
@@ -372,7 +515,15 @@ h3 {
   padding: 22px;
   border: 1px solid var(--line);
   background: rgba(17, 17, 19, 0.92);
+  color: var(--ink);
   box-shadow: var(--shadow);
+  text-align: left;
+  cursor: pointer;
+}
+
+.announcement:hover,
+.announcement.open {
+  border-color: var(--accent);
 }
 
 .announcement p {
@@ -405,6 +556,52 @@ h3 {
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
+}
+
+.announcement-detail {
+  padding: 24px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(90deg, rgba(231, 55, 47, 0.1), transparent 48%),
+    rgba(17, 17, 19, 0.92);
+  box-shadow: var(--shadow);
+}
+
+.announcement-detail p:last-child {
+  max-width: 780px;
+  margin-bottom: 0;
+  color: rgba(247, 243, 234, 0.64);
+  line-height: 1.62;
+}
+
+.role-selector {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1px;
+  margin-bottom: 16px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+
+.role-button {
+  min-height: 54px;
+  border: 0;
+  background: rgba(17, 17, 19, 0.96);
+  color: rgba(247, 243, 234, 0.58);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.role-button:hover,
+.role-button.active {
+  background: #050506;
+  color: var(--ink-strong);
+}
+
+.role-button.active {
+  box-shadow: inset 0 -2px 0 var(--accent);
 }
 
 .document {
@@ -644,7 +841,8 @@ h3 {
   align-items: start;
 }
 
-.request-form {
+.request-form,
+.profile-form {
   display: grid;
   gap: 16px;
   padding: 26px;
@@ -653,7 +851,8 @@ h3 {
   box-shadow: var(--shadow);
 }
 
-.request-form label {
+.request-form label,
+.profile-form label {
   display: grid;
   gap: 9px;
   color: var(--ink);
@@ -664,7 +863,9 @@ h3 {
 
 .request-form input,
 .request-form select,
-.request-form textarea {
+.request-form textarea,
+.profile-form input,
+.profile-form select {
   width: 100%;
   min-height: 48px;
   border: 1px solid var(--line-strong);
@@ -676,13 +877,17 @@ h3 {
 
 .request-form input:focus,
 .request-form select:focus,
-.request-form textarea:focus {
+.request-form textarea:focus,
+.profile-form input:focus,
+.profile-form select:focus {
   border-color: var(--accent);
   outline: none;
 }
 
 .request-form input,
-.request-form select {
+.request-form select,
+.profile-form input,
+.profile-form select {
   padding: 0 13px;
 }
 
@@ -692,7 +897,8 @@ h3 {
   line-height: 1.5;
 }
 
-.request-form ::placeholder {
+.request-form ::placeholder,
+.profile-form ::placeholder {
   color: rgba(247, 243, 234, 0.32);
 }
 
@@ -726,9 +932,15 @@ h3 {
     display: none;
   }
 
+  .topbar,
+  .profile-controls {
+    display: grid;
+  }
+
   .purpose-grid,
   .request-layout,
-  .policy-grid {
+  .policy-grid,
+  .role-selector {
     grid-template-columns: 1fr;
   }
 }
@@ -736,6 +948,14 @@ h3 {
 @media (max-width: 680px) {
   .workspace {
     padding: 28px 16px 44px;
+  }
+
+  .auth-screen {
+    padding: 18px;
+  }
+
+  .auth-panel {
+    padding: 24px;
   }
 
   h1 {
@@ -755,7 +975,8 @@ h3 {
   .announcement,
   .policy-card,
   .policy-hero,
-  .request-form {
+  .request-form,
+  .profile-form {
     padding: 18px;
   }
 

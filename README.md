@@ -5,12 +5,14 @@ Prototype internal portal for The Banished, built as a dependency-free static si
 ## What is included
 
 - Employee-focused overview
-- Announcements area
-- Document library preview
+- Sign-in screen for invited employees
+- Clickable announcement details
+- Role-based document library preview
 - Bonuses section
 - Training placeholder
 - IT request form that opens an email to `support@the-banished.com`
 - HR request form that opens an email to `hr@the-banished.com`
+- Employee profile settings
 - Responsive desktop and mobile layout
 
 ## Open locally
