@@ -76,12 +76,6 @@ document.querySelectorAll("[data-request-form]").forEach((form) => {
       details,
     ].join("\n");
     const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    const fallback = form.querySelector("[data-mail-fallback]");
-
-    if (fallback) {
-      fallback.hidden = false;
-      fallback.innerHTML = `If your email app does not open, use <a href="${mailto}">this email link</a>.`;
-    }
 
     window.location.assign(mailto);
   });

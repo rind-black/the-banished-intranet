@@ -107,27 +107,8 @@
                 <small>May</small>
               </div>
               <div>
-                <h3>Internal Portal draft is live</h3>
-                <p>Use this space for company updates, policy changes, operational notes, and employee-wide notices.</p>
-                <div class="tags">
-                  <span>Project</span>
-                  <span>Internal</span>
-                </div>
-              </div>
-            </article>
-
-            <article class="announcement">
-              <div class="date-badge">
-                <span>15</span>
-                <small>May</small>
-              </div>
-              <div>
-                <h3>Content inventory review</h3>
-                <p>Collect documents, onboarding notes, policies, and recurring company links for the next version.</p>
-                <div class="tags">
-                  <span>Docs</span>
-                  <span>Review</span>
-                </div>
+                <h3>Internal Portal created</h3>
+                <p>Created on May 12.</p>
               </div>
             </article>
           </div>
@@ -291,7 +272,7 @@
               <p>Contact IT for account access, password or login issues, device problems, software access, email setup, security concerns, and technical troubleshooting.</p>
             </div>
 
-            <form class="request-form" data-request-form data-recipient="support@the-banished.com" data-label="IT Request">
+            <form class="request-form" action="mailto:support@the-banished.com" method="post" enctype="text/plain" data-request-form data-recipient="support@the-banished.com" data-label="IT Request">
               <label>
                 Full name
                 <input name="name" type="text" autocomplete="name" placeholder="Your name" />
@@ -322,7 +303,6 @@
                 <textarea name="details" rows="6" placeholder="Describe what you need help with"></textarea>
               </label>
               <button class="primary-button" type="submit">Send to IT</button>
-              <p class="form-fallback" data-mail-fallback hidden></p>
             </form>
           </div>
         </section>
@@ -335,7 +315,7 @@
               <p>Contact HR for employment documents, time off questions, benefits, payroll questions, policy clarification, onboarding, and employee record updates.</p>
             </div>
 
-            <form class="request-form" data-request-form data-recipient="hr@the-banished.com" data-label="HR Request">
+            <form class="request-form" action="mailto:hr@the-banished.com" method="post" enctype="text/plain" data-request-form data-recipient="hr@the-banished.com" data-label="HR Request">
               <label>
                 Full name
                 <input name="name" type="text" autocomplete="name" placeholder="Your name" />
@@ -366,7 +346,6 @@
                 <textarea name="details" rows="6" placeholder="Describe what you need from HR"></textarea>
               </label>
               <button class="primary-button" type="submit">Send to HR</button>
-              <p class="form-fallback" data-mail-fallback hidden></p>
             </form>
           </div>
         </section>
