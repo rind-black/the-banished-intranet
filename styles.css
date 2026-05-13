@@ -299,6 +299,7 @@ a {
   align-items: center;
   gap: 12px;
   min-height: 54px;
+  min-width: 148px;
   padding: 8px 12px 8px 8px;
 }
 
@@ -342,10 +343,12 @@ a {
 
 .ghost-button {
   min-height: 54px;
+  min-width: 86px;
   padding: 0 14px;
   font-size: 11px;
   font-weight: 950;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .eyebrow {
@@ -586,7 +589,7 @@ h3 {
 
 .role-selector {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
   margin-bottom: 16px;
   border: 1px solid var(--line);
@@ -624,6 +627,10 @@ h3 {
 .document-empty p {
   margin-bottom: 0;
   color: rgba(247, 243, 234, 0.62);
+}
+
+.document-empty.inline {
+  box-shadow: none;
 }
 
 .document {
@@ -856,6 +863,48 @@ h3 {
   font-weight: 900;
 }
 
+.holiday-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.holiday-list.compact {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.holiday-list article {
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: rgba(247, 243, 234, 0.045);
+}
+
+.holiday-list strong,
+.holiday-list span,
+.holiday-list small {
+  display: block;
+}
+
+.holiday-list strong {
+  margin-bottom: 8px;
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.holiday-list span {
+  color: var(--ink-strong);
+  font-weight: 900;
+}
+
+.holiday-list small {
+  margin-top: 6px;
+  color: rgba(247, 243, 234, 0.58);
+  line-height: 1.45;
+}
+
 .request-layout {
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(380px, 1.08fr);
@@ -1063,6 +1112,8 @@ h3 {
   .request-layout,
   .policy-grid,
   .role-selector,
+  .holiday-list,
+  .holiday-list.compact,
   .admin-grid {
     grid-template-columns: 1fr;
   }

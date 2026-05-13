@@ -60,6 +60,7 @@ const titles = {
   announcements: "Company announcements",
   documents: "Company documents",
   bonuses: "Bonus information",
+  holidays: "Holidays and days off",
   training: "Training resources",
   "it-requests": "IT request center",
   "hr-requests": "HR request center",
@@ -71,10 +72,6 @@ const roleSlugs = {
   General: "general",
   Admin: "admin",
   "Project Manager": "project-manager",
-  Production: "production",
-  Casting: "casting",
-  Finance: "finance",
-  HR: "hr",
 };
 
 const roleNames = Object.keys(roleSlugs);
