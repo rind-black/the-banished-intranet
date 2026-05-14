@@ -83,24 +83,12 @@
             <span aria-hidden="true">11</span>
             Internship
           </a>
-          <a class="nav-link" href="#it-requests" data-section-link="it-requests">
+          <a class="nav-link" href="#requests" data-section-link="requests">
             <span aria-hidden="true">12</span>
-            IT Requests
-          </a>
-          <a class="nav-link" href="#hr-requests" data-section-link="hr-requests">
-            <span aria-hidden="true">13</span>
-            HR Requests
-          </a>
-          <a class="nav-link" href="#org-requests" data-section-link="org-requests">
-            <span aria-hidden="true">14</span>
-            Org Requests
-          </a>
-          <a class="nav-link" href="#ed-requests" data-section-link="ed-requests">
-            <span aria-hidden="true">15</span>
-            ED Requests
+            Requests
           </a>
           <a class="nav-link" href="#admin" data-section-link="admin" data-admin-only hidden>
-            <span aria-hidden="true">16</span>
+            <span aria-hidden="true">13</span>
             Admin
           </a>
         </nav>
@@ -212,7 +200,7 @@
                 <h3>Send requests</h3>
                 <p>Route IT, HR, Organizational, and Education requests with the details teams need.</p>
               </div>
-              <button type="button" data-section-link="it-requests">Request help</button>
+              <button type="button" data-section-link="requests">Request help</button>
             </article>
           </div>
 
@@ -1756,8 +1744,23 @@
           </div>
         </section>
 
-        <section class="portal-section" id="it-requests" data-section="it-requests" aria-labelledby="it-title">
-          <div class="request-layout">
+        <section class="portal-section" id="requests" data-section="requests" aria-labelledby="requests-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Support center</p>
+              <h2 id="requests-title">Requests</h2>
+            </div>
+          </div>
+
+          <div class="request-type-tabs" aria-label="Request type selector">
+            <button class="active" type="button" data-request-tab="it">IT</button>
+            <button type="button" data-request-tab="hr">HR</button>
+            <button type="button" data-request-tab="org">Org</button>
+            <button type="button" data-request-tab="ed">ED</button>
+          </div>
+
+          <div class="request-pane active" data-request-pane="it">
+            <div class="request-layout">
             <div class="intro-panel">
               <p class="eyebrow">Support</p>
               <h2 id="it-title">IT Requests</h2>
@@ -1797,11 +1800,11 @@
               <button class="primary-button" type="submit">Send to IT</button>
               <p class="request-status" data-request-status hidden></p>
             </form>
+            </div>
           </div>
-        </section>
 
-        <section class="portal-section" id="hr-requests" data-section="hr-requests" aria-labelledby="hr-title">
-          <div class="request-layout">
+          <div class="request-pane" data-request-pane="hr" hidden>
+            <div class="request-layout">
             <div class="intro-panel">
               <p class="eyebrow">People Ops</p>
               <h2 id="hr-title">HR Requests</h2>
@@ -1841,11 +1844,11 @@
               <button class="primary-button" type="submit">Send to HR</button>
               <p class="request-status" data-request-status hidden></p>
             </form>
+            </div>
           </div>
-        </section>
 
-        <section class="portal-section" id="org-requests" data-section="org-requests" aria-labelledby="org-title">
-          <div class="request-layout">
+          <div class="request-pane" data-request-pane="org" hidden>
+            <div class="request-layout">
             <div class="intro-panel">
               <p class="eyebrow">Operations</p>
               <h2 id="org-title">Org Requests</h2>
@@ -1885,11 +1888,11 @@
               <button class="primary-button" type="submit">Send to Org</button>
               <p class="request-status" data-request-status hidden></p>
             </form>
+            </div>
           </div>
-        </section>
 
-        <section class="portal-section" id="ed-requests" data-section="ed-requests" aria-labelledby="ed-title">
-          <div class="request-layout">
+          <div class="request-pane" data-request-pane="ed" hidden>
+            <div class="request-layout">
             <div class="intro-panel">
               <p class="eyebrow">Education</p>
               <h2 id="ed-title">ED Requests</h2>
@@ -1930,6 +1933,7 @@
               <button class="primary-button" type="submit">Send to ED</button>
               <p class="request-status" data-request-status hidden></p>
             </form>
+            </div>
           </div>
         </section>
 
@@ -2055,10 +2059,7 @@
                     <option value="training">Training</option>
                     <option value="internship">Internship</option>
                     <option value="monthly-challenge">Challenge of the Month</option>
-                    <option value="it-requests">IT Requests</option>
-                    <option value="hr-requests">HR Requests</option>
-                    <option value="org-requests">Org Requests</option>
-                    <option value="ed-requests">ED Requests</option>
+                    <option value="requests">Requests</option>
                   </select>
                 </label>
                 <label>

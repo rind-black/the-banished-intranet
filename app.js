@@ -51,6 +51,8 @@ const contentForm = document.querySelector("[data-content-form]");
 const contentStatus = document.querySelector("[data-content-status]");
 const contentRows = document.querySelector("[data-content-rows]");
 const adminOnlyElements = document.querySelectorAll("[data-admin-only]");
+const requestTabs = document.querySelectorAll("[data-request-tab]");
+const requestPanes = document.querySelectorAll("[data-request-pane]");
 
 const profileStoreKey = "tb-internal-profile";
 const usersStoreKey = "tb-internal-users";
@@ -122,10 +124,7 @@ const titles = {
   training: "Training resources",
   internship: "Internship resources",
   "monthly-challenge": "Challenge of the Month",
-  "it-requests": "IT request center",
-  "hr-requests": "HR request center",
-  "org-requests": "Organizational request center",
-  "ed-requests": "Education request center",
+  requests: "Request center",
   admin: "Admin console",
   profile: "Profile settings",
 };
@@ -142,10 +141,7 @@ const editableSections = {
   training: "Training",
   internship: "Internship",
   "monthly-challenge": "Challenge of the Month",
-  "it-requests": "IT Requests",
-  "hr-requests": "HR Requests",
-  "org-requests": "Org Requests",
-  "ed-requests": "ED Requests",
+  requests: "Requests",
 };
 
 const holidayDescriptions = {
@@ -651,6 +647,38 @@ function currentMonthlyChallenges() {
 
 function currentMonthlyCreditTotal() {
   return currentMonthlyChallenges().reduce((total, challenge) => total + Number(challenge.credits || 0), 0);
+}
+
+function requestPaneFromSection(sectionId) {
+  return {
+    "it-requests": "it",
+    "hr-requests": "hr",
+    "org-requests": "org",
+    "ed-requests": "ed",
+  }[sectionId] || "it";
+}
+
+function normalizeSectionId(sectionId) {
+  return {
+    "it-requests": "requests",
+    "hr-requests": "requests",
+    "org-requests": "requests",
+    "ed-requests": "requests",
+  }[sectionId] || sectionId;
+}
+
+function showRequestPane(type = "it") {
+  const activeType = Array.from(requestTabs).some((tab) => tab.dataset.requestTab === type) ? type : "it";
+
+  requestTabs.forEach((tab) => {
+    tab.classList.toggle("active", tab.dataset.requestTab === activeType);
+  });
+
+  requestPanes.forEach((pane) => {
+    const isActive = pane.dataset.requestPane === activeType;
+    pane.classList.toggle("active", isActive);
+    pane.hidden = !isActive;
+  });
 }
 
 function challengeLevelFromCredits(credits) {
@@ -1182,7 +1210,10 @@ function showDocumentRole(roleId) {
 
 function showSection(sectionId) {
   const profile = currentProfile();
-  const nextSection = sectionId === "admin" && !profile?.admin ? "overview" : sectionId;
+  const requestedSection = sectionId || "overview";
+  const requestPane = requestPaneFromSection(requestedSection);
+  const normalizedSection = normalizeSectionId(requestedSection);
+  const nextSection = normalizedSection === "admin" && !profile?.admin ? "overview" : normalizedSection;
   const target = document.querySelector(`[data-section="${nextSection}"]`);
   const navSection = {
     "document-detail": "documents",
@@ -1204,6 +1235,10 @@ function showSection(sectionId) {
 
   if (nextSection === "documents") {
     showDocumentRole(null);
+  }
+
+  if (nextSection === "requests") {
+    showRequestPane(requestPane);
   }
 
   if (pageTitle) {
@@ -1920,7 +1955,14 @@ navLinks.forEach((link) => {
     event.preventDefault();
     const sectionId = link.dataset.sectionLink;
     showSection(sectionId);
-    history.replaceState(null, "", `#${sectionId}`);
+    history.replaceState(null, "", `#${normalizeSectionId(sectionId)}`);
+  });
+});
+
+requestTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    showRequestPane(tab.dataset.requestTab);
+    history.replaceState(null, "", "#requests");
   });
 });
 
@@ -2324,8 +2366,9 @@ internshipActionButtons.forEach((button) => {
     const edForm = document.querySelector('form[data-label="ED Request"]');
     const details = edForm?.elements.details;
 
-    showSection("ed-requests");
-    history.replaceState(null, "", "#ed-requests");
+    showSection("requests");
+    showRequestPane("ed");
+    history.replaceState(null, "", "#requests");
 
     if (edForm?.elements.type) {
       edForm.elements.type.value = "Assignment request";

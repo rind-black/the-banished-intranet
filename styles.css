@@ -3719,6 +3719,47 @@ h3 {
   align-items: start;
 }
 
+.request-type-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(203, 169, 92, 0.26);
+  background: rgba(203, 169, 92, 0.26);
+  box-shadow: var(--shadow);
+}
+
+.request-type-tabs button {
+  min-height: 58px;
+  border: 0;
+  background: rgba(17, 17, 19, 0.96);
+  color: rgba(247, 243, 234, 0.58);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.request-type-tabs button:hover,
+.request-type-tabs button.active {
+  background:
+    linear-gradient(135deg, rgba(203, 169, 92, 0.12), transparent 60%),
+    #050506;
+  color: var(--ink-strong);
+}
+
+.request-type-tabs button.active {
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+
+.request-pane {
+  display: none;
+}
+
+.request-pane.active {
+  display: block;
+}
+
 .request-form,
 .profile-form,
 .admin-card {
@@ -4108,6 +4149,10 @@ h3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .request-type-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .content-admin-card {
     grid-column: span 1;
   }
@@ -4179,6 +4224,10 @@ h3 {
   }
 
   .overview-route {
+    grid-template-columns: 1fr;
+  }
+
+  .request-type-tabs {
     grid-template-columns: 1fr;
   }
 
