@@ -222,16 +222,287 @@
             </div>
           </div>
 
-          <div class="document-list" data-doc-role="project-manager">
-            <a class="document" href="assets/documents/departments.pdf" target="_blank" rel="noreferrer">
-              <span class="document-icon">PDF</span>
-              <span>
-                <strong>Departments</strong>
-                <small>Company department structure, ownership, and collaboration lanes</small>
+          <div class="document-list document-card-grid" data-doc-role="project-manager">
+            <button class="document-tile" type="button" data-document-page="departments-document">
+              <span class="document-visual" aria-hidden="true">
+                <span class="org-node org-node-ceo">CEO</span>
+                <span class="org-node">HR</span>
+                <span class="org-node">OPS</span>
+                <span class="org-node">IT</span>
+                <span class="org-node">LEGAL</span>
               </span>
-            </a>
+              <span class="document-tile-body">
+                <span class="document-label">PM Guide</span>
+                <strong>Departments</strong>
+                <small>Who to contact, response times, escalation paths, and PM working rules.</small>
+              </span>
+            </button>
           </div>
 
+          <article class="policy-document department-document" id="departments-document" hidden>
+            <header class="policy-hero department-hero">
+              <p class="eyebrow">For new Project Managers</p>
+              <h3>Departments and Who to Contact</h3>
+              <p>
+                Starting a new role means new faces, new tools, and plenty of "who do I ask about this?"
+                moments. This guide shows how The Banished is organized, which team owns what, and how fast
+                each lane usually responds.
+              </p>
+            </header>
+
+            <div class="department-alert">
+              <strong>Not sure who to contact?</strong>
+              <p>Email <a href="mailto:hr@the-banished.com">hr@the-banished.com</a> and HR will point you in the right direction.</p>
+            </div>
+
+            <section class="department-section">
+              <div class="department-section-heading">
+                <span>01</span>
+                <div>
+                  <h4>How We Are Set Up</h4>
+                  <p>All departments report to the CEO. As a PM, your daily rhythm will mostly touch Production and Organizational, with Legal, Financial, IT, R&D, and Creative brought in when the work requires them.</p>
+                </div>
+              </div>
+              <div class="department-map">
+                <div class="department-org">
+                  <span class="org-apex">CEO</span>
+                  <div>
+                    <span>Financial</span>
+                    <span>Learning and Development</span>
+                    <span>Creative</span>
+                    <span>Marketing and Advertisement</span>
+                    <span>Corporate Communications</span>
+                    <span>Distribution and Sales</span>
+                    <span>Legal</span>
+                    <span>Production</span>
+                    <span>Merchandising</span>
+                    <span>Organizational</span>
+                    <span>R&D</span>
+                    <span>Events</span>
+                  </div>
+                </div>
+                <div class="department-fit-card">
+                  <strong>Where you fit as a new PM</strong>
+                  <p>Creative and technical questions move through Creative, R&D, and Production. Anything involving a signature goes to Legal first. Payments and billing go to Financial. If something does not fit neatly anywhere, start with Organizational.</p>
+                </div>
+              </div>
+            </section>
+
+            <section class="department-section">
+              <div class="department-section-heading">
+                <span>02</span>
+                <div>
+                  <h4>Expected Response Times</h4>
+                  <p>Business-day response times apply Monday to Friday, 9am to 6pm PST. For urgent issues outside those hours, email support@the-banished.com or organizational@the-banished.com and put URGENT in the subject line.</p>
+                </div>
+              </div>
+              <div class="department-sla-grid">
+                <article><strong>4 hours</strong><span>IT critical and blocking issues</span></article>
+                <article><strong>Same day</strong><span>Press and media only</span></article>
+                <article><strong>1 business day</strong><span>IT support for active film or comics projects</span></article>
+                <article><strong>2 business days</strong><span>HR, project milestones, corporate communications, and brand questions</span></article>
+                <article><strong>2-5 business days</strong><span>Production, Creative, Financial, and Education</span></article>
+                <article><strong>3 business days</strong><span>R&D and Organizational</span></article>
+                <article><strong>3-5 business days</strong><span>Partner company teams</span></article>
+                <article><strong>Up to 3 weeks</strong><span>Legal and Events</span></article>
+              </div>
+            </section>
+
+            <section class="department-section">
+              <div class="department-section-heading">
+                <span>03</span>
+                <div>
+                  <h4>Quick Lookup</h4>
+                  <p>Use this table when you need the fastest practical route to the right team.</p>
+                </div>
+              </div>
+              <div class="department-table-wrap">
+                <table class="department-table">
+                  <thead>
+                    <tr>
+                      <th>When you need to</th>
+                      <th>Talk to</th>
+                      <th>Email</th>
+                      <th>Hear back in</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Get set up on your first week</td>
+                      <td>HR</td>
+                      <td><a href="mailto:hr@the-banished.com">hr@the-banished.com</a></td>
+                      <td>4 hours</td>
+                    </tr>
+                    <tr>
+                      <td>Ask an HR or people question</td>
+                      <td>HR</td>
+                      <td><a href="mailto:hr@the-banished.com">hr@the-banished.com</a></td>
+                      <td>24 hours</td>
+                    </tr>
+                    <tr>
+                      <td>Chase a payment or submit an invoice</td>
+                      <td>Finance and Payments</td>
+                      <td><a href="mailto:payments@the-banished.com">payments@the-banished.com</a></td>
+                      <td>Tuesday or Friday</td>
+                    </tr>
+                    <tr>
+                      <td>Get a contract or NDA reviewed</td>
+                      <td>Legal</td>
+                      <td><a href="mailto:legal@the-banished.com">legal@the-banished.com</a></td>
+                      <td>Up to 3 weeks</td>
+                    </tr>
+                    <tr>
+                      <td>Fix a critical or blocking IT issue</td>
+                      <td>IT and Technical Support</td>
+                      <td><a href="mailto:support@the-banished.com">support@the-banished.com</a></td>
+                      <td>4 hours</td>
+                    </tr>
+                    <tr>
+                      <td>Check in on a project milestone</td>
+                      <td>Project Management</td>
+                      <td><a href="mailto:projects@the-banished.com">projects@the-banished.com</a></td>
+                      <td>2 business days</td>
+                    </tr>
+                    <tr>
+                      <td>Reach a creative or production team</td>
+                      <td>Production</td>
+                      <td><a href="mailto:production@the-banished.com">production@the-banished.com</a></td>
+                      <td>2 business days</td>
+                    </tr>
+                    <tr>
+                      <td>Handle anything press or media</td>
+                      <td>Corporate Communications</td>
+                      <td><a href="mailto:pr@the-banished.com">pr@the-banished.com</a></td>
+                      <td>Same day</td>
+                    </tr>
+                    <tr>
+                      <td>Ask about tools or R&D</td>
+                      <td>Research and Development</td>
+                      <td><a href="mailto:dev@the-banished.com">dev@the-banished.com</a></td>
+                      <td>3 business days</td>
+                    </tr>
+                    <tr>
+                      <td>Have no idea who to ask</td>
+                      <td>HR will point you</td>
+                      <td><a href="mailto:hr@the-banished.com">hr@the-banished.com</a></td>
+                      <td>24 hours</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="department-section">
+              <div class="department-section-heading">
+                <span>04</span>
+                <div>
+                  <h4>Team Notes for PMs</h4>
+                  <p>Each team has a different lane. Use these notes before you send a request.</p>
+                </div>
+              </div>
+              <div class="department-team-grid">
+                <article>
+                  <span>HR</span>
+                  <h5>hr@the-banished.com</h5>
+                  <p>Onboarding, employment questions, benefits, sensitive conversations, performance chats, and team dynamics.</p>
+                  <strong>PM tip</strong>
+                  <p>Give HR at least 48 hours notice before someone new joins your project.</p>
+                </article>
+                <article>
+                  <span>Organizational</span>
+                  <h5>organizational@the-banished.com</h5>
+                  <p>Project admin, logistics, cross-team coordination, scheduling, handoffs, and unclear ownership questions.</p>
+                  <strong>PM tip</strong>
+                  <p>Start here before Legal or Finance when the question needs routing.</p>
+                </article>
+                <article>
+                  <span>R&D</span>
+                  <h5>dev@the-banished.com</h5>
+                  <p>New tools, technical feasibility, internal workflows, custom tooling, automation, and pipeline ideas.</p>
+                  <strong>PM tip</strong>
+                  <p>Bring R&D in roughly two weeks early for anything custom or technically new.</p>
+                </article>
+                <article>
+                  <span>IT and Technical Support</span>
+                  <h5>support@the-banished.com</h5>
+                  <p>Accounts, tools, VPN, devices, access, company equipment, platform questions, and urgent security concerns.</p>
+                  <strong>PM tip</strong>
+                  <p>Critical blockers get a 4-hour response. Routine project support is usually 1 business day.</p>
+                </article>
+                <article>
+                  <span>Production</span>
+                  <h5>production@the-banished.com</h5>
+                  <p>Art, costume, screenwriting, photography, VFX, 3D animation, sound, creative schedules, and deliverables.</p>
+                  <strong>PM tip</strong>
+                  <p>Include project name, need, deadline, and context in the first message.</p>
+                </article>
+                <article>
+                  <span>Corporate Communications</span>
+                  <h5>pr@the-banished.com</h5>
+                  <p>Press, media, announcements, brand voice, and anything affecting how The Banished appears externally.</p>
+                  <strong>PM tip</strong>
+                  <p>If press contacts you directly, do not respond. Forward the message to PR.</p>
+                </article>
+                <article>
+                  <span>Education and Training</span>
+                  <h5>education@the-banished.com</h5>
+                  <p>Workshops, onboarding resources, courses, certifications, academic partnerships, and skill-building support.</p>
+                  <strong>PM tip</strong>
+                  <p>Flag workshop needs a few weeks before a major project phase.</p>
+                </article>
+                <article>
+                  <span>Financial</span>
+                  <h5>payments@the-banished.com</h5>
+                  <p>Invoices, billing, payment status, expenses, reimbursements, budgets, and bank transfer coordination.</p>
+                  <strong>PM tip</strong>
+                  <p>Point contractors to Payments and keep a note of invoice submission dates.</p>
+                </article>
+                <article>
+                  <span>Legal</span>
+                  <h5>legal@the-banished.com</h5>
+                  <p>Contracts, NDAs, confidentiality, IP, licensing, copyright, contractor agreements, and employment agreements.</p>
+                  <strong>PM tip</strong>
+                  <p>Before confirming scope, cost, or approval in writing, check with Legal.</p>
+                </article>
+              </div>
+            </section>
+
+            <section class="department-section">
+              <div class="department-section-heading">
+                <span>05</span>
+                <div>
+                  <h4>Things Worth Knowing Early</h4>
+                  <p>Small habits that make cross-team work faster and cleaner.</p>
+                </div>
+              </div>
+              <div class="department-rules">
+                <article><strong>Put the project name in your subject</strong><p>Use a format like "[PROJECT NOVA] Invoice question" so the message routes faster.</p></article>
+                <article><strong>Use URGENT carefully</strong><p>Save it for delays that would actually break something.</p></article>
+                <article><strong>Talk to Legal before you commit</strong><p>Confirming scope or cost in writing can create problems if Legal has not reviewed it.</p></article>
+                <article><strong>Build partner timelines in early</strong><p>Partner teams usually need 3-5 business days, so plan around that from the start.</p></article>
+                <article><strong>Give IT notice</strong><p>Send access requests at least 2 business days before a new team member starts.</p></article>
+                <article><strong>One thread, one thing</strong><p>Separate topics into separate messages so each one gets a complete answer.</p></article>
+              </div>
+            </section>
+
+            <footer class="policy-footer">
+              <strong>Something missing?</strong>
+              <span>Email <a href="mailto:hr@the-banished.com">hr@the-banished.com</a>. This guide is refreshed every quarter.</span>
+            </footer>
+          </article>
+
+        </section>
+
+        <section class="portal-section detail-page" id="document-detail" data-section="document-detail" aria-labelledby="document-detail-title">
+          <button class="back-button" type="button" data-return-section="documents" data-return-role="project-manager">Back to documents</button>
+          <div class="document-detail-shell" data-document-detail-content>
+            <article class="policy-document">
+              <header class="policy-hero">
+                <p class="eyebrow">Document</p>
+                <h2 id="document-detail-title">Select a document</h2>
+              </header>
+            </article>
+          </div>
         </section>
 
         <section class="portal-section" id="projects" data-section="projects" aria-labelledby="projects-title">

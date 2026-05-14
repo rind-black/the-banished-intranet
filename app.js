@@ -30,6 +30,7 @@ const projectDetailPriority = document.querySelector("[data-project-detail-prior
 const projectDetailRequirements = document.querySelector("[data-project-detail-requirements]");
 const projectDetailDeliverables = document.querySelector("[data-project-detail-deliverables]");
 const projectDetailNotes = document.querySelector("[data-project-detail-notes]");
+const documentDetailContent = document.querySelector("[data-document-detail-content]");
 const bonusDetailContent = document.querySelector("[data-bonus-detail-content]");
 const inviteForm = document.querySelector("[data-invite-form]");
 const inviteStatus = document.querySelector("[data-invite-status]");
@@ -101,6 +102,7 @@ const titles = {
   overview: "The Banished employee hub",
   announcements: "Company announcements",
   documents: "Company documents",
+  "document-detail": "Document detail",
   projects: "Current projects",
   "project-detail": "Project detail",
   bonuses: "Bonus information",
@@ -851,6 +853,7 @@ function showSection(sectionId) {
   const nextSection = sectionId === "admin" && !profile?.admin ? "overview" : sectionId;
   const target = document.querySelector(`[data-section="${nextSection}"]`);
   const navSection = {
+    "document-detail": "documents",
     "project-detail": "projects",
     "bonus-detail": "bonuses",
   }[nextSection] || nextSection;
@@ -1052,6 +1055,30 @@ function openBonusDetail(documentId) {
   }
 
   history.replaceState(null, "", "#bonus-detail");
+}
+
+function openDocumentDetail(documentId) {
+  const source = document.getElementById(documentId);
+
+  if (!source || !documentDetailContent) {
+    return;
+  }
+
+  const detail = source.cloneNode(true);
+  const heading = detail.querySelector("h3");
+  const title = heading?.textContent || "Document";
+
+  detail.hidden = false;
+  detail.removeAttribute("id");
+  heading?.setAttribute("id", "document-detail-title");
+  documentDetailContent.replaceChildren(detail);
+  showSection("document-detail");
+
+  if (pageTitle) {
+    pageTitle.textContent = title;
+  }
+
+  history.replaceState(null, "", "#document-detail");
 }
 
 function createPublishedCard(item) {
@@ -1821,6 +1848,12 @@ document.querySelectorAll("[data-bonus-page]").forEach((button) => {
   });
 });
 
+document.querySelectorAll("[data-document-page]").forEach((button) => {
+  button.addEventListener("click", () => {
+    openDocumentDetail(button.dataset.documentPage);
+  });
+});
+
 document.querySelectorAll("[data-project-page]").forEach((button) => {
   button.addEventListener("click", () => {
     openProjectDetail(projectPages[button.dataset.projectPage]);
@@ -1831,6 +1864,9 @@ document.querySelectorAll("[data-return-section]").forEach((button) => {
   button.addEventListener("click", () => {
     const sectionId = button.dataset.returnSection || "overview";
     showSection(sectionId);
+    if (button.dataset.returnRole) {
+      showDocumentRole(button.dataset.returnRole);
+    }
     history.replaceState(null, "", `#${sectionId}`);
   });
 });
