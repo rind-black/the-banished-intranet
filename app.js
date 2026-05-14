@@ -22,7 +22,7 @@ const challengeLevel = document.querySelector("[data-challenge-level]");
 const challengeProgress = document.querySelector("[data-challenge-progress]");
 const challengeProgressLabel = document.querySelector("[data-challenge-progress-label]");
 const challengePlayerCredits = document.querySelector("[data-challenge-player-credits]");
-const challengeFilterButtons = document.querySelectorAll("[data-challenge-filter]");
+const challengeFilterBar = document.querySelector("[data-challenge-filter-bar]");
 const projectDetailLabel = document.querySelector("[data-project-detail-label]");
 const projectDetailTitle = document.querySelector("[data-project-detail-title]");
 const projectDetailSummary = document.querySelector("[data-project-detail-summary]");
@@ -52,7 +52,7 @@ const requestsStoreKey = "tb-internal-requests";
 const contentStoreKey = "tb-internal-content";
 const inviteTempPassword = "PortalInvite12!";
 const companyEmailDomain = "@the-banished.com";
-let activeChallengeFilter = "all";
+let activeChallengeDepartment = "all";
 const monthNames = [
   "January",
   "February",
@@ -677,6 +677,67 @@ function challengeIconType(challenge) {
   return "map";
 }
 
+function challengeDepartment(challenge) {
+  const category = String(challenge.category || "").toLowerCase();
+  const icon = String(challenge.icon || "").toLowerCase();
+
+  if (category.includes("film") || category.includes("production") || category.includes("casting") || icon.includes("cast")) {
+    return { key: "production", label: "Production" };
+  }
+
+  if (category.includes("comic") || category.includes("partnership") || icon.includes("canon") || icon.includes("ip")) {
+    return { key: "creative", label: "Creative" };
+  }
+
+  if (category.includes("technology") || category.includes("automation") || category.includes("tools") || category.includes("security") || icon.includes("tech")) {
+    return { key: "technology", label: "Technology" };
+  }
+
+  if (category.includes("training")) {
+    return { key: "education", label: "Education" };
+  }
+
+  if (category.includes("culture") || category.includes("people")) {
+    return { key: "people", label: "People" };
+  }
+
+  return { key: "operations", label: "Operations" };
+}
+
+function renderChallengeDepartmentFilters(challenges) {
+  if (!challengeFilterBar) {
+    return;
+  }
+
+  const departments = [];
+  const seen = new Set();
+
+  challenges.forEach((challenge) => {
+    const department = challengeDepartment(challenge);
+
+    if (!seen.has(department.key)) {
+      seen.add(department.key);
+      departments.push(department);
+    }
+  });
+
+  if (activeChallengeDepartment !== "all" && !seen.has(activeChallengeDepartment)) {
+    activeChallengeDepartment = "all";
+  }
+
+  challengeFilterBar.replaceChildren();
+
+  [{ key: "all", label: "All departments" }, ...departments].forEach((department) => {
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.dataset.challengeDepartment = department.key;
+    button.className = department.key === activeChallengeDepartment ? "active" : "";
+    button.textContent = department.label;
+    challengeFilterBar.append(button);
+  });
+}
+
 function challengeIconSvg(type) {
   const paths = {
     film: [
@@ -765,16 +826,15 @@ function renderMonthlyChallenge() {
     return;
   }
 
-  challengeFilterButtons.forEach((button) => {
-    button.classList.toggle("active", button.dataset.challengeFilter === activeChallengeFilter);
-  });
+  renderChallengeDepartmentFilters(challenges);
 
   challengeList.replaceChildren();
 
   challenges.forEach((challenge, index) => {
     const difficulty = challengeDifficulty(challenge);
+    const department = challengeDepartment(challenge);
 
-    if (activeChallengeFilter !== "all" && difficulty.key !== activeChallengeFilter) {
+    if (activeChallengeDepartment !== "all" && department.key !== activeChallengeDepartment) {
       return;
     }
 
@@ -802,7 +862,7 @@ function renderMonthlyChallenge() {
     icon.dataset.tier = difficulty.tier;
     icon.innerHTML = challengeIconSvg(challengeIconType(challenge));
     content.className = "challenge-card-copy";
-    meta.textContent = `${difficulty.label} / ${challenge.category}`;
+    meta.textContent = `${department.label} / ${challenge.category}`;
     title.textContent = challenge.title;
     summary.textContent = challenge.summary;
     credits.className = "challenge-credit-pill";
@@ -834,7 +894,7 @@ function renderMonthlyChallenge() {
     detailTitle.textContent = "Mission dossier";
     detailText.textContent = challenge.details;
     statDifficulty.innerHTML = `<strong>${difficulty.label}</strong><small>Threat tier ${difficulty.tier}</small>`;
-    statProof.innerHTML = "<strong>Proof</strong><small>Artifact or short field report</small>";
+    statProof.innerHTML = `<strong>${department.label}</strong><small>Department lane</small>`;
     statReward.innerHTML = `<strong>+${challenge.credits}</strong><small>Credits / $${challenge.credits}</small>`;
     stats.append(statDifficulty, statProof, statReward);
     detailSteps.forEach((step) => {
@@ -1830,11 +1890,13 @@ roleButtons.forEach((button) => {
   });
 });
 
-challengeFilterButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    activeChallengeFilter = button.dataset.challengeFilter || "all";
+challengeFilterBar?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-challenge-department]");
+
+  if (button) {
+    activeChallengeDepartment = button.dataset.challengeDepartment || "all";
     renderMonthlyChallenge();
-  });
+  }
 });
 
 inviteForm?.addEventListener("submit", async (event) => {
