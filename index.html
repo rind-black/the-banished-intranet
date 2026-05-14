@@ -856,6 +856,23 @@
             </div>
           </div>
 
+          <div class="challenge-campaign">
+            <article class="challenge-campaign-copy">
+              <span>Season briefing</span>
+              <h3>The Board is a monthly side quest system for real company wins.</h3>
+              <p>
+                Each mission is a small operation with a clear reward. Pick a quest, bring back proof, get manager
+                approval, and turn useful work into portal credits that convert into bonus dollars.
+              </p>
+            </article>
+            <div class="challenge-loop" aria-label="Mission loop">
+              <article><span>01</span><strong>Choose quest</strong><small>Pick the mission that matches your lane.</small></article>
+              <article><span>02</span><strong>Bring proof</strong><small>Submit a link, artifact, screenshot, or short summary.</small></article>
+              <article><span>03</span><strong>Get cleared</strong><small>Your manager confirms usefulness and completion.</small></article>
+              <article><span>04</span><strong>Bank credits</strong><small>Approved credits appear in your profile.</small></article>
+            </div>
+          </div>
+
           <div class="challenge-game-panel">
             <article class="challenge-player-card">
               <span>Player level</span>
@@ -866,6 +883,9 @@
               <span data-challenge-month>Month</span>
               <strong data-challenge-credits>+0</strong>
               <small>available reward pool</small>
+              <div class="challenge-orbit" aria-label="Monthly credit charge">
+                <span data-challenge-progress-label>0%</span>
+              </div>
               <div class="challenge-progress" aria-label="Monthly reward progress">
                 <span data-challenge-progress></span>
               </div>
@@ -875,6 +895,13 @@
               <strong data-challenge-player-credits>0</strong>
               <p>Approved balance in your profile. 1 credit = $1.</p>
             </article>
+          </div>
+
+          <div class="challenge-filter-bar" aria-label="Mission difficulty filter">
+            <button class="active" type="button" data-challenge-filter="all">All missions</button>
+            <button type="button" data-challenge-filter="core">Core quests</button>
+            <button type="button" data-challenge-filter="advanced">Advanced quests</button>
+            <button type="button" data-challenge-filter="boss">Boss missions</button>
           </div>
 
           <div class="challenge-card-grid quest-board" data-challenge-list></div>
@@ -1633,11 +1660,6 @@
               </article>
             </div>
             <div class="internship-actions" aria-label="Internship actions">
-              <button class="internship-action-button" type="button" data-internship-action="mentor">
-                <span>Mentor</span>
-                <strong>Contact your mentor</strong>
-                <small>Open an ED request for mentor guidance, questions, or blocker context.</small>
-              </button>
               <button class="internship-action-button" type="button" data-internship-action="assignment">
                 <span>Assignment</span>
                 <strong>Get assignment</strong>
@@ -1800,7 +1822,6 @@
                   <option>Training resource</option>
                   <option>Knowledge-sharing session</option>
                   <option>Onboarding material</option>
-                  <option>Mentor check-in</option>
                   <option>Assignment request</option>
                   <option>Course or certification question</option>
                   <option>Speaker or learning event</option>

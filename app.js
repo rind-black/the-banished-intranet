@@ -20,7 +20,9 @@ const challengeCredits = document.querySelector("[data-challenge-credits]");
 const challengeList = document.querySelector("[data-challenge-list]");
 const challengeLevel = document.querySelector("[data-challenge-level]");
 const challengeProgress = document.querySelector("[data-challenge-progress]");
+const challengeProgressLabel = document.querySelector("[data-challenge-progress-label]");
 const challengePlayerCredits = document.querySelector("[data-challenge-player-credits]");
+const challengeFilterButtons = document.querySelectorAll("[data-challenge-filter]");
 const projectDetailLabel = document.querySelector("[data-project-detail-label]");
 const projectDetailTitle = document.querySelector("[data-project-detail-title]");
 const projectDetailSummary = document.querySelector("[data-project-detail-summary]");
@@ -50,6 +52,7 @@ const requestsStoreKey = "tb-internal-requests";
 const contentStoreKey = "tb-internal-content";
 const inviteTempPassword = "PortalInvite12!";
 const companyEmailDomain = "@the-banished.com";
+let activeChallengeFilter = "all";
 const monthNames = [
   "January",
   "February",
@@ -635,6 +638,96 @@ function challengeLevelFromCredits(credits) {
   return "Level 1 / Scout";
 }
 
+function challengeDifficulty(challenge) {
+  if (challenge.credits >= 15) {
+    return { key: "boss", label: "Boss mission", tier: "S" };
+  }
+
+  if (challenge.credits >= 12) {
+    return { key: "advanced", label: "Advanced quest", tier: "A" };
+  }
+
+  return { key: "core", label: "Core quest", tier: "C" };
+}
+
+function challengeIconType(challenge) {
+  const category = String(challenge.category || "").toLowerCase();
+  const icon = String(challenge.icon || "").toLowerCase();
+
+  if (category.includes("film") || category.includes("production") || icon.includes("film") || icon.includes("cast")) {
+    return "film";
+  }
+
+  if (category.includes("comic") || icon.includes("canon") || icon.includes("ip")) {
+    return "story";
+  }
+
+  if (category.includes("automation") || category.includes("technology") || category.includes("tools") || icon.includes("tech")) {
+    return "gear";
+  }
+
+  if (category.includes("security") || icon.includes("safe")) {
+    return "shield";
+  }
+
+  if (category.includes("culture") || category.includes("people") || icon.includes("thank")) {
+    return "spark";
+  }
+
+  return "map";
+}
+
+function challengeIconSvg(type) {
+  const paths = {
+    film: [
+      '<path d="M22 31h76v58H22z" />',
+      '<path d="M22 46h76" />',
+      '<path d="M35 31l10 15" />',
+      '<path d="M55 31l10 15" />',
+      '<path d="M75 31l10 15" />',
+      '<path d="M48 62l18 10-18 10z" />',
+    ],
+    story: [
+      '<path d="M28 24h28c8 0 14 6 14 14v58H42c-8 0-14-6-14-14z" />',
+      '<path d="M70 38c0-8 6-14 14-14h8v72H70" />',
+      '<path d="M42 44h14" />',
+      '<path d="M42 58h14" />',
+      '<path d="M84 44h8" />',
+    ],
+    gear: [
+      '<path d="M60 38a22 22 0 1 0 0 44 22 22 0 0 0 0-44z" />',
+      '<path d="M60 22v12" />',
+      '<path d="M60 86v12" />',
+      '<path d="M22 60h12" />',
+      '<path d="M86 60h12" />',
+      '<path d="M33 33l9 9" />',
+      '<path d="M78 78l9 9" />',
+      '<path d="M87 33l-9 9" />',
+      '<path d="M42 78l-9 9" />',
+    ],
+    shield: [
+      '<path d="M60 20l34 12v24c0 23-14 38-34 46-20-8-34-23-34-46V32z" />',
+      '<path d="M45 60l10 10 22-25" />',
+    ],
+    spark: [
+      '<path d="M60 18l9 26 27 6-23 16 3 28-16-18-16 18 3-28-23-16 27-6z" />',
+      '<path d="M22 28l6 10" />',
+      '<path d="M98 28l-6 10" />',
+      '<path d="M28 96l10-8" />',
+      '<path d="M92 96l-10-8" />',
+    ],
+    map: [
+      '<path d="M24 32l24-10 24 10 24-10v66L72 98 48 88 24 98z" />',
+      '<path d="M48 22v66" />',
+      '<path d="M72 32v66" />',
+      '<path d="M40 55h16" />',
+      '<path d="M79 64h10" />',
+    ],
+  };
+
+  return `<svg viewBox="0 0 120 120" focusable="false" aria-hidden="true">${(paths[type] || paths.map).join("")}</svg>`;
+}
+
 function renderMonthlyChallenge() {
   const challenges = currentMonthlyChallenges();
   const month = monthNames[new Date().getMonth()];
@@ -663,13 +756,28 @@ function renderMonthlyChallenge() {
     challengeProgress.style.width = `${progress}%`;
   }
 
+  if (challengeProgressLabel) {
+    challengeProgressLabel.textContent = `${progress}%`;
+    challengeProgressLabel.closest(".challenge-orbit")?.style.setProperty("--charge", `${progress * 3.6}deg`);
+  }
+
   if (!challengeList) {
     return;
   }
 
+  challengeFilterButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.challengeFilter === activeChallengeFilter);
+  });
+
   challengeList.replaceChildren();
 
   challenges.forEach((challenge, index) => {
+    const difficulty = challengeDifficulty(challenge);
+
+    if (activeChallengeFilter !== "all" && difficulty.key !== activeChallengeFilter) {
+      return;
+    }
+
     const card = document.createElement("article");
     const button = document.createElement("button");
     const icon = document.createElement("span");
@@ -680,42 +788,52 @@ function renderMonthlyChallenge() {
     const credits = document.createElement("em");
     const action = document.createElement("span");
     const detail = document.createElement("div");
-    const difficulty = challenge.credits >= 15 ? "Boss mission" : challenge.credits >= 12 ? "Advanced quest" : "Core quest";
+    const stats = document.createElement("div");
 
     card.className = "challenge-card";
+    card.dataset.difficulty = difficulty.key;
     button.type = "button";
     button.className = "challenge-card-button";
     button.setAttribute("aria-expanded", "false");
     icon.className = "challenge-icon";
-    icon.textContent = challenge.icon || String(index + 1).padStart(2, "0");
+    icon.dataset.tier = difficulty.tier;
+    icon.innerHTML = challengeIconSvg(challengeIconType(challenge));
     content.className = "challenge-card-copy";
-    meta.textContent = `${difficulty} / ${challenge.category}`;
+    meta.textContent = `${difficulty.label} / ${challenge.category}`;
     title.textContent = challenge.title;
     summary.textContent = challenge.summary;
     credits.className = "challenge-credit-pill";
     credits.textContent = `Reward +${challenge.credits} / $${challenge.credits}`;
     action.className = "challenge-action";
-    action.textContent = "Open mission";
+    action.textContent = "Start mission";
     detail.className = "challenge-card-detail";
     detail.hidden = true;
+    stats.className = "challenge-detail-stats";
 
     const detailTitle = document.createElement("h4");
     const detailText = document.createElement("p");
     const detailList = document.createElement("ul");
+    const statDifficulty = document.createElement("span");
+    const statProof = document.createElement("span");
+    const statReward = document.createElement("span");
     const detailSteps = [
       `Complete the challenge during ${month}.`,
       "Send the artifact, link, screenshot, or short summary to your manager.",
       "Approved credits are added to your profile by an admin. 1 credit = $1.",
     ];
 
-    detailTitle.textContent = "How to complete";
+    detailTitle.textContent = "Mission dossier";
     detailText.textContent = challenge.details;
+    statDifficulty.innerHTML = `<strong>${difficulty.label}</strong><small>Threat tier ${difficulty.tier}</small>`;
+    statProof.innerHTML = "<strong>Proof</strong><small>Artifact or short field report</small>";
+    statReward.innerHTML = `<strong>+${challenge.credits}</strong><small>Credits / $${challenge.credits}</small>`;
+    stats.append(statDifficulty, statProof, statReward);
     detailSteps.forEach((step) => {
       const item = document.createElement("li");
       item.textContent = step;
       detailList.append(item);
     });
-    detail.append(detailTitle, detailText, detailList);
+    detail.append(detailTitle, stats, detailText, detailList);
 
     content.append(meta, title, summary);
     button.append(icon, content, credits, action);
@@ -728,8 +846,12 @@ function renderMonthlyChallenge() {
       challengeList.querySelectorAll(".challenge-card.open").forEach((openCard) => {
         const openButton = openCard.querySelector(".challenge-card-button");
         const openDetail = openCard.querySelector(".challenge-card-detail");
+        const openAction = openCard.querySelector(".challenge-action");
         openCard.classList.remove("open");
         openButton?.setAttribute("aria-expanded", "false");
+        if (openAction) {
+          openAction.textContent = "Start mission";
+        }
 
         if (openDetail) {
           openDetail.hidden = true;
@@ -739,10 +861,18 @@ function renderMonthlyChallenge() {
       if (!isOpen) {
         card.classList.add("open");
         button.setAttribute("aria-expanded", "true");
+        action.textContent = "Mission active";
         detail.hidden = false;
       }
     });
   });
+
+  if (!challengeList.children.length) {
+    const empty = document.createElement("article");
+    empty.className = "challenge-empty-state";
+    empty.innerHTML = "<strong>No missions in this tier</strong><span>Switch difficulty to see the rest of this month's board.</span>";
+    challengeList.append(empty);
+  }
 }
 
 function syncProfileFromDirectory(profile) {
@@ -1691,6 +1821,13 @@ roleButtons.forEach((button) => {
   });
 });
 
+challengeFilterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    activeChallengeFilter = button.dataset.challengeFilter || "all";
+    renderMonthlyChallenge();
+  });
+});
+
 inviteForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -1992,22 +2129,18 @@ internshipPopupCards.forEach((card) => {
 
 internshipActionButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const action = button.dataset.internshipAction;
     const edForm = document.querySelector('form[data-label="ED Request"]');
-    const requestType = action === "assignment" ? "Assignment request" : "Mentor check-in";
     const details = edForm?.elements.details;
 
     showSection("ed-requests");
     history.replaceState(null, "", "#ed-requests");
 
     if (edForm?.elements.type) {
-      edForm.elements.type.value = requestType;
+      edForm.elements.type.value = "Assignment request";
     }
 
     if (details && !details.value) {
-      details.placeholder = action === "assignment"
-        ? "Tell ED which internship track you are in, what you have already completed, and what assignment or brief you need next."
-        : "Tell ED who your mentor is, what you need help with, and whether this is a question, blocker, feedback request, or check-in.";
+      details.placeholder = "Tell ED which internship track you are in, what you have already completed, and what assignment or brief you need next.";
       details.focus();
     }
   });
