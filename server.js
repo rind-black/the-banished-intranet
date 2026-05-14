@@ -11,7 +11,12 @@ const rootDir = __dirname;
 const port = Number(process.env.PORT || 4173);
 const host = process.env.HOST || "127.0.0.1";
 const companyDomain = "@the-banished.com";
-const allowedRecipients = new Set(["support@the-banished.com", "hr@the-banished.com"]);
+const allowedRecipients = new Set([
+  "support@the-banished.com",
+  "hr@the-banished.com",
+  "organizational@the-banished.com",
+  "education@the-banished.com",
+]);
 const mimeTypes = {
   ".css": "text/css; charset=utf-8",
   ".html": "text/html; charset=utf-8",
@@ -326,7 +331,7 @@ async function handleRequest(request, response) {
   const from = cleanEmail(payload.from);
 
   if (!allowedRecipients.has(recipient)) {
-    throw new HttpError(400, "This request can only be sent to support@the-banished.com or hr@the-banished.com.");
+    throw new HttpError(400, "This request can only be sent to an approved The Banished request mailbox.");
   }
 
   if (from && !isCompanyEmail(from)) {

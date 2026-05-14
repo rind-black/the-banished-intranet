@@ -91,8 +91,16 @@
             <span aria-hidden="true">13</span>
             HR Requests
           </a>
-          <a class="nav-link" href="#admin" data-section-link="admin" data-admin-only hidden>
+          <a class="nav-link" href="#org-requests" data-section-link="org-requests">
             <span aria-hidden="true">14</span>
+            Org Requests
+          </a>
+          <a class="nav-link" href="#ed-requests" data-section-link="ed-requests">
+            <span aria-hidden="true">15</span>
+            ED Requests
+          </a>
+          <a class="nav-link" href="#admin" data-section-link="admin" data-admin-only hidden>
+            <span aria-hidden="true">16</span>
             Admin
           </a>
         </nav>
@@ -224,14 +232,21 @@
 
           <div class="document-list document-card-grid" data-doc-role="project-manager">
             <button class="document-tile" type="button" data-document-page="departments-document">
-              <span class="document-visual" aria-hidden="true">
-                <span class="org-node org-node-ceo">CEO</span>
-                <span class="org-node">HR</span>
-                <span class="org-node">OPS</span>
-                <span class="org-node">IT</span>
-                <span class="org-node">LEGAL</span>
+              <span class="document-icon-plate" aria-hidden="true">
+                <svg viewBox="0 0 120 120" focusable="false">
+                  <path d="M58 16h4c16 0 29 13 29 29v4" />
+                  <path d="M62 104h-4c-16 0-29-13-29-29v-4" />
+                  <path d="M27 28h32v32H27z" />
+                  <path d="M61 60h32v32H61z" />
+                  <path d="M43 60v12h18" />
+                  <path d="M59 44h17v16" />
+                  <path d="M37 40h12" />
+                  <path d="M37 48h12" />
+                  <path d="M71 72h12" />
+                  <path d="M71 80h12" />
+                </svg>
               </span>
-              <span class="document-tile-body">
+              <span class="document-tile-caption">
                 <span class="document-label">PM Guide</span>
                 <strong>Departments</strong>
                 <small>Who to contact, response times, escalation paths, and PM working rules.</small>
@@ -1223,12 +1238,14 @@
               <span>04</span>
               <div>
                 <h4>Special days for everyone</h4>
+                <p>These are The Banished additions: extra care layered on top of the regular holiday calendar.</p>
                 <div class="holiday-list">
                   <article><strong>December 25 - January 1</strong><span>Winter Break</span><small>Full week off, company-wide</small></article>
                   <article><strong>Your birthday</strong><span>Birthday Off</span><small>Take the nearest weekday if it falls on a weekend or holiday</small></article>
                   <article><strong>Once per year</strong><span>Mental Health Day</span><small>Use when you need it</small></article>
                   <article><strong>Once per year</strong><span>Volunteer Day</span><small>Give back to a cause you care about</small></article>
                   <article><strong>Once per year</strong><span>Floating Holiday</span><small>Your culture, your day</small></article>
+                  <article><strong>Twice per month</strong><span>Personal Recharge Days</span><small>Separate day-offs that reset monthly and do not roll over</small></article>
                 </div>
               </div>
             </div>
@@ -1238,10 +1255,12 @@
               <div>
                 <h4>International flexibility</h4>
                 <p>
-                  If you want to observe a holiday from your home country that is not on this list, request it through
-                  your direct manager. Requests should be made at least two weeks in advance where possible.
+                  We are a team from many places, and some days carry real meaning that does not always line up with
+                  US or Canadian calendars. Floating Holidays are for that, and specific national holidays that matter
+                  deeply to you can be reviewed case by case.
                 </p>
                 <ul>
+                  <li>Request through your direct manager at least two weeks in advance where possible.</li>
                   <li>Your Floating Holiday covers one day automatically.</li>
                   <li>Additional days are subject to approval.</li>
                   <li>Approved international holidays follow the same paid or non-working rules based on work type.</li>
@@ -1252,13 +1271,56 @@
             <div class="policy-section">
               <span>06</span>
               <div>
+                <h4>The annual celebration calendar</h4>
+                <p>These are not days off. They are moments when the company can gather, create something fun, eat well, and remember why we like working together. Participation is always optional.</p>
+                <div class="holiday-list">
+                  <article><strong>October 31</strong><span>Halloween at The Banished Inc.</span><small>The office stops pretending to be professional for one day</small></article>
+                  <article><strong>Second week of December</strong><span>End of Year Celebration</span><small>An actual celebration of the year we had</small></article>
+                  <article><strong>Project close</strong><span>Project Wrap Celebration</span><small>When the last deliverable ships and the team can breathe</small></article>
+                </div>
+              </div>
+            </div>
+
+            <div class="policy-section">
+              <span>07</span>
+              <div>
+                <h4>Recurring team events</h4>
+                <p>These run throughout the year and are open across the company, not only to the team most closely associated with the format.</p>
+                <div class="holiday-list">
+                  <article><strong>Tech + Creative</strong><span>Hackathons and Game Jams</span><small>Build something in a day, ship it, and see what happens</small></article>
+                  <article><strong>Production + curious minds</strong><span>Movie Nights and Screenwriting Meetups</span><small>For people who think about storytelling even when they are not working</small></article>
+                  <article><strong>All departments</strong><span>Workshops and Knowledge-Sharing Sessions</span><small>Someone here knows something another teammate would want to know</small></article>
+                  <article><strong>Once a month</strong><span>Themed Thursdays</span><small>Light, optional, announced one week ahead, and approved by Organizational first</small></article>
+                </div>
+              </div>
+            </div>
+
+            <div class="policy-section">
+              <span>08</span>
+              <div>
                 <h4>How to request time off</h4>
+                <p>Most holidays are automatic. Flexible days only need a clear, simple route.</p>
                 <div class="holiday-list">
                   <article><strong>Birthday Off</strong><span>Let your manager know in advance</span><small>No formal request needed</small></article>
                   <article><strong>Mental Health Day</strong><span>Notify your manager same day or before</span><small>No justification required</small></article>
                   <article><strong>Volunteer Day</strong><span>Schedule with your manager</span><small>Brief note on the cause appreciated</small></article>
                   <article><strong>Floating Holiday</strong><span>Request via your manager</span><small>Minimum two weeks ahead</small></article>
                   <article><strong>International Holiday</strong><span>Request via your manager</span><small>Escalated for approval, case by case</small></article>
+                  <article><strong>Personal Recharge Days</strong><span>Request via your manager</span><small>Twice per month, minimum two weeks ahead</small></article>
+                </div>
+              </div>
+            </div>
+
+            <div class="policy-section">
+              <span>09</span>
+              <div>
+                <h4>How to propose your own event</h4>
+                <p>You do not need a polished deck or a full plan. You need a clear enough idea that Organizational or Education can help shape it.</p>
+                <div class="holiday-flow">
+                  <article><span>01</span><strong>Work out the idea</strong><p>Clarify what the event is, who it is for, and roughly when it should happen.</p></article>
+                  <article><span>02</span><strong>Submit it through the internal system</strong><p>Use the event request form and leave notes on anything you are not sure about.</p></article>
+                  <article><span>03</span><strong>Org or ED reviews it</strong><p>Organizational reviews community, social, or cultural events. ED reviews learning sessions, workshops, and speaker events.</p></article>
+                  <article><span>04</span><strong>They help make it happen</strong><p>Once approved, they help with logistics, space, budget, and company-wide announcements.</p></article>
                 </div>
               </div>
             </div>
@@ -1661,6 +1723,94 @@
           </div>
         </section>
 
+        <section class="portal-section" id="org-requests" data-section="org-requests" aria-labelledby="org-title">
+          <div class="request-layout">
+            <div class="intro-panel">
+              <p class="eyebrow">Operations</p>
+              <h2 id="org-title">Org Requests</h2>
+              <p>Contact Organizational for project logistics, cross-team scheduling, handoffs, event coordination, unclear ownership, operational blockers, and requests that need routing before they go to a specialist team.</p>
+            </div>
+
+            <form class="request-form" action="/api/requests" method="post" data-request-form data-recipient="organizational@the-banished.com" data-label="Org Request">
+              <label>
+                Full name
+                <input name="name" type="text" autocomplete="name" placeholder="Your name" />
+              </label>
+              <label>
+                Request type
+                <select name="type">
+                  <option value="">Select request type</option>
+                  <option>Project logistics</option>
+                  <option>Cross-team scheduling</option>
+                  <option>Handoff or ownership question</option>
+                  <option>Event coordination</option>
+                  <option>Operations support</option>
+                  <option>Escalation routing</option>
+                  <option>Other organizational request</option>
+                </select>
+              </label>
+              <label>
+                Priority
+                <select name="priority">
+                  <option>Normal</option>
+                  <option>Urgent</option>
+                  <option>Time-sensitive</option>
+                </select>
+              </label>
+              <label>
+                Details
+                <textarea name="details" rows="6" placeholder="Describe what Organizational should help coordinate"></textarea>
+              </label>
+              <button class="primary-button" type="submit">Send to Org</button>
+              <p class="request-status" data-request-status hidden></p>
+            </form>
+          </div>
+        </section>
+
+        <section class="portal-section" id="ed-requests" data-section="ed-requests" aria-labelledby="ed-title">
+          <div class="request-layout">
+            <div class="intro-panel">
+              <p class="eyebrow">Education</p>
+              <h2 id="ed-title">ED Requests</h2>
+              <p>Contact Education for workshops, onboarding resources, knowledge-sharing sessions, training materials, course or certification questions, speaker ideas, and skill-building support before major project phases.</p>
+            </div>
+
+            <form class="request-form" action="/api/requests" method="post" data-request-form data-recipient="education@the-banished.com" data-label="ED Request">
+              <label>
+                Full name
+                <input name="name" type="text" autocomplete="name" placeholder="Your name" />
+              </label>
+              <label>
+                Request type
+                <select name="type">
+                  <option value="">Select request type</option>
+                  <option>Workshop request</option>
+                  <option>Training resource</option>
+                  <option>Knowledge-sharing session</option>
+                  <option>Onboarding material</option>
+                  <option>Course or certification question</option>
+                  <option>Speaker or learning event</option>
+                  <option>Other education request</option>
+                </select>
+              </label>
+              <label>
+                Priority
+                <select name="priority">
+                  <option>Normal</option>
+                  <option>Urgent</option>
+                  <option>Before project kickoff</option>
+                </select>
+              </label>
+              <label>
+                Details
+                <textarea name="details" rows="6" placeholder="Describe the learning, workshop, or education support needed"></textarea>
+              </label>
+              <button class="primary-button" type="submit">Send to ED</button>
+              <p class="request-status" data-request-status hidden></p>
+            </form>
+          </div>
+        </section>
+
         <section class="portal-section" id="admin" data-section="admin" data-admin-only hidden aria-labelledby="admin-title">
           <div class="section-heading">
             <div>
@@ -1785,6 +1935,8 @@
                     <option value="monthly-challenge">Challenge of the Month</option>
                     <option value="it-requests">IT Requests</option>
                     <option value="hr-requests">HR Requests</option>
+                    <option value="org-requests">Org Requests</option>
+                    <option value="ed-requests">ED Requests</option>
                   </select>
                 </label>
                 <label>

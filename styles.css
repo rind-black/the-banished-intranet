@@ -758,25 +758,21 @@ h3 {
 
 .document-tile {
   display: grid;
-  align-content: space-between;
-  gap: 18px;
+  gap: 12px;
   width: 100%;
-  min-height: 280px;
-  aspect-ratio: 1;
-  padding: 18px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(203, 169, 92, 0.12), transparent 42%),
-    linear-gradient(180deg, rgba(247, 243, 234, 0.05), transparent 72%),
-    rgba(17, 17, 19, 0.95);
+  max-width: 280px;
+  border: 0;
+  background: transparent;
   color: var(--ink);
-  text-align: left;
-  box-shadow: var(--shadow);
+  text-align: center;
   cursor: pointer;
 }
 
 .document-tile:hover {
+  background: transparent;
+}
+
+.document-tile:hover .document-icon-plate {
   border-color: rgba(203, 169, 92, 0.58);
   background:
     linear-gradient(135deg, rgba(231, 55, 47, 0.14), transparent 46%),
@@ -784,52 +780,39 @@ h3 {
     rgba(17, 17, 19, 0.98);
 }
 
-.document-visual {
-  position: relative;
+.document-icon-plate {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  min-height: 126px;
-  padding-top: 42px;
-}
-
-.document-visual::before {
-  content: "";
-  position: absolute;
-  top: 28px;
-  right: 22px;
-  left: 22px;
-  height: 1px;
-  background: rgba(203, 169, 92, 0.42);
-}
-
-.org-node {
-  display: grid;
-  min-height: 34px;
+  width: 100%;
+  aspect-ratio: 1;
   place-items: center;
-  border: 1px solid rgba(247, 243, 234, 0.16);
+  border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(5, 5, 6, 0.78);
-  color: rgba(247, 243, 234, 0.72);
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: 0;
+  background:
+    linear-gradient(135deg, rgba(203, 169, 92, 0.12), transparent 42%),
+    linear-gradient(180deg, rgba(247, 243, 234, 0.05), transparent 72%),
+    rgba(17, 17, 19, 0.95);
+  box-shadow: var(--shadow);
 }
 
-.org-node-ceo {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 72px;
-  min-height: 34px;
-  transform: translateX(-50%);
-  border-color: rgba(203, 169, 92, 0.72);
+.document-icon-plate svg {
+  width: 48%;
   color: var(--gold);
+  filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.35));
 }
 
-.document-tile-body {
+.document-icon-plate path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 5;
+}
+
+.document-tile-caption {
   display: grid;
-  gap: 9px;
+  justify-items: center;
+  gap: 7px;
+  padding: 0 6px;
 }
 
 .document-label {
@@ -2169,6 +2152,50 @@ h3 {
   backdrop-filter: blur(14px);
 }
 
+.holiday-flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.holiday-flow article {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(247, 243, 234, 0.045), transparent 70%),
+    rgba(7, 7, 8, 0.72);
+}
+
+.holiday-flow span,
+.holiday-flow strong {
+  display: block;
+}
+
+.holiday-flow span {
+  margin-bottom: 28px;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.holiday-flow strong {
+  margin-bottom: 10px;
+  color: var(--ink-strong);
+  font-size: 14px;
+  font-weight: 860;
+  line-height: 1.28;
+  text-transform: uppercase;
+}
+
+.holiday-flow p {
+  margin: 0;
+  color: rgba(247, 243, 234, 0.62);
+  font-size: 13px;
+  line-height: 1.52;
+}
+
 .internship-layout {
   display: grid;
   gap: 16px;
@@ -2869,6 +2896,7 @@ h3 {
   .department-rules,
   .holiday-list,
   .holiday-list.compact,
+  .holiday-flow,
   .project-list,
   .project-status-grid,
   .project-detail-grid,

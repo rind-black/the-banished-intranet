@@ -115,6 +115,8 @@ const titles = {
   "monthly-challenge": "Challenge of the Month",
   "it-requests": "IT request center",
   "hr-requests": "HR request center",
+  "org-requests": "Organizational request center",
+  "ed-requests": "Education request center",
   admin: "Admin console",
   profile: "Profile settings",
 };
@@ -133,6 +135,8 @@ const editableSections = {
   "monthly-challenge": "Challenge of the Month",
   "it-requests": "IT Requests",
   "hr-requests": "HR Requests",
+  "org-requests": "Org Requests",
+  "ed-requests": "ED Requests",
 };
 
 const holidayDescriptions = {
@@ -167,7 +171,15 @@ const holidayDescriptions = {
   "Mental Health Day": "A dedicated day for rest, recovery, and emotional wellbeing, recognizing that sustainable work depends on mental health.",
   "Volunteer Day": "A day for service and civic contribution, giving time to a cause, community, or organization that matters personally.",
   "Floating Holiday": "A flexible day for religious, cultural, family, or personal observances that may not appear on the standard company calendar.",
+  "Personal Recharge Days": "Two separate monthly day-offs for personal recovery. They are not PTO, not sick days, reset on the first day of each month, and do not roll over.",
   "International Holiday": "A home-country or cultural observance requested individually so employees can honor meaningful holidays from their own background.",
+  "Halloween at The Banished Inc.": "A company celebration on October 31: playful, optional, and intentionally less formal than a normal workday.",
+  "End of Year Celebration": "A December gathering to close the year properly, recognize what the team built, and spend time together beyond normal work rhythms.",
+  "Project Wrap Celebration": "A team celebration after the final deliverable ships, giving people a moment to exhale and mark the work they completed.",
+  "Hackathons and Game Jams": "Fast, playful build sessions for technical and creative teams to prototype ideas, test tools, and make something tangible in a short window.",
+  "Movie Nights and Screenwriting Meetups": "Story-focused gatherings for production teams and anyone curious about film, writing, structure, character, and craft.",
+  "Workshops and Knowledge-Sharing Sessions": "Internal sessions where people teach practical knowledge across departments, from creative workflows to operations and tools.",
+  "Themed Thursdays": "A monthly optional culture moment. Themes are announced at least one week in advance and require Organizational sign-off before they go out.",
 };
 
 const monthlyChallenges = [
