@@ -51,8 +51,8 @@ const contentForm = document.querySelector("[data-content-form]");
 const contentStatus = document.querySelector("[data-content-status]");
 const contentRows = document.querySelector("[data-content-rows]");
 const adminOnlyElements = document.querySelectorAll("[data-admin-only]");
-const requestTabs = document.querySelectorAll("[data-request-tab]");
-const requestPanes = document.querySelectorAll("[data-request-pane]");
+const unifiedRequestForm = document.querySelector("[data-unified-request-form]");
+const requestDestination = document.querySelector("[data-request-destination]");
 
 const profileStoreKey = "tb-internal-profile";
 const usersStoreKey = "tb-internal-users";
@@ -667,18 +667,13 @@ function normalizeSectionId(sectionId) {
   }[sectionId] || sectionId;
 }
 
-function showRequestPane(type = "it") {
-  const activeType = Array.from(requestTabs).some((tab) => tab.dataset.requestTab === type) ? type : "it";
+function setRequestDestination(type = "it") {
+  if (!requestDestination) {
+    return;
+  }
 
-  requestTabs.forEach((tab) => {
-    tab.classList.toggle("active", tab.dataset.requestTab === activeType);
-  });
-
-  requestPanes.forEach((pane) => {
-    const isActive = pane.dataset.requestPane === activeType;
-    pane.classList.toggle("active", isActive);
-    pane.hidden = !isActive;
-  });
+  const hasOption = Array.from(requestDestination.options).some((option) => option.value === type);
+  requestDestination.value = hasOption ? type : "it";
 }
 
 function challengeLevelFromCredits(credits) {
@@ -1238,7 +1233,7 @@ function showSection(sectionId) {
   }
 
   if (nextSection === "requests") {
-    showRequestPane(requestPane);
+    setRequestDestination(requestPane);
   }
 
   if (pageTitle) {
@@ -1959,13 +1954,6 @@ navLinks.forEach((link) => {
   });
 });
 
-requestTabs.forEach((tab) => {
-  tab.addEventListener("click", () => {
-    showRequestPane(tab.dataset.requestTab);
-    history.replaceState(null, "", "#requests");
-  });
-});
-
 authForm?.addEventListener("submit", (event) => {
   event.preventDefault();
 
@@ -2363,15 +2351,14 @@ internshipPopupCards.forEach((card) => {
 
 internshipActionButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const edForm = document.querySelector('form[data-label="ED Request"]');
-    const details = edForm?.elements.details;
+    const details = unifiedRequestForm?.elements.details;
 
     showSection("requests");
-    showRequestPane("ed");
+    setRequestDestination("ed");
     history.replaceState(null, "", "#requests");
 
-    if (edForm?.elements.type) {
-      edForm.elements.type.value = "Assignment request";
+    if (unifiedRequestForm?.elements.type) {
+      unifiedRequestForm.elements.type.value = "Assignment request";
     }
 
     if (details && !details.value) {
@@ -2387,14 +2374,18 @@ document.querySelectorAll("[data-request-form]").forEach((form) => {
 
     const formData = new FormData(form);
     const profile = currentProfile();
-    const label = form.dataset.label;
-    const recipient = form.dataset.recipient;
+    const destination = form.elements.destination;
+    const selectedDestination = destination?.options?.[destination.selectedIndex];
+    const label = selectedDestination?.dataset.label || form.dataset.label || "Request";
+    const recipient = selectedDestination?.dataset.recipient || form.dataset.recipient || "";
+    const destinationLabel = selectedDestination?.textContent?.trim() || "Support";
     const name = formData.get("name") || profile?.name || "[your name]";
     const type = formData.get("type") || "General request";
     const priority = formData.get("priority") || "Normal";
     const details = formData.get("details") || "[describe the request here]";
     const subject = `${label}: ${type}`;
     const body = [
+      `Destination: ${destinationLabel}`,
       `Request type: ${type}`,
       `Priority: ${priority}`,
       `Employee name: ${name}`,
@@ -2412,6 +2403,11 @@ document.querySelectorAll("[data-request-form]").forEach((form) => {
       minute: "2-digit",
     });
     const from = profile?.email || "";
+
+    if (!recipient) {
+      setRequestStatus(status, `${label} failed. Select a request destination.`, "error");
+      return;
+    }
 
     setRequestStatus(status, `Sending ${label.toLowerCase()} to ${recipient}...`, "pending");
 

@@ -1752,125 +1752,50 @@
             </div>
           </div>
 
-          <div class="request-type-tabs" aria-label="Request type selector">
-            <button class="active" type="button" data-request-tab="it">IT</button>
-            <button type="button" data-request-tab="hr">HR</button>
-            <button type="button" data-request-tab="org">Org</button>
-            <button type="button" data-request-tab="ed">ED</button>
-          </div>
-
-          <div class="request-pane active" data-request-pane="it">
-            <div class="request-layout">
+          <div class="request-layout">
             <div class="intro-panel">
-              <p class="eyebrow">Support</p>
-              <h2 id="it-title">IT Requests</h2>
-              <p>Contact IT for account access, password or login issues, device problems, software access, email setup, security concerns, and technical troubleshooting.</p>
+              <p class="eyebrow">One form</p>
+              <h2>Choose the right lane</h2>
+              <p>
+                Use one request form for IT, HR, Organizational, and Education support. Select the destination first,
+                then add the request type, priority, and details the receiving team needs.
+              </p>
+              <div class="request-lane-list" aria-label="Request routing guide">
+                <article><strong>IT</strong><span>Access, devices, email, software, security, login issues.</span></article>
+                <article><strong>HR</strong><span>Employment documents, payroll, benefits, time off, records.</span></article>
+                <article><strong>Org</strong><span>Project logistics, scheduling, handoffs, coordination.</span></article>
+                <article><strong>ED</strong><span>Training, assignments, workshops, onboarding resources.</span></article>
+              </div>
             </div>
 
-            <form class="request-form" action="/api/requests" method="post" data-request-form data-recipient="support@the-banished.com" data-label="IT Request">
+            <form class="request-form" action="/api/requests" method="post" data-request-form data-unified-request-form>
               <label>
                 Full name
                 <input name="name" type="text" autocomplete="name" placeholder="Your name" />
               </label>
               <label>
+                Request destination
+                <select name="destination" data-request-destination>
+                  <option value="it" data-recipient="support@the-banished.com" data-label="IT Request">IT</option>
+                  <option value="hr" data-recipient="hr@the-banished.com" data-label="HR Request">HR</option>
+                  <option value="org" data-recipient="organizational@the-banished.com" data-label="Org Request">Organizational</option>
+                  <option value="ed" data-recipient="education@the-banished.com" data-label="ED Request">Education</option>
+                </select>
+              </label>
+              <label>
                 Request type
-                <select name="type">
+                <select name="type" data-request-type>
                   <option value="">Select request type</option>
                   <option>Account access</option>
                   <option>Password or login issue</option>
-                  <option>Device issue</option>
-                  <option>Software access</option>
-                  <option>Email setup</option>
-                  <option>Security concern</option>
-                  <option>Other technical issue</option>
-                </select>
-              </label>
-              <label>
-                Priority
-                <select name="priority">
-                  <option>Normal</option>
-                  <option>Urgent</option>
-                  <option>Blocking work</option>
-                </select>
-              </label>
-              <label>
-                Details
-                <textarea name="details" rows="6" placeholder="Describe what you need help with"></textarea>
-              </label>
-              <button class="primary-button" type="submit">Send to IT</button>
-              <p class="request-status" data-request-status hidden></p>
-            </form>
-            </div>
-          </div>
-
-          <div class="request-pane" data-request-pane="hr" hidden>
-            <div class="request-layout">
-            <div class="intro-panel">
-              <p class="eyebrow">People Ops</p>
-              <h2 id="hr-title">HR Requests</h2>
-              <p>Contact HR for employment documents, time off questions, benefits, payroll questions, policy clarification, onboarding, and employee record updates.</p>
-            </div>
-
-            <form class="request-form" action="/api/requests" method="post" data-request-form data-recipient="hr@the-banished.com" data-label="HR Request">
-              <label>
-                Full name
-                <input name="name" type="text" autocomplete="name" placeholder="Your name" />
-              </label>
-              <label>
-                Request type
-                <select name="type">
-                  <option value="">Select request type</option>
+                  <option>Device or software issue</option>
                   <option>Employment document</option>
-                  <option>Time off question</option>
-                  <option>Benefits</option>
-                  <option>Payroll question</option>
-                  <option>Policy clarification</option>
-                  <option>Onboarding</option>
-                  <option>Employee record update</option>
-                </select>
-              </label>
-              <label>
-                Priority
-                <select name="priority">
-                  <option>Normal</option>
-                  <option>Urgent</option>
-                  <option>Time-sensitive</option>
-                </select>
-              </label>
-              <label>
-                Details
-                <textarea name="details" rows="6" placeholder="Describe what you need from HR"></textarea>
-              </label>
-              <button class="primary-button" type="submit">Send to HR</button>
-              <p class="request-status" data-request-status hidden></p>
-            </form>
-            </div>
-          </div>
-
-          <div class="request-pane" data-request-pane="org" hidden>
-            <div class="request-layout">
-            <div class="intro-panel">
-              <p class="eyebrow">Operations</p>
-              <h2 id="org-title">Org Requests</h2>
-              <p>Contact Organizational for project logistics, cross-team scheduling, handoffs, event coordination, unclear ownership, operational blockers, and requests that need routing before they go to a specialist team.</p>
-            </div>
-
-            <form class="request-form" action="/api/requests" method="post" data-request-form data-recipient="organizational@the-banished.com" data-label="Org Request">
-              <label>
-                Full name
-                <input name="name" type="text" autocomplete="name" placeholder="Your name" />
-              </label>
-              <label>
-                Request type
-                <select name="type">
-                  <option value="">Select request type</option>
-                  <option>Project logistics</option>
-                  <option>Cross-team scheduling</option>
+                  <option>Benefits, payroll, or time off</option>
+                  <option>Project logistics or scheduling</option>
                   <option>Handoff or ownership question</option>
-                  <option>Event coordination</option>
-                  <option>Operations support</option>
-                  <option>Escalation routing</option>
-                  <option>Other organizational request</option>
+                  <option>Training resource</option>
+                  <option>Assignment request</option>
+                  <option>Other request</option>
                 </select>
               </label>
               <label>
@@ -1879,61 +1804,17 @@
                   <option>Normal</option>
                   <option>Urgent</option>
                   <option>Time-sensitive</option>
-                </select>
-              </label>
-              <label>
-                Details
-                <textarea name="details" rows="6" placeholder="Describe what Organizational should help coordinate"></textarea>
-              </label>
-              <button class="primary-button" type="submit">Send to Org</button>
-              <p class="request-status" data-request-status hidden></p>
-            </form>
-            </div>
-          </div>
-
-          <div class="request-pane" data-request-pane="ed" hidden>
-            <div class="request-layout">
-            <div class="intro-panel">
-              <p class="eyebrow">Education</p>
-              <h2 id="ed-title">ED Requests</h2>
-              <p>Contact Education for workshops, onboarding resources, knowledge-sharing sessions, training materials, course or certification questions, speaker ideas, and skill-building support before major project phases.</p>
-            </div>
-
-            <form class="request-form" action="/api/requests" method="post" data-request-form data-recipient="education@the-banished.com" data-label="ED Request">
-              <label>
-                Full name
-                <input name="name" type="text" autocomplete="name" placeholder="Your name" />
-              </label>
-              <label>
-                Request type
-                <select name="type">
-                  <option value="">Select request type</option>
-                  <option>Workshop request</option>
-                  <option>Training resource</option>
-                  <option>Knowledge-sharing session</option>
-                  <option>Onboarding material</option>
-                  <option>Assignment request</option>
-                  <option>Course or certification question</option>
-                  <option>Speaker or learning event</option>
-                  <option>Other education request</option>
-                </select>
-              </label>
-              <label>
-                Priority
-                <select name="priority">
-                  <option>Normal</option>
-                  <option>Urgent</option>
+                  <option>Blocking work</option>
                   <option>Before project kickoff</option>
                 </select>
               </label>
               <label>
                 Details
-                <textarea name="details" rows="6" placeholder="Describe the learning, workshop, or education support needed"></textarea>
+                <textarea name="details" rows="6" placeholder="Describe what you need, include links or screenshots if useful, and note any deadline."></textarea>
               </label>
-              <button class="primary-button" type="submit">Send to ED</button>
+              <button class="primary-button" type="submit" data-request-submit>Send request</button>
               <p class="request-status" data-request-status hidden></p>
             </form>
-            </div>
           </div>
         </section>
 
