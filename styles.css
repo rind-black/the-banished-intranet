@@ -1159,6 +1159,18 @@ h3 {
   border-color: rgba(247, 243, 234, 0.12);
 }
 
+.operator-ponytail {
+  position: absolute;
+  top: 70px;
+  left: 58px;
+  z-index: 2;
+  width: 42px;
+  height: 72px;
+  border-radius: 80% 28% 72% 40%;
+  background: #5a2d26;
+  transform: rotate(17deg);
+}
+
 .operator-head {
   position: absolute;
   top: 50px;
@@ -1172,6 +1184,8 @@ h3 {
   border: 2px solid rgba(247, 243, 234, 0.72);
   border-radius: 50%;
   background:
+    radial-gradient(circle at 34% 58%, rgba(139, 73, 55, 0.42) 0 2px, transparent 3px),
+    radial-gradient(circle at 68% 58%, rgba(139, 73, 55, 0.42) 0 2px, transparent 3px),
     radial-gradient(circle at 50% 74%, rgba(231, 55, 47, 0.16) 0 6px, transparent 7px),
     #f3d7ba;
   box-shadow: 0 18px 38px rgba(0, 0, 0, 0.42);
@@ -1179,15 +1193,28 @@ h3 {
 
 .operator-hair {
   position: absolute;
-  top: 40px;
-  z-index: 3;
-  width: 88px;
-  height: 48px;
-  border-radius: 44px 44px 18px 18px;
+  top: 38px;
+  z-index: 5;
+  width: 92px;
+  height: 52px;
+  border-radius: 46px 46px 20px 20px;
   background:
-    radial-gradient(circle at 30% 48%, #8b4937 0 18px, transparent 19px),
-    radial-gradient(circle at 66% 40%, #8b4937 0 24px, transparent 25px),
+    radial-gradient(circle at 27% 58%, #9a5a43 0 18px, transparent 19px),
+    radial-gradient(circle at 60% 34%, #8b4937 0 25px, transparent 26px),
+    linear-gradient(105deg, transparent 0 36%, #5a2d26 37% 51%, transparent 52%),
     #6f3429;
+}
+
+.operator-star {
+  position: absolute;
+  top: 46px;
+  right: 69px;
+  z-index: 7;
+  width: 22px;
+  height: 22px;
+  background: var(--gold);
+  clip-path: polygon(50% 0, 62% 34%, 98% 34%, 68% 54%, 80% 90%, 50% 68%, 20% 90%, 32% 54%, 2% 34%, 38% 34%);
+  filter: drop-shadow(0 4px 10px rgba(203, 169, 92, 0.35));
 }
 
 .operator-eye {
@@ -1232,6 +1259,7 @@ h3 {
 .operator-body {
   position: absolute;
   bottom: 48px;
+  z-index: 2;
   width: 112px;
   height: 66px;
   border: 1px solid rgba(203, 169, 92, 0.42);
@@ -1245,22 +1273,56 @@ h3 {
 .operator-body::after {
   content: "";
   position: absolute;
-  top: 18px;
-  width: 42px;
-  height: 14px;
+  top: 15px;
+  width: 24px;
+  height: 42px;
+  border: 1px solid rgba(203, 169, 92, 0.24);
+  border-radius: 16px 16px 10px 10px;
+  background: rgba(247, 243, 234, 0.08);
+}
+
+.operator-body::before {
+  left: 25px;
+  transform: rotate(6deg);
+}
+
+.operator-body::after {
+  right: 25px;
+  transform: rotate(-6deg);
+}
+
+.operator-arm {
+  position: absolute;
+  z-index: 3;
+  width: 48px;
+  height: 16px;
   border: 1px solid rgba(203, 169, 92, 0.32);
   border-radius: 999px;
   background: #f3d7ba;
 }
 
-.operator-body::before {
-  left: -26px;
-  transform: rotate(-20deg);
+.operator-arm-left {
+  left: 45px;
+  bottom: 92px;
+  transform: rotate(-28deg);
 }
 
-.operator-body::after {
-  right: -28px;
-  transform: rotate(25deg);
+.operator-arm-right {
+  right: 38px;
+  bottom: 101px;
+  transform: rotate(-42deg);
+  transform-origin: left center;
+}
+
+.operator-arm-right::after {
+  content: "";
+  position: absolute;
+  right: -9px;
+  top: -7px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #f3d7ba;
 }
 
 .operator-scarf {
@@ -1272,6 +1334,33 @@ h3 {
   border-radius: 999px;
   background: var(--accent);
   transform: rotate(-4deg);
+}
+
+.operator-boots {
+  position: absolute;
+  bottom: 36px;
+  z-index: 1;
+  width: 76px;
+  height: 24px;
+  border-radius: 0 0 18px 18px;
+  background:
+    linear-gradient(90deg, #070708 0 42%, transparent 43% 57%, #070708 58% 100%);
+}
+
+.operator-signal {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  width: 46px;
+  height: 34px;
+  border: 1px solid rgba(203, 169, 92, 0.44);
+  border-radius: 50% 50% 50% 12px;
+  background:
+    radial-gradient(circle at 28% 50%, var(--gold) 0 3px, transparent 4px),
+    radial-gradient(circle at 50% 50%, var(--gold) 0 3px, transparent 4px),
+    radial-gradient(circle at 72% 50%, var(--gold) 0 3px, transparent 4px),
+    rgba(17, 17, 19, 0.92);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.36);
 }
 
 .operator-badge {
@@ -1602,8 +1691,8 @@ h3 {
   grid-column: 3;
   grid-row: 1 / span 2;
   display: grid;
-  width: 72px;
-  height: 104px;
+  width: 78px;
+  height: 112px;
   align-self: center;
   justify-self: center;
   place-items: center;
@@ -1612,73 +1701,104 @@ h3 {
 .challenge-agent::before {
   content: "";
   position: absolute;
-  top: 2px;
-  width: 68px;
-  height: 68px;
+  top: 0;
+  width: 76px;
+  height: 76px;
   border: 1px solid rgba(203, 169, 92, 0.3);
   border-radius: 50%;
   background:
-    radial-gradient(circle at 36% 34%, rgba(255, 255, 255, 0.22) 0 5px, transparent 6px),
+    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.28) 0 6px, transparent 7px),
     rgba(203, 169, 92, 0.08);
 }
 
 .challenge-agent::after {
   content: "";
   position: absolute;
-  right: 4px;
-  top: 56px;
+  left: 8px;
+  top: 62px;
   width: 22px;
-  height: 10px;
+  height: 12px;
   border: 1px solid rgba(203, 169, 92, 0.38);
-  border-left: 0;
-  border-radius: 0 999px 999px 0;
+  border-right: 0;
+  border-radius: 999px 0 0 999px;
   background: #f3d7ba;
-  transform: rotate(-18deg);
+  transform: rotate(20deg);
 }
 
 .challenge-agent-head {
   position: absolute;
   top: 16px;
-  width: 42px;
-  height: 42px;
+  z-index: 3;
+  width: 46px;
+  height: 46px;
   border: 2px solid rgba(247, 243, 234, 0.62);
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 38% 46%, #28201d 0 2px, transparent 3px),
-    radial-gradient(circle at 62% 46%, #28201d 0 2px, transparent 3px),
-    radial-gradient(circle at 50% 66%, #8d4b3f 0 2px, transparent 3px),
-    linear-gradient(180deg, #7b3f32 0 26%, transparent 27%),
-    #f3d7ba;
+  background: #f3d7ba;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
+  overflow: visible;
+}
+
+.challenge-agent-hair {
+  position: absolute;
+  top: -7px;
+  left: 2px;
+  width: 44px;
+  height: 22px;
+  border-radius: 24px 24px 10px 10px;
+  background:
+    radial-gradient(circle at 28% 72%, #9a5a43 0 10px, transparent 11px),
+    radial-gradient(circle at 68% 54%, #7b3f32 0 13px, transparent 14px),
+    #5a2d26;
+}
+
+.challenge-agent-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 38% 48%, #28201d 0 2px, transparent 3px),
+    radial-gradient(circle at 62% 48%, #28201d 0 2px, transparent 3px),
+    radial-gradient(ellipse at 50% 68%, transparent 0 8px, #8d4b3f 9px 10px, transparent 11px);
 }
 
 .challenge-agent-body {
   position: absolute;
-  bottom: 8px;
-  width: 56px;
-  height: 44px;
+  bottom: 12px;
+  z-index: 2;
+  width: 60px;
+  height: 46px;
   border: 1px solid rgba(203, 169, 92, 0.42);
-  border-radius: 28px 28px 18px 18px;
+  border-radius: 30px 30px 18px 18px;
   background:
-    radial-gradient(circle at 50% 20%, rgba(247, 243, 234, 0.22) 0 5px, transparent 6px),
+    radial-gradient(circle at 50% 20%, rgba(247, 243, 234, 0.22) 0 4px, transparent 5px),
     linear-gradient(135deg, rgba(231, 55, 47, 0.2), transparent 58%),
     #263b34;
 }
 
-.challenge-agent[data-role="advanced"] .challenge-agent-body {
-  background:
-    radial-gradient(circle at 50% 20%, rgba(247, 243, 234, 0.22) 0 5px, transparent 6px),
-    linear-gradient(135deg, rgba(203, 169, 92, 0.24), transparent 58%),
-    #304238;
+.challenge-agent-prop {
+  position: absolute;
+  right: 0;
+  top: 58px;
+  z-index: 4;
+  width: 28px;
+  height: 28px;
 }
 
-.challenge-agent[data-role="advanced"] .challenge-agent-head {
+.challenge-agent-legs {
+  position: absolute;
+  bottom: 0;
+  width: 48px;
+  height: 18px;
+  border-radius: 0 0 16px 16px;
   background:
-    radial-gradient(circle at 38% 46%, #28201d 0 2px, transparent 3px),
-    radial-gradient(circle at 62% 46%, #28201d 0 2px, transparent 3px),
-    radial-gradient(circle at 50% 66%, #8d4b3f 0 2px, transparent 3px),
-    linear-gradient(135deg, #3a2c24 0 23%, transparent 24%),
-    #f3d7ba;
+    linear-gradient(90deg, #070708 0 43%, transparent 44% 56%, #070708 57% 100%);
+}
+
+.challenge-agent[data-role="advanced"] .challenge-agent-body {
+  background:
+    radial-gradient(circle at 50% 20%, rgba(247, 243, 234, 0.22) 0 4px, transparent 5px),
+    linear-gradient(135deg, rgba(203, 169, 92, 0.24), transparent 58%),
+    #304238;
 }
 
 .challenge-agent[data-role="boss"] .challenge-agent-head,
@@ -1686,13 +1806,133 @@ h3 {
   border-color: rgba(231, 55, 47, 0.58);
 }
 
-.challenge-agent[data-role="boss"] .challenge-agent-head {
+.challenge-agent[data-role="boss"] .challenge-agent-hair {
   background:
-    radial-gradient(circle at 38% 46%, #28201d 0 2px, transparent 3px),
-    radial-gradient(circle at 62% 46%, #28201d 0 2px, transparent 3px),
-    radial-gradient(circle at 50% 66%, #8d4b3f 0 2px, transparent 3px),
-    linear-gradient(180deg, #b95c45 0 24%, transparent 25%),
-    #f3d7ba;
+    radial-gradient(circle at 28% 72%, #c76c4f 0 10px, transparent 11px),
+    radial-gradient(circle at 68% 54%, #9b4735 0 13px, transparent 14px),
+    #6f3429;
+}
+
+.challenge-agent[data-lane="casting"] .challenge-agent-body {
+  background:
+    radial-gradient(circle at 50% 20%, rgba(247, 243, 234, 0.22) 0 4px, transparent 5px),
+    linear-gradient(135deg, rgba(203, 169, 92, 0.34), transparent 58%),
+    #2d353d;
+}
+
+.challenge-agent[data-lane="casting"] .challenge-agent-prop {
+  border: 3px solid var(--gold);
+  border-radius: 50%;
+}
+
+.challenge-agent[data-lane="casting"] .challenge-agent-prop::after {
+  content: "";
+  position: absolute;
+  right: -10px;
+  bottom: -6px;
+  width: 16px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+.challenge-agent[data-lane="projects"] .challenge-agent-body {
+  background:
+    radial-gradient(circle at 50% 20%, rgba(247, 243, 234, 0.22) 0 4px, transparent 5px),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.2), transparent 58%),
+    #283846;
+}
+
+.challenge-agent[data-lane="projects"] .challenge-agent-prop {
+  border: 2px solid var(--gold);
+  border-radius: 5px;
+  background:
+    linear-gradient(var(--gold), var(--gold)) 6px 8px / 15px 2px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) 6px 15px / 12px 2px no-repeat,
+    rgba(8, 8, 9, 0.92);
+  transform: rotate(-6deg);
+}
+
+.challenge-agent[data-lane="art"] .challenge-agent-body {
+  background:
+    radial-gradient(circle at 50% 20%, rgba(247, 243, 234, 0.22) 0 4px, transparent 5px),
+    linear-gradient(135deg, rgba(69, 167, 133, 0.24), transparent 58%),
+    #293b34;
+}
+
+.challenge-agent[data-lane="art"] .challenge-agent-prop {
+  border-radius: 999px;
+  background: var(--gold);
+  height: 8px;
+  transform: rotate(-42deg);
+}
+
+.challenge-agent[data-lane="art"] .challenge-agent-prop::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: -4px;
+  width: 12px;
+  height: 16px;
+  border-radius: 80% 20% 80% 20%;
+  background: #e7372f;
+}
+
+.challenge-agent[data-lane="sound"] .challenge-agent-body {
+  background:
+    radial-gradient(circle at 50% 20%, rgba(247, 243, 234, 0.22) 0 4px, transparent 5px),
+    linear-gradient(135deg, rgba(87, 126, 196, 0.26), transparent 58%),
+    #253446;
+}
+
+.challenge-agent[data-lane="sound"] .challenge-agent-head::after {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 14px;
+  width: 58px;
+  height: 26px;
+  border: 3px solid var(--gold);
+  border-bottom: 0;
+  border-radius: 30px 30px 0 0;
+}
+
+.challenge-agent[data-lane="sound"] .challenge-agent-prop {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background:
+    linear-gradient(var(--gold), var(--gold)) 8px 5px / 3px 14px no-repeat,
+    linear-gradient(var(--gold), var(--gold)) 14px 9px / 3px 10px no-repeat,
+    rgba(203, 169, 92, 0.16);
+}
+
+.challenge-agent[data-lane="other"] .challenge-agent-body {
+  background:
+    radial-gradient(circle at 50% 20%, rgba(247, 243, 234, 0.22) 0 4px, transparent 5px),
+    linear-gradient(135deg, rgba(203, 169, 92, 0.18), transparent 58%),
+    #35342b;
+}
+
+.challenge-agent[data-lane="other"] .challenge-agent-prop {
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--gold) 0 3px, transparent 4px),
+    rgba(8, 8, 9, 0.92);
+}
+
+.challenge-agent[data-lane="other"] .challenge-agent-prop::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 1px;
+  width: 2px;
+  height: 23px;
+  border-radius: 999px;
+  background: var(--gold);
+  transform: rotate(42deg);
 }
 
 .challenge-card-detail {

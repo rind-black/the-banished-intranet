@@ -260,28 +260,49 @@ const monthlyChallenges = [
   ],
   [
     {
-      icon: "RULE",
-      title: "Document a Hidden Rule",
-      category: "Culture",
-      credits: 10,
-      summary: "Turn an unwritten team habit into a clear, kind, useful note for newcomers.",
-      details: "The best entries make the company easier to understand without creating bureaucracy. Think handoffs, feedback norms, meeting etiquette, or how to ask for help.",
+      icon: "CAST",
+      lane: "casting",
+      title: "Build an Actor Search Shortlist",
+      category: "Casting / actor search",
+      credits: 12,
+      summary: "Find performers for an active role and explain why each person belongs on the list.",
+      details: "Choose one active project or character need. Submit 5-8 actors with links, relevant credits, screen presence notes, possible fit, risk flags, and one sentence on why each person deserves review.",
     },
     {
-      icon: "TECH",
-      title: "Prototype a Creative Tech Idea",
-      category: "Technology",
-      credits: 15,
-      summary: "Sketch or prototype a small tool that supports film, comics, casting, or internal operations.",
-      details: "The prototype can be lightweight: a workflow map, clickable mockup, data model, or working proof of concept. The point is to make an idea concrete enough to review.",
+      icon: "TASK",
+      lane: "projects",
+      title: "Create a Project Task Pack",
+      category: "Project tasks",
+      credits: 12,
+      summary: "Turn the next step for a real project into a clear task set the team can use.",
+      details: "Pick The Banished, Colorblind, Incompatibility, Four Horsemen, or AI Casting. List the next objective, owner type, dependencies, open questions, deadline pressure, and 3-6 concrete tasks that move the project forward.",
     },
     {
-      icon: "NEW",
-      title: "Strengthen Onboarding",
-      category: "People",
+      icon: "ART",
+      lane: "art",
+      title: "Build a Visual Reference Sheet",
+      category: "Art direction",
       credits: 10,
-      summary: "Create one improvement that helps a new employee, intern, contractor, or manager understand what to do next.",
-      details: "Examples include a checklist, first-week guide, glossary, training note, or mentor prompt. It should reduce confusion for someone joining the company.",
+      summary: "Create a compact visual direction board for a scene, character, project, or portal asset.",
+      details: "Submit 6-10 references with short notes. Explain color, composition, texture, costume, environment, or UI mood. The strongest boards make a creative decision easier, not just prettier.",
+    },
+    {
+      icon: "SOUND",
+      lane: "sound",
+      title: "Find a Sound Identity Reference",
+      category: "Sound",
+      credits: 10,
+      summary: "Collect audio references that clarify the emotional sound of a project or scene.",
+      details: "Submit 3-5 references for score, ambience, sound design, voice tone, trailer rhythm, or theme. Add notes on emotion, tempo, instrumentation, and where the reference should or should not influence the project.",
+    },
+    {
+      icon: "MAP",
+      lane: "other",
+      title: "Fix One Internal Workflow",
+      category: "Other",
+      credits: 10,
+      summary: "Improve one small internal process that slows people down.",
+      details: "Pick a repeated friction point in the portal, handoffs, approvals, requests, folders, or communication. Show the current issue, the proposed fix, who benefits, and what proof would show it worked.",
     },
   ],
   [
@@ -410,6 +431,14 @@ const monthlyChallenges = [
       details: "Include the problem, expected impact, owner type, first action, and how success should be measured.",
     },
   ],
+];
+
+const challengeLaneOptions = [
+  { key: "casting", label: "Casting" },
+  { key: "projects", label: "Projects" },
+  { key: "art", label: "Art" },
+  { key: "sound", label: "Sound" },
+  { key: "other", label: "Other" },
 ];
 
 const projectPages = {
@@ -653,6 +682,23 @@ function challengeDifficulty(challenge) {
 function challengeIconType(challenge) {
   const category = String(challenge.category || "").toLowerCase();
   const icon = String(challenge.icon || "").toLowerCase();
+  const lane = String(challenge.lane || "").toLowerCase();
+
+  if (lane === "casting" || category.includes("casting") || category.includes("actor") || category.includes("talent") || icon.includes("cast")) {
+    return "casting";
+  }
+
+  if (lane === "projects" || category.includes("project") || category.includes("task") || icon.includes("task")) {
+    return "project";
+  }
+
+  if (lane === "art" || category.includes("art") || category.includes("visual") || category.includes("design") || icon.includes("art")) {
+    return "art";
+  }
+
+  if (lane === "sound" || category.includes("sound") || category.includes("audio") || category.includes("music") || icon.includes("sound")) {
+    return "sound";
+  }
 
   if (category.includes("film") || category.includes("production") || icon.includes("film") || icon.includes("cast")) {
     return "film";
@@ -680,54 +726,44 @@ function challengeIconType(challenge) {
 function challengeDepartment(challenge) {
   const category = String(challenge.category || "").toLowerCase();
   const icon = String(challenge.icon || "").toLowerCase();
+  const requestedLane = String(challenge.lane || "").toLowerCase();
+  const configuredLane = challengeLaneOptions.find((lane) => lane.key === requestedLane);
 
-  if (category.includes("film") || category.includes("production") || category.includes("casting") || icon.includes("cast")) {
-    return { key: "production", label: "Production" };
+  if (configuredLane) {
+    return configuredLane;
   }
 
-  if (category.includes("comic") || category.includes("partnership") || icon.includes("canon") || icon.includes("ip")) {
-    return { key: "creative", label: "Creative" };
+  if (category.includes("casting") || category.includes("actor") || category.includes("talent") || icon.includes("cast")) {
+    return challengeLaneOptions[0];
   }
 
-  if (category.includes("technology") || category.includes("automation") || category.includes("tools") || category.includes("security") || icon.includes("tech")) {
-    return { key: "technology", label: "Technology" };
+  if (category.includes("project") || category.includes("task") || category.includes("film") || category.includes("comic") || category.includes("production") || icon.includes("task") || icon.includes("film") || icon.includes("canon") || icon.includes("ip")) {
+    return challengeLaneOptions[1];
   }
 
-  if (category.includes("training")) {
-    return { key: "education", label: "Education" };
+  if (category.includes("art") || category.includes("visual") || category.includes("design") || category.includes("reference") || icon.includes("art")) {
+    return challengeLaneOptions[2];
   }
 
-  if (category.includes("culture") || category.includes("people")) {
-    return { key: "people", label: "People" };
+  if (category.includes("sound") || category.includes("audio") || category.includes("music") || category.includes("score") || icon.includes("sound")) {
+    return challengeLaneOptions[3];
   }
 
-  return { key: "operations", label: "Operations" };
+  return challengeLaneOptions[4];
 }
 
-function renderChallengeDepartmentFilters(challenges) {
+function renderChallengeDepartmentFilters() {
   if (!challengeFilterBar) {
     return;
   }
 
-  const departments = [];
-  const seen = new Set();
-
-  challenges.forEach((challenge) => {
-    const department = challengeDepartment(challenge);
-
-    if (!seen.has(department.key)) {
-      seen.add(department.key);
-      departments.push(department);
-    }
-  });
-
-  if (activeChallengeDepartment !== "all" && !seen.has(activeChallengeDepartment)) {
+  if (activeChallengeDepartment !== "all" && !challengeLaneOptions.some((lane) => lane.key === activeChallengeDepartment)) {
     activeChallengeDepartment = "all";
   }
 
   challengeFilterBar.replaceChildren();
 
-  [{ key: "all", label: "All departments" }, ...departments].forEach((department) => {
+  [{ key: "all", label: "All departments" }, ...challengeLaneOptions].forEach((department) => {
     const button = document.createElement("button");
 
     button.type = "button";
@@ -740,6 +776,35 @@ function renderChallengeDepartmentFilters(challenges) {
 
 function challengeIconSvg(type) {
   const paths = {
+    casting: [
+      '<circle cx="52" cy="48" r="22" />',
+      '<path d="M68 64l24 24" />',
+      '<path d="M38 44c5-8 23-8 28 0" />',
+      '<path d="M42 58c7 6 17 6 24 0" />',
+      '<path d="M82 30h16v22" />',
+    ],
+    project: [
+      '<path d="M30 24h48l12 12v60H30z" />',
+      '<path d="M78 24v16h16" />',
+      '<path d="M42 50h28" />',
+      '<path d="M42 66h36" />',
+      '<path d="M42 82h22" />',
+      '<path d="M28 96l64-64" />',
+    ],
+    art: [
+      '<path d="M35 84c8 8 25 11 40 2 20-12 17-44-6-55-22-11-49 2-50 25-1 11 5 18 16 18h8c5 0 7 6 3 10z" />',
+      '<circle cx="42" cy="52" r="3" />',
+      '<circle cx="56" cy="43" r="3" />',
+      '<circle cx="72" cy="50" r="3" />',
+      '<path d="M72 78l24-24" />',
+      '<path d="M88 46l8 8" />',
+    ],
+    sound: [
+      '<path d="M28 66a32 32 0 0 1 64 0" />',
+      '<path d="M28 66v20c0 6 4 10 10 10h8V64h-8c-6 0-10 4-10 10" />',
+      '<path d="M92 66v20c0 6-4 10-10 10h-8V64h8c6 0 10 4 10 10" />',
+      '<path d="M52 72l8-10v28l8-10" />',
+    ],
     film: [
       '<path d="M22 31h76v58H22z" />',
       '<path d="M22 46h76" />',
@@ -826,7 +891,7 @@ function renderMonthlyChallenge() {
     return;
   }
 
-  renderChallengeDepartmentFilters(challenges);
+  renderChallengeDepartmentFilters();
 
   challengeList.replaceChildren();
 
@@ -849,12 +914,17 @@ function renderMonthlyChallenge() {
     const action = document.createElement("span");
     const agent = document.createElement("span");
     const agentHead = document.createElement("span");
+    const agentHair = document.createElement("span");
+    const agentFace = document.createElement("span");
     const agentBody = document.createElement("span");
+    const agentProp = document.createElement("span");
+    const agentLegs = document.createElement("span");
     const detail = document.createElement("div");
     const stats = document.createElement("div");
 
     card.className = "challenge-card";
     card.dataset.difficulty = difficulty.key;
+    card.dataset.department = department.key;
     button.type = "button";
     button.className = "challenge-card-button";
     button.setAttribute("aria-expanded", "false");
@@ -871,10 +941,16 @@ function renderMonthlyChallenge() {
     action.textContent = "Start mission";
     agent.className = "challenge-agent";
     agent.dataset.role = difficulty.key;
+    agent.dataset.lane = department.key;
     agent.setAttribute("aria-hidden", "true");
     agentHead.className = "challenge-agent-head";
+    agentHair.className = "challenge-agent-hair";
+    agentFace.className = "challenge-agent-face";
     agentBody.className = "challenge-agent-body";
-    agent.append(agentHead, agentBody);
+    agentProp.className = "challenge-agent-prop";
+    agentLegs.className = "challenge-agent-legs";
+    agentHead.append(agentHair, agentFace);
+    agent.append(agentHead, agentBody, agentProp, agentLegs);
     detail.className = "challenge-card-detail";
     detail.hidden = true;
     stats.className = "challenge-detail-stats";
@@ -939,7 +1015,7 @@ function renderMonthlyChallenge() {
   if (!challengeList.children.length) {
     const empty = document.createElement("article");
     empty.className = "challenge-empty-state";
-    empty.innerHTML = "<strong>No missions in this tier</strong><span>Switch difficulty to see the rest of this month's board.</span>";
+    empty.innerHTML = "<strong>No missions in this lane</strong><span>Switch department to see the rest of this month's board.</span>";
     challengeList.append(empty);
   }
 }
