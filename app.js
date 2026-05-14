@@ -1949,6 +1949,7 @@ document.querySelectorAll("[data-internship-toggle]").forEach((button) => {
 });
 
 const internshipPopupCards = document.querySelectorAll("[data-internship-popup]");
+const internshipActionButtons = document.querySelectorAll("[data-internship-action]");
 
 function toggleInternshipPopup(card) {
   const detail = card.querySelector(".internship-popover");
@@ -1985,6 +1986,29 @@ internshipPopupCards.forEach((card) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       toggleInternshipPopup(card);
+    }
+  });
+});
+
+internshipActionButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const action = button.dataset.internshipAction;
+    const edForm = document.querySelector('form[data-label="ED Request"]');
+    const requestType = action === "assignment" ? "Assignment request" : "Mentor check-in";
+    const details = edForm?.elements.details;
+
+    showSection("ed-requests");
+    history.replaceState(null, "", "#ed-requests");
+
+    if (edForm?.elements.type) {
+      edForm.elements.type.value = requestType;
+    }
+
+    if (details && !details.value) {
+      details.placeholder = action === "assignment"
+        ? "Tell ED which internship track you are in, what you have already completed, and what assignment or brief you need next."
+        : "Tell ED who your mentor is, what you need help with, and whether this is a question, blocker, feedback request, or check-in.";
+      details.focus();
     }
   });
 });
