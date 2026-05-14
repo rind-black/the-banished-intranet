@@ -130,32 +130,109 @@
         </header>
 
         <section class="portal-section active" id="overview" data-section="overview" aria-labelledby="overview-title">
-          <div class="intro-panel">
-            <p class="eyebrow">Overview</p>
-            <h2 id="overview-title">Why employees use this portal</h2>
-            <p>
-              The Internal Portal is the central place for day-to-day company information. Employees can find official
-              updates, access key documents, review bonus and training information, and submit IT or HR requests without
-              searching through messages or asking multiple people where to go.
-            </p>
+          <div class="overview-hero intro-panel">
+            <div class="overview-hero-copy">
+              <p class="eyebrow">Mission Control</p>
+              <h2 id="overview-title">Welcome back, <span data-overview-name>Employee</span>.</h2>
+              <p>
+                This is the employee field map for The Banished Inc. Use it to find official updates, open the right
+                documents, send requests cleanly, and turn useful work into bonus credits.
+              </p>
+              <div class="overview-actions" aria-label="Primary portal actions">
+                <button class="primary-button" type="button" data-section-link="monthly-challenge">Start a challenge</button>
+                <button class="ghost-button" type="button" data-section-link="documents">Open documents</button>
+                <button class="ghost-button" type="button" data-section-link="profile">Tune profile</button>
+              </div>
+            </div>
+
+            <aside class="overview-player-card" aria-label="Employee status">
+              <span>Player status</span>
+              <strong data-overview-level>Level 1 / Scout</strong>
+              <p data-overview-role>General</p>
+              <div class="overview-credit-row">
+                <article>
+                  <small>Current credits</small>
+                  <b data-overview-credits>0</b>
+                </article>
+                <article>
+                  <small>This month</small>
+                  <b data-overview-potential>+0</b>
+                </article>
+              </div>
+              <div class="overview-progress" aria-label="Credit progress">
+                <span data-overview-progress></span>
+              </div>
+            </aside>
+
+            <div class="overview-guide" aria-hidden="true">
+              <span class="overview-guide-ring"></span>
+              <span class="overview-guide-map"></span>
+              <span class="overview-guide-head">
+                <span></span>
+                <span></span>
+              </span>
+              <span class="overview-guide-body"></span>
+              <span class="overview-guide-arm"></span>
+              <span class="overview-guide-badge">Go</span>
+            </div>
           </div>
 
-          <div class="purpose-grid" aria-label="Portal purpose">
-            <article class="purpose-card">
-              <span>01</span>
-              <h3>Find trusted information</h3>
-              <p>Use one approved source for policies, announcements, documents, and internal procedures.</p>
+          <div class="overview-quest-grid" aria-label="Portal starter quests">
+            <article class="overview-quest-card featured">
+              <span class="overview-quest-icon">01</span>
+              <div>
+                <p class="eyebrow">Main quest</p>
+                <h3>Check the board</h3>
+                <p>Pick a monthly mission, submit useful proof, and build credits that can convert into bonus dollars.</p>
+              </div>
+              <button type="button" data-section-link="monthly-challenge">Open board</button>
             </article>
-            <article class="purpose-card">
-              <span>02</span>
-              <h3>Submit requests correctly</h3>
-              <p>Send IT and HR requests with the details each team needs to respond faster.</p>
+            <article class="overview-quest-card">
+              <span class="overview-quest-icon">02</span>
+              <div>
+                <p class="eyebrow">Briefing</p>
+                <h3>Read updates</h3>
+                <p>See company announcements without searching through old messages.</p>
+              </div>
+              <button type="button" data-section-link="announcements">View latest</button>
             </article>
-            <article class="purpose-card">
-              <span>03</span>
-              <h3>Stay aligned</h3>
-              <p>Keep track of internal updates, future training, and employee resources as the company grows.</p>
+            <article class="overview-quest-card">
+              <span class="overview-quest-icon">03</span>
+              <div>
+                <p class="eyebrow">Vault</p>
+                <h3>Find documents</h3>
+                <p>Open role-based documents and project manager materials from one approved place.</p>
+              </div>
+              <button type="button" data-section-link="documents">Enter vault</button>
             </article>
+            <article class="overview-quest-card">
+              <span class="overview-quest-icon">04</span>
+              <div>
+                <p class="eyebrow">Support lane</p>
+                <h3>Send requests</h3>
+                <p>Route IT, HR, Organizational, and Education requests with the details teams need.</p>
+              </div>
+              <button type="button" data-section-link="it-requests">Request help</button>
+            </article>
+          </div>
+
+          <div class="overview-route" aria-label="Portal route map">
+            <button type="button" data-section-link="projects">
+              <span>Projects</span>
+              <strong>Know what is moving</strong>
+            </button>
+            <button type="button" data-section-link="benefits">
+              <span>Benefits</span>
+              <strong>Use employee support</strong>
+            </button>
+            <button type="button" data-section-link="holidays">
+              <span>Holidays</span>
+              <strong>Plan time correctly</strong>
+            </button>
+            <button type="button" data-section-link="culture">
+              <span>Culture</span>
+              <strong>Match the company rhythm</strong>
+            </button>
           </div>
         </section>
 

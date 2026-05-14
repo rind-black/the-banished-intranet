@@ -15,6 +15,12 @@ const profileRole = document.querySelector("[data-profile-role]");
 const profileInitials = document.querySelector("[data-profile-initials]");
 const profileBonusCredits = document.querySelector("[data-profile-bonus-credits]");
 const profileBonusPotential = document.querySelector("[data-profile-bonus-potential]");
+const overviewName = document.querySelector("[data-overview-name]");
+const overviewRole = document.querySelector("[data-overview-role]");
+const overviewCredits = document.querySelector("[data-overview-credits]");
+const overviewPotential = document.querySelector("[data-overview-potential]");
+const overviewLevel = document.querySelector("[data-overview-level]");
+const overviewProgress = document.querySelector("[data-overview-progress]");
 const challengeMonth = document.querySelector("[data-challenge-month]");
 const challengeCredits = document.querySelector("[data-challenge-credits]");
 const challengeList = document.querySelector("[data-challenge-list]");
@@ -1074,6 +1080,10 @@ function applyProfile(profile) {
     return;
   }
 
+  const credits = Number(profile.bonusCredits || 0);
+  const monthlyPotential = currentMonthlyCreditTotal();
+  const creditProgress = monthlyPotential ? Math.min(100, Math.round((credits / monthlyPotential) * 100)) : 0;
+
   if (profileName) {
     profileName.textContent = profile.name || "Employee";
   }
@@ -1087,11 +1097,35 @@ function applyProfile(profile) {
   }
 
   if (profileBonusCredits) {
-    profileBonusCredits.textContent = Number(profile.bonusCredits || 0);
+    profileBonusCredits.textContent = credits;
   }
 
   if (profileBonusPotential) {
-    profileBonusPotential.textContent = `+${currentMonthlyCreditTotal()}`;
+    profileBonusPotential.textContent = `+${monthlyPotential}`;
+  }
+
+  if (overviewName) {
+    overviewName.textContent = profile.name || "Employee";
+  }
+
+  if (overviewRole) {
+    overviewRole.textContent = `${profile.role || "General"} / ${profile.department || "Team member"}`;
+  }
+
+  if (overviewCredits) {
+    overviewCredits.textContent = credits;
+  }
+
+  if (overviewPotential) {
+    overviewPotential.textContent = `+${monthlyPotential}`;
+  }
+
+  if (overviewLevel) {
+    overviewLevel.textContent = challengeLevelFromCredits(credits);
+  }
+
+  if (overviewProgress) {
+    overviewProgress.style.width = `${creditProgress}%`;
   }
 
   if (profileForm) {

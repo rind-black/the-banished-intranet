@@ -529,6 +529,379 @@ h3 {
   line-height: 1.66;
 }
 
+.overview-hero.intro-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(250px, 0.55fr) 210px;
+  gap: 18px;
+  align-items: stretch;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.overview-hero.intro-panel::before {
+  display: none;
+}
+
+.overview-hero-copy,
+.overview-player-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(203, 169, 92, 0.26);
+  background:
+    var(--section-pattern),
+    linear-gradient(135deg, rgba(247, 243, 234, 0.06), rgba(247, 243, 234, 0.02)),
+    rgba(17, 17, 19, 0.94);
+  box-shadow: var(--shadow);
+}
+
+.overview-hero-copy {
+  min-height: 300px;
+  padding: 34px;
+  border-radius: 8px 78px 8px 8px;
+}
+
+.overview-hero-copy::after {
+  position: absolute;
+  right: 26px;
+  bottom: 24px;
+  width: 132px;
+  height: 132px;
+  border: 1px solid rgba(203, 169, 92, 0.22);
+  border-radius: 50%;
+  background:
+    linear-gradient(90deg, transparent 48%, rgba(203, 169, 92, 0.2) 49% 51%, transparent 52%),
+    linear-gradient(0deg, transparent 48%, rgba(203, 169, 92, 0.2) 49% 51%, transparent 52%);
+  content: "";
+  opacity: 0.62;
+}
+
+.overview-hero-copy h2 {
+  max-width: 720px;
+  margin-bottom: 16px;
+}
+
+.overview-hero-copy h2 span {
+  color: var(--gold);
+}
+
+.overview-hero-copy p:not(.eyebrow) {
+  max-width: 690px;
+  color: rgba(247, 243, 234, 0.7);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.overview-actions {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.overview-actions .ghost-button,
+.overview-actions .primary-button {
+  min-height: 46px;
+}
+
+.overview-player-card {
+  display: grid;
+  align-content: center;
+  min-height: 300px;
+  padding: 28px;
+  border-radius: 78px 8px 8px 8px;
+}
+
+.overview-player-card > span,
+.overview-player-card > strong,
+.overview-player-card > p,
+.overview-credit-row small,
+.overview-credit-row b {
+  display: block;
+}
+
+.overview-player-card > span {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.overview-player-card > strong {
+  margin: 12px 0 8px;
+  color: var(--ink-strong);
+  font-size: 24px;
+  font-weight: 880;
+  line-height: 1.08;
+  text-transform: uppercase;
+}
+
+.overview-player-card > p {
+  margin-bottom: 18px;
+  color: rgba(247, 243, 234, 0.62);
+  font-size: 13px;
+  font-weight: 760;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.overview-credit-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(247, 243, 234, 0.09);
+  background: rgba(247, 243, 234, 0.09);
+}
+
+.overview-credit-row article {
+  padding: 14px;
+  background: rgba(8, 8, 9, 0.82);
+}
+
+.overview-credit-row small {
+  color: rgba(247, 243, 234, 0.52);
+  font-size: 10px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.overview-credit-row b {
+  margin-top: 6px;
+  color: var(--gold);
+  font-size: 28px;
+  line-height: 1;
+}
+
+.overview-progress {
+  height: 8px;
+  border: 1px solid rgba(203, 169, 92, 0.36);
+  border-radius: 999px;
+  background: #050506;
+  overflow: hidden;
+}
+
+.overview-progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+}
+
+.overview-guide {
+  position: relative;
+  display: grid;
+  min-height: 300px;
+  place-items: center;
+}
+
+.overview-guide-ring {
+  position: absolute;
+  width: 196px;
+  height: 196px;
+  border: 1px solid rgba(203, 169, 92, 0.42);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(203, 169, 92, 0.12), transparent 58%),
+    conic-gradient(from 140deg, rgba(203, 169, 92, 0.34), transparent 24%, rgba(231, 55, 47, 0.26), transparent 54%, rgba(69, 167, 133, 0.24), transparent 74%);
+}
+
+.overview-guide-map {
+  position: absolute;
+  top: 58px;
+  left: 20px;
+  width: 72px;
+  height: 54px;
+  border: 1px solid rgba(203, 169, 92, 0.48);
+  border-radius: 12px;
+  background:
+    linear-gradient(90deg, transparent 31%, rgba(203, 169, 92, 0.35) 32% 34%, transparent 35% 64%, rgba(203, 169, 92, 0.28) 65% 67%, transparent 68%),
+    rgba(8, 8, 9, 0.86);
+  transform: rotate(-7deg);
+}
+
+.overview-guide-head {
+  position: absolute;
+  top: 72px;
+  display: flex;
+  width: 72px;
+  height: 72px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 2px solid rgba(247, 243, 234, 0.66);
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 50% 68%, transparent 0 12px, #8d4b3f 13px 15px, transparent 16px),
+    linear-gradient(180deg, #8b4937 0 26%, transparent 27%),
+    #f3d7ba;
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.42);
+}
+
+.overview-guide-head span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #30231f;
+}
+
+.overview-guide-body {
+  position: absolute;
+  bottom: 62px;
+  width: 106px;
+  height: 70px;
+  border: 1px solid rgba(203, 169, 92, 0.42);
+  border-radius: 56px 56px 20px 20px;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(247, 243, 234, 0.2) 0 5px, transparent 6px),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.18), transparent 56%),
+    #263b34;
+}
+
+.overview-guide-arm {
+  position: absolute;
+  right: 40px;
+  bottom: 118px;
+  width: 54px;
+  height: 15px;
+  border-radius: 999px;
+  background: #f3d7ba;
+  transform: rotate(-34deg);
+}
+
+.overview-guide-badge {
+  position: absolute;
+  right: 12px;
+  bottom: 66px;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid rgba(203, 169, 92, 0.58);
+  border-radius: 50%;
+  background: #080809;
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.overview-quest-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.overview-quest-card {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  min-height: 146px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(247, 243, 234, 0.045), transparent 62%),
+    rgba(17, 17, 19, 0.94);
+  box-shadow: var(--shadow);
+}
+
+.overview-quest-card.featured {
+  border-color: rgba(203, 169, 92, 0.42);
+  background:
+    linear-gradient(135deg, rgba(203, 169, 92, 0.12), transparent 58%),
+    rgba(17, 17, 19, 0.96);
+}
+
+.overview-quest-icon {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  border: 1px solid rgba(203, 169, 92, 0.5);
+  border-radius: 50%;
+  background: #050506;
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.overview-quest-card h3 {
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.overview-quest-card p:not(.eyebrow) {
+  margin: 0;
+  color: rgba(247, 243, 234, 0.62);
+  line-height: 1.5;
+}
+
+.overview-quest-card button,
+.overview-route button {
+  border: 1px solid rgba(247, 243, 234, 0.12);
+  background: rgba(8, 8, 9, 0.86);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.overview-quest-card button {
+  min-height: 42px;
+  padding: 0 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.overview-quest-card button:hover,
+.overview-route button:hover {
+  border-color: rgba(203, 169, 92, 0.58);
+  background: rgba(203, 169, 92, 0.12);
+}
+
+.overview-route {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 14px;
+  border: 1px solid rgba(203, 169, 92, 0.24);
+  background: rgba(203, 169, 92, 0.24);
+  box-shadow: var(--shadow);
+}
+
+.overview-route button {
+  min-height: 110px;
+  padding: 18px;
+  text-align: left;
+}
+
+.overview-route span,
+.overview-route strong {
+  display: block;
+}
+
+.overview-route span {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.overview-route strong {
+  margin-top: 10px;
+  color: var(--ink-strong);
+  font-size: 15px;
+  line-height: 1.25;
+}
+
 .purpose-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3687,7 +4060,9 @@ h3 {
     display: grid;
   }
 
+  .overview-hero.intro-panel,
   .purpose-grid,
+  .overview-quest-grid,
   .request-layout,
   .policy-grid,
   .company-grid,
@@ -3723,6 +4098,14 @@ h3 {
   .profile-bonus-grid,
   .admin-grid {
     grid-template-columns: 1fr;
+  }
+
+  .overview-guide {
+    min-height: 230px;
+  }
+
+  .overview-route {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .content-admin-card {
@@ -3781,6 +4164,24 @@ h3 {
     gap: 10px;
   }
 
+  .overview-hero-copy,
+  .overview-player-card {
+    border-radius: 8px;
+  }
+
+  .overview-actions,
+  .overview-quest-card {
+    grid-template-columns: 1fr;
+  }
+
+  .overview-quest-card button {
+    justify-self: start;
+  }
+
+  .overview-route {
+    grid-template-columns: 1fr;
+  }
+
   .challenge-card-button {
     grid-template-columns: 74px minmax(0, 1fr);
     border-radius: 28px 52px 28px 52px;
@@ -3797,6 +4198,8 @@ h3 {
   }
 
   .intro-panel,
+  .overview-hero-copy,
+  .overview-player-card,
   .purpose-card,
   .company-card,
   .benefit-stack article,
