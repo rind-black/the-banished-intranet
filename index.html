@@ -47,48 +47,52 @@
             <span aria-hidden="true">02</span>
             Announcements
           </a>
-          <a class="nav-link" href="#documents" data-section-link="documents">
+          <a class="nav-link" href="#calendar" data-section-link="calendar">
             <span aria-hidden="true">03</span>
+            Calendar
+          </a>
+          <a class="nav-link" href="#documents" data-section-link="documents">
+            <span aria-hidden="true">04</span>
             Documents
           </a>
           <a class="nav-link" href="#projects" data-section-link="projects">
-            <span aria-hidden="true">04</span>
+            <span aria-hidden="true">05</span>
             Projects
           </a>
           <a class="nav-link" href="#bonuses" data-section-link="bonuses">
-            <span aria-hidden="true">05</span>
+            <span aria-hidden="true">06</span>
             Bonuses
           </a>
           <a class="nav-link" href="#monthly-challenge" data-section-link="monthly-challenge">
-            <span aria-hidden="true">06</span>
+            <span aria-hidden="true">07</span>
             Challenge
           </a>
           <a class="nav-link" href="#benefits" data-section-link="benefits">
-            <span aria-hidden="true">07</span>
+            <span aria-hidden="true">08</span>
             Benefits
           </a>
           <a class="nav-link" href="#holidays" data-section-link="holidays">
-            <span aria-hidden="true">08</span>
+            <span aria-hidden="true">09</span>
             Holidays
           </a>
           <a class="nav-link" href="#culture" data-section-link="culture">
-            <span aria-hidden="true">09</span>
+            <span aria-hidden="true">10</span>
             Culture
           </a>
           <a class="nav-link" href="#training" data-section-link="training">
-            <span aria-hidden="true">10</span>
+            <span aria-hidden="true">11</span>
             Training
           </a>
           <a class="nav-link" href="#internship" data-section-link="internship">
-            <span aria-hidden="true">11</span>
+            <span aria-hidden="true">12</span>
             Internship
           </a>
           <a class="nav-link" href="#requests" data-section-link="requests">
-            <span aria-hidden="true">12</span>
+            <span aria-hidden="true">13</span>
             Requests
           </a>
           <a class="nav-link" href="#admin" data-section-link="admin" data-admin-only hidden>
-            <span aria-hidden="true">13</span>
+            <span aria-hidden="true">14</span>
             Admin
           </a>
         </nav>
@@ -213,6 +217,10 @@
               <span>Benefits</span>
               <strong>Use employee support</strong>
             </button>
+            <button type="button" data-section-link="calendar">
+              <span>Calendar</span>
+              <strong>See marked company dates</strong>
+            </button>
             <button type="button" data-section-link="holidays">
               <span>Holidays</span>
               <strong>Plan time correctly</strong>
@@ -250,6 +258,94 @@
                 The Banished Internal Portal was created on May 12 as the central access point for employee resources,
                 company announcements, role-based documents, bonus information, training updates, and support requests.
               </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="portal-section" id="calendar" data-section="calendar" aria-labelledby="calendar-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Company rhythm</p>
+              <h2 id="calendar-title">Calendar</h2>
+            </div>
+            <button class="ghost-button" type="button" data-section-link="holidays">Open holiday guide</button>
+          </div>
+
+          <div class="calendar-shell">
+            <article class="calendar-hero">
+              <div>
+                <p class="eyebrow">2026 marked days</p>
+                <h3>Holidays, company days, celebrations, and break windows in one view.</h3>
+                <p>
+                  Use this calendar as the fast planning layer. The detailed rules still live in Holidays, but the dates
+                  that affect scheduling are marked here immediately.
+                </p>
+              </div>
+              <div class="calendar-stat-grid" aria-label="Calendar summary">
+                <article>
+                  <strong data-calendar-total>0</strong>
+                  <span>marked dates</span>
+                </article>
+                <article>
+                  <strong data-calendar-next>May 18</strong>
+                  <span>next marker</span>
+                </article>
+                <article>
+                  <strong data-calendar-focus>All</strong>
+                  <span>current filter</span>
+                </article>
+              </div>
+            </article>
+
+            <aside class="calendar-detail-panel" aria-live="polite">
+              <p class="eyebrow">Selected day</p>
+              <h3 data-calendar-detail-title>Pick a marked day</h3>
+              <p data-calendar-detail-copy>
+                Select any highlighted date to see what is happening and who it applies to.
+              </p>
+              <div class="calendar-detail-list" data-calendar-detail-list></div>
+            </aside>
+          </div>
+
+          <div class="calendar-toolbar" aria-label="Calendar filters">
+            <button class="calendar-filter active" type="button" data-calendar-filter="all">All</button>
+            <button class="calendar-filter" type="button" data-calendar-filter="company">Company</button>
+            <button class="calendar-filter" type="button" data-calendar-filter="us">US</button>
+            <button class="calendar-filter" type="button" data-calendar-filter="canada">Canada</button>
+            <button class="calendar-filter" type="button" data-calendar-filter="celebration">Events</button>
+            <button class="calendar-filter" type="button" data-calendar-filter="break">Breaks</button>
+          </div>
+
+          <div class="calendar-legend" aria-label="Calendar legend">
+            <span><i class="calendar-dot is-company"></i>Company day</span>
+            <span><i class="calendar-dot is-us"></i>US / California</span>
+            <span><i class="calendar-dot is-canada"></i>Canada</span>
+            <span><i class="calendar-dot is-celebration"></i>Celebration</span>
+            <span><i class="calendar-dot is-break"></i>Break window</span>
+          </div>
+
+          <div class="calendar-year-grid" data-calendar-grid aria-label="2026 company calendar"></div>
+
+          <div class="calendar-flex-grid" aria-label="Flexible days not tied to a fixed date">
+            <article>
+              <span>Flexible</span>
+              <strong>Birthday Off</strong>
+              <p>Take the nearest weekday if your birthday falls on a weekend or holiday.</p>
+            </article>
+            <article>
+              <span>2 / year</span>
+              <strong>Floating Holidays</strong>
+              <p>Use these for cultural, religious, family, or personal observances that matter to you.</p>
+            </article>
+            <article>
+              <span>2 / month</span>
+              <strong>Personal Recharge Days</strong>
+              <p>Separate day-offs that reset monthly and do not roll over.</p>
+            </article>
+            <article>
+              <span>Open</span>
+              <strong>Project Wraps</strong>
+              <p>Added when a final deliverable ships and the team is ready to mark the work.</p>
             </article>
           </div>
         </section>
@@ -1931,6 +2027,7 @@
                   <select name="contentSection">
                     <option value="overview">Overview</option>
                     <option value="announcements">Announcements</option>
+                    <option value="calendar">Calendar</option>
                     <option value="documents">Documents</option>
                     <option value="projects">Projects</option>
                     <option value="bonuses">Bonuses</option>

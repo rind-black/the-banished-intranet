@@ -53,6 +53,14 @@ const contentRows = document.querySelector("[data-content-rows]");
 const adminOnlyElements = document.querySelectorAll("[data-admin-only]");
 const unifiedRequestForm = document.querySelector("[data-unified-request-form]");
 const requestDestination = document.querySelector("[data-request-destination]");
+const calendarGrid = document.querySelector("[data-calendar-grid]");
+const calendarFilterButtons = document.querySelectorAll("[data-calendar-filter]");
+const calendarTotal = document.querySelector("[data-calendar-total]");
+const calendarNext = document.querySelector("[data-calendar-next]");
+const calendarFocus = document.querySelector("[data-calendar-focus]");
+const calendarDetailTitle = document.querySelector("[data-calendar-detail-title]");
+const calendarDetailCopy = document.querySelector("[data-calendar-detail-copy]");
+const calendarDetailList = document.querySelector("[data-calendar-detail-list]");
 
 const profileStoreKey = "tb-internal-profile";
 const usersStoreKey = "tb-internal-users";
@@ -61,6 +69,9 @@ const contentStoreKey = "tb-internal-content";
 const inviteTempPassword = "PortalInvite12!";
 const companyEmailDomain = "@the-banished.com";
 let activeChallengeDepartment = "all";
+let activeCalendarFilter = "all";
+let selectedCalendarDate = "";
+const companyCalendarYear = 2026;
 const monthNames = [
   "January",
   "February",
@@ -112,6 +123,7 @@ const defaultUsers = {
 const titles = {
   overview: "The Banished employee hub",
   announcements: "Company announcements",
+  calendar: "Company calendar",
   documents: "Company documents",
   "document-detail": "Document detail",
   projects: "Current projects",
@@ -132,6 +144,7 @@ const titles = {
 const editableSections = {
   overview: "Overview",
   announcements: "Announcements",
+  calendar: "Calendar",
   documents: "Documents",
   projects: "Projects",
   bonuses: "Bonuses",
@@ -185,6 +198,289 @@ const holidayDescriptions = {
   "Workshops and Knowledge-Sharing Sessions": "Open sessions for masterclasses, panels, webinars, and skill-building. Education handles logistics once a session is approved.",
   "Themed Thursdays": "A monthly optional theme announced at least one week in advance, with a quick sign-off from Organizational before it goes out.",
 };
+
+const calendarWeekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const calendarFilterLabels = {
+  all: "All",
+  company: "Company",
+  us: "US",
+  canada: "Canada",
+  celebration: "Events",
+  break: "Breaks",
+};
+
+function parseCalendarDate(dateString) {
+  return new Date(`${dateString}T12:00:00`);
+}
+
+function toDateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+function makeCalendarRange(startDate, endDate, event) {
+  const dates = [];
+  const cursor = parseCalendarDate(startDate);
+  const final = parseCalendarDate(endDate);
+
+  while (cursor <= final) {
+    dates.push({
+      ...event,
+      date: toDateKey(cursor),
+    });
+    cursor.setDate(cursor.getDate() + 1);
+  }
+
+  return dates;
+}
+
+const companyCalendarEvents = [
+  {
+    date: "2026-01-01",
+    title: "New Year's Day",
+    shortTitle: "New Year",
+    categories: ["us", "canada"],
+    scope: "US + Canada",
+    type: "Paid holiday",
+    description: holidayDescriptions["New Year's Day"],
+  },
+  {
+    date: "2026-01-01",
+    title: "Winter Break",
+    shortTitle: "Winter Break",
+    categories: ["break"],
+    scope: "Company-wide",
+    type: "Company break",
+    description: "The final day of the winter break window that runs from December 25 through January 1.",
+  },
+  {
+    date: "2026-01-19",
+    title: "Martin Luther King Jr. Day",
+    shortTitle: "MLK Day",
+    categories: ["us"],
+    scope: "US",
+    type: "Paid holiday",
+    description: holidayDescriptions["Martin Luther King Jr. Day"],
+  },
+  {
+    date: "2026-02-16",
+    title: "Presidents' Day",
+    shortTitle: "Presidents",
+    categories: ["us"],
+    scope: "US",
+    type: "Paid holiday",
+    description: holidayDescriptions["Presidents' Day"],
+  },
+  {
+    date: "2026-03-31",
+    title: "Cesar Chavez Day",
+    shortTitle: "Cesar Chavez",
+    categories: ["us"],
+    scope: "California",
+    type: "State holiday",
+    description: holidayDescriptions["Cesar Chavez Day"],
+  },
+  {
+    date: "2026-04-03",
+    title: "Good Friday",
+    shortTitle: "Good Friday",
+    categories: ["canada"],
+    scope: "Canada",
+    type: "Statutory holiday",
+    description: holidayDescriptions["Good Friday"],
+  },
+  {
+    date: "2026-04-06",
+    title: "Easter Monday",
+    shortTitle: "Easter Mon",
+    categories: ["canada"],
+    scope: "Canada",
+    type: "Statutory holiday",
+    description: holidayDescriptions["Easter Monday"],
+  },
+  {
+    date: "2026-05-18",
+    title: "Victoria Day",
+    shortTitle: "Victoria",
+    categories: ["canada"],
+    scope: "Canada",
+    type: "Statutory holiday",
+    description: holidayDescriptions["Victoria Day"],
+  },
+  {
+    date: "2026-05-25",
+    title: "Memorial Day",
+    shortTitle: "Memorial",
+    categories: ["us"],
+    scope: "US",
+    type: "Paid holiday",
+    description: holidayDescriptions["Memorial Day"],
+  },
+  {
+    date: "2026-06-19",
+    title: "Juneteenth",
+    shortTitle: "Juneteenth",
+    categories: ["us"],
+    scope: "US",
+    type: "Paid holiday",
+    description: holidayDescriptions.Juneteenth,
+  },
+  {
+    date: "2026-06-24",
+    title: "Saint-Jean-Baptiste Day",
+    shortTitle: "St-Jean",
+    categories: ["canada"],
+    scope: "Quebec",
+    type: "Provincial holiday",
+    description: holidayDescriptions["Saint-Jean-Baptiste Day"],
+  },
+  {
+    date: "2026-06-28",
+    title: "Pride Day",
+    shortTitle: "Pride",
+    categories: ["company"],
+    scope: "Everyone",
+    type: "Company day",
+    description: holidayDescriptions["Pride Day"],
+  },
+  {
+    date: "2026-07-01",
+    title: "Canada Day",
+    shortTitle: "Canada Day",
+    categories: ["canada"],
+    scope: "Canada",
+    type: "Statutory holiday",
+    description: holidayDescriptions["Canada Day"],
+  },
+  {
+    date: "2026-07-04",
+    title: "Independence Day",
+    shortTitle: "July 4",
+    categories: ["us"],
+    scope: "US",
+    type: "Paid holiday",
+    description: holidayDescriptions["Independence Day"],
+  },
+  {
+    date: "2026-08-03",
+    title: "Civic Holiday",
+    shortTitle: "Civic",
+    categories: ["canada"],
+    scope: "Canada, excluding Quebec",
+    type: "Regional holiday",
+    description: holidayDescriptions["Civic Holiday"],
+  },
+  {
+    date: "2026-09-07",
+    title: "Labor Day / Labour Day",
+    shortTitle: "Labor Day",
+    categories: ["us", "canada"],
+    scope: "US + Canada",
+    type: "Paid holiday",
+    description: "US Labor Day and Canadian Labour Day both land on the first Monday in September.",
+  },
+  {
+    date: "2026-09-30",
+    title: "National Day for Truth and Reconciliation",
+    shortTitle: "Truth + Reconciliation",
+    categories: ["canada"],
+    scope: "Canada",
+    type: "Statutory holiday",
+    description: holidayDescriptions["National Day for Truth and Reconciliation"],
+  },
+  {
+    date: "2026-10-12",
+    title: "Thanksgiving Day (Canada)",
+    shortTitle: "Thanksgiving CA",
+    categories: ["canada"],
+    scope: "Canada",
+    type: "Statutory holiday",
+    description: holidayDescriptions["Thanksgiving Day (Canada)"],
+  },
+  {
+    date: "2026-10-31",
+    title: "The Banished Foundation Day",
+    shortTitle: "Foundation",
+    categories: ["company"],
+    scope: "Everyone",
+    type: "Company day",
+    description: holidayDescriptions["The Banished Foundation Day"],
+  },
+  {
+    date: "2026-10-31",
+    title: "Halloween at The Banished Inc.",
+    shortTitle: "Halloween",
+    categories: ["celebration"],
+    scope: "Optional",
+    type: "Company celebration",
+    description: holidayDescriptions["Halloween at The Banished Inc."],
+  },
+  {
+    date: "2026-11-11",
+    title: "Veterans Day / Remembrance Day",
+    shortTitle: "Nov 11",
+    categories: ["us", "canada"],
+    scope: "US + Canada",
+    type: "Paid holiday",
+    description: "Veterans Day in the US and Remembrance Day in Canada share November 11 as a day of service and remembrance.",
+  },
+  {
+    date: "2026-11-26",
+    title: "Thanksgiving Day",
+    shortTitle: "Thanksgiving US",
+    categories: ["us"],
+    scope: "US",
+    type: "Paid holiday",
+    description: holidayDescriptions["Thanksgiving Day"],
+  },
+  {
+    date: "2026-11-27",
+    title: "Day After Thanksgiving",
+    shortTitle: "After Thanksgiving",
+    categories: ["us"],
+    scope: "US",
+    type: "Paid holiday",
+    description: holidayDescriptions["Day After Thanksgiving"],
+  },
+  {
+    date: "2026-12-10",
+    title: "End of Year Celebration",
+    shortTitle: "Year End",
+    categories: ["celebration"],
+    scope: "Optional",
+    type: "Company celebration",
+    description: holidayDescriptions["End of Year Celebration"],
+  },
+  {
+    date: "2026-12-25",
+    title: "Christmas Day",
+    shortTitle: "Christmas",
+    categories: ["us", "canada"],
+    scope: "US + Canada",
+    type: "Paid holiday",
+    description: holidayDescriptions["Christmas Day"],
+  },
+  {
+    date: "2026-12-26",
+    title: "Boxing Day",
+    shortTitle: "Boxing Day",
+    categories: ["canada"],
+    scope: "Canada",
+    type: "Statutory holiday",
+    description: holidayDescriptions["Boxing Day"],
+  },
+  ...makeCalendarRange("2026-12-25", "2026-12-31", {
+    title: "Winter Break",
+    shortTitle: "Winter Break",
+    categories: ["break"],
+    scope: "Company-wide",
+    type: "Company break",
+    description: holidayDescriptions["Winter Break"],
+  }),
+].sort((a, b) => a.date.localeCompare(b.date) || a.title.localeCompare(b.title));
 
 const monthlyChallenges = [
   [
@@ -1305,6 +1601,198 @@ function renderRequests() {
     .join("");
 }
 
+function calendarEventMatches(event, filter = activeCalendarFilter) {
+  return filter === "all" || event.categories.includes(filter);
+}
+
+function primaryCalendarCategory(event) {
+  return event.categories.includes("company") ? "company" : event.categories[0] || "company";
+}
+
+function formatCalendarDate(dateString, options = {}) {
+  return parseCalendarDate(dateString).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: options.withYear ? "numeric" : undefined,
+  });
+}
+
+function visibleCalendarEvents(filter = activeCalendarFilter) {
+  return companyCalendarEvents.filter((event) => calendarEventMatches(event, filter));
+}
+
+function nextCalendarDate(events) {
+  if (!events.length) {
+    return "";
+  }
+
+  const today = new Date();
+  const todayKey = today.getFullYear() === companyCalendarYear
+    ? toDateKey(today)
+    : `${companyCalendarYear}-01-01`;
+  const upcoming = events.find((event) => event.date >= todayKey);
+
+  return (upcoming || events[0]).date;
+}
+
+function calendarEventsForDate(dateString, filter = activeCalendarFilter) {
+  return companyCalendarEvents.filter((event) => event.date === dateString && calendarEventMatches(event, filter));
+}
+
+function updateCalendarStats(events) {
+  const uniqueDates = new Set(events.map((event) => event.date));
+  const nextDate = nextCalendarDate(events);
+
+  if (calendarTotal) {
+    calendarTotal.textContent = uniqueDates.size;
+  }
+
+  if (calendarNext) {
+    calendarNext.textContent = nextDate ? formatCalendarDate(nextDate) : "None";
+  }
+
+  if (calendarFocus) {
+    calendarFocus.textContent = calendarFilterLabels[activeCalendarFilter] || "All";
+  }
+}
+
+function renderCalendarDetail(dateString) {
+  if (!calendarDetailTitle || !calendarDetailCopy || !calendarDetailList) {
+    return;
+  }
+
+  const events = calendarEventsForDate(dateString);
+
+  calendarDetailList.replaceChildren();
+
+  if (!events.length) {
+    calendarDetailTitle.textContent = "Pick a marked day";
+    calendarDetailCopy.textContent = "Select any highlighted date to see what is happening and who it applies to.";
+    return;
+  }
+
+  calendarDetailTitle.textContent = formatCalendarDate(dateString, { withYear: true });
+  calendarDetailCopy.textContent = events.length === 1
+    ? "One calendar marker is scheduled for this date."
+    : `${events.length} calendar markers share this date.`;
+
+  events.forEach((event) => {
+    const item = document.createElement("article");
+    const title = document.createElement("strong");
+    const meta = document.createElement("span");
+    const description = document.createElement("p");
+
+    item.className = `calendar-detail-item is-${primaryCalendarCategory(event)}`;
+    title.textContent = event.title;
+    meta.textContent = `${event.type} · ${event.scope}`;
+    description.textContent = event.description;
+    item.append(title, meta, description);
+    calendarDetailList.append(item);
+  });
+}
+
+function createCalendarDay(dateString, dayNumber, events) {
+  const day = document.createElement(events.length ? "button" : "span");
+  const number = document.createElement("b");
+
+  day.className = "calendar-day";
+  number.textContent = dayNumber;
+  day.append(number);
+
+  if (!events.length) {
+    day.setAttribute("aria-hidden", "true");
+    return day;
+  }
+
+  const categories = [...new Set(events.flatMap((event) => event.categories))];
+  const dotRow = document.createElement("span");
+  const label = document.createElement("span");
+
+  day.type = "button";
+  day.classList.add("has-events", `is-${primaryCalendarCategory(events[0])}`);
+  day.classList.toggle("selected", selectedCalendarDate === dateString);
+  day.dataset.calendarDate = dateString;
+  day.setAttribute("aria-label", `${formatCalendarDate(dateString, { withYear: true })}: ${events.map((event) => event.title).join(", ")}`);
+
+  dotRow.className = "calendar-day-dots";
+  categories.slice(0, 5).forEach((category) => {
+    const dot = document.createElement("i");
+    dot.className = `calendar-dot is-${category}`;
+    dotRow.append(dot);
+  });
+
+  label.className = "calendar-event-preview";
+  label.textContent = events.length > 1 ? `${events.length} markers` : events[0].shortTitle;
+
+  day.append(dotRow, label);
+  day.addEventListener("click", () => {
+    selectedCalendarDate = dateString;
+    renderCompanyCalendar();
+  });
+
+  return day;
+}
+
+function renderCompanyCalendar() {
+  if (!calendarGrid) {
+    return;
+  }
+
+  const events = visibleCalendarEvents();
+  const visibleDates = new Set(events.map((event) => event.date));
+
+  if (!selectedCalendarDate || !visibleDates.has(selectedCalendarDate)) {
+    selectedCalendarDate = nextCalendarDate(events);
+  }
+
+  calendarGrid.replaceChildren();
+  updateCalendarStats(events);
+
+  for (let monthIndex = 0; monthIndex < 12; monthIndex += 1) {
+    const month = document.createElement("article");
+    const header = document.createElement("header");
+    const title = document.createElement("strong");
+    const count = document.createElement("span");
+    const weekdays = document.createElement("div");
+    const days = document.createElement("div");
+    const firstDay = new Date(companyCalendarYear, monthIndex, 1).getDay();
+    const daysInMonth = new Date(companyCalendarYear, monthIndex + 1, 0).getDate();
+    const monthEvents = events.filter((event) => parseCalendarDate(event.date).getMonth() === monthIndex);
+    const monthDates = new Set(monthEvents.map((event) => event.date));
+
+    month.className = "calendar-month";
+    header.className = "calendar-month-head";
+    title.textContent = monthNames[monthIndex];
+    count.textContent = `${monthDates.size} marked`;
+    header.append(title, count);
+
+    weekdays.className = "calendar-weekdays";
+    calendarWeekdays.forEach((weekday) => {
+      const label = document.createElement("span");
+      label.textContent = weekday;
+      weekdays.append(label);
+    });
+
+    days.className = "calendar-days";
+    for (let blank = 0; blank < firstDay; blank += 1) {
+      const emptyDay = document.createElement("span");
+      emptyDay.className = "calendar-day empty";
+      emptyDay.setAttribute("aria-hidden", "true");
+      days.append(emptyDay);
+    }
+
+    for (let dayNumber = 1; dayNumber <= daysInMonth; dayNumber += 1) {
+      const dateString = `${companyCalendarYear}-${String(monthIndex + 1).padStart(2, "0")}-${String(dayNumber).padStart(2, "0")}`;
+      days.append(createCalendarDay(dateString, dayNumber, calendarEventsForDate(dateString)));
+    }
+
+    month.append(header, weekdays, days);
+    calendarGrid.append(month);
+  }
+
+  renderCalendarDetail(selectedCalendarDate);
+}
+
 function appendTextBlock(parent, text) {
   String(text || "")
     .split("\n")
@@ -2201,6 +2689,16 @@ contentForm?.addEventListener("change", () => {
   syncContentRoleVisibility(contentForm);
 });
 
+calendarFilterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    activeCalendarFilter = button.dataset.calendarFilter || "all";
+    calendarFilterButtons.forEach((filterButton) => {
+      filterButton.classList.toggle("active", filterButton === button);
+    });
+    renderCompanyCalendar();
+  });
+});
+
 document.querySelectorAll("[data-announcement-toggle]").forEach((button) => {
   button.addEventListener("click", () => {
     const target = document.getElementById(button.dataset.announcementToggle);
@@ -2451,6 +2949,7 @@ if (contentForm) {
 }
 
 renderMonthlyChallenge();
+renderCompanyCalendar();
 
 const savedProfile = getProfile();
 
