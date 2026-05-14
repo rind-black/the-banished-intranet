@@ -774,6 +774,17 @@ function renderChallengeDepartmentFilters() {
   });
 }
 
+function challengeMetaText(challenge, department) {
+  const category = String(challenge.category || "");
+  const departmentLabel = String(department.label || "");
+
+  if (category.toLowerCase().startsWith(departmentLabel.toLowerCase())) {
+    return category;
+  }
+
+  return `${departmentLabel} / ${category}`;
+}
+
 function challengeIconSvg(type) {
   const paths = {
     casting: [
@@ -932,7 +943,7 @@ function renderMonthlyChallenge() {
     icon.dataset.tier = difficulty.tier;
     icon.innerHTML = challengeIconSvg(challengeIconType(challenge));
     content.className = "challenge-card-copy";
-    meta.textContent = `${department.label} / ${challenge.category}`;
+    meta.textContent = challengeMetaText(challenge, department);
     title.textContent = challenge.title;
     summary.textContent = challenge.summary;
     credits.className = "challenge-credit-pill";
