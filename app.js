@@ -787,6 +787,9 @@ function renderMonthlyChallenge() {
     const summary = document.createElement("small");
     const credits = document.createElement("em");
     const action = document.createElement("span");
+    const agent = document.createElement("span");
+    const agentHead = document.createElement("span");
+    const agentBody = document.createElement("span");
     const detail = document.createElement("div");
     const stats = document.createElement("div");
 
@@ -806,6 +809,12 @@ function renderMonthlyChallenge() {
     credits.textContent = `Reward +${challenge.credits} / $${challenge.credits}`;
     action.className = "challenge-action";
     action.textContent = "Start mission";
+    agent.className = "challenge-agent";
+    agent.dataset.role = difficulty.key;
+    agent.setAttribute("aria-hidden", "true");
+    agentHead.className = "challenge-agent-head";
+    agentBody.className = "challenge-agent-body";
+    agent.append(agentHead, agentBody);
     detail.className = "challenge-card-detail";
     detail.hidden = true;
     stats.className = "challenge-detail-stats";
@@ -836,7 +845,7 @@ function renderMonthlyChallenge() {
     detail.append(detailTitle, stats, detailText, detailList);
 
     content.append(meta, title, summary);
-    button.append(icon, content, credits, action);
+    button.append(icon, content, agent, credits, action);
     card.append(button, detail);
     challengeList.append(card);
 
