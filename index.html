@@ -118,7 +118,7 @@
               </svg>
             </button>
             <button class="profile-chip" type="button" data-section-link="profile" data-profile-button>
-              <span class="profile-avatar" data-profile-initials>TB</span>
+              <span class="profile-avatar" data-profile-avatar data-profile-initials>TB</span>
               <span>
                 <strong data-profile-name>Employee</strong>
                 <small data-profile-role>General</small>
@@ -2148,6 +2148,20 @@
           </div>
 
           <form class="profile-form" data-profile-form>
+            <div class="profile-avatar-editor">
+              <span class="profile-avatar profile-avatar-large" data-profile-avatar-preview>TB</span>
+              <div>
+                <strong>Profile avatar</strong>
+                <p>Upload a square photo or artwork. It stays attached to your portal profile.</p>
+                <div class="profile-avatar-actions">
+                  <label class="avatar-upload-button">
+                    Upload avatar
+                    <input name="profileAvatar" type="file" accept="image/*" data-profile-avatar-input />
+                  </label>
+                  <button class="ghost-button compact" type="button" data-profile-avatar-remove>Remove</button>
+                </div>
+              </div>
+            </div>
             <label>
               Full name
               <input name="profileName" type="text" autocomplete="name" />
@@ -2171,6 +2185,11 @@
             <label>
               Time zone
               <input name="profileTimezone" type="text" placeholder="Time zone" />
+            </label>
+            <label>
+              Country by IP
+              <input name="profileIpCountry" type="text" readonly data-profile-country value="Detecting..." />
+              <small data-profile-country-note>Locked from your network location when you sign in.</small>
             </label>
             <label>
               Work status

@@ -12,7 +12,12 @@ const documentEmpty = document.querySelector("[data-doc-empty]");
 const signOutButton = document.querySelector("[data-sign-out]");
 const profileName = document.querySelector("[data-profile-name]");
 const profileRole = document.querySelector("[data-profile-role]");
-const profileInitials = document.querySelector("[data-profile-initials]");
+const profileAvatar = document.querySelector("[data-profile-avatar]");
+const profileAvatarPreview = document.querySelector("[data-profile-avatar-preview]");
+const profileAvatarInput = document.querySelector("[data-profile-avatar-input]");
+const profileAvatarRemove = document.querySelector("[data-profile-avatar-remove]");
+const profileCountry = document.querySelector("[data-profile-country]");
+const profileCountryNote = document.querySelector("[data-profile-country-note]");
 const profileBonusCredits = document.querySelector("[data-profile-bonus-credits]");
 const profileBonusPotential = document.querySelector("[data-profile-bonus-potential]");
 const overviewName = document.querySelector("[data-overview-name]");
@@ -72,6 +77,7 @@ const companyEmailDomain = "@the-banished.com";
 let activeChallengeDepartment = "all";
 let activeCalendarFilter = "my";
 let selectedCalendarDate = "";
+let pendingAvatarDataUrl = null;
 const companyCalendarYear = 2026;
 const monthNames = [
   "January",
@@ -97,6 +103,9 @@ const defaultUsers = {
     timezone: "America/New_York",
     employmentType: "employee",
     calendarRegion: "us",
+    ipCountryCode: "US",
+    ipCountryName: "United States",
+    avatarDataUrl: "",
     admin: true,
     status: "Active",
     bonusCredits: 0,
@@ -109,6 +118,9 @@ const defaultUsers = {
     timezone: "America/New_York",
     employmentType: "employee",
     calendarRegion: "us",
+    ipCountryCode: "US",
+    ipCountryName: "United States",
+    avatarDataUrl: "",
     admin: false,
     status: "Active",
     bonusCredits: 0,
@@ -121,6 +133,9 @@ const defaultUsers = {
     timezone: "America/New_York",
     employmentType: "employee",
     calendarRegion: "us",
+    ipCountryCode: "US",
+    ipCountryName: "United States",
+    avatarDataUrl: "",
     admin: false,
     status: "Active",
     bonusCredits: 0,
@@ -932,6 +947,32 @@ function initialsFromName(name) {
     .toUpperCase() || "TB";
 }
 
+function renderProfileAvatar(target, profile, avatarOverride = null) {
+  if (!target) {
+    return;
+  }
+
+  const avatarDataUrl = avatarOverride !== null ? avatarOverride : profile?.avatarDataUrl || "";
+  target.replaceChildren();
+  target.classList.toggle("has-image", Boolean(avatarDataUrl));
+
+  if (avatarDataUrl) {
+    const image = document.createElement("img");
+    image.src = avatarDataUrl;
+    image.alt = "";
+    target.append(image);
+    return;
+  }
+
+  target.textContent = initialsFromName(profile?.name || profile?.email || "TB");
+}
+
+function updateAvatarPreviews(profile) {
+  const avatarOverride = pendingAvatarDataUrl !== null ? pendingAvatarDataUrl : null;
+  renderProfileAvatar(profileAvatar, profile, avatarOverride);
+  renderProfileAvatar(profileAvatarPreview, profile, avatarOverride);
+}
+
 function roleToSlug(role) {
   return roleSlugs[role] || "general";
 }
@@ -942,6 +983,86 @@ function slugToRole(slug) {
 
 function currentProfile() {
   return getProfile();
+}
+
+function formatIpCountry(profile) {
+  const name = profile?.ipCountryName || "";
+  const code = profile?.ipCountryCode || "";
+
+  if (name && code) {
+    return `${name} (${code})`;
+  }
+
+  return name || code || "Detecting...";
+}
+
+function officeFromCountryCode(countryCode) {
+  return {
+    US: "us",
+    CA: "canada",
+  }[String(countryCode || "").toUpperCase()] || "";
+}
+
+async function fetchIpLocation() {
+  try {
+    const response = await fetch("/api/location", {
+      headers: {
+        Accept: "application/json",
+      },
+    });
+    const data = await response.json();
+
+    if (!response.ok || !data?.ok) {
+      return null;
+    }
+
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+async function lockProfileCountryFromIp() {
+  const profile = currentProfile();
+
+  if (!profile?.email) {
+    return;
+  }
+
+  const location = await fetchIpLocation();
+
+  if (!location?.countryCode && !location?.countryName) {
+    return;
+  }
+
+  const latestProfile = currentProfile();
+
+  if (!latestProfile || latestProfile.email !== profile.email) {
+    return;
+  }
+
+  const detectedOffice = officeFromCountryCode(location.countryCode);
+  const updatedProfile = {
+    ...latestProfile,
+    ipCountryCode: location.countryCode || latestProfile.ipCountryCode || "",
+    ipCountryName: location.countryName || latestProfile.ipCountryName || "",
+    ipCountrySource: location.source || "ip",
+    calendarRegion: latestProfile.calendarRegion || detectedOffice || "us",
+  };
+  const users = getUsers();
+
+  if (users[updatedProfile.email]) {
+    users[updatedProfile.email] = {
+      ...users[updatedProfile.email],
+      ipCountryCode: updatedProfile.ipCountryCode,
+      ipCountryName: updatedProfile.ipCountryName,
+      ipCountrySource: updatedProfile.ipCountrySource,
+    };
+    setUsers(users);
+  }
+
+  setProfile(updatedProfile);
+  applyProfile(updatedProfile);
 }
 
 function normalizeCalendarRegion(region) {
@@ -1438,6 +1559,10 @@ function syncProfileFromDirectory(profile) {
     timezone: user.timezone,
     employmentType: normalizeEmploymentType(user.employmentType || profile.employmentType),
     calendarRegion: normalizeCalendarRegion(user.calendarRegion || profile.calendarRegion || "auto"),
+    ipCountryCode: user.ipCountryCode || profile.ipCountryCode || "",
+    ipCountryName: user.ipCountryName || profile.ipCountryName || "",
+    ipCountrySource: user.ipCountrySource || profile.ipCountrySource || "",
+    avatarDataUrl: user.avatarDataUrl || profile.avatarDataUrl || "",
     admin: Boolean(user.admin),
     bonusCredits: Number(user.bonusCredits || 0),
   };
@@ -1475,9 +1600,7 @@ function applyProfile(profile) {
     profileRole.textContent = profile.role || "General";
   }
 
-  if (profileInitials) {
-    profileInitials.textContent = initialsFromName(profile.name || profile.email || "TB");
-  }
+  updateAvatarPreviews(profile);
 
   if (profileBonusCredits) {
     profileBonusCredits.textContent = credits;
@@ -1521,6 +1644,17 @@ function applyProfile(profile) {
     profileForm.elements.profileCalendarRegion.value = inferCalendarRegion(profile);
   }
 
+  if (profileCountry) {
+    profileCountry.value = formatIpCountry(profile);
+  }
+
+  if (profileCountryNote) {
+    const source = profile.ipCountrySource === "dev-localhost"
+      ? "Local development fallback. In production, this locks from the request IP country."
+      : "Locked from your request IP country when you sign in.";
+    profileCountryNote.textContent = source;
+  }
+
   renderMonthlyChallenge();
   renderCompanyCalendar();
   updateAdminVisibility(profile);
@@ -1550,6 +1684,7 @@ function unlockPortal(profile) {
   document.body.classList.add("is-authenticated");
   applyProfile(syncedProfile);
   showSection(window.location.hash.replace("#", "") || "overview");
+  lockProfileCountryFromIp();
 }
 
 function showDocumentRole(roleId) {
@@ -2556,6 +2691,10 @@ authForm?.addEventListener("submit", (event) => {
     timezone: user.timezone,
     employmentType: normalizeEmploymentType(user.employmentType),
     calendarRegion: normalizeCalendarRegion(user.calendarRegion || "auto"),
+    ipCountryCode: user.ipCountryCode || "",
+    ipCountryName: user.ipCountryName || "",
+    ipCountrySource: user.ipCountrySource || "",
+    avatarDataUrl: user.avatarDataUrl || "",
     admin: Boolean(user.admin),
     bonusCredits: Number(user.bonusCredits || 0),
   };
@@ -2569,6 +2708,7 @@ authForm?.addEventListener("submit", (event) => {
 
 signOutButton?.addEventListener("click", () => {
   localStorage.removeItem(profileStoreKey);
+  pendingAvatarDataUrl = null;
   document.body.classList.remove("is-authenticated");
 
   if (portal) {
@@ -2580,6 +2720,35 @@ signOutButton?.addEventListener("click", () => {
   }
 
   authForm?.reset();
+});
+
+profileAvatarInput?.addEventListener("change", () => {
+  const file = profileAvatarInput.files?.[0];
+
+  if (!file) {
+    return;
+  }
+
+  if (!file.type.startsWith("image/")) {
+    profileAvatarInput.value = "";
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    pendingAvatarDataUrl = String(reader.result || "");
+    updateAvatarPreviews(currentProfile() || {});
+  });
+  reader.readAsDataURL(file);
+});
+
+profileAvatarRemove?.addEventListener("click", () => {
+  pendingAvatarDataUrl = "";
+  updateAvatarPreviews(currentProfile() || {});
+
+  if (profileAvatarInput) {
+    profileAvatarInput.value = "";
+  }
 });
 
 profileForm?.addEventListener("submit", (event) => {
@@ -2595,6 +2764,10 @@ profileForm?.addEventListener("submit", (event) => {
     timezone: formData.get("profileTimezone") || "",
     employmentType: normalizeEmploymentType(formData.get("profileEmploymentType")),
     calendarRegion: normalizeCalendarRegion(formData.get("profileCalendarRegion") || "auto"),
+    ipCountryCode: previousProfile.ipCountryCode || "",
+    ipCountryName: previousProfile.ipCountryName || "",
+    ipCountrySource: previousProfile.ipCountrySource || "",
+    avatarDataUrl: pendingAvatarDataUrl !== null ? pendingAvatarDataUrl : previousProfile.avatarDataUrl || "",
     admin: Boolean(previousProfile.admin),
     bonusCredits: Number(previousProfile.bonusCredits || 0),
   };
@@ -2610,11 +2783,16 @@ profileForm?.addEventListener("submit", (event) => {
       timezone: profile.timezone,
       employmentType: profile.employmentType,
       calendarRegion: profile.calendarRegion,
+      ipCountryCode: profile.ipCountryCode,
+      ipCountryName: profile.ipCountryName,
+      ipCountrySource: profile.ipCountrySource,
+      avatarDataUrl: profile.avatarDataUrl,
     };
     setUsers(users);
   }
 
   setProfile(profile);
+  pendingAvatarDataUrl = null;
   applyProfile(profile);
   showSection("profile");
 });
@@ -2657,6 +2835,10 @@ inviteForm?.addEventListener("submit", async (event) => {
     timezone: users[email]?.timezone || "",
     employmentType: normalizeEmploymentType(users[email]?.employmentType),
     calendarRegion: normalizeCalendarRegion(users[email]?.calendarRegion || "us"),
+    ipCountryCode: users[email]?.ipCountryCode || "",
+    ipCountryName: users[email]?.ipCountryName || "",
+    ipCountrySource: users[email]?.ipCountrySource || "",
+    avatarDataUrl: users[email]?.avatarDataUrl || "",
     admin: isAdmin,
     status: "Invited",
     bonusCredits: Number(users[email]?.bonusCredits || 0),
@@ -2712,6 +2894,10 @@ createUserForm?.addEventListener("submit", (event) => {
     timezone: users[email]?.timezone || "America/New_York",
     employmentType: normalizeEmploymentType(users[email]?.employmentType),
     calendarRegion: normalizeCalendarRegion(users[email]?.calendarRegion || "us"),
+    ipCountryCode: users[email]?.ipCountryCode || "",
+    ipCountryName: users[email]?.ipCountryName || "",
+    ipCountrySource: users[email]?.ipCountrySource || "",
+    avatarDataUrl: users[email]?.avatarDataUrl || "",
     admin: isAdmin,
     status: users[email]?.status || "Active",
     bonusCredits,

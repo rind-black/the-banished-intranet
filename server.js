@@ -17,6 +17,7 @@ const allowedRecipients = new Set([
   "organizational@the-banished.com",
   "education@the-banished.com",
 ]);
+const countryNames = new Intl.DisplayNames(["en"], { type: "region" });
 const mimeTypes = {
   ".css": "text/css; charset=utf-8",
   ".html": "text/html; charset=utf-8",
@@ -83,6 +84,73 @@ function cleanHeader(value) {
 
 function cleanEmail(value) {
   return String(value || "").replace(/[<>\r\n]/g, "").trim().toLowerCase();
+}
+
+function cleanCountryCode(value) {
+  const code = String(value || "").trim().toUpperCase();
+
+  return /^[A-Z]{2}$/.test(code) && code !== "XX" ? code : "";
+}
+
+function clientIp(request) {
+  const forwardedFor = String(request.headers["x-forwarded-for"] || "")
+    .split(",")
+    .map((item) => item.trim())
+    .find(Boolean);
+
+  return forwardedFor || request.socket.remoteAddress || "";
+}
+
+function isLocalIp(ip) {
+  return /^(::1|127\.|::ffff:127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)/.test(String(ip || ""));
+}
+
+function countryFromRequest(request) {
+  const candidates = [
+    ["cf-ipcountry", request.headers["cf-ipcountry"]],
+    ["x-vercel-ip-country", request.headers["x-vercel-ip-country"]],
+    ["x-country-code", request.headers["x-country-code"]],
+    ["x-geo-country", request.headers["x-geo-country"]],
+    ["cloudfront-viewer-country", request.headers["cloudfront-viewer-country"]],
+    ["x-appengine-country", request.headers["x-appengine-country"]],
+  ];
+
+  for (const [source, value] of candidates) {
+    const countryCode = cleanCountryCode(value);
+
+    if (countryCode) {
+      return {
+        countryCode,
+        countryName: countryNames.of(countryCode) || countryCode,
+        source,
+      };
+    }
+  }
+
+  const ip = clientIp(request);
+  const fallbackCode = cleanCountryCode(process.env.DEFAULT_COUNTRY_CODE);
+
+  if (fallbackCode) {
+    return {
+      countryCode: fallbackCode,
+      countryName: countryNames.of(fallbackCode) || fallbackCode,
+      source: "DEFAULT_COUNTRY_CODE",
+    };
+  }
+
+  if (isLocalIp(ip)) {
+    return {
+      countryCode: "US",
+      countryName: "United States",
+      source: "dev-localhost",
+    };
+  }
+
+  return {
+    countryCode: "",
+    countryName: "",
+    source: "unavailable",
+  };
 }
 
 function encodeSubject(value) {
@@ -348,6 +416,13 @@ async function handleRequest(request, response) {
   sendJson(response, 200, { ok: true });
 }
 
+function handleLocation(request, response) {
+  sendJson(response, 200, {
+    ok: true,
+    ...countryFromRequest(request),
+  });
+}
+
 function serveStatic(request, response) {
   const url = new URL(request.url, `http://${request.headers.host}`);
   const requestedPath = decodeURIComponent(url.pathname);
@@ -376,6 +451,11 @@ function serveStatic(request, response) {
 
 const server = http.createServer(async (request, response) => {
   try {
+    if (request.method === "GET" && request.url === "/api/location") {
+      handleLocation(request, response);
+      return;
+    }
+
     if (request.method === "POST" && request.url === "/api/invitations") {
       await handleInvitation(request, response);
       return;
