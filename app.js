@@ -95,6 +95,7 @@ const defaultUsers = {
     role: "Admin",
     department: "Administration",
     timezone: "America/New_York",
+    employmentType: "employee",
     calendarRegion: "us",
     admin: true,
     status: "Active",
@@ -106,6 +107,7 @@ const defaultUsers = {
     role: "General",
     department: "Operations",
     timezone: "America/New_York",
+    employmentType: "employee",
     calendarRegion: "us",
     admin: false,
     status: "Active",
@@ -117,6 +119,7 @@ const defaultUsers = {
     role: "Project Manager",
     department: "Production",
     timezone: "America/New_York",
+    employmentType: "employee",
     calendarRegion: "us",
     admin: false,
     status: "Active",
@@ -945,6 +948,10 @@ function normalizeCalendarRegion(region) {
   return ["auto", "us", "canada", "all"].includes(region) ? region : "auto";
 }
 
+function normalizeEmploymentType(type) {
+  return type === "contractor" ? "contractor" : "employee";
+}
+
 function inferCalendarRegion(profile = currentProfile()) {
   const explicitRegion = normalizeCalendarRegion(profile?.calendarRegion || "auto");
 
@@ -978,6 +985,18 @@ function calendarRegionLabel(region) {
     canada: "Canada",
     all: "Full company",
   }[region] || "Full company";
+}
+
+function calendarOfficeLabel(region) {
+  return {
+    us: "the United States office",
+    canada: "the Canada office",
+    all: "the full company calendar",
+  }[region] || "the full company calendar";
+}
+
+function employmentTypeLabel(type) {
+  return normalizeEmploymentType(type) === "contractor" ? "a contractor/freelancer" : "an employee";
 }
 
 function currentMonthlyChallenges() {
@@ -1417,6 +1436,7 @@ function syncProfileFromDirectory(profile) {
     role: user.role,
     department: user.department,
     timezone: user.timezone,
+    employmentType: normalizeEmploymentType(user.employmentType || profile.employmentType),
     calendarRegion: normalizeCalendarRegion(user.calendarRegion || profile.calendarRegion || "auto"),
     admin: Boolean(user.admin),
     bonusCredits: Number(user.bonusCredits || 0),
@@ -1497,7 +1517,8 @@ function applyProfile(profile) {
     profileForm.elements.profileRole.value = profile.role || "General";
     profileForm.elements.profileDepartment.value = profile.department || "";
     profileForm.elements.profileTimezone.value = profile.timezone || "";
-    profileForm.elements.profileCalendarRegion.value = normalizeCalendarRegion(profile.calendarRegion || "auto");
+    profileForm.elements.profileEmploymentType.value = normalizeEmploymentType(profile.employmentType);
+    profileForm.elements.profileCalendarRegion.value = inferCalendarRegion(profile);
   }
 
   renderMonthlyChallenge();
@@ -1701,7 +1722,7 @@ function updateCalendarStats(events) {
   const nextDate = nextCalendarDate(events);
   const profile = currentProfile();
   const region = inferCalendarRegion(profile);
-  const source = normalizeCalendarRegion(profile?.calendarRegion || "auto") === "auto" ? "inferred from your time zone" : "set in your profile";
+  const employmentType = normalizeEmploymentType(profile?.employmentType);
 
   if (calendarTotal) {
     calendarTotal.textContent = uniqueDates.size;
@@ -1716,9 +1737,13 @@ function updateCalendarStats(events) {
   }
 
   if (calendarScopeNote) {
-    calendarScopeNote.textContent = activeCalendarFilter === "my"
-      ? `My Calendar is using ${calendarRegionLabel(region)} holidays, ${source}.`
-      : `${calendarFilterLabels[activeCalendarFilter] || "All"} view is temporarily selected.`;
+    if (activeCalendarFilter === "my") {
+      calendarScopeNote.textContent = employmentType === "contractor"
+        ? `You are marked as ${employmentTypeLabel(employmentType)} assigned to ${calendarOfficeLabel(region)}. Use these markers to plan non-working days and company events; payment follows your contract.`
+        : `You are marked as ${employmentTypeLabel(employmentType)} assigned to ${calendarOfficeLabel(region)}. Pay attention to the marked paid holidays, company days, events, and break windows.`;
+    } else {
+      calendarScopeNote.textContent = `${calendarFilterLabels[activeCalendarFilter] || "All"} view is temporarily selected.`;
+    }
   }
 }
 
@@ -2529,6 +2554,8 @@ authForm?.addEventListener("submit", (event) => {
     role: user.role,
     department: user.department,
     timezone: user.timezone,
+    employmentType: normalizeEmploymentType(user.employmentType),
+    calendarRegion: normalizeCalendarRegion(user.calendarRegion || "auto"),
     admin: Boolean(user.admin),
     bonusCredits: Number(user.bonusCredits || 0),
   };
@@ -2566,6 +2593,7 @@ profileForm?.addEventListener("submit", (event) => {
     role: formData.get("profileRole") || "General",
     department: formData.get("profileDepartment") || "",
     timezone: formData.get("profileTimezone") || "",
+    employmentType: normalizeEmploymentType(formData.get("profileEmploymentType")),
     calendarRegion: normalizeCalendarRegion(formData.get("profileCalendarRegion") || "auto"),
     admin: Boolean(previousProfile.admin),
     bonusCredits: Number(previousProfile.bonusCredits || 0),
@@ -2580,6 +2608,7 @@ profileForm?.addEventListener("submit", (event) => {
       role: profile.role,
       department: profile.department,
       timezone: profile.timezone,
+      employmentType: profile.employmentType,
       calendarRegion: profile.calendarRegion,
     };
     setUsers(users);
@@ -2626,7 +2655,8 @@ inviteForm?.addEventListener("submit", async (event) => {
     role,
     department: users[email]?.department || "",
     timezone: users[email]?.timezone || "",
-    calendarRegion: normalizeCalendarRegion(users[email]?.calendarRegion || "auto"),
+    employmentType: normalizeEmploymentType(users[email]?.employmentType),
+    calendarRegion: normalizeCalendarRegion(users[email]?.calendarRegion || "us"),
     admin: isAdmin,
     status: "Invited",
     bonusCredits: Number(users[email]?.bonusCredits || 0),
@@ -2680,7 +2710,8 @@ createUserForm?.addEventListener("submit", (event) => {
     role,
     department: users[email]?.department || "",
     timezone: users[email]?.timezone || "America/New_York",
-    calendarRegion: normalizeCalendarRegion(users[email]?.calendarRegion || "auto"),
+    employmentType: normalizeEmploymentType(users[email]?.employmentType),
+    calendarRegion: normalizeCalendarRegion(users[email]?.calendarRegion || "us"),
     admin: isAdmin,
     status: users[email]?.status || "Active",
     bonusCredits,

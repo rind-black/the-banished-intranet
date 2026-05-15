@@ -278,12 +278,13 @@
             <article class="calendar-hero">
               <div>
                 <p class="eyebrow">My 2026 calendar</p>
-                <h3>Your profile decides which dates matter first.</h3>
+                <h3>Your assigned office calendar.</h3>
                 <p>
-                  My Calendar always includes company days, events, and break windows, then adds the regional holidays
-                  connected to your profile. Use the filters when you need the full company view.
+                  This view highlights the dates connected to your work status and assigned office. Employees and
+                  contractors should use it to plan around the right paid holidays, non-working days, company events,
+                  and break windows.
                 </p>
-                <p class="calendar-personal-note" data-calendar-scope-note>Personalized from your profile.</p>
+                <p class="calendar-personal-note" data-calendar-scope-note>Assigned office calendar is loading.</p>
               </div>
               <div class="calendar-stat-grid" aria-label="Calendar summary">
                 <article>
@@ -2172,11 +2173,17 @@
               <input name="profileTimezone" type="text" placeholder="Time zone" />
             </label>
             <label>
-              Calendar region
+              Work status
+              <select name="profileEmploymentType">
+                <option value="employee">Employee</option>
+                <option value="contractor">Contractor / freelancer</option>
+              </select>
+            </label>
+            <label>
+              Assigned office
               <select name="profileCalendarRegion">
-                <option value="auto">Auto by time zone</option>
-                <option value="us">United States</option>
-                <option value="canada">Canada</option>
+                <option value="us">United States office</option>
+                <option value="canada">Canada office</option>
                 <option value="all">Full company calendar</option>
               </select>
             </label>
