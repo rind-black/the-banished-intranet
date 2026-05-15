@@ -44,12 +44,17 @@ const challengeProgress = document.querySelector("[data-challenge-progress]");
 const challengeProgressLabel = document.querySelector("[data-challenge-progress-label]");
 const challengePlayerCredits = document.querySelector("[data-challenge-player-credits]");
 const challengeFilterBar = document.querySelector("[data-challenge-filter-bar]");
+const projectFilterBar = document.querySelector("[data-project-filter-bar]");
 const projectDetailLabel = document.querySelector("[data-project-detail-label]");
 const projectDetailTitle = document.querySelector("[data-project-detail-title]");
 const projectDetailSummary = document.querySelector("[data-project-detail-summary]");
 const projectDetailStage = document.querySelector("[data-project-detail-stage]");
 const projectDetailOwner = document.querySelector("[data-project-detail-owner]");
 const projectDetailPriority = document.querySelector("[data-project-detail-priority]");
+const projectDetailSignal = document.querySelector("[data-project-detail-signal]");
+const projectDetailFocus = document.querySelector("[data-project-detail-focus]");
+const projectDetailProgressLabel = document.querySelector("[data-project-detail-progress-label]");
+const projectDetailProgressBar = document.querySelector("[data-project-detail-progress-bar]");
 const projectDetailRequirements = document.querySelector("[data-project-detail-requirements]");
 const projectDetailDeliverables = document.querySelector("[data-project-detail-deliverables]");
 const projectDetailNotes = document.querySelector("[data-project-detail-notes]");
@@ -85,6 +90,7 @@ const contentStoreKey = "tb-internal-content";
 const inviteTempPassword = "PortalInvite12!";
 const companyEmailDomain = "@the-banished.com";
 let activeChallengeDepartment = "all";
+let activeProjectFilter = "all";
 let activeCalendarFilter = "my";
 let selectedCalendarDate = "";
 let pendingAvatarDataUrl = null;
@@ -776,6 +782,10 @@ const projectPages = {
     label: "IT / Product",
     title: "AI Casting Platform",
     summary: "Internal casting intelligence for film and television talent discovery, talent data quality, and production-ready matching workflows.",
+    categories: ["it"],
+    signal: "Discovery",
+    progress: 42,
+    focus: "Turn the casting idea into a clean workflow map, data model, and reviewer experience before build decisions start.",
     stage: "Product discovery and workflow design",
     owner: "Technology / Casting Operations",
     priority: "High",
@@ -797,6 +807,10 @@ const projectPages = {
     label: "Film / Comics",
     title: "The Banished",
     summary: "The core dark fantasy universe behind the company name, built for cross-format development across story, visual references, and production planning.",
+    categories: ["film", "comics"],
+    signal: "Flagship",
+    progress: 58,
+    focus: "Protect the core universe: canon, character logic, visual language, and what is approved for internal or external use.",
     stage: "Creative development",
     owner: "Creative / IP",
     priority: "Flagship",
@@ -818,6 +832,10 @@ const projectPages = {
     label: "Film",
     title: "Colorblind",
     summary: "A film project about a successful advertising creative director whose identity and career are disrupted when he realizes he can no longer perceive color.",
+    categories: ["film"],
+    signal: "Active",
+    progress: 52,
+    focus: "Shape the visual and emotional rules so the color concept supports character, pressure, and production reality.",
     stage: "Script and packaging",
     owner: "Film Development",
     priority: "Active",
@@ -839,6 +857,10 @@ const projectPages = {
     label: "Film",
     title: "Incompatibility",
     summary: "A dark romantic comedy about emotional mismatch, control, obsession, and the everyday absurdity of trying to make an impossible relationship work.",
+    categories: ["film"],
+    signal: "Tone lock",
+    progress: 46,
+    focus: "Keep the comedy sharp without losing emotional logic: relationship rules, recurring bits, and pitchable escalation.",
     stage: "Tone and character development",
     owner: "Film Development",
     priority: "Active",
@@ -860,6 +882,10 @@ const projectPages = {
     label: "Comics / IP",
     title: "Four Horsemen of the Apocalypse",
     summary: "A supernatural ensemble property about ordinary college students who receive mythic Horsemen powers and are pulled into escalating chaos.",
+    categories: ["comics"],
+    signal: "World rules",
+    progress: 36,
+    focus: "Build mythology rules early so powers, character costs, visual references, and adaptation paths stay consistent.",
     stage: "IP architecture",
     owner: "Comics / Franchise Development",
     priority: "Development",
@@ -2150,10 +2176,79 @@ function renderTextList(target, items) {
   });
 }
 
+function clampProjectProgress(progress) {
+  return Math.max(0, Math.min(100, Number(progress || 0)));
+}
+
+function projectCategoryTokens(project = {}) {
+  if (Array.isArray(project.categories) && project.categories.length) {
+    return project.categories.map((category) => String(category).toLowerCase());
+  }
+
+  const categoryText = [
+    project.category,
+    project.label,
+    project.title,
+    project.summary,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+  const tokens = new Set();
+
+  if (/it|product|platform|tool|technology|workflow|dashboard/.test(categoryText)) {
+    tokens.add("it");
+  }
+
+  if (/film|screen|production|script|casting/.test(categoryText)) {
+    tokens.add("film");
+  }
+
+  if (/comic|comics|ip|franchise|mythology/.test(categoryText)) {
+    tokens.add("comics");
+  }
+
+  return tokens.size ? Array.from(tokens) : ["other"];
+}
+
+function projectTokenFromTitle(title = "Project") {
+  const words = String(title)
+    .replace(/[^a-z0-9\s]/gi, " ")
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (!words.length) {
+    return "PR";
+  }
+
+  return words
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+}
+
+function applyProjectFilter(filter = activeProjectFilter) {
+  activeProjectFilter = filter;
+
+  projectFilterBar?.querySelectorAll("[data-project-filter]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.projectFilter === filter);
+  });
+
+  document.querySelectorAll("[data-project-card]").forEach((card) => {
+    const categories = String(card.dataset.projectCategory || "")
+      .split(/\s+/)
+      .filter(Boolean);
+    card.hidden = filter !== "all" && !categories.includes(filter);
+  });
+}
+
 function openProjectDetail(project) {
   if (!project) {
     return;
   }
+
+  const progress = clampProjectProgress(project.progress || 0);
 
   if (projectDetailLabel) {
     projectDetailLabel.textContent = project.label || "Project";
@@ -2177,6 +2272,22 @@ function openProjectDetail(project) {
 
   if (projectDetailPriority) {
     projectDetailPriority.textContent = project.priority || "Normal";
+  }
+
+  if (projectDetailSignal) {
+    projectDetailSignal.textContent = project.signal || project.priority || "Review";
+  }
+
+  if (projectDetailFocus) {
+    projectDetailFocus.textContent = project.focus || "Move the clearest next artifact forward and keep the team aligned on what changed.";
+  }
+
+  if (projectDetailProgressLabel) {
+    projectDetailProgressLabel.textContent = `${progress}%`;
+  }
+
+  if (projectDetailProgressBar) {
+    projectDetailProgressBar.style.width = `${progress}%`;
   }
 
   renderTextList(projectDetailRequirements, project.requirements || []);
@@ -2205,6 +2316,10 @@ function projectFromContentItem(item) {
     label: item.label || "Project",
     title: item.title,
     summary: item.summary,
+    categories: projectCategoryTokens(item),
+    signal: "Admin brief",
+    progress: 18,
+    focus: bodyLines[0] || "Admin-added project. Confirm the owner, next milestone, and first usable artifact.",
     stage: "Admin-added project",
     owner: "Assigned by admin",
     priority: "Review",
@@ -2292,23 +2407,56 @@ function createPublishedCard(item) {
 }
 
 function createProjectCard(item) {
+  const project = projectFromContentItem(item);
+  const categories = projectCategoryTokens(project);
+  const progress = clampProjectProgress(project.progress || 18);
   const card = document.createElement("article");
   const button = document.createElement("button");
-  const label = document.createElement("span");
+  const orb = document.createElement("span");
+  const meta = document.createElement("span");
+  const laneLabel = document.createElement("small");
+  const signal = document.createElement("b");
   const title = document.createElement("h3");
   const summary = document.createElement("p");
+  const progressWrap = document.createElement("div");
+  const progressLabel = document.createElement("span");
+  const progressTrack = document.createElement("i");
+  const progressFill = document.createElement("b");
+  const needList = document.createElement("ul");
+  const open = document.createElement("strong");
 
   card.className = "project-card";
+  card.dataset.projectCard = "";
+  card.dataset.projectCategory = categories.join(" ");
   button.type = "button";
   button.className = "project-button";
-  label.textContent = item.label || "Project";
-  title.textContent = item.title;
-  summary.textContent = item.summary;
-  button.append(label, title, summary);
+  button.style.setProperty("--project-progress", `${progress}%`);
+  orb.className = "project-orb";
+  orb.textContent = projectTokenFromTitle(project.title);
+  meta.className = "project-meta";
+  laneLabel.textContent = project.label || "Project";
+  signal.textContent = project.signal || project.priority || "Review";
+  meta.append(laneLabel, signal);
+  title.textContent = project.title;
+  summary.textContent = project.summary;
+  progressWrap.className = "project-progress";
+  progressLabel.textContent = "Mission progress";
+  progressTrack.setAttribute("aria-hidden", "true");
+  progressTrack.append(progressFill);
+  progressWrap.append(progressLabel, progressTrack);
+  needList.className = "project-need-list";
+  (project.deliverables || ["Confirm next milestone", "Add supporting detail"]).slice(0, 2).forEach((need) => {
+    const itemNode = document.createElement("li");
+    itemNode.textContent = need;
+    needList.append(itemNode);
+  });
+  open.className = "project-open";
+  open.textContent = "Open dossier";
+  button.append(orb, meta, title, summary, progressWrap, needList, open);
   card.append(button);
 
   button.addEventListener("click", () => {
-    openProjectDetail(projectFromContentItem(item));
+    openProjectDetail(project);
   });
 
   return card;
@@ -2349,6 +2497,8 @@ function renderProjectItems() {
       card.dataset.adminProject = item.id;
       list.append(card);
     });
+
+  applyProjectFilter(activeProjectFilter);
 }
 
 function renderDocumentItems() {
@@ -2954,6 +3104,14 @@ challengeFilterBar?.addEventListener("click", (event) => {
   if (button) {
     activeChallengeDepartment = button.dataset.challengeDepartment || "all";
     renderMonthlyChallenge();
+  }
+});
+
+projectFilterBar?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-project-filter]");
+
+  if (button) {
+    applyProjectFilter(button.dataset.projectFilter || "all");
   }
 });
 

@@ -696,40 +696,121 @@
             </div>
           </div>
 
+          <div class="project-command-board">
+            <article class="project-command-hero">
+              <p class="eyebrow">Mission board</p>
+              <h3>Pick a world. Move the next piece.</h3>
+              <p>
+                Creative worlds, film packages, comics/IP, and internal tools move through stage gates with clear
+                owners, signals, and next artifacts.
+              </p>
+              <div class="project-command-stats" aria-label="Project board stats">
+                <article><strong>5</strong><span>Active dossiers</span></article>
+                <article><strong>3</strong><span>Creative lanes</span></article>
+                <article><strong>1</strong><span>Internal tool</span></article>
+              </div>
+            </article>
+            <aside class="project-scout-card">
+              <span class="project-scout-orb">PM</span>
+              <div>
+                <p class="eyebrow">Current mode</p>
+                <h3>Project scout</h3>
+                <p>Scouts turn fuzzy project energy into useful artifacts the team can carry into the next phase.</p>
+              </div>
+            </aside>
+          </div>
+
+          <div class="project-filter-bar" data-project-filter-bar aria-label="Project filters">
+            <button class="active" type="button" data-project-filter="all">All projects</button>
+            <button type="button" data-project-filter="film">Film</button>
+            <button type="button" data-project-filter="comics">Comics / IP</button>
+            <button type="button" data-project-filter="it">IT / Product</button>
+          </div>
+
           <div class="project-list" data-project-list>
-            <article class="project-card">
+            <article class="project-card" data-project-card data-project-category="it">
               <button class="project-button" type="button" data-project-page="ai-casting">
-                <span>IT / Product</span>
+                <span class="project-orb">AI</span>
+                <span class="project-meta"><small>IT / Product</small><b>Discovery</b></span>
                 <h3>AI Casting Platform</h3>
                 <p>Internal casting intelligence for film and television talent discovery.</p>
+                <div class="project-progress" style="--project-progress: 42%">
+                  <span>Mission progress</span>
+                  <i aria-hidden="true"><b></b></i>
+                </div>
+                <ul class="project-need-list">
+                  <li>Workflow map</li>
+                  <li>Access rules</li>
+                </ul>
+                <strong class="project-open">Open dossier</strong>
               </button>
             </article>
-            <article class="project-card">
+            <article class="project-card featured" data-project-card data-project-category="film comics">
               <button class="project-button" type="button" data-project-page="the-banished">
-                <span>Film / Comics</span>
+                <span class="project-orb">TB</span>
+                <span class="project-meta"><small>Film / Comics</small><b>Flagship</b></span>
                 <h3>The Banished</h3>
                 <p>The core creative universe behind the company name.</p>
+                <div class="project-progress" style="--project-progress: 58%">
+                  <span>Mission progress</span>
+                  <i aria-hidden="true"><b></b></i>
+                </div>
+                <ul class="project-need-list">
+                  <li>Canon notes</li>
+                  <li>Pitch package</li>
+                </ul>
+                <strong class="project-open">Open dossier</strong>
               </button>
             </article>
-            <article class="project-card">
+            <article class="project-card" data-project-card data-project-category="film">
               <button class="project-button" type="button" data-project-page="colorblind">
-                <span>Film</span>
+                <span class="project-orb">CB</span>
+                <span class="project-meta"><small>Film</small><b>Active</b></span>
                 <h3>Colorblind</h3>
                 <p>A screen project set inside the pressure and image logic of advertising.</p>
+                <div class="project-progress" style="--project-progress: 52%">
+                  <span>Mission progress</span>
+                  <i aria-hidden="true"><b></b></i>
+                </div>
+                <ul class="project-need-list">
+                  <li>Visual treatment</li>
+                  <li>Casting research</li>
+                </ul>
+                <strong class="project-open">Open dossier</strong>
               </button>
             </article>
-            <article class="project-card">
+            <article class="project-card" data-project-card data-project-category="film">
               <button class="project-button" type="button" data-project-page="incompatibility">
-                <span>Film</span>
+                <span class="project-orb">IN</span>
+                <span class="project-meta"><small>Film</small><b>Tone lock</b></span>
                 <h3>Incompatibility</h3>
                 <p>A dark romantic comedy about emotional mismatch and control.</p>
+                <div class="project-progress" style="--project-progress: 46%">
+                  <span>Mission progress</span>
+                  <i aria-hidden="true"><b></b></i>
+                </div>
+                <ul class="project-need-list">
+                  <li>Character rules</li>
+                  <li>Pitch summary</li>
+                </ul>
+                <strong class="project-open">Open dossier</strong>
               </button>
             </article>
-            <article class="project-card">
+            <article class="project-card" data-project-card data-project-category="comics">
               <button class="project-button" type="button" data-project-page="four-horsemen">
-                <span>Comics / IP</span>
+                <span class="project-orb">4H</span>
+                <span class="project-meta"><small>Comics / IP</small><b>World rules</b></span>
                 <h3>Four Horsemen of the Apocalypse</h3>
                 <p>A mythology-driven property with franchise and comics potential.</p>
+                <div class="project-progress" style="--project-progress: 36%">
+                  <span>Mission progress</span>
+                  <i aria-hidden="true"><b></b></i>
+                </div>
+                <ul class="project-need-list">
+                  <li>Mythology rules</li>
+                  <li>Power sheets</li>
+                </ul>
+                <strong class="project-open">Open dossier</strong>
               </button>
             </article>
           </div>
@@ -744,6 +825,15 @@
               <p data-project-detail-summary></p>
             </header>
 
+            <section class="project-detail-brief" aria-label="Project mission progress">
+              <div>
+                <span>Mission progress</span>
+                <strong data-project-detail-progress-label>0%</strong>
+              </div>
+              <i aria-hidden="true"><b data-project-detail-progress-bar></b></i>
+              <p data-project-detail-focus></p>
+            </section>
+
             <div class="project-status-grid">
               <article>
                 <span>Stage</span>
@@ -756,6 +846,10 @@
               <article>
                 <span>Priority</span>
                 <strong data-project-detail-priority></strong>
+              </article>
+              <article>
+                <span>Signal</span>
+                <strong data-project-detail-signal></strong>
               </article>
             </div>
 
@@ -2258,6 +2352,6 @@
       </main>
     </div>
 
-    <script src="app.js?v=profile-lite-1"></script>
+    <script src="app.js?v=projects-board-1"></script>
   </body>
 </html>
