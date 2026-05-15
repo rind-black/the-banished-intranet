@@ -971,7 +971,7 @@
               <div>
                 <h4>Where credits appear</h4>
                 <p>
-                  Employees can see their current approved credit balance in Profile settings. Admins can edit credits
+                  Employees can see their current approved credit balance in Profile. Admins can edit credits
                   in the Users and permissions table when a manager approves new credits or a correction is needed.
                 </p>
               </div>
@@ -2131,88 +2131,133 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">Account</p>
-              <h2 id="profile-title">Profile settings</h2>
+              <h2 id="profile-title">Profile</h2>
             </div>
           </div>
 
-          <div class="profile-bonus-grid" aria-label="Bonus credits">
-            <article>
-              <span>Current bonus credits</span>
-              <strong data-profile-bonus-credits>0</strong>
-              <p>Approved portal credits recorded by an admin. 1 credit = $1.</p>
-            </article>
-            <article>
-              <span>This month can earn</span>
-              <strong data-profile-bonus-potential>+0</strong>
-              <p>Potential credits available through the current Challenge of the Month.</p>
-            </article>
-          </div>
-
-          <form class="profile-form" data-profile-form>
-            <div class="profile-avatar-editor">
-              <span class="profile-avatar profile-avatar-large" data-profile-avatar-preview>TB</span>
-              <div>
-                <strong>Profile avatar</strong>
-                <p>Upload a square photo or artwork. It stays attached to your portal profile.</p>
-                <div class="profile-avatar-actions">
-                  <label class="avatar-upload-button">
-                    Upload avatar
-                    <input name="profileAvatar" type="file" accept="image/*" data-profile-avatar-input />
-                  </label>
-                  <button class="ghost-button compact" type="button" data-profile-avatar-remove>Remove</button>
+          <div class="profile-dashboard">
+            <article class="profile-player-card">
+              <div class="profile-avatar-editor">
+                <span class="profile-avatar profile-avatar-large" data-profile-avatar-preview>TB</span>
+                <div>
+                  <p class="eyebrow">Player card</p>
+                  <h3 data-profile-card-name>Employee</h3>
+                  <p data-profile-card-role>General / Team member</p>
+                  <div class="profile-rank-track" aria-label="Profile rank progress">
+                    <div>
+                      <span>Next rank</span>
+                      <strong data-profile-next-rank>20 credits to Builder</strong>
+                    </div>
+                    <i aria-hidden="true"><b data-profile-rank-progress></b></i>
+                  </div>
+                  <div class="profile-avatar-actions">
+                    <label class="avatar-upload-button">
+                      Upload avatar
+                      <input name="profileAvatar" type="file" accept="image/*" data-profile-avatar-input />
+                    </label>
+                    <button class="ghost-button compact" type="button" data-profile-avatar-remove>Remove</button>
+                  </div>
                 </div>
               </div>
+              <div class="profile-level-orb">
+                <span data-profile-card-level>Level 1 / Scout</span>
+                <small>Portal level</small>
+              </div>
+            </article>
+
+            <div class="profile-quick-stats" aria-label="Profile quick stats">
+              <article>
+                <span>Credits bank</span>
+                <strong data-profile-bonus-credits>0</strong>
+                <p>Approved portal credits. 1 credit = $1.</p>
+              </article>
+              <article>
+                <span>This month</span>
+                <strong data-profile-bonus-potential>+0</strong>
+                <p>Credits available through current missions.</p>
+              </article>
+              <article>
+                <span>Country by IP</span>
+                <strong data-profile-card-country>Detecting...</strong>
+                <p>Locked from your current network location.</p>
+              </article>
+              <article>
+                <span>Office pass</span>
+                <strong data-profile-card-office>United States office</strong>
+                <p data-profile-card-status>Employee</p>
+              </article>
             </div>
-            <label>
-              Full name
-              <input name="profileName" type="text" autocomplete="name" />
-            </label>
-            <label>
-              Company email
-              <input name="profileEmail" type="email" autocomplete="email" />
-            </label>
-            <label>
-              Role
-              <select name="profileRole">
-                <option>General</option>
-                <option>Admin</option>
-                <option>Project Manager</option>
-              </select>
-            </label>
-            <label>
-              Department
-              <input name="profileDepartment" type="text" placeholder="Department" />
-            </label>
-            <label>
-              Time zone
-              <input name="profileTimezone" type="text" placeholder="Time zone" />
-            </label>
-            <label>
-              Country by IP
-              <input name="profileIpCountry" type="text" readonly data-profile-country value="Detecting..." />
-              <small data-profile-country-note>Locked from your network location when you sign in.</small>
-            </label>
-            <label>
-              Work status
-              <select name="profileEmploymentType">
-                <option value="employee">Employee</option>
-                <option value="contractor">Contractor / freelancer</option>
-              </select>
-            </label>
-            <label>
-              Assigned office
-              <select name="profileCalendarRegion">
-                <option value="us">United States office</option>
-                <option value="canada">Canada office</option>
-                <option value="all">Full company calendar</option>
-              </select>
-            </label>
-            <button class="primary-button" type="submit">Save profile</button>
-          </form>
+          </div>
+
+          <details class="profile-edit-panel">
+            <summary>
+              <span>
+                <small>Loadout</small>
+                <strong>Edit profile info</strong>
+              </span>
+              <b aria-hidden="true">+</b>
+            </summary>
+            <form class="profile-form" data-profile-form>
+              <div class="profile-form-head">
+                <div>
+                  <p class="eyebrow">Account details</p>
+                  <h3>Keep your portal pass current</h3>
+                </div>
+                <span>Saved to this portal profile.</span>
+              </div>
+              <div class="profile-field-grid">
+                <label>
+                  Full name
+                  <input name="profileName" type="text" autocomplete="name" />
+                </label>
+                <label>
+                  Company email
+                  <input name="profileEmail" type="email" autocomplete="email" />
+                </label>
+                <label>
+                  Role
+                  <select name="profileRole">
+                    <option>General</option>
+                    <option>Admin</option>
+                    <option>Project Manager</option>
+                  </select>
+                </label>
+                <label>
+                  Department
+                  <input name="profileDepartment" type="text" placeholder="Department" />
+                </label>
+                <label>
+                  Time zone
+                  <input name="profileTimezone" type="text" placeholder="Time zone" />
+                </label>
+                <label>
+                  Country by IP
+                  <input name="profileIpCountry" type="text" readonly data-profile-country value="Detecting..." />
+                  <small data-profile-country-note>Locked from your network location when you sign in.</small>
+                </label>
+                <label>
+                  Work status
+                  <select name="profileEmploymentType">
+                    <option value="employee">Employee</option>
+                    <option value="contractor">Contractor / freelancer</option>
+                  </select>
+                </label>
+                <label>
+                  Assigned office
+                  <select name="profileCalendarRegion">
+                    <option value="us">United States office</option>
+                    <option value="canada">Canada office</option>
+                    <option value="all">Full company calendar</option>
+                  </select>
+                </label>
+              </div>
+              <button class="primary-button" type="submit">Save profile</button>
+            </form>
+          </details>
         </section>
       </main>
     </div>
 
-    <script src="app.js?v=login-stability-2"></script>
+    <script src="app.js?v=profile-lite-1"></script>
   </body>
 </html>

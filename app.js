@@ -7,6 +7,7 @@ const authForm = document.querySelector("[data-auth-form]");
 const authError = document.querySelector("[data-auth-error]");
 const authReset = document.querySelector("[data-auth-reset]");
 const profileForm = document.querySelector("[data-profile-form]");
+const profileEditPanel = document.querySelector(".profile-edit-panel");
 const roleButtons = document.querySelectorAll("[data-role-button]");
 const documentGroups = document.querySelectorAll("[data-doc-role]");
 const documentEmpty = document.querySelector("[data-doc-empty]");
@@ -21,6 +22,14 @@ const profileCountry = document.querySelector("[data-profile-country]");
 const profileCountryNote = document.querySelector("[data-profile-country-note]");
 const profileBonusCredits = document.querySelector("[data-profile-bonus-credits]");
 const profileBonusPotential = document.querySelector("[data-profile-bonus-potential]");
+const profileCardName = document.querySelector("[data-profile-card-name]");
+const profileCardRole = document.querySelector("[data-profile-card-role]");
+const profileCardLevel = document.querySelector("[data-profile-card-level]");
+const profileCardCountry = document.querySelector("[data-profile-card-country]");
+const profileCardOffice = document.querySelector("[data-profile-card-office]");
+const profileCardStatus = document.querySelector("[data-profile-card-status]");
+const profileNextRank = document.querySelector("[data-profile-next-rank]");
+const profileRankProgress = document.querySelector("[data-profile-rank-progress]");
 const overviewName = document.querySelector("[data-overview-name]");
 const overviewRole = document.querySelector("[data-overview-role]");
 const overviewCredits = document.querySelector("[data-overview-credits]");
@@ -161,7 +170,7 @@ const titles = {
   "monthly-challenge": "Challenge of the Month",
   requests: "Request center",
   admin: "Admin console",
-  profile: "Profile settings",
+  profile: "Profile",
 };
 
 const editableSections = {
@@ -1146,6 +1155,10 @@ function employmentTypeLabel(type) {
   return normalizeEmploymentType(type) === "contractor" ? "a contractor/freelancer" : "an employee";
 }
 
+function displayEmploymentType(type) {
+  return normalizeEmploymentType(type) === "contractor" ? "Contractor / freelancer" : "Employee";
+}
+
 function currentMonthlyChallenges() {
   return monthlyChallenges[new Date().getMonth()] || [];
 }
@@ -1199,6 +1212,36 @@ function challengeLevelFromCredits(credits) {
   }
 
   return "Level 1 / Scout";
+}
+
+function rankProgressFromCredits(credits) {
+  const ranks = [
+    { threshold: 0, label: "Scout" },
+    { threshold: 20, label: "Builder" },
+    { threshold: 50, label: "Specialist" },
+    { threshold: 100, label: "Lead" },
+    { threshold: 150, label: "Producer" },
+  ];
+  const currentCredits = Number(credits || 0);
+  const nextRankIndex = ranks.findIndex((rank) => currentCredits < rank.threshold);
+
+  if (nextRankIndex === -1) {
+    return {
+      label: "Top portal rank active",
+      progress: 100,
+    };
+  }
+
+  const nextRank = ranks[nextRankIndex];
+  const previousRank = ranks[Math.max(0, nextRankIndex - 1)];
+  const span = Math.max(1, nextRank.threshold - previousRank.threshold);
+  const earnedInSpan = Math.max(0, currentCredits - previousRank.threshold);
+  const remaining = Math.max(0, nextRank.threshold - currentCredits);
+
+  return {
+    label: `${remaining} credits to ${nextRank.label}`,
+    progress: Math.min(100, Math.round((earnedInSpan / span) * 100)),
+  };
 }
 
 function challengeDifficulty(challenge) {
@@ -1617,6 +1660,7 @@ function applyProfile(profile) {
   const credits = Number(profile.bonusCredits || 0);
   const monthlyPotential = currentMonthlyCreditTotal();
   const creditProgress = monthlyPotential ? Math.min(100, Math.round((credits / monthlyPotential) * 100)) : 0;
+  const rankProgress = rankProgressFromCredits(credits);
 
   if (profileName) {
     profileName.textContent = profile.name || "Employee";
@@ -1634,6 +1678,38 @@ function applyProfile(profile) {
 
   if (profileBonusPotential) {
     profileBonusPotential.textContent = `+${monthlyPotential}`;
+  }
+
+  if (profileCardName) {
+    profileCardName.textContent = profile.name || "Employee";
+  }
+
+  if (profileCardRole) {
+    profileCardRole.textContent = `${profile.role || "General"} / ${profile.department || "Team member"}`;
+  }
+
+  if (profileCardLevel) {
+    profileCardLevel.textContent = challengeLevelFromCredits(credits);
+  }
+
+  if (profileNextRank) {
+    profileNextRank.textContent = rankProgress.label;
+  }
+
+  if (profileRankProgress) {
+    profileRankProgress.style.width = `${rankProgress.progress}%`;
+  }
+
+  if (profileCardCountry) {
+    profileCardCountry.textContent = formatIpCountry(profile);
+  }
+
+  if (profileCardOffice) {
+    profileCardOffice.textContent = calendarOfficeLabel(inferCalendarRegion(profile)).replace(/^the /, "");
+  }
+
+  if (profileCardStatus) {
+    profileCardStatus.textContent = displayEmploymentType(profile.employmentType);
   }
 
   if (overviewName) {
@@ -1705,6 +1781,10 @@ function unlockPortal(profile) {
 
   if (portal) {
     portal.hidden = false;
+  }
+
+  if (profileEditPanel) {
+    profileEditPanel.open = false;
   }
 
   document.body.classList.add("is-authenticated");
@@ -2716,7 +2796,20 @@ authForm?.addEventListener("submit", (event) => {
   const formData = new FormData(authForm);
   const email = companyEmailFromPrefix(formData.get("emailPrefix"));
   const password = String(formData.get("password") || "");
-  const user = getUsers()[email];
+  let users = getUsers();
+  let user = users[email];
+
+  if ((!user || user.password !== password) && defaultUsers[email]?.password === password) {
+    users = mergeUserDirectory(users);
+    users[email] = {
+      ...users[email],
+      password: defaultUsers[email].password,
+      admin: Boolean(defaultUsers[email].admin || users[email].admin),
+      status: users[email].status || defaultUsers[email].status || "Active",
+    };
+    setUsers(users);
+    user = users[email];
+  }
 
   if (!user || user.password !== password) {
     setAuthStatus("Invalid credentials. Use support and BanishedAdmin12!, or reset local access data below.", "error", true);
