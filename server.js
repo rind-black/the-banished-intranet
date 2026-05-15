@@ -444,6 +444,7 @@ function serveStatic(request, response) {
 
     response.writeHead(200, {
       "Content-Type": mimeTypes[path.extname(filePath)] || "application/octet-stream",
+      "Cache-Control": "no-store",
     });
     response.end(content);
   });

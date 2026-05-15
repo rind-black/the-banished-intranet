@@ -5,6 +5,7 @@ const authScreen = document.querySelector("[data-auth-screen]");
 const portal = document.querySelector("[data-portal]");
 const authForm = document.querySelector("[data-auth-form]");
 const authError = document.querySelector("[data-auth-error]");
+const authReset = document.querySelector("[data-auth-reset]");
 const profileForm = document.querySelector("[data-profile-form]");
 const roleButtons = document.querySelectorAll("[data-role-button]");
 const documentGroups = document.querySelectorAll("[data-doc-role]");
@@ -2647,6 +2648,20 @@ function setRequestStatus(element, message, state = "success") {
   element.textContent = message;
 }
 
+function setAuthStatus(message, state = "error", showReset = false) {
+  if (!authError) {
+    return;
+  }
+
+  authError.hidden = false;
+  authError.classList.toggle("pending", state === "pending");
+  authError.textContent = message;
+
+  if (authReset) {
+    authReset.hidden = !showReset;
+  }
+}
+
 async function postPortalEmail(endpoint, payload) {
   let response;
 
@@ -2683,6 +2698,8 @@ async function postPortalEmail(endpoint, payload) {
   return data;
 }
 
+getUsers();
+
 navLinks.forEach((link) => {
   link.addEventListener("click", (event) => {
     event.preventDefault();
@@ -2694,6 +2711,7 @@ navLinks.forEach((link) => {
 
 authForm?.addEventListener("submit", (event) => {
   event.preventDefault();
+  setAuthStatus("Checking credentials...", "pending", false);
 
   const formData = new FormData(authForm);
   const email = companyEmailFromPrefix(formData.get("emailPrefix"));
@@ -2701,10 +2719,7 @@ authForm?.addEventListener("submit", (event) => {
   const user = getUsers()[email];
 
   if (!user || user.password !== password) {
-    if (authError) {
-      authError.hidden = false;
-    }
-
+    setAuthStatus("Invalid credentials. Use support and BanishedAdmin12!, or reset local access data below.", "error", true);
     return;
   }
 
@@ -2728,7 +2743,19 @@ authForm?.addEventListener("submit", (event) => {
     authError.hidden = true;
   }
 
+  if (authReset) {
+    authReset.hidden = true;
+  }
+
   unlockPortal(profile);
+});
+
+authReset?.addEventListener("click", () => {
+  localStorage.removeItem(usersStoreKey);
+  localStorage.removeItem(profileStoreKey);
+  getUsers();
+  authForm?.reset();
+  setAuthStatus("Local access data reset. Enter support and BanishedAdmin12! again.", "pending", false);
 });
 
 signOutButton?.addEventListener("click", () => {
