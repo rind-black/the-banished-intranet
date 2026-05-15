@@ -3207,6 +3207,179 @@ h3 {
   text-transform: uppercase;
 }
 
+.script-studio-board {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(360px, 1.18fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.script-hero-card,
+.script-format-grid article,
+.script-review-form {
+  border: 1px solid rgba(203, 169, 92, 0.24);
+  background:
+    var(--section-pattern),
+    linear-gradient(135deg, rgba(203, 169, 92, 0.12), transparent 54%),
+    rgba(17, 17, 19, 0.94);
+  box-shadow: var(--shadow);
+}
+
+.script-hero-card {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  min-height: 220px;
+  padding: 22px;
+  border-radius: 8px 42px 8px 8px;
+}
+
+.script-badge {
+  display: grid;
+  width: 68px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(203, 169, 92, 0.55);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 36% 30%, rgba(247, 243, 234, 0.22), transparent 34%),
+    rgba(0, 0, 0, 0.62);
+  color: var(--gold);
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.script-hero-card h3 {
+  margin: 0 0 10px;
+  font-size: 30px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.script-hero-card p:last-child {
+  margin: 0;
+  color: rgba(247, 243, 234, 0.64);
+  font-size: 14px;
+  line-height: 1.52;
+}
+
+.script-format-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.script-format-grid article {
+  min-height: 104px;
+  padding: 16px;
+  border-radius: 24px 8px 24px 8px;
+}
+
+.script-format-grid strong,
+.script-format-grid span {
+  display: block;
+}
+
+.script-format-grid strong {
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.script-format-grid span {
+  margin-top: 10px;
+  color: rgba(247, 243, 234, 0.66);
+  font-size: 13px;
+  line-height: 1.46;
+}
+
+.script-review-form {
+  display: grid;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 8px;
+}
+
+.script-form-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.script-form-head h3 {
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.script-form-head span {
+  padding: 8px 10px;
+  border: 1px solid rgba(203, 169, 92, 0.28);
+  background: rgba(0, 0, 0, 0.28);
+  color: rgba(247, 243, 234, 0.6);
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.script-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.script-review-form label {
+  display: grid;
+  gap: 9px;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.script-review-form input,
+.script-review-form select,
+.script-review-form textarea {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--line-strong);
+  background: #070708;
+  color: var(--ink);
+  font: inherit;
+  text-transform: none;
+}
+
+.script-review-form input,
+.script-review-form select {
+  padding: 0 13px;
+}
+
+.script-review-form textarea {
+  resize: vertical;
+  padding: 13px;
+  line-height: 1.5;
+}
+
+.script-review-form textarea[name="scriptPages"] {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 13px;
+  line-height: 1.62;
+}
+
+.script-review-form input:focus,
+.script-review-form select:focus,
+.script-review-form textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.script-review-form ::placeholder {
+  color: rgba(247, 243, 234, 0.32);
+}
+
 .bonus-dashboard {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(340px, 1.1fr);
@@ -5442,6 +5615,9 @@ button.calendar-day {
   .company-grid,
   .company-grid.wide,
   .bonus-dashboard,
+  .script-studio-board,
+  .script-format-grid,
+  .script-form-grid,
   .bonus-flow,
   .bonus-doc-grid,
   .benefit-key,

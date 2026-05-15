@@ -56,40 +56,44 @@
             <span aria-hidden="true">04</span>
             Projects
           </a>
-          <a class="nav-link" href="#bonuses" data-section-link="bonuses">
+          <a class="nav-link" href="#script-studio" data-section-link="script-studio">
             <span aria-hidden="true">05</span>
+            Script Studio
+          </a>
+          <a class="nav-link" href="#bonuses" data-section-link="bonuses">
+            <span aria-hidden="true">06</span>
             Bonuses
           </a>
           <a class="nav-link" href="#monthly-challenge" data-section-link="monthly-challenge">
-            <span aria-hidden="true">06</span>
+            <span aria-hidden="true">07</span>
             Challenge
           </a>
           <a class="nav-link" href="#benefits" data-section-link="benefits">
-            <span aria-hidden="true">07</span>
+            <span aria-hidden="true">08</span>
             Benefits
           </a>
           <a class="nav-link" href="#holidays" data-section-link="holidays">
-            <span aria-hidden="true">08</span>
+            <span aria-hidden="true">09</span>
             Holidays
           </a>
           <a class="nav-link" href="#culture" data-section-link="culture">
-            <span aria-hidden="true">09</span>
+            <span aria-hidden="true">10</span>
             Culture
           </a>
           <a class="nav-link" href="#training" data-section-link="training">
-            <span aria-hidden="true">10</span>
+            <span aria-hidden="true">11</span>
             Training
           </a>
           <a class="nav-link" href="#internship" data-section-link="internship">
-            <span aria-hidden="true">11</span>
+            <span aria-hidden="true">12</span>
             Internship
           </a>
           <a class="nav-link" href="#requests" data-section-link="requests">
-            <span aria-hidden="true">12</span>
+            <span aria-hidden="true">13</span>
             Requests
           </a>
           <a class="nav-link" href="#admin" data-section-link="admin" data-admin-only hidden>
-            <span aria-hidden="true">13</span>
+            <span aria-hidden="true">14</span>
             Admin
           </a>
         </nav>
@@ -122,7 +126,7 @@
               <span class="profile-avatar" data-profile-avatar data-profile-initials>TB</span>
               <span>
                 <strong data-profile-name>Employee</strong>
-                <small data-profile-role>General</small>
+                <small data-profile-role>Employee</small>
               </span>
             </button>
             <button class="ghost-button" type="button" data-sign-out>Sign out</button>
@@ -148,7 +152,7 @@
             <aside class="overview-player-card" aria-label="Employee status">
               <span>Player status</span>
               <strong data-overview-level>Level 1 / Scout</strong>
-              <p data-overview-role>General</p>
+              <p data-overview-role>Employee</p>
               <div class="overview-credit-row">
                 <article>
                   <small>Current credits</small>
@@ -366,7 +370,7 @@
           </div>
 
           <div class="role-selector" aria-label="Document role selector">
-            <button class="role-button" type="button" data-role-button="general">General</button>
+            <button class="role-button" type="button" data-role-button="general">Employee</button>
             <button class="role-button" type="button" data-role-button="admin">Admin</button>
             <button class="role-button" type="button" data-role-button="project-manager">Project Manager</button>
           </div>
@@ -867,6 +871,104 @@
               </section>
             </div>
           </article>
+        </section>
+
+        <section class="portal-section" id="script-studio" data-section="script-studio" aria-labelledby="script-studio-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Writing room</p>
+              <h2 id="script-studio-title">Script Studio</h2>
+            </div>
+          </div>
+
+          <div class="script-studio-board">
+            <article class="script-hero-card">
+              <span class="script-badge">WGA</span>
+              <div>
+                <p class="eyebrow">American screenplay format</p>
+                <h3>Draft clean. Submit with context.</h3>
+                <p>
+                  Use the workspace to prepare pages with standard scene headings, concise action lines, character
+                  cues, and dialogue blocks before sending them for internal review.
+                </p>
+              </div>
+            </article>
+            <div class="script-format-grid" aria-label="Screenplay format guide">
+              <article><strong>Scene Heading</strong><span>INT./EXT. LOCATION - DAY/NIGHT</span></article>
+              <article><strong>Action</strong><span>Present tense, visual, tight paragraphs.</span></article>
+              <article><strong>Character</strong><span>Uppercase name above dialogue.</span></article>
+              <article><strong>Dialogue</strong><span>Centered voice, playable beats, no prose padding.</span></article>
+            </div>
+          </div>
+
+          <form class="script-review-form" data-script-review-form>
+            <div class="script-form-head">
+              <div>
+                <p class="eyebrow">Review submission</p>
+                <h3>Send pages to the story team</h3>
+              </div>
+              <span>Review mailbox: scripts@the-banished.com</span>
+            </div>
+            <div class="script-form-grid">
+              <label>
+                Working title
+                <input name="scriptTitle" type="text" placeholder="Project or script title" required />
+              </label>
+              <label>
+                Format
+                <select name="scriptFormat">
+                  <option>Feature screenplay</option>
+                  <option>Short film</option>
+                  <option>TV pilot</option>
+                  <option>Comic script</option>
+                  <option>Scene revision</option>
+                </select>
+              </label>
+              <label>
+                Project connection
+                <select name="scriptProject">
+                  <option>The Banished</option>
+                  <option>Colorblind</option>
+                  <option>Incompatibility</option>
+                  <option>Four Horsemen of the Apocalypse</option>
+                  <option>New / unassigned project</option>
+                </select>
+              </label>
+              <label>
+                Review need
+                <select name="scriptPriority">
+                  <option>General notes</option>
+                  <option>Story structure</option>
+                  <option>Dialogue polish</option>
+                  <option>Continuity check</option>
+                  <option>Time-sensitive review</option>
+                </select>
+              </label>
+            </div>
+            <label>
+              Logline
+              <input name="scriptLogline" type="text" placeholder="One sentence: protagonist, goal, obstacle, stakes." required />
+            </label>
+            <label>
+              Pages / excerpt
+              <textarea name="scriptPages" rows="14" spellcheck="true" placeholder="FADE IN:
+
+INT. LOCATION - DAY
+
+Action lines stay visual and present tense.
+
+                          CHARACTER
+             Dialogue sits under the character cue.
+
+CUT TO:"></textarea>
+            </label>
+            <label>
+              Notes for reviewer
+              <textarea name="scriptNotes" rows="4" placeholder="What should the reviewer focus on? Add page range, deadline, or context."></textarea>
+            </label>
+            <button class="primary-button" type="submit">Send for review</button>
+            <p class="request-status" data-script-review-status hidden></p>
+          </form>
         </section>
 
         <section class="portal-section" id="bonuses" data-section="bonuses" aria-labelledby="bonuses-title">
@@ -2062,9 +2164,11 @@
               <label>
                 Initial role
                 <select name="inviteRole">
-                  <option>General</option>
-                  <option>Project Manager</option>
                   <option>Admin</option>
+                  <option>Screenwriter</option>
+                  <option>Project Manager</option>
+                  <option>Intern</option>
+                  <option selected>Employee</option>
                 </select>
               </label>
               <label class="checkbox-row">
@@ -2095,9 +2199,11 @@
                 <label>
                   Role
                   <select name="createRole">
-                    <option>General</option>
-                    <option>Project Manager</option>
                     <option>Admin</option>
+                    <option>Screenwriter</option>
+                    <option>Project Manager</option>
+                    <option>Intern</option>
+                    <option selected>Employee</option>
                   </select>
                 </label>
                 <label>
@@ -2154,6 +2260,7 @@
                     <option value="calendar">Calendar</option>
                     <option value="documents">Documents</option>
                     <option value="projects">Projects</option>
+                    <option value="script-studio">Script Studio</option>
                     <option value="bonuses">Bonuses</option>
                     <option value="benefits">Benefits</option>
                     <option value="holidays">Holidays</option>
@@ -2175,7 +2282,7 @@
                 <label data-content-role-field>
                   Document role
                   <select name="contentRole">
-                    <option value="general">General</option>
+                    <option value="general">Employee</option>
                     <option value="admin">Admin</option>
                     <option value="project-manager">Project Manager</option>
                   </select>
@@ -2259,7 +2366,7 @@
                 <div>
                   <p class="eyebrow">Player card</p>
                   <h3 data-profile-card-name>Employee</h3>
-                  <p data-profile-card-role>General / Team member</p>
+                  <p data-profile-card-role>Employee / Team member</p>
                   <div class="profile-rank-track" aria-label="Profile rank progress">
                     <div>
                       <span>Next rank</span>
@@ -2334,9 +2441,11 @@
                 <label>
                   Role
                   <select name="profileRole">
-                    <option>General</option>
                     <option>Admin</option>
+                    <option>Screenwriter</option>
                     <option>Project Manager</option>
+                    <option>Intern</option>
+                    <option>Employee</option>
                   </select>
                 </label>
                 <label>

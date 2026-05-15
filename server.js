@@ -16,6 +16,7 @@ const allowedRecipients = new Set([
   "hr@the-banished.com",
   "organizational@the-banished.com",
   "education@the-banished.com",
+  "scripts@the-banished.com",
 ]);
 const countryNames = new Intl.DisplayNames(["en"], { type: "region" });
 const mimeTypes = {
@@ -366,7 +367,7 @@ async function handleInvitation(request, response) {
     throw new HttpError(400, "Invitation must be sent to a @the-banished.com email address.");
   }
 
-  const role = cleanHeader(payload.role || "General");
+  const role = cleanHeader(payload.role || "Employee");
   const temporaryPassword = String(payload.temporaryPassword || "");
 
   if (!temporaryPassword) {

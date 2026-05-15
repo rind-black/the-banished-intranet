@@ -7,8 +7,9 @@ Prototype internal portal for The Banished, built with dependency-free frontend 
 - Employee-focused overview
 - Sign-in screen for invited employees
 - Clickable announcement details
-- Role-based document library preview for General, Admin, and Project Manager
+- Role-based document library preview for Employee, Admin, and Project Manager
 - Film, comics, and IT projects section
+- Screenwriter-only Script Studio with review submission
 - Benefits section based on `Benefits.docx`
 - Culture section based on `The Banished Culture.pptx`
 - Bonuses section
@@ -16,8 +17,7 @@ Prototype internal portal for The Banished, built with dependency-free frontend 
 - Clickable holiday meaning popovers
 - Training placeholder
 - Expandable internship section for interns and early talent
-- IT request form that sends an email to `support@the-banished.com`
-- HR request form that sends an email to `hr@the-banished.com`
+- Unified request form for IT, HR, Organizational, and Education mailboxes
 - Admin console with invitations, user roles, admin permissions, manual content publishing, and local request log
 - Employee profile settings
 - Responsive desktop and mobile layout
@@ -61,10 +61,10 @@ For local testing, the message `Email service is not configured yet` means the p
 
 - Company email field: `support`
 - Password: `BanishedAdmin12!`
+- Extra role tests use password `PortalInvite12!`: `writer`, `pm`, `intern`, and `general`.
 
 ## Suggested next steps
 
 - Replace placeholder content with real internal sections.
-- Decide whether the internal portal needs authentication.
 - Map the final route for the main site, such as `/internal`.
 - Connect documents and announcements to the future CMS or backend.

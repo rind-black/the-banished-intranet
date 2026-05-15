@@ -72,6 +72,8 @@ const contentStatus = document.querySelector("[data-content-status]");
 const contentRows = document.querySelector("[data-content-rows]");
 const adminOnlyElements = document.querySelectorAll("[data-admin-only]");
 const unifiedRequestForm = document.querySelector("[data-unified-request-form]");
+const scriptReviewForm = document.querySelector("[data-script-review-form]");
+const scriptReviewStatus = document.querySelector("[data-script-review-status]");
 const requestDestination = document.querySelector("[data-request-destination]");
 const calendarGrid = document.querySelector("[data-calendar-grid]");
 const calendarFilterButtons = document.querySelectorAll("[data-calendar-filter]");
@@ -128,9 +130,24 @@ const defaultUsers = {
   },
   "general@the-banished.com": {
     password: inviteTempPassword,
-    name: "General User",
-    role: "General",
+    name: "Employee User",
+    role: "Employee",
     department: "Operations",
+    timezone: "America/New_York",
+    employmentType: "employee",
+    calendarRegion: "us",
+    ipCountryCode: "US",
+    ipCountryName: "United States",
+    avatarDataUrl: "",
+    admin: false,
+    status: "Active",
+    bonusCredits: 0,
+  },
+  "writer@the-banished.com": {
+    password: inviteTempPassword,
+    name: "Screenwriter User",
+    role: "Screenwriter",
+    department: "Writing Room",
     timezone: "America/New_York",
     employmentType: "employee",
     calendarRegion: "us",
@@ -156,6 +173,21 @@ const defaultUsers = {
     status: "Active",
     bonusCredits: 0,
   },
+  "intern@the-banished.com": {
+    password: inviteTempPassword,
+    name: "Intern User",
+    role: "Intern",
+    department: "Internship",
+    timezone: "America/New_York",
+    employmentType: "employee",
+    calendarRegion: "us",
+    ipCountryCode: "US",
+    ipCountryName: "United States",
+    avatarDataUrl: "",
+    admin: false,
+    status: "Active",
+    bonusCredits: 0,
+  },
 };
 
 const titles = {
@@ -166,6 +198,7 @@ const titles = {
   "document-detail": "Document detail",
   projects: "Projects",
   "project-detail": "Project detail",
+  "script-studio": "Script Studio",
   bonuses: "Bonuses",
   "bonus-detail": "Bonus document",
   benefits: "Benefits and support",
@@ -185,6 +218,7 @@ const editableSections = {
   calendar: "Calendar",
   documents: "Documents",
   projects: "Projects",
+  "script-studio": "Script Studio",
   bonuses: "Bonuses",
   benefits: "Benefits",
   holidays: "Holidays",
@@ -905,13 +939,115 @@ const projectPages = {
   },
 };
 
+const roleNames = ["Admin", "Screenwriter", "Project Manager", "Intern", "Employee"];
+
 const roleSlugs = {
-  General: "general",
   Admin: "admin",
+  Screenwriter: "screenwriter",
   "Project Manager": "project-manager",
+  Intern: "intern",
+  Employee: "employee",
+  General: "employee",
 };
 
-const roleNames = Object.keys(roleSlugs);
+const roleSectionAccess = {
+  Admin: [
+    "overview",
+    "announcements",
+    "calendar",
+    "documents",
+    "projects",
+    "script-studio",
+    "bonuses",
+    "monthly-challenge",
+    "benefits",
+    "holidays",
+    "culture",
+    "training",
+    "internship",
+    "requests",
+    "admin",
+    "profile",
+  ],
+  Screenwriter: [
+    "overview",
+    "announcements",
+    "documents",
+    "projects",
+    "script-studio",
+    "bonuses",
+    "monthly-challenge",
+    "benefits",
+    "holidays",
+    "culture",
+    "requests",
+    "profile",
+  ],
+  "Project Manager": [
+    "overview",
+    "announcements",
+    "calendar",
+    "documents",
+    "projects",
+    "bonuses",
+    "monthly-challenge",
+    "benefits",
+    "holidays",
+    "culture",
+    "training",
+    "internship",
+    "requests",
+    "profile",
+  ],
+  Intern: [
+    "overview",
+    "announcements",
+    "documents",
+    "monthly-challenge",
+    "holidays",
+    "culture",
+    "internship",
+    "requests",
+    "profile",
+  ],
+  Employee: [
+    "overview",
+    "announcements",
+    "calendar",
+    "documents",
+    "projects",
+    "bonuses",
+    "monthly-challenge",
+    "benefits",
+    "holidays",
+    "culture",
+    "training",
+    "internship",
+    "requests",
+    "profile",
+  ],
+};
+
+const detailSectionParents = {
+  "document-detail": "documents",
+  "project-detail": "projects",
+  "bonus-detail": "bonuses",
+};
+
+function normalizeRole(role) {
+  const rawRole = String(role || "").trim();
+  const matchedRole = roleNames.find((item) => item.toLowerCase() === rawRole.toLowerCase());
+
+  if (matchedRole) {
+    return matchedRole;
+  }
+
+  if (rawRole.toLowerCase() === "general") {
+    return "Employee";
+  }
+
+  return "Employee";
+}
 
 function readJson(key, fallback) {
   const saved = localStorage.getItem(key);
@@ -967,9 +1103,21 @@ function mergeUserDirectory(users = {}) {
   merged["support@the-banished.com"] = {
     ...merged["support@the-banished.com"],
     password: defaultUsers["support@the-banished.com"].password,
+    role: "Admin",
     admin: true,
     status: "Active",
   };
+
+  Object.keys(merged).forEach((email) => {
+    const role = normalizeRole(merged[email]?.role);
+    const isAdmin = Boolean(merged[email]?.admin || role === "Admin");
+
+    merged[email] = {
+      ...merged[email],
+      role: isAdmin ? "Admin" : role,
+      admin: isAdmin,
+    };
+  });
 
   return merged;
 }
@@ -1035,11 +1183,62 @@ function updateAvatarPreviews(profile) {
 }
 
 function roleToSlug(role) {
-  return roleSlugs[role] || "general";
+  return roleSlugs[normalizeRole(role)] || "employee";
 }
 
 function slugToRole(slug) {
-  return roleNames.find((role) => roleToSlug(role) === slug) || "General";
+  if (slug === "general") {
+    return "Employee";
+  }
+
+  return roleNames.find((role) => roleToSlug(role) === slug) || "Employee";
+}
+
+function documentRoleForProfile(profile) {
+  const role = normalizeRole(profile?.role);
+
+  if (role === "Admin") {
+    return "admin";
+  }
+
+  if (role === "Project Manager") {
+    return "project-manager";
+  }
+
+  return "general";
+}
+
+function sectionAccessKey(sectionId) {
+  const normalizedSection = normalizeSectionId(sectionId || "overview");
+  return detailSectionParents[normalizedSection] || normalizedSection;
+}
+
+function allowedSectionsForProfile(profile = currentProfile()) {
+  const role = normalizeRole(profile?.role);
+  const accessRole = profile?.admin || role === "Admin" ? "Admin" : role;
+  return new Set(roleSectionAccess[accessRole] || roleSectionAccess.Employee);
+}
+
+function canAccessSection(sectionId, profile = currentProfile()) {
+  const accessKey = sectionAccessKey(sectionId);
+  return allowedSectionsForProfile(profile).has(accessKey);
+}
+
+function firstAllowedSection(profile = currentProfile()) {
+  const allowed = allowedSectionsForProfile(profile);
+  return allowed.has("overview") ? "overview" : Array.from(allowed)[0] || "overview";
+}
+
+function updateRoleNavigation(profile = currentProfile()) {
+  navLinks.forEach((link) => {
+    const targetSection = normalizeSectionId(link.dataset.sectionLink || "overview");
+    const adminOnly = link.hasAttribute("data-admin-only") && !profile?.admin;
+    link.hidden = adminOnly || !canAccessSection(targetSection, profile);
+  });
+
+  document.querySelectorAll(".nav .nav-link:not([hidden]) span").forEach((number, index) => {
+    number.textContent = String(index + 1).padStart(2, "0");
+  });
 }
 
 function currentProfile() {
@@ -1649,7 +1848,7 @@ function syncProfileFromDirectory(profile) {
   return {
     ...profile,
     name: user.name,
-    role: user.role,
+    role: normalizeRole(user.role),
     department: user.department,
     timezone: user.timezone,
     employmentType: normalizeEmploymentType(user.employmentType || profile.employmentType),
@@ -1658,7 +1857,7 @@ function syncProfileFromDirectory(profile) {
     ipCountryName: user.ipCountryName || profile.ipCountryName || "",
     ipCountrySource: user.ipCountrySource || profile.ipCountrySource || "",
     avatarDataUrl: user.avatarDataUrl || profile.avatarDataUrl || "",
-    admin: Boolean(user.admin),
+    admin: Boolean(user.admin || normalizeRole(user.role) === "Admin"),
     bonusCredits: Number(user.bonusCredits || 0),
   };
 }
@@ -1670,9 +1869,10 @@ function updateAdminVisibility(profile) {
 }
 
 function configureRoleSelector(profile) {
+  const visibleRole = documentRoleForProfile(profile);
+
   roleButtons.forEach((button) => {
-    const role = slugToRole(button.dataset.roleButton);
-    button.hidden = !profile?.admin && role !== profile?.role;
+    button.hidden = !profile?.admin && button.dataset.roleButton !== visibleRole;
   });
 
   showDocumentRole(null);
@@ -1682,6 +1882,9 @@ function applyProfile(profile) {
   if (!profile) {
     return;
   }
+
+  profile.role = normalizeRole(profile.role);
+  profile.admin = Boolean(profile.admin || profile.role === "Admin");
 
   const credits = Number(profile.bonusCredits || 0);
   const monthlyPotential = currentMonthlyCreditTotal();
@@ -1693,7 +1896,7 @@ function applyProfile(profile) {
   }
 
   if (profileRole) {
-    profileRole.textContent = profile.role || "General";
+    profileRole.textContent = profile.role || "Employee";
   }
 
   updateAvatarPreviews(profile);
@@ -1711,7 +1914,7 @@ function applyProfile(profile) {
   }
 
   if (profileCardRole) {
-    profileCardRole.textContent = `${profile.role || "General"} / ${profile.department || "Team member"}`;
+    profileCardRole.textContent = `${profile.role || "Employee"} / ${profile.department || "Team member"}`;
   }
 
   if (profileCardLevel) {
@@ -1743,7 +1946,7 @@ function applyProfile(profile) {
   }
 
   if (overviewRole) {
-    overviewRole.textContent = `${profile.role || "General"} / ${profile.department || "Team member"}`;
+    overviewRole.textContent = `${profile.role || "Employee"} / ${profile.department || "Team member"}`;
   }
 
   if (overviewCredits) {
@@ -1765,7 +1968,8 @@ function applyProfile(profile) {
   if (profileForm) {
     profileForm.elements.profileName.value = profile.name || "";
     profileForm.elements.profileEmail.value = profile.email || "";
-    profileForm.elements.profileRole.value = profile.role || "General";
+    profileForm.elements.profileRole.value = profile.role || "Employee";
+    profileForm.elements.profileRole.disabled = !profile.admin;
     profileForm.elements.profileDepartment.value = profile.department || "";
     profileForm.elements.profileTimezone.value = profile.timezone || "";
     profileForm.elements.profileEmploymentType.value = normalizeEmploymentType(profile.employmentType);
@@ -1786,6 +1990,7 @@ function applyProfile(profile) {
   renderMonthlyChallenge();
   renderCompanyCalendar();
   updateAdminVisibility(profile);
+  updateRoleNavigation(profile);
   configureRoleSelector(profile);
   renderSectionAdminTools(profile);
   renderAdmin();
@@ -1838,17 +2043,15 @@ function showSection(sectionId) {
   const requestedSection = sectionId || "overview";
   const requestPane = requestPaneFromSection(requestedSection);
   const normalizedSection = normalizeSectionId(requestedSection);
-  const nextSection = normalizedSection === "admin" && !profile?.admin ? "overview" : normalizedSection;
+  const nextSection = canAccessSection(normalizedSection, profile) ? normalizedSection : firstAllowedSection(profile);
   const target = document.querySelector(`[data-section="${nextSection}"]`);
-  const navSection = {
-    "document-detail": "documents",
-    "project-detail": "projects",
-    "bonus-detail": "bonuses",
-  }[nextSection] || nextSection;
+  const navSection = sectionAccessKey(nextSection);
 
   if (!target) {
     return;
   }
+
+  updateRoleNavigation(profile);
 
   sections.forEach((section) => {
     section.classList.toggle("active", section === target);
@@ -1882,8 +2085,9 @@ function renderUsers() {
   userRows.innerHTML = Object.entries(users)
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([email, user]) => {
+      const userRole = normalizeRole(user.role);
       const roleOptions = roleNames
-        .map((role) => `<option ${user.role === role ? "selected" : ""}>${role}</option>`)
+        .map((role) => `<option ${userRole === role ? "selected" : ""}>${role}</option>`)
         .join("");
 
       return `
@@ -2756,7 +2960,7 @@ function createSectionAdminForm(sectionId) {
       <label data-content-role-field>
         Document role
         <select name="contentRole">
-          <option value="general">General</option>
+          <option value="general">Employee</option>
           <option value="admin">Admin</option>
           <option value="project-manager">Project Manager</option>
         </select>
@@ -2969,7 +3173,7 @@ authForm?.addEventListener("submit", (event) => {
   const profile = {
     email,
     name: user.name,
-    role: user.role,
+    role: normalizeRole(user.role),
     department: user.department,
     timezone: user.timezone,
     employmentType: normalizeEmploymentType(user.employmentType),
@@ -2978,7 +3182,7 @@ authForm?.addEventListener("submit", (event) => {
     ipCountryName: user.ipCountryName || "",
     ipCountrySource: user.ipCountrySource || "",
     avatarDataUrl: user.avatarDataUrl || "",
-    admin: Boolean(user.admin),
+    admin: Boolean(user.admin || normalizeRole(user.role) === "Admin"),
     bonusCredits: Number(user.bonusCredits || 0),
   };
 
@@ -3051,10 +3255,13 @@ profileForm?.addEventListener("submit", (event) => {
 
   const previousProfile = currentProfile() || {};
   const formData = new FormData(profileForm);
+  const nextRole = profileForm.elements.profileRole.disabled
+    ? normalizeRole(previousProfile.role)
+    : normalizeRole(formData.get("profileRole") || previousProfile.role);
   const profile = {
     name: formData.get("profileName") || "Employee",
     email: formData.get("profileEmail") || "",
-    role: formData.get("profileRole") || "General",
+    role: nextRole,
     department: formData.get("profileDepartment") || "",
     timezone: formData.get("profileTimezone") || "",
     employmentType: normalizeEmploymentType(formData.get("profileEmploymentType")),
@@ -3063,7 +3270,7 @@ profileForm?.addEventListener("submit", (event) => {
     ipCountryName: previousProfile.ipCountryName || "",
     ipCountrySource: previousProfile.ipCountrySource || "",
     avatarDataUrl: pendingAvatarDataUrl !== null ? pendingAvatarDataUrl : previousProfile.avatarDataUrl || "",
-    admin: Boolean(previousProfile.admin),
+    admin: Boolean(previousProfile.admin || nextRole === "Admin"),
     bonusCredits: Number(previousProfile.bonusCredits || 0),
   };
   const users = getUsers();
@@ -3120,7 +3327,7 @@ inviteForm?.addEventListener("submit", async (event) => {
 
   const formData = new FormData(inviteForm);
   const email = companyEmailFromPrefix(formData.get("inviteEmailPrefix"));
-  const role = formData.get("inviteRole") || "General";
+  const role = normalizeRole(formData.get("inviteRole") || "Employee");
   const isAdmin = formData.get("inviteAdmin") === "on" || role === "Admin";
 
   if (!email.endsWith(companyEmailDomain) || email === companyEmailDomain) {
@@ -3172,7 +3379,7 @@ createUserForm?.addEventListener("submit", (event) => {
 
   const formData = new FormData(createUserForm);
   const email = companyEmailFromPrefix(formData.get("createEmailPrefix"));
-  const role = formData.get("createRole") || "General";
+  const role = normalizeRole(formData.get("createRole") || "Employee");
   const isAdmin = formData.get("createAdmin") === "on" || role === "Admin";
   const name = String(formData.get("createName") || "").trim();
   const password = String(formData.get("createPassword") || inviteTempPassword).trim();
@@ -3219,14 +3426,14 @@ saveUsersButton?.addEventListener("click", () => {
 
   userRows?.querySelectorAll("[data-user-role]").forEach((select) => {
     const email = select.dataset.userRole;
-    users[email].role = select.value;
+    users[email].role = normalizeRole(select.value);
   });
 
   userRows?.querySelectorAll("[data-user-admin]").forEach((checkbox) => {
     const email = checkbox.dataset.userAdmin;
-    users[email].admin = checkbox.checked;
+    users[email].admin = checkbox.checked || normalizeRole(users[email].role) === "Admin";
 
-    if (checkbox.checked && users[email].role !== "Admin") {
+    if (users[email].admin && users[email].role !== "Admin") {
       users[email].role = "Admin";
     }
   });
@@ -3453,6 +3660,90 @@ internshipActionButtons.forEach((button) => {
       details.focus();
     }
   });
+});
+
+scriptReviewForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(scriptReviewForm);
+  const profile = currentProfile();
+  const title = String(formData.get("scriptTitle") || "").trim();
+  const format = String(formData.get("scriptFormat") || "Feature screenplay").trim();
+  const project = String(formData.get("scriptProject") || "New / unassigned project").trim();
+  const priority = String(formData.get("scriptPriority") || "General notes").trim();
+  const logline = String(formData.get("scriptLogline") || "").trim();
+  const pages = String(formData.get("scriptPages") || "").trim();
+  const notes = String(formData.get("scriptNotes") || "").trim();
+  const recipient = "scripts@the-banished.com";
+  const label = "Script Review";
+  const from = profile?.email || "";
+  const createdAt = new Date().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  if (!canAccessSection("script-studio", profile)) {
+    setRequestStatus(scriptReviewStatus, "Script review is available only to screenwriters and admins.", "error");
+    return;
+  }
+
+  if (!title || !logline || !pages) {
+    setRequestStatus(scriptReviewStatus, "Script review was not sent. Add a title, logline, and pages.", "error");
+    return;
+  }
+
+  const subject = `Script Review: ${title}`;
+  const body = [
+    `Project: ${project}`,
+    `Format: ${format}`,
+    `Review need: ${priority}`,
+    `Writer: ${profile?.name || "Unknown"}`,
+    `Writer email: ${from}`,
+    "",
+    "Logline:",
+    logline,
+    "",
+    "Reviewer notes:",
+    notes || "No additional notes.",
+    "",
+    "Pages / excerpt:",
+    pages,
+  ].join("\n");
+
+  setRequestStatus(scriptReviewStatus, `Sending script review to ${recipient}...`, "pending");
+
+  try {
+    await postPortalEmail("/api/requests", {
+      recipient,
+      label,
+      subject,
+      body,
+      from,
+      request: {
+        type: `${format} / ${priority}`,
+        priority,
+        name: profile?.name || "",
+        details: `${logline}\n\n${pages}`,
+      },
+    });
+
+    const requests = getRequests();
+    requests.push({
+      createdAt,
+      from: from || "Unknown",
+      type: `Script Review - ${format}`,
+      recipient,
+      label,
+    });
+    setRequests(requests);
+    renderRequests();
+    setRequestStatus(scriptReviewStatus, `Script review email sent to ${recipient}.`);
+    scriptReviewForm.reset();
+  } catch (error) {
+    setRequestStatus(scriptReviewStatus, `Script review failed. ${error.message}`, "error");
+  }
 });
 
 document.querySelectorAll("[data-request-form]").forEach((form) => {
