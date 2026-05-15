@@ -873,33 +873,57 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">Compensation</p>
-              <h2 id="bonuses-title">Bonuses</h2>
+              <h2 id="bonuses-title">Bonus hub</h2>
             </div>
           </div>
 
-          <button class="policy-card" type="button" data-bonus-page="bonus-policy">
-            <span class="policy-number">01</span>
-            <span>
-              <strong>Discretionary Bonuses</strong>
-              <small>How The Banished recognizes work that goes beyond expectations</small>
-            </span>
-          </button>
+          <div class="bonus-dashboard">
+            <article class="bonus-hero">
+              <p class="eyebrow">Credit system</p>
+              <h3>Useful work becomes visible credits.</h3>
+              <p>Bonuses can come from manager-recognized impact, monthly challenges, or approved portal rewards.</p>
+              <div class="bonus-conversion" aria-label="Credit conversion rate">
+                <span>1 credit</span>
+                <i aria-hidden="true"></i>
+                <strong>$1</strong>
+              </div>
+            </article>
+            <div class="bonus-flow" aria-label="Bonus flow">
+              <article><span>01</span><strong>Do the work</strong><small>Challenge, impact, or extra scope.</small></article>
+              <article><span>02</span><strong>Get approved</strong><small>Manager or admin confirms value.</small></article>
+              <article><span>03</span><strong>Bank credits</strong><small>Approved credits show in Profile.</small></article>
+              <article><span>04</span><strong>Payout review</strong><small>Finance processes eligible money.</small></article>
+            </div>
+          </div>
 
-          <button class="policy-card" type="button" data-bonus-page="challenge-bonus-policy">
-            <span class="policy-number">02</span>
-            <span>
-              <strong>Challenge Bonuses</strong>
-              <small>Monthly bonus opportunities employees can complete for portal credits</small>
-            </span>
-          </button>
+          <div class="bonus-doc-grid" aria-label="Bonus documents">
+            <button class="policy-card bonus-doc-card" type="button" data-bonus-page="bonus-policy">
+              <span class="policy-number">01</span>
+              <span>
+                <strong>Discretionary Bonuses</strong>
+                <small>Recognition for work beyond expectations</small>
+              </span>
+              <i class="bonus-doc-glyph" aria-hidden="true">$</i>
+            </button>
 
-          <button class="policy-card" type="button" data-bonus-page="portal-credit-policy">
-            <span class="policy-number">03</span>
-            <span>
-              <strong>Internal Portal Credits</strong>
-              <small>How earned credits convert into real money through payroll review</small>
-            </span>
-          </button>
+            <button class="policy-card bonus-doc-card" type="button" data-bonus-page="challenge-bonus-policy">
+              <span class="policy-number">02</span>
+              <span>
+                <strong>Challenge Bonuses</strong>
+                <small>Monthly missions that earn portal credits</small>
+              </span>
+              <i class="bonus-doc-glyph" aria-hidden="true">+</i>
+            </button>
+
+            <button class="policy-card bonus-doc-card" type="button" data-bonus-page="portal-credit-policy">
+              <span class="policy-number">03</span>
+              <span>
+                <strong>Internal Portal Credits</strong>
+                <small>How credits convert into real money</small>
+              </span>
+              <i class="bonus-doc-glyph" aria-hidden="true">1</i>
+            </button>
+          </div>
 
           <article class="policy-document" id="bonus-policy" hidden>
             <header class="policy-hero">
@@ -2351,6 +2375,6 @@
       </main>
     </div>
 
-    <script src="app.js?v=projects-compact-1"></script>
+    <script src="app.js?v=bonuses-compact-2"></script>
   </body>
 </html>

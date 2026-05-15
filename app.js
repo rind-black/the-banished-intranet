@@ -166,7 +166,7 @@ const titles = {
   "document-detail": "Document detail",
   projects: "Projects",
   "project-detail": "Project detail",
-  bonuses: "Bonus information",
+  bonuses: "Bonuses",
   "bonus-detail": "Bonus document",
   benefits: "Benefits and support",
   holidays: "Holidays and days off",
