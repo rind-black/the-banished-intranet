@@ -47,52 +47,48 @@
             <span aria-hidden="true">02</span>
             Announcements
           </a>
-          <a class="nav-link" href="#calendar" data-section-link="calendar">
-            <span aria-hidden="true">03</span>
-            Calendar
-          </a>
           <a class="nav-link" href="#documents" data-section-link="documents">
-            <span aria-hidden="true">04</span>
+            <span aria-hidden="true">03</span>
             Documents
           </a>
           <a class="nav-link" href="#projects" data-section-link="projects">
-            <span aria-hidden="true">05</span>
+            <span aria-hidden="true">04</span>
             Projects
           </a>
           <a class="nav-link" href="#bonuses" data-section-link="bonuses">
-            <span aria-hidden="true">06</span>
+            <span aria-hidden="true">05</span>
             Bonuses
           </a>
           <a class="nav-link" href="#monthly-challenge" data-section-link="monthly-challenge">
-            <span aria-hidden="true">07</span>
+            <span aria-hidden="true">06</span>
             Challenge
           </a>
           <a class="nav-link" href="#benefits" data-section-link="benefits">
-            <span aria-hidden="true">08</span>
+            <span aria-hidden="true">07</span>
             Benefits
           </a>
           <a class="nav-link" href="#holidays" data-section-link="holidays">
-            <span aria-hidden="true">09</span>
+            <span aria-hidden="true">08</span>
             Holidays
           </a>
           <a class="nav-link" href="#culture" data-section-link="culture">
-            <span aria-hidden="true">10</span>
+            <span aria-hidden="true">09</span>
             Culture
           </a>
           <a class="nav-link" href="#training" data-section-link="training">
-            <span aria-hidden="true">11</span>
+            <span aria-hidden="true">10</span>
             Training
           </a>
           <a class="nav-link" href="#internship" data-section-link="internship">
-            <span aria-hidden="true">12</span>
+            <span aria-hidden="true">11</span>
             Internship
           </a>
           <a class="nav-link" href="#requests" data-section-link="requests">
-            <span aria-hidden="true">13</span>
+            <span aria-hidden="true">12</span>
             Requests
           </a>
           <a class="nav-link" href="#admin" data-section-link="admin" data-admin-only hidden>
-            <span aria-hidden="true">14</span>
+            <span aria-hidden="true">13</span>
             Admin
           </a>
         </nav>
@@ -110,6 +106,17 @@
             <h1 data-page-title>The Banished employee hub</h1>
           </div>
           <div class="profile-controls">
+            <button class="calendar-icon-button" type="button" data-section-link="calendar" aria-label="Open my calendar" title="My calendar">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 2v4" />
+                <path d="M17 2v4" />
+                <path d="M4 9h16" />
+                <path d="M5 4h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />
+                <path d="M8 13h2" />
+                <path d="M14 13h2" />
+                <path d="M8 17h2" />
+              </svg>
+            </button>
             <button class="profile-chip" type="button" data-section-link="profile" data-profile-button>
               <span class="profile-avatar" data-profile-initials>TB</span>
               <span>
@@ -217,10 +224,6 @@
               <span>Benefits</span>
               <strong>Use employee support</strong>
             </button>
-            <button type="button" data-section-link="calendar">
-              <span>Calendar</span>
-              <strong>See marked company dates</strong>
-            </button>
             <button type="button" data-section-link="holidays">
               <span>Holidays</span>
               <strong>Plan time correctly</strong>
@@ -274,12 +277,13 @@
           <div class="calendar-shell">
             <article class="calendar-hero">
               <div>
-                <p class="eyebrow">2026 marked days</p>
-                <h3>Holidays, company days, celebrations, and break windows in one view.</h3>
+                <p class="eyebrow">My 2026 calendar</p>
+                <h3>Your profile decides which dates matter first.</h3>
                 <p>
-                  Use this calendar as the fast planning layer. The detailed rules still live in Holidays, but the dates
-                  that affect scheduling are marked here immediately.
+                  My Calendar always includes company days, events, and break windows, then adds the regional holidays
+                  connected to your profile. Use the filters when you need the full company view.
                 </p>
+                <p class="calendar-personal-note" data-calendar-scope-note>Personalized from your profile.</p>
               </div>
               <div class="calendar-stat-grid" aria-label="Calendar summary">
                 <article>
@@ -308,7 +312,8 @@
           </div>
 
           <div class="calendar-toolbar" aria-label="Calendar filters">
-            <button class="calendar-filter active" type="button" data-calendar-filter="all">All</button>
+            <button class="calendar-filter active" type="button" data-calendar-filter="my">My calendar</button>
+            <button class="calendar-filter" type="button" data-calendar-filter="all">All</button>
             <button class="calendar-filter" type="button" data-calendar-filter="company">Company</button>
             <button class="calendar-filter" type="button" data-calendar-filter="us">US</button>
             <button class="calendar-filter" type="button" data-calendar-filter="canada">Canada</button>
@@ -2165,6 +2170,15 @@
             <label>
               Time zone
               <input name="profileTimezone" type="text" placeholder="Time zone" />
+            </label>
+            <label>
+              Calendar region
+              <select name="profileCalendarRegion">
+                <option value="auto">Auto by time zone</option>
+                <option value="us">United States</option>
+                <option value="canada">Canada</option>
+                <option value="all">Full company calendar</option>
+              </select>
             </label>
             <button class="primary-button" type="submit">Save profile</button>
           </form>

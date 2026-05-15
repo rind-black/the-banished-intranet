@@ -341,7 +341,8 @@ a {
 }
 
 .profile-chip,
-.ghost-button {
+.ghost-button,
+.calendar-icon-button {
   border: 1px solid var(--line);
   background: rgba(17, 17, 19, 0.92);
   color: var(--ink);
@@ -359,9 +360,35 @@ a {
 
 .profile-chip:hover,
 .profile-chip.active,
+.calendar-icon-button:hover,
+.calendar-icon-button.active,
 .ghost-button:hover {
   border-color: var(--line-strong);
   background: rgba(247, 243, 234, 0.07);
+}
+
+.calendar-icon-button {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  min-width: 54px;
+  place-items: center;
+  color: rgba(247, 243, 234, 0.82);
+}
+
+.calendar-icon-button svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.calendar-icon-button.active {
+  border-color: rgba(203, 169, 92, 0.52);
+  color: var(--gold);
 }
 
 .profile-avatar {
@@ -869,7 +896,7 @@ h3 {
 
 .overview-route {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1px;
   margin-top: 14px;
   border: 1px solid rgba(203, 169, 92, 0.24);
@@ -3363,6 +3390,21 @@ h3 {
   color: rgba(247, 243, 234, 0.66);
   font-size: 15px;
   line-height: 1.64;
+}
+
+.calendar-hero .calendar-personal-note {
+  display: inline-flex;
+  max-width: none;
+  margin-top: 16px;
+  padding: 9px 12px;
+  border: 1px solid rgba(203, 169, 92, 0.26);
+  border-radius: 999px;
+  background: rgba(203, 169, 92, 0.08);
+  color: rgba(247, 243, 234, 0.72);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-transform: uppercase;
 }
 
 .calendar-stat-grid {

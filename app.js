@@ -61,6 +61,7 @@ const calendarFocus = document.querySelector("[data-calendar-focus]");
 const calendarDetailTitle = document.querySelector("[data-calendar-detail-title]");
 const calendarDetailCopy = document.querySelector("[data-calendar-detail-copy]");
 const calendarDetailList = document.querySelector("[data-calendar-detail-list]");
+const calendarScopeNote = document.querySelector("[data-calendar-scope-note]");
 
 const profileStoreKey = "tb-internal-profile";
 const usersStoreKey = "tb-internal-users";
@@ -69,7 +70,7 @@ const contentStoreKey = "tb-internal-content";
 const inviteTempPassword = "PortalInvite12!";
 const companyEmailDomain = "@the-banished.com";
 let activeChallengeDepartment = "all";
-let activeCalendarFilter = "all";
+let activeCalendarFilter = "my";
 let selectedCalendarDate = "";
 const companyCalendarYear = 2026;
 const monthNames = [
@@ -94,6 +95,7 @@ const defaultUsers = {
     role: "Admin",
     department: "Administration",
     timezone: "America/New_York",
+    calendarRegion: "us",
     admin: true,
     status: "Active",
     bonusCredits: 0,
@@ -104,6 +106,7 @@ const defaultUsers = {
     role: "General",
     department: "Operations",
     timezone: "America/New_York",
+    calendarRegion: "us",
     admin: false,
     status: "Active",
     bonusCredits: 0,
@@ -114,6 +117,7 @@ const defaultUsers = {
     role: "Project Manager",
     department: "Production",
     timezone: "America/New_York",
+    calendarRegion: "us",
     admin: false,
     status: "Active",
     bonusCredits: 0,
@@ -123,7 +127,7 @@ const defaultUsers = {
 const titles = {
   overview: "The Banished employee hub",
   announcements: "Company announcements",
-  calendar: "Company calendar",
+  calendar: "My calendar",
   documents: "Company documents",
   "document-detail": "Document detail",
   projects: "Current projects",
@@ -201,6 +205,7 @@ const holidayDescriptions = {
 
 const calendarWeekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const calendarFilterLabels = {
+  my: "My calendar",
   all: "All",
   company: "Company",
   us: "US",
@@ -936,6 +941,45 @@ function currentProfile() {
   return getProfile();
 }
 
+function normalizeCalendarRegion(region) {
+  return ["auto", "us", "canada", "all"].includes(region) ? region : "auto";
+}
+
+function inferCalendarRegion(profile = currentProfile()) {
+  const explicitRegion = normalizeCalendarRegion(profile?.calendarRegion || "auto");
+
+  if (explicitRegion !== "auto") {
+    return explicitRegion;
+  }
+
+  const profileText = [
+    profile?.timezone,
+    profile?.department,
+    profile?.role,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+  if (/canada|toronto|vancouver|montreal|montréal|quebec|québec|ottawa|calgary|edmonton|winnipeg|halifax|st[._ -]?johns/.test(profileText)) {
+    return "canada";
+  }
+
+  if (/united states|usa|u\.s\.|california|new[._ -]?york|los[._ -]?angeles|chicago|denver|phoenix|america\//.test(profileText)) {
+    return "us";
+  }
+
+  return "all";
+}
+
+function calendarRegionLabel(region) {
+  return {
+    us: "United States",
+    canada: "Canada",
+    all: "Full company",
+  }[region] || "Full company";
+}
+
 function currentMonthlyChallenges() {
   return monthlyChallenges[new Date().getMonth()] || [];
 }
@@ -1373,6 +1417,7 @@ function syncProfileFromDirectory(profile) {
     role: user.role,
     department: user.department,
     timezone: user.timezone,
+    calendarRegion: normalizeCalendarRegion(user.calendarRegion || profile.calendarRegion || "auto"),
     admin: Boolean(user.admin),
     bonusCredits: Number(user.bonusCredits || 0),
   };
@@ -1452,9 +1497,11 @@ function applyProfile(profile) {
     profileForm.elements.profileRole.value = profile.role || "General";
     profileForm.elements.profileDepartment.value = profile.department || "";
     profileForm.elements.profileTimezone.value = profile.timezone || "";
+    profileForm.elements.profileCalendarRegion.value = normalizeCalendarRegion(profile.calendarRegion || "auto");
   }
 
   renderMonthlyChallenge();
+  renderCompanyCalendar();
   updateAdminVisibility(profile);
   configureRoleSelector(profile);
   renderSectionAdminTools(profile);
@@ -1602,6 +1649,16 @@ function renderRequests() {
 }
 
 function calendarEventMatches(event, filter = activeCalendarFilter) {
+  if (filter === "my") {
+    const region = inferCalendarRegion();
+
+    if (event.categories.some((category) => ["company", "celebration", "break"].includes(category))) {
+      return true;
+    }
+
+    return region === "all" || event.categories.includes(region);
+  }
+
   return filter === "all" || event.categories.includes(filter);
 }
 
@@ -1642,6 +1699,9 @@ function calendarEventsForDate(dateString, filter = activeCalendarFilter) {
 function updateCalendarStats(events) {
   const uniqueDates = new Set(events.map((event) => event.date));
   const nextDate = nextCalendarDate(events);
+  const profile = currentProfile();
+  const region = inferCalendarRegion(profile);
+  const source = normalizeCalendarRegion(profile?.calendarRegion || "auto") === "auto" ? "inferred from your time zone" : "set in your profile";
 
   if (calendarTotal) {
     calendarTotal.textContent = uniqueDates.size;
@@ -1652,7 +1712,13 @@ function updateCalendarStats(events) {
   }
 
   if (calendarFocus) {
-    calendarFocus.textContent = calendarFilterLabels[activeCalendarFilter] || "All";
+    calendarFocus.textContent = activeCalendarFilter === "my" ? calendarRegionLabel(region) : calendarFilterLabels[activeCalendarFilter] || "All";
+  }
+
+  if (calendarScopeNote) {
+    calendarScopeNote.textContent = activeCalendarFilter === "my"
+      ? `My Calendar is using ${calendarRegionLabel(region)} holidays, ${source}.`
+      : `${calendarFilterLabels[activeCalendarFilter] || "All"} view is temporarily selected.`;
   }
 }
 
@@ -2500,6 +2566,7 @@ profileForm?.addEventListener("submit", (event) => {
     role: formData.get("profileRole") || "General",
     department: formData.get("profileDepartment") || "",
     timezone: formData.get("profileTimezone") || "",
+    calendarRegion: normalizeCalendarRegion(formData.get("profileCalendarRegion") || "auto"),
     admin: Boolean(previousProfile.admin),
     bonusCredits: Number(previousProfile.bonusCredits || 0),
   };
@@ -2513,6 +2580,7 @@ profileForm?.addEventListener("submit", (event) => {
       role: profile.role,
       department: profile.department,
       timezone: profile.timezone,
+      calendarRegion: profile.calendarRegion,
     };
     setUsers(users);
   }
@@ -2558,6 +2626,7 @@ inviteForm?.addEventListener("submit", async (event) => {
     role,
     department: users[email]?.department || "",
     timezone: users[email]?.timezone || "",
+    calendarRegion: normalizeCalendarRegion(users[email]?.calendarRegion || "auto"),
     admin: isAdmin,
     status: "Invited",
     bonusCredits: Number(users[email]?.bonusCredits || 0),
@@ -2611,6 +2680,7 @@ createUserForm?.addEventListener("submit", (event) => {
     role,
     department: users[email]?.department || "",
     timezone: users[email]?.timezone || "America/New_York",
+    calendarRegion: normalizeCalendarRegion(users[email]?.calendarRegion || "auto"),
     admin: isAdmin,
     status: users[email]?.status || "Active",
     bonusCredits,
