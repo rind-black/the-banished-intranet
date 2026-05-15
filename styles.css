@@ -1401,9 +1401,9 @@ h3 {
 
 .project-command-board {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
-  gap: 14px;
-  margin-bottom: 16px;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 0.34fr);
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .project-command-hero,
@@ -1417,36 +1417,37 @@ h3 {
 }
 
 .project-command-hero {
-  padding: 26px;
-  border-radius: 8px 62px 8px 8px;
+  padding: 18px;
+  border-radius: 8px 38px 8px 8px;
 }
 
 .project-command-hero h3 {
-  max-width: 760px;
-  margin: 0 0 12px;
+  max-width: 650px;
+  margin: 0 0 8px;
   color: var(--ink-strong);
-  font-size: clamp(30px, 3vw, 48px);
+  font-size: clamp(24px, 2.2vw, 34px);
   line-height: 1.02;
   text-transform: uppercase;
 }
 
 .project-command-hero > p {
-  max-width: 780px;
+  max-width: 660px;
   margin: 0;
   color: rgba(247, 243, 234, 0.66);
-  line-height: 1.62;
+  font-size: 14px;
+  line-height: 1.45;
 }
 
 .project-command-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 24px;
+  gap: 8px;
+  margin-top: 14px;
 }
 
 .project-command-stats article {
-  min-height: 88px;
-  padding: 16px;
+  min-height: 62px;
+  padding: 12px;
   border: 1px solid rgba(247, 243, 234, 0.1);
   border-radius: 8px;
   background: rgba(5, 5, 6, 0.62);
@@ -1459,31 +1460,32 @@ h3 {
 
 .project-command-stats strong {
   color: var(--ink-strong);
-  font-size: 30px;
+  font-size: 22px;
   line-height: 1;
 }
 
 .project-command-stats span {
-  margin-top: 8px;
+  margin-top: 6px;
   color: rgba(247, 243, 234, 0.56);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 850;
   text-transform: uppercase;
 }
 
 .project-scout-card {
   display: grid;
-  gap: 18px;
-  align-content: space-between;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
   min-height: 100%;
-  padding: 22px;
-  border-radius: 62px 8px 8px 8px;
+  padding: 16px;
+  border-radius: 38px 8px 8px 8px;
 }
 
 .project-scout-orb {
   display: grid;
-  width: 86px;
-  height: 86px;
+  width: 52px;
+  height: 52px;
   place-items: center;
   border: 1px solid rgba(203, 169, 92, 0.44);
   border-radius: 50%;
@@ -1495,28 +1497,29 @@ h3 {
 }
 
 .project-scout-card h3 {
-  margin: 0 0 10px;
+  margin: 0 0 6px;
   color: var(--ink-strong);
-  font-size: 22px;
+  font-size: 18px;
   text-transform: uppercase;
 }
 
 .project-scout-card p:not(.eyebrow) {
   margin: 0;
   color: rgba(247, 243, 234, 0.62);
-  line-height: 1.55;
+  font-size: 13px;
+  line-height: 1.42;
 }
 
 .project-filter-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 18px;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .project-filter-bar button {
-  min-height: 46px;
-  padding: 0 16px;
+  min-height: 38px;
+  padding: 0 13px;
   border: 1px solid rgba(247, 243, 234, 0.14);
   border-radius: 999px;
   background: rgba(7, 7, 8, 0.68);
@@ -1542,31 +1545,26 @@ h3 {
 
 .project-list {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   grid-auto-flow: dense;
-  gap: 14px;
+  gap: 10px;
 }
 
 .project-card {
   position: relative;
-  grid-column: span 3;
-}
-
-.project-card.featured {
-  grid-column: span 6;
 }
 
 .project-button {
   position: relative;
   display: grid;
-  grid-template-columns: 82px minmax(0, 1fr);
-  gap: 12px 18px;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 10px 12px;
   width: 100%;
-  min-height: 286px;
-  padding: 22px;
+  min-height: 218px;
+  padding: 16px;
   overflow: hidden;
   border: 1px solid rgba(203, 169, 92, 0.22);
-  border-radius: 8px 58px 8px 8px;
+  border-radius: 8px 34px 8px 8px;
   background:
     var(--section-pattern),
     radial-gradient(circle at 88% 16%, rgba(203, 169, 92, 0.16), transparent 19%),
@@ -1580,10 +1578,10 @@ h3 {
 
 .project-button::after {
   position: absolute;
-  right: 24px;
-  bottom: 24px;
-  width: 96px;
-  height: 96px;
+  right: 18px;
+  bottom: 18px;
+  width: 68px;
+  height: 68px;
   border: 1px solid rgba(203, 169, 92, 0.16);
   border-radius: 50%;
   background:
@@ -1612,15 +1610,15 @@ h3 {
   position: relative;
   z-index: 1;
   display: grid;
-  width: 78px;
-  height: 78px;
+  width: 54px;
+  height: 54px;
   place-items: center;
-  grid-row: span 3;
+  grid-row: span 2;
   border: 1px solid rgba(203, 169, 92, 0.44);
   border-radius: 50%;
   background: #050506;
   color: var(--gold);
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 900;
 }
 
@@ -1641,8 +1639,8 @@ h3 {
 
 .project-meta b {
   width: fit-content;
-  margin-top: 8px;
-  padding: 4px 9px;
+  margin-top: 5px;
+  padding: 3px 8px;
   border: 1px solid rgba(203, 169, 92, 0.3);
   border-radius: 999px;
   color: rgba(247, 243, 234, 0.62);
@@ -1656,18 +1654,20 @@ h3 {
   z-index: 1;
   margin: 0;
   color: var(--ink-strong);
-  font-size: clamp(20px, 1.8vw, 30px);
-  line-height: 1.05;
+  font-size: clamp(17px, 1.35vw, 22px);
+  line-height: 1.08;
   text-transform: uppercase;
 }
 
 .project-button p {
   position: relative;
   z-index: 1;
+  grid-column: 1 / -1;
   max-width: 620px;
   margin: 0;
   color: rgba(247, 243, 234, 0.64);
-  line-height: 1.58;
+  font-size: 13px;
+  line-height: 1.42;
 }
 
 .project-progress {
@@ -1675,9 +1675,9 @@ h3 {
   z-index: 1;
   display: grid;
   grid-column: 1 / -1;
-  gap: 8px;
+  gap: 6px;
   align-self: end;
-  margin-top: 12px;
+  margin-top: 6px;
 }
 
 .project-progress span {
@@ -1690,7 +1690,7 @@ h3 {
 .project-progress i {
   display: block;
   overflow: hidden;
-  height: 8px;
+  height: 7px;
   border: 1px solid rgba(203, 169, 92, 0.28);
   border-radius: 999px;
   background: rgba(247, 243, 234, 0.08);
@@ -1710,14 +1710,14 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   grid-column: 1 / -1;
-  gap: 8px;
+  gap: 6px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .project-need-list li {
-  padding: 7px 10px;
+  padding: 5px 8px;
   border: 1px solid rgba(247, 243, 234, 0.12);
   border-radius: 999px;
   color: rgba(247, 243, 234, 0.66);
@@ -1730,10 +1730,10 @@ h3 {
   z-index: 1;
   display: inline-flex;
   width: fit-content;
-  min-height: 38px;
+  min-height: 32px;
   align-items: center;
   grid-column: 1 / -1;
-  padding: 0 14px;
+  padding: 0 12px;
   border: 1px solid rgba(203, 169, 92, 0.36);
   border-radius: 999px;
   color: var(--ink-strong);
@@ -1742,29 +1742,6 @@ h3 {
   text-transform: uppercase;
 }
 
-.project-card.featured .project-button {
-  min-height: 268px;
-  grid-template-columns: 100px minmax(0, 1fr) minmax(190px, 0.34fr);
-  border-radius: 8px 86px 8px 8px;
-}
-
-.project-card.featured .project-orb {
-  width: 94px;
-  height: 94px;
-  font-size: 20px;
-}
-
-.project-card.featured .project-meta,
-.project-card.featured .project-button h3,
-.project-card.featured .project-button p {
-  grid-column: 2;
-}
-
-.project-card.featured .project-progress,
-.project-card.featured .project-need-list,
-.project-card.featured .project-open {
-  grid-column: 3;
-}
 
 .detail-page {
   max-width: 1180px;
@@ -5354,21 +5331,6 @@ button.calendar-day {
     grid-template-columns: 1fr;
   }
 
-  .project-card,
-  .project-card.featured {
-    grid-column: span 1;
-  }
-
-  .project-card.featured .project-button {
-    grid-template-columns: 82px minmax(0, 1fr);
-  }
-
-  .project-card.featured .project-progress,
-  .project-card.featured .project-need-list,
-  .project-card.featured .project-open {
-    grid-column: 1 / -1;
-  }
-
   .overview-guide {
     min-height: 230px;
   }
@@ -5442,8 +5404,7 @@ button.calendar-day {
   .overview-quest-card,
   .profile-avatar-editor,
   .profile-player-card,
-  .project-button,
-  .project-card.featured .project-button {
+  .project-button {
     grid-template-columns: 1fr;
   }
 
@@ -5453,8 +5414,7 @@ button.calendar-day {
 
   .project-command-hero,
   .project-scout-card,
-  .project-button,
-  .project-card.featured .project-button {
+  .project-button {
     border-radius: 8px 42px 8px 8px;
   }
 
@@ -5466,11 +5426,7 @@ button.calendar-day {
   .project-button h3,
   .project-button p,
   .project-progress,
-  .project-need-list,
-  .project-open,
-  .project-card.featured .project-progress,
-  .project-card.featured .project-need-list,
-  .project-card.featured .project-open {
+  .project-need-list {
     grid-column: 1 / -1;
   }
 
