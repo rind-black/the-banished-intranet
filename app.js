@@ -14,6 +14,7 @@ const documentEmpty = document.querySelector("[data-doc-empty]");
 const signOutButton = document.querySelector("[data-sign-out]");
 const profileName = document.querySelector("[data-profile-name]");
 const profileRole = document.querySelector("[data-profile-role]");
+const roleSwitcher = document.querySelector("[data-role-switcher]");
 const profileAvatar = document.querySelector("[data-profile-avatar]");
 const profileAvatarPreview = document.querySelector("[data-profile-avatar-preview]");
 const profileAvatarInput = document.querySelector("[data-profile-avatar-input]");
@@ -74,6 +75,12 @@ const adminOnlyElements = document.querySelectorAll("[data-admin-only]");
 const unifiedRequestForm = document.querySelector("[data-unified-request-form]");
 const scriptReviewForm = document.querySelector("[data-script-review-form]");
 const scriptReviewStatus = document.querySelector("[data-script-review-status]");
+const scriptFormatSelect = document.querySelector("[data-script-format]");
+const scriptToolbar = document.querySelector("[data-script-toolbar]");
+const scriptPagesInput = document.querySelector("[data-script-pages]");
+const scriptFormatHint = document.querySelector("[data-script-format-hint]");
+const scriptWordCount = document.querySelector("[data-script-word-count]");
+const scriptLineCount = document.querySelector("[data-script-line-count]");
 const requestDestination = document.querySelector("[data-request-destination]");
 const calendarGrid = document.querySelector("[data-calendar-grid]");
 const calendarFilterButtons = document.querySelectorAll("[data-calendar-filter]");
@@ -1049,6 +1056,99 @@ function normalizeRole(role) {
   return "Employee";
 }
 
+const scriptStudioModes = {
+  film: {
+    label: "Film screenplay",
+    hint: "Film format uses scene headings, visual action, character cues, dialogue, and transitions.",
+    placeholder: `FADE IN:
+
+INT. LOCATION - DAY
+
+Action lines stay visual, present tense, and playable.
+
+                          CHARACTER
+             Dialogue sits under the character cue.
+
+CUT TO:`,
+    tools: [
+      ["scene", "Scene", "INT. LOCATION - DAY\n\n"],
+      ["action", "Action", "Action line in present tense.\n\n"],
+      ["character", "Character", "                          CHARACTER\n"],
+      ["dialogue", "Dialogue", "             Dialogue line.\n\n"],
+      ["parenthetical", "Beat", "                    (quietly)\n"],
+      ["transition", "Transition", "CUT TO:\n\n"],
+    ],
+  },
+  series: {
+    label: "Series / TV script",
+    hint: "Series format keeps act breaks clear and uses tight scene work for production-friendly review.",
+    placeholder: `TEASER
+
+INT. LOCATION - NIGHT
+
+Action establishes the scene and story engine.
+
+                          CHARACTER
+             Dialogue pushes the beat forward.
+
+END OF TEASER`,
+    tools: [
+      ["act", "Act", "ACT ONE\n\n"],
+      ["scene", "Scene", "INT. LOCATION - DAY\n\n"],
+      ["action", "Action", "Action beat.\n\n"],
+      ["character", "Character", "                          CHARACTER\n"],
+      ["dialogue", "Dialogue", "             Dialogue line.\n\n"],
+      ["end-act", "End Act", "END OF ACT ONE\n\n"],
+    ],
+  },
+  short: {
+    label: "Short / other screenwriting",
+    hint: "Short-form scripts still use standard screenplay language, but keep setup and payoff lean.",
+    placeholder: `FADE IN:
+
+EXT. LOCATION - DAY
+
+One clear visual image starts the piece.
+
+                          CHARACTER
+             One clean line that reveals need or conflict.
+
+FADE OUT.`,
+    tools: [
+      ["scene", "Scene", "EXT. LOCATION - DAY\n\n"],
+      ["image", "Image", "A clear visual image.\n\n"],
+      ["character", "Character", "                          CHARACTER\n"],
+      ["dialogue", "Dialogue", "             Dialogue line.\n\n"],
+      ["transition", "Transition", "FADE OUT.\n\n"],
+    ],
+  },
+  comic: {
+    label: "Comic book script",
+    hint: "Comic format is page-first and panel-first: page number, panel description, dialogue, caption, and SFX.",
+    placeholder: `PAGE 1
+
+Panel 1
+Description of the frame, action, and camera feel.
+
+CAPTION:
+Caption text.
+
+CHARACTER:
+Dialogue balloon text.
+
+SFX:
+Sound effect.`,
+    tools: [
+      ["page", "Page", "PAGE 1\n\n"],
+      ["panel", "Panel", "Panel 1\nDescription of the frame.\n\n"],
+      ["caption", "Caption", "CAPTION:\nCaption text.\n\n"],
+      ["character", "Dialogue", "CHARACTER:\nDialogue balloon text.\n\n"],
+      ["sfx", "SFX", "SFX:\nSound effect.\n\n"],
+      ["note", "Art Note", "ART NOTE:\nVisual reference or continuity note.\n\n"],
+    ],
+  },
+};
+
 function readJson(key, fallback) {
   const saved = localStorage.getItem(key);
 
@@ -1239,6 +1339,100 @@ function updateRoleNavigation(profile = currentProfile()) {
   document.querySelectorAll(".nav .nav-link:not([hidden]) span").forEach((number, index) => {
     number.textContent = String(index + 1).padStart(2, "0");
   });
+}
+
+function activeSectionId() {
+  return document.querySelector(".portal-section.active")?.dataset.section || "overview";
+}
+
+function switchPortalRole(role) {
+  const current = currentProfile();
+
+  if (!current) {
+    return;
+  }
+
+  const nextRole = normalizeRole(role);
+  const nextProfile = {
+    ...current,
+    role: nextRole,
+    admin: nextRole === "Admin",
+  };
+  const requestedSection = activeSectionId();
+  const nextSection = canAccessSection(requestedSection, nextProfile) ? requestedSection : firstAllowedSection(nextProfile);
+
+  setProfile(nextProfile);
+  applyProfile(nextProfile);
+  showSection(nextSection);
+  history.replaceState(null, "", `#${nextSection}`);
+}
+
+function scriptModeConfig() {
+  return scriptStudioModes[scriptFormatSelect?.value] || scriptStudioModes.film;
+}
+
+function updateScriptStats() {
+  if (!scriptPagesInput) {
+    return;
+  }
+
+  const text = scriptPagesInput.value.trim();
+  const words = text ? text.split(/\s+/).length : 0;
+  const lines = scriptPagesInput.value ? scriptPagesInput.value.split("\n").length : 0;
+
+  if (scriptWordCount) {
+    scriptWordCount.textContent = words;
+  }
+
+  if (scriptLineCount) {
+    scriptLineCount.textContent = lines;
+  }
+}
+
+function renderScriptToolbar() {
+  if (!scriptToolbar) {
+    return;
+  }
+
+  const config = scriptModeConfig();
+  scriptToolbar.innerHTML = config.tools
+    .map(([key, label]) => `<button type="button" data-script-snippet="${key}">${label}</button>`)
+    .join("");
+
+  if (scriptFormatHint) {
+    scriptFormatHint.textContent = config.hint;
+  }
+
+  if (scriptPagesInput && !scriptPagesInput.value) {
+    scriptPagesInput.placeholder = config.placeholder;
+  }
+
+  updateScriptStats();
+}
+
+function insertScriptSnippet(snippetKey) {
+  if (!scriptPagesInput) {
+    return;
+  }
+
+  const config = scriptModeConfig();
+  const snippet = config.tools.find(([key]) => key === snippetKey)?.[2];
+
+  if (!snippet) {
+    return;
+  }
+
+  const start = scriptPagesInput.selectionStart ?? scriptPagesInput.value.length;
+  const end = scriptPagesInput.selectionEnd ?? scriptPagesInput.value.length;
+  const before = scriptPagesInput.value.slice(0, start);
+  const after = scriptPagesInput.value.slice(end);
+  const needsBreak = before && !before.endsWith("\n") ? "\n" : "";
+  const inserted = `${needsBreak}${snippet}`;
+
+  scriptPagesInput.value = `${before}${inserted}${after}`;
+  scriptPagesInput.focus();
+  scriptPagesInput.setSelectionRange(start + inserted.length, start + inserted.length);
+  updateScriptStats();
 }
 
 function currentProfile() {
@@ -1897,6 +2091,10 @@ function applyProfile(profile) {
 
   if (profileRole) {
     profileRole.textContent = profile.role || "Employee";
+  }
+
+  if (roleSwitcher) {
+    roleSwitcher.value = profile.role || "Employee";
   }
 
   updateAvatarPreviews(profile);
@@ -3143,6 +3341,24 @@ navLinks.forEach((link) => {
   });
 });
 
+roleSwitcher?.addEventListener("change", () => {
+  switchPortalRole(roleSwitcher.value);
+});
+
+scriptFormatSelect?.addEventListener("change", () => {
+  renderScriptToolbar();
+});
+
+scriptToolbar?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-script-snippet]");
+
+  if (button) {
+    insertScriptSnippet(button.dataset.scriptSnippet);
+  }
+});
+
+scriptPagesInput?.addEventListener("input", updateScriptStats);
+
 authForm?.addEventListener("submit", (event) => {
   event.preventDefault();
   setAuthStatus("Checking credentials...", "pending", false);
@@ -3668,7 +3884,8 @@ scriptReviewForm?.addEventListener("submit", async (event) => {
   const formData = new FormData(scriptReviewForm);
   const profile = currentProfile();
   const title = String(formData.get("scriptTitle") || "").trim();
-  const format = String(formData.get("scriptFormat") || "Feature screenplay").trim();
+  const scriptMode = scriptStudioModes[String(formData.get("scriptFormat") || "film")] || scriptStudioModes.film;
+  const format = scriptMode.label;
   const project = String(formData.get("scriptProject") || "New / unassigned project").trim();
   const priority = String(formData.get("scriptPriority") || "General notes").trim();
   const logline = String(formData.get("scriptLogline") || "").trim();
@@ -3829,6 +4046,7 @@ if (contentForm) {
   syncContentRoleVisibility(contentForm);
 }
 
+renderScriptToolbar();
 renderMonthlyChallenge();
 renderCompanyCalendar();
 

@@ -111,6 +111,16 @@
             <h1 data-page-title>The Banished employee hub</h1>
           </div>
           <div class="profile-controls">
+            <label class="role-switcher" title="Preview portal access by role">
+              <span>Role</span>
+              <select data-role-switcher aria-label="Switch portal role">
+                <option>Admin</option>
+                <option>Screenwriter</option>
+                <option>Project Manager</option>
+                <option>Intern</option>
+                <option>Employee</option>
+              </select>
+            </label>
             <button class="calendar-icon-button" type="button" data-section-link="calendar" aria-label="Open my calendar" title="My calendar">
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M7 2v4" />
@@ -915,13 +925,12 @@
                 <input name="scriptTitle" type="text" placeholder="Project or script title" required />
               </label>
               <label>
-                Format
-                <select name="scriptFormat">
-                  <option>Feature screenplay</option>
-                  <option>Short film</option>
-                  <option>TV pilot</option>
-                  <option>Comic script</option>
-                  <option>Scene revision</option>
+                Script type
+                <select name="scriptFormat" data-script-format>
+                  <option value="film">Film screenplay</option>
+                  <option value="series">Series / TV script</option>
+                  <option value="short">Short / other screenwriting</option>
+                  <option value="comic">Comic book script</option>
                 </select>
               </label>
               <label>
@@ -949,9 +958,18 @@
               Logline
               <input name="scriptLogline" type="text" placeholder="One sentence: protagonist, goal, obstacle, stakes." required />
             </label>
-            <label>
-              Pages / excerpt
-              <textarea name="scriptPages" rows="14" spellcheck="true" placeholder="FADE IN:
+            <div class="script-workbench">
+              <div class="script-toolbar" data-script-toolbar aria-label="Script format tools"></div>
+              <div class="script-page-shell">
+                <aside class="script-page-sidebar" aria-hidden="true">
+                  <span>Scene</span>
+                  <span>Action</span>
+                  <span>Dialogue</span>
+                  <span>Notes</span>
+                </aside>
+                <label>
+                  Pages / excerpt
+                  <textarea name="scriptPages" rows="18" spellcheck="true" data-script-pages placeholder="FADE IN:
 
 INT. LOCATION - DAY
 
@@ -961,7 +979,16 @@ Action lines stay visual and present tense.
              Dialogue sits under the character cue.
 
 CUT TO:"></textarea>
-            </label>
+                </label>
+              </div>
+              <div class="script-editor-footer">
+                <p data-script-format-hint>Use screenplay format: scene heading, action, character cue, dialogue, transition.</p>
+                <div class="script-stats" aria-label="Script draft stats">
+                  <span><strong data-script-word-count>0</strong> words</span>
+                  <span><strong data-script-line-count>0</strong> lines</span>
+                </div>
+              </div>
+            </div>
             <label>
               Notes for reviewer
               <textarea name="scriptNotes" rows="4" placeholder="What should the reviewer focus on? Add page range, deadline, or context."></textarea>

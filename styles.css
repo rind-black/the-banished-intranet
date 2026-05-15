@@ -364,6 +364,42 @@ a {
   gap: 10px;
 }
 
+.role-switcher {
+  display: grid;
+  gap: 3px;
+  min-height: 54px;
+  min-width: 152px;
+  padding: 7px 10px;
+  border: 1px solid rgba(203, 169, 92, 0.28);
+  background:
+    linear-gradient(135deg, rgba(203, 169, 92, 0.08), transparent 62%),
+    rgba(17, 17, 19, 0.92);
+}
+
+.role-switcher span {
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.role-switcher select {
+  min-height: 28px;
+  border: 0;
+  background: transparent;
+  color: var(--ink-strong);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.role-switcher select:focus {
+  outline: 1px solid rgba(203, 169, 92, 0.5);
+  outline-offset: 2px;
+}
+
 .profile-chip,
 .ghost-button,
 .calendar-icon-button {
@@ -3363,10 +3399,115 @@ h3 {
   line-height: 1.5;
 }
 
+.script-workbench {
+  display: grid;
+  gap: 10px;
+}
+
+.script-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(247, 243, 234, 0.08);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.script-toolbar button {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(203, 169, 92, 0.36);
+  border-radius: 999px;
+  background: rgba(203, 169, 92, 0.08);
+  color: rgba(247, 243, 234, 0.86);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.script-toolbar button:hover {
+  border-color: rgba(247, 243, 234, 0.52);
+  background: rgba(247, 243, 234, 0.08);
+}
+
+.script-page-shell {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid rgba(203, 169, 92, 0.24);
+  background:
+    linear-gradient(90deg, rgba(203, 169, 92, 0.09), transparent 22%),
+    #060607;
+}
+
+.script-page-sidebar {
+  display: grid;
+  align-content: start;
+  gap: 1px;
+  padding: 13px 10px;
+  border-right: 1px solid rgba(203, 169, 92, 0.18);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.script-page-sidebar span {
+  padding: 9px 6px;
+  border-bottom: 1px solid rgba(247, 243, 234, 0.06);
+  color: rgba(247, 243, 234, 0.42);
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.script-page-shell label {
+  padding: 14px;
+}
+
 .script-review-form textarea[name="scriptPages"] {
   font-family: "Courier New", Courier, monospace;
   font-size: 13px;
   line-height: 1.62;
+  min-height: 520px;
+  border-color: rgba(247, 243, 234, 0.12);
+  background:
+    linear-gradient(90deg, transparent 0 10%, rgba(203, 169, 92, 0.06) 10% 10.3%, transparent 10.3%),
+    #101011;
+}
+
+.script-editor-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  color: rgba(247, 243, 234, 0.56);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.script-editor-footer p {
+  max-width: 680px;
+  margin: 0;
+}
+
+.script-stats {
+  display: flex;
+  gap: 8px;
+}
+
+.script-stats span {
+  padding: 8px 10px;
+  border: 1px solid rgba(247, 243, 234, 0.08);
+  background: rgba(247, 243, 234, 0.035);
+  color: rgba(247, 243, 234, 0.68);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.script-stats strong {
+  color: var(--gold);
 }
 
 .script-review-form input:focus,
@@ -5618,6 +5759,7 @@ button.calendar-day {
   .script-studio-board,
   .script-format-grid,
   .script-form-grid,
+  .script-page-shell,
   .bonus-flow,
   .bonus-doc-grid,
   .benefit-key,
@@ -5681,6 +5823,10 @@ button.calendar-day {
   }
 
   .challenge-campaign-copy::after {
+    display: none;
+  }
+
+  .script-page-sidebar {
     display: none;
   }
 }
