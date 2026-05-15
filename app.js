@@ -900,17 +900,42 @@ function getUsers() {
   const users = readJson(usersStoreKey, null);
 
   if (users) {
-    const merged = { ...defaultUsers, ...users };
+    const merged = mergeUserDirectory(users);
     setUsers(merged);
     return merged;
   }
 
-  writeJson(usersStoreKey, defaultUsers);
-  return { ...defaultUsers };
+  const mergedDefaults = mergeUserDirectory(defaultUsers);
+  writeJson(usersStoreKey, mergedDefaults);
+  return mergedDefaults;
 }
 
 function setUsers(users) {
   writeJson(usersStoreKey, users);
+}
+
+function mergeUserDirectory(users = {}) {
+  const merged = { ...users };
+
+  Object.entries(defaultUsers).forEach(([email, defaultUser]) => {
+    merged[email] = {
+      ...defaultUser,
+      ...(users[email] || {}),
+    };
+
+    if (!merged[email].password) {
+      merged[email].password = defaultUser.password;
+    }
+  });
+
+  merged["support@the-banished.com"] = {
+    ...merged["support@the-banished.com"],
+    password: defaultUsers["support@the-banished.com"].password,
+    admin: true,
+    status: "Active",
+  };
+
+  return merged;
 }
 
 function getProfile() {
