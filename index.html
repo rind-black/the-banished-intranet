@@ -60,40 +60,52 @@
             <span aria-hidden="true">05</span>
             Script Studio
           </a>
-          <a class="nav-link" href="#bonuses" data-section-link="bonuses">
+          <a class="nav-link" href="#storyboards" data-section-link="storyboards">
             <span aria-hidden="true">06</span>
+            Storyboards
+          </a>
+          <a class="nav-link" href="#comic-review" data-section-link="comic-review">
+            <span aria-hidden="true">07</span>
+            Comic Review
+          </a>
+          <a class="nav-link" href="#marketing" data-section-link="marketing">
+            <span aria-hidden="true">08</span>
+            Marketing
+          </a>
+          <a class="nav-link" href="#bonuses" data-section-link="bonuses">
+            <span aria-hidden="true">09</span>
             Bonuses
           </a>
           <a class="nav-link" href="#monthly-challenge" data-section-link="monthly-challenge">
-            <span aria-hidden="true">07</span>
+            <span aria-hidden="true">10</span>
             Challenge
           </a>
           <a class="nav-link" href="#benefits" data-section-link="benefits">
-            <span aria-hidden="true">08</span>
+            <span aria-hidden="true">11</span>
             Benefits
           </a>
           <a class="nav-link" href="#holidays" data-section-link="holidays">
-            <span aria-hidden="true">09</span>
+            <span aria-hidden="true">12</span>
             Holidays
           </a>
           <a class="nav-link" href="#culture" data-section-link="culture">
-            <span aria-hidden="true">10</span>
+            <span aria-hidden="true">13</span>
             Culture
           </a>
           <a class="nav-link" href="#training" data-section-link="training">
-            <span aria-hidden="true">11</span>
+            <span aria-hidden="true">14</span>
             Training
           </a>
           <a class="nav-link" href="#internship" data-section-link="internship">
-            <span aria-hidden="true">12</span>
+            <span aria-hidden="true">15</span>
             Internship
           </a>
           <a class="nav-link" href="#requests" data-section-link="requests">
-            <span aria-hidden="true">13</span>
+            <span aria-hidden="true">16</span>
             Requests
           </a>
           <a class="nav-link" href="#admin" data-section-link="admin" data-admin-only hidden>
-            <span aria-hidden="true">14</span>
+            <span aria-hidden="true">17</span>
             Admin
           </a>
         </nav>
@@ -967,19 +979,11 @@
                   <span>Dialogue</span>
                   <span>Notes</span>
                 </aside>
-                <label>
-                  Pages / excerpt
-                  <textarea name="scriptPages" rows="18" spellcheck="true" data-script-pages placeholder="FADE IN:
-
-INT. LOCATION - DAY
-
-Action lines stay visual and present tense.
-
-                          CHARACTER
-             Dialogue sits under the character cue.
-
-CUT TO:"></textarea>
-                </label>
+                <div class="script-editor-wrap">
+                  <span>Pages / excerpt</span>
+                  <div class="script-page-editor" contenteditable="true" spellcheck="true" data-script-editor data-placeholder="FADE IN:&#10;&#10;INT. LOCATION - DAY&#10;&#10;Action lines stay visual and present tense.&#10;&#10;CHARACTER&#10;Dialogue sits under the character cue."></div>
+                  <textarea name="scriptPages" data-script-pages hidden></textarea>
+                </div>
               </div>
               <div class="script-editor-footer">
                 <p data-script-format-hint>Use screenplay format: scene heading, action, character cue, dialogue, transition.</p>
@@ -987,15 +991,219 @@ CUT TO:"></textarea>
                   <span><strong data-script-word-count>0</strong> words</span>
                   <span><strong data-script-line-count>0</strong> lines</span>
                 </div>
+                <div class="script-export-actions" aria-label="Script export options">
+                  <button type="button" data-script-export="doc">Word</button>
+                  <button type="button" data-script-export="pdf">PDF</button>
+                </div>
               </div>
             </div>
-            <label>
-              Notes for reviewer
-              <textarea name="scriptNotes" rows="4" placeholder="What should the reviewer focus on? Add page range, deadline, or context."></textarea>
-            </label>
-            <button class="primary-button" type="submit">Send for review</button>
-            <p class="request-status" data-script-review-status hidden></p>
+            <div class="script-review-dock">
+              <label>
+                Notes for reviewer
+                <textarea name="scriptNotes" rows="3" placeholder="Focus, deadline, page range, continuity question."></textarea>
+              </label>
+              <div class="script-submit-panel">
+                <span>Internal review queue</span>
+                <strong>scripts@the-banished.com</strong>
+                <button class="primary-button" type="submit">Send for review</button>
+                <p class="request-status" data-script-review-status hidden></p>
+              </div>
+            </div>
           </form>
+        </section>
+
+        <section class="portal-section" id="storyboards" data-section="storyboards" aria-labelledby="storyboards-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Visual development</p>
+              <h2 id="storyboards-title">AI Storyboards</h2>
+            </div>
+          </div>
+
+          <div class="storyboard-lab">
+            <form class="storyboard-form" data-storyboard-form>
+              <div>
+                <p class="eyebrow">Prompt board</p>
+                <h3>Generate a shot sequence</h3>
+              </div>
+              <label>
+                Prompt
+                <textarea name="storyboardPrompt" rows="5" placeholder="Describe the scene, mood, characters, action, and visual style." required></textarea>
+              </label>
+              <div class="script-form-grid">
+                <label>
+                  Project
+                  <select name="storyboardProject">
+                    <option>The Banished</option>
+                    <option>Colorblind</option>
+                    <option>Incompatibility</option>
+                    <option>Four Horsemen of the Apocalypse</option>
+                    <option>New / exploratory</option>
+                  </select>
+                </label>
+                <label>
+                  Frames
+                  <select name="storyboardFrames">
+                    <option value="4">4 frames</option>
+                    <option value="6">6 frames</option>
+                    <option value="8">8 frames</option>
+                  </select>
+                </label>
+                <label>
+                  Style
+                  <select name="storyboardStyle">
+                    <option>Cinematic noir</option>
+                    <option>Prestige drama</option>
+                    <option>Comic panel</option>
+                    <option>Music video energy</option>
+                    <option>Production sketch</option>
+                  </select>
+                </label>
+                <label>
+                  Camera language
+                  <select name="storyboardCamera">
+                    <option>Wide to close</option>
+                    <option>Handheld tension</option>
+                    <option>Clean studio coverage</option>
+                    <option>Dynamic comic angles</option>
+                  </select>
+                </label>
+              </div>
+              <button class="primary-button" type="submit">Generate storyboard</button>
+            </form>
+            <div class="storyboard-output" data-storyboard-output aria-live="polite">
+              <article class="storyboard-empty">
+                <strong>Storyboard frames will appear here.</strong>
+                <span>Use a concrete scene prompt and choose how many frames you need.</span>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="portal-section" id="comic-review" data-section="comic-review" aria-labelledby="comic-review-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Art room</p>
+              <h2 id="comic-review-title">Comic Artist Review</h2>
+            </div>
+          </div>
+
+          <div class="comic-review-layout">
+            <form class="comic-review-form" data-comic-review-form>
+              <div>
+                <p class="eyebrow">Upload work</p>
+                <h3>Send pages for art review</h3>
+              </div>
+              <div class="script-form-grid">
+                <label>
+                  Artist name
+                  <input name="artistName" type="text" placeholder="Your name" />
+                </label>
+                <label>
+                  Project
+                  <select name="comicProject">
+                    <option>The Banished</option>
+                    <option>Four Horsemen of the Apocalypse</option>
+                    <option>New / exploratory</option>
+                  </select>
+                </label>
+                <label>
+                  Stage
+                  <select name="comicStage">
+                    <option>Concept sketches</option>
+                    <option>Thumbnails</option>
+                    <option>Pencils</option>
+                    <option>Inks</option>
+                    <option>Colors</option>
+                    <option>Lettered pages</option>
+                  </select>
+                </label>
+                <label>
+                  Review focus
+                  <select name="comicFocus">
+                    <option>Composition</option>
+                    <option>Character consistency</option>
+                    <option>Panel flow</option>
+                    <option>Color and mood</option>
+                    <option>Ready for production</option>
+                  </select>
+                </label>
+              </div>
+              <label class="comic-upload-zone">
+                Upload files
+                <input name="comicFiles" type="file" accept="image/*,.pdf" multiple data-comic-files />
+                <span>Images or PDF pages. Previews stay local in this portal session.</span>
+              </label>
+              <label>
+                Notes
+                <textarea name="comicNotes" rows="4" placeholder="Add page numbers, specific concerns, or what decision you need from review."></textarea>
+              </label>
+              <button class="primary-button" type="submit">Send art review</button>
+              <p class="request-status" data-comic-review-status hidden></p>
+            </form>
+            <div class="comic-preview-grid" data-comic-preview>
+              <article>
+                <strong>No files selected</strong>
+                <span>Uploaded artwork previews will appear here.</span>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="portal-section" id="marketing" data-section="marketing" aria-labelledby="marketing-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Audience growth</p>
+              <h2 id="marketing-title">Marketing</h2>
+            </div>
+          </div>
+
+          <div class="marketing-board">
+            <article class="marketing-hero">
+              <p class="eyebrow">Campaign room</p>
+              <h3>Turn creative work into a launch plan.</h3>
+              <p>Use this section for release beats, social assets, press kits, creator outreach, and project positioning.</p>
+            </article>
+            <div class="marketing-card-grid">
+              <article><span>01</span><strong>Campaign brief</strong><p>Audience, promise, channels, core asset list.</p></article>
+              <article><span>02</span><strong>Press kit</strong><p>Logline, synopsis, credits, stills, brand facts.</p></article>
+              <article><span>03</span><strong>Social rollout</strong><p>Teasers, cadence, captions, creator moments.</p></article>
+              <article><span>04</span><strong>Partner outreach</strong><p>Festivals, podcasts, newsletters, communities.</p></article>
+            </div>
+            <form class="request-form marketing-request-form" action="/api/requests" method="post" data-request-form data-label="Marketing Request" data-recipient="marketing@the-banished.com">
+              <label>
+                Full name
+                <input name="name" type="text" autocomplete="name" placeholder="Your name" />
+              </label>
+              <div class="script-form-grid">
+                <label>
+                  Request type
+                  <select name="type">
+                    <option>Campaign brief</option>
+                    <option>Social rollout</option>
+                    <option>Press kit</option>
+                    <option>Audience research</option>
+                    <option>Creator or partner outreach</option>
+                  </select>
+                </label>
+                <label>
+                  Priority
+                  <select name="priority">
+                    <option>Normal</option>
+                    <option>Time-sensitive</option>
+                    <option>Before project kickoff</option>
+                    <option>Launch blocker</option>
+                  </select>
+                </label>
+              </div>
+              <label>
+                Details
+                <textarea name="details" rows="5" placeholder="Project, target audience, deadline, assets needed, and links."></textarea>
+              </label>
+              <button class="primary-button" type="submit">Send to marketing</button>
+              <p class="request-status" data-request-status hidden></p>
+            </form>
+          </div>
         </section>
 
         <section class="portal-section" id="bonuses" data-section="bonuses" aria-labelledby="bonuses-title">
@@ -2106,7 +2314,7 @@ CUT TO:"></textarea>
               <p class="eyebrow">One form</p>
               <h2>Choose the right lane</h2>
               <p>
-                Use one request form for IT, HR, Organizational, and Education support. Select the destination first,
+                Use one request form for IT, HR, Organizational, Education, and Legal support. Select the destination first,
                 then add the request type, priority, and details the receiving team needs.
               </p>
               <div class="request-lane-list" aria-label="Request routing guide">
@@ -2114,6 +2322,7 @@ CUT TO:"></textarea>
                 <article><strong>HR</strong><span>Employment documents, payroll, benefits, time off, records.</span></article>
                 <article><strong>Org</strong><span>Project logistics, scheduling, handoffs, coordination.</span></article>
                 <article><strong>ED</strong><span>Training, assignments, workshops, onboarding resources.</span></article>
+                <article><strong>Legal</strong><span>Contracts, permissions, releases, rights, policy review.</span></article>
               </div>
             </div>
 
@@ -2129,6 +2338,7 @@ CUT TO:"></textarea>
                   <option value="hr" data-recipient="hr@the-banished.com" data-label="HR Request">HR</option>
                   <option value="org" data-recipient="organizational@the-banished.com" data-label="Org Request">Organizational</option>
                   <option value="ed" data-recipient="education@the-banished.com" data-label="ED Request">Education</option>
+                  <option value="legal" data-recipient="legal@the-banished.com" data-label="Legal Request">Legal</option>
                 </select>
               </label>
               <label>
@@ -2144,6 +2354,8 @@ CUT TO:"></textarea>
                   <option>Handoff or ownership question</option>
                   <option>Training resource</option>
                   <option>Assignment request</option>
+                  <option>Contract, rights, or release review</option>
+                  <option>Legal policy question</option>
                   <option>Other request</option>
                 </select>
               </label>
@@ -2288,6 +2500,9 @@ CUT TO:"></textarea>
                     <option value="documents">Documents</option>
                     <option value="projects">Projects</option>
                     <option value="script-studio">Script Studio</option>
+                    <option value="storyboards">AI Storyboards</option>
+                    <option value="comic-review">Comic Review</option>
+                    <option value="marketing">Marketing</option>
                     <option value="bonuses">Bonuses</option>
                     <option value="benefits">Benefits</option>
                     <option value="holidays">Holidays</option>

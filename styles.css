@@ -3460,19 +3460,88 @@ h3 {
   text-transform: uppercase;
 }
 
-.script-page-shell label {
+.script-editor-wrap {
+  display: grid;
+  gap: 9px;
   padding: 14px;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
 }
 
-.script-review-form textarea[name="scriptPages"] {
-  font-family: "Courier New", Courier, monospace;
-  font-size: 13px;
-  line-height: 1.62;
+.script-page-editor {
   min-height: 520px;
-  border-color: rgba(247, 243, 234, 0.12);
+  padding: 28px 34px;
+  overflow: auto;
+  border: 1px solid rgba(247, 243, 234, 0.12);
   background:
     linear-gradient(90deg, transparent 0 10%, rgba(203, 169, 92, 0.06) 10% 10.3%, transparent 10.3%),
     #101011;
+  color: rgba(247, 243, 234, 0.92);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 13px;
+  line-height: 1.62;
+  text-transform: none;
+  white-space: pre-wrap;
+}
+
+.script-page-editor:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.script-page-editor:empty::before {
+  display: block;
+  color: rgba(247, 243, 234, 0.26);
+  content: attr(data-placeholder);
+  pointer-events: none;
+  white-space: pre-wrap;
+}
+
+.script-block {
+  min-height: 1.62em;
+  margin: 0 0 12px;
+  outline: none;
+  white-space: pre-wrap;
+}
+
+.script-block.is-scene,
+.script-block.is-comic-page,
+.script-block.is-comic-panel {
+  color: rgba(247, 243, 234, 0.96);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.script-block.is-character {
+  width: 44%;
+  margin-left: 42%;
+  color: rgba(247, 243, 234, 0.96);
+  text-transform: uppercase;
+}
+
+.script-block.is-dialogue {
+  width: 48%;
+  margin-left: 29%;
+}
+
+.script-block.is-parenthetical {
+  width: 34%;
+  margin-left: 36%;
+}
+
+.script-block.is-transition {
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.script-block.is-comic-caption,
+.script-block.is-comic-sfx,
+.script-block.is-comic-note {
+  width: 74%;
+  margin-left: 8%;
+  color: rgba(247, 243, 234, 0.86);
 }
 
 .script-editor-footer {
@@ -3510,6 +3579,67 @@ h3 {
   color: var(--gold);
 }
 
+.script-export-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.script-export-actions button {
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid rgba(203, 169, 92, 0.34);
+  background: rgba(203, 169, 92, 0.08);
+  color: rgba(247, 243, 234, 0.78);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.script-export-actions button:hover {
+  border-color: rgba(247, 243, 234, 0.5);
+  background: rgba(247, 243, 234, 0.08);
+}
+
+.script-review-dock {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.36fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+.script-review-dock textarea {
+  min-height: 112px;
+}
+
+.script-submit-panel {
+  display: grid;
+  gap: 8px;
+  align-content: center;
+  padding: 16px;
+  border: 1px solid rgba(203, 169, 92, 0.24);
+  background:
+    radial-gradient(circle at 15% 15%, rgba(203, 169, 92, 0.16), transparent 38%),
+    rgba(0, 0, 0, 0.32);
+}
+
+.script-submit-panel span,
+.script-submit-panel strong {
+  display: block;
+  text-transform: uppercase;
+}
+
+.script-submit-panel span {
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.script-submit-panel strong {
+  color: rgba(247, 243, 234, 0.72);
+  font-size: 11px;
+}
+
 .script-review-form input:focus,
 .script-review-form select:focus,
 .script-review-form textarea:focus {
@@ -3519,6 +3649,277 @@ h3 {
 
 .script-review-form ::placeholder {
   color: rgba(247, 243, 234, 0.32);
+}
+
+.storyboard-lab,
+.comic-review-layout,
+.marketing-board {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.58fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.storyboard-form,
+.comic-review-form,
+.marketing-hero,
+.marketing-request-form {
+  display: grid;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid rgba(203, 169, 92, 0.24);
+  background:
+    var(--section-pattern),
+    linear-gradient(135deg, rgba(203, 169, 92, 0.1), transparent 58%),
+    rgba(17, 17, 19, 0.94);
+  box-shadow: var(--shadow);
+}
+
+.storyboard-form h3,
+.comic-review-form h3,
+.marketing-hero h3 {
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.storyboard-form label,
+.comic-review-form label {
+  display: grid;
+  gap: 9px;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.storyboard-form input,
+.storyboard-form select,
+.storyboard-form textarea,
+.comic-review-form input,
+.comic-review-form select,
+.comic-review-form textarea {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--line-strong);
+  background: #070708;
+  color: var(--ink);
+  font: inherit;
+  text-transform: none;
+}
+
+.storyboard-form input,
+.storyboard-form select,
+.comic-review-form input,
+.comic-review-form select {
+  padding: 0 13px;
+}
+
+.storyboard-form textarea,
+.comic-review-form textarea {
+  resize: vertical;
+  padding: 13px;
+  line-height: 1.5;
+}
+
+.storyboard-output {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.storyboard-empty,
+.storyboard-frame,
+.comic-preview-grid article,
+.marketing-card-grid article {
+  border: 1px solid rgba(203, 169, 92, 0.22);
+  background: rgba(12, 12, 14, 0.9);
+  box-shadow: var(--shadow);
+}
+
+.storyboard-empty {
+  grid-column: 1 / -1;
+  min-height: 220px;
+  padding: 24px;
+}
+
+.storyboard-empty strong,
+.storyboard-empty span {
+  display: block;
+}
+
+.storyboard-empty strong {
+  color: var(--ink-strong);
+  text-transform: uppercase;
+}
+
+.storyboard-empty span {
+  margin-top: 8px;
+  color: rgba(247, 243, 234, 0.58);
+}
+
+.storyboard-frame {
+  overflow: hidden;
+}
+
+.storyboard-visual {
+  position: relative;
+  min-height: 190px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at calc(var(--frame-shift) * 18%) 26%, rgba(247, 243, 234, 0.3), transparent 12%),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.22), rgba(203, 169, 92, 0.1) 46%, transparent),
+    #09090a;
+}
+
+.storyboard-visual span,
+.storyboard-visual i {
+  position: absolute;
+  display: block;
+  border: 1px solid rgba(203, 169, 92, 0.34);
+}
+
+.storyboard-visual span {
+  right: 12%;
+  bottom: 18%;
+  width: 42%;
+  height: 38%;
+  border-radius: 50% 50% 12px 12px;
+  background: rgba(247, 243, 234, 0.08);
+}
+
+.storyboard-visual i {
+  left: 10%;
+  bottom: 15%;
+  width: 56%;
+  height: 1px;
+  transform: rotate(-6deg);
+}
+
+.storyboard-visual b {
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  color: var(--gold);
+  font-size: 28px;
+}
+
+.storyboard-frame > div:last-child {
+  padding: 16px;
+}
+
+.storyboard-frame small,
+.storyboard-frame strong,
+.storyboard-frame em {
+  display: block;
+}
+
+.storyboard-frame small {
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.storyboard-frame strong {
+  margin-top: 6px;
+  color: var(--ink-strong);
+  text-transform: uppercase;
+}
+
+.storyboard-frame p,
+.storyboard-frame em,
+.marketing-hero p,
+.marketing-card-grid p {
+  color: rgba(247, 243, 234, 0.62);
+  line-height: 1.5;
+}
+
+.storyboard-frame em {
+  font-size: 12px;
+  font-style: normal;
+}
+
+.comic-upload-zone {
+  padding: 18px;
+  border: 1px dashed rgba(203, 169, 92, 0.4);
+  background: rgba(203, 169, 92, 0.06);
+}
+
+.comic-upload-zone input {
+  padding: 12px;
+}
+
+.comic-upload-zone span {
+  color: rgba(247, 243, 234, 0.48);
+  font-size: 12px;
+  line-height: 1.42;
+  text-transform: none;
+}
+
+.comic-preview-grid,
+.marketing-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.comic-preview-grid article,
+.marketing-card-grid article {
+  min-height: 160px;
+  padding: 16px;
+}
+
+.comic-preview-grid img,
+.comic-file-icon {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  margin-bottom: 12px;
+  object-fit: cover;
+  border: 1px solid rgba(247, 243, 234, 0.1);
+  background: rgba(0, 0, 0, 0.32);
+}
+
+.comic-file-icon {
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.comic-preview-grid strong,
+.comic-preview-grid span,
+.marketing-card-grid span,
+.marketing-card-grid strong {
+  display: block;
+}
+
+.comic-preview-grid strong,
+.marketing-card-grid strong {
+  color: var(--ink-strong);
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.comic-preview-grid span,
+.marketing-card-grid span {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.marketing-board {
+  grid-template-columns: minmax(0, 0.8fr) minmax(320px, 0.7fr);
+}
+
+.marketing-hero,
+.marketing-card-grid {
+  grid-column: 1;
+}
+
+.marketing-request-form {
+  grid-column: 2;
+  grid-row: 1 / span 2;
 }
 
 .bonus-dashboard {
@@ -5760,6 +6161,13 @@ button.calendar-day {
   .script-format-grid,
   .script-form-grid,
   .script-page-shell,
+  .script-review-dock,
+  .storyboard-lab,
+  .storyboard-output,
+  .comic-review-layout,
+  .comic-preview-grid,
+  .marketing-board,
+  .marketing-card-grid,
   .bonus-flow,
   .bonus-doc-grid,
   .benefit-key,
@@ -5828,6 +6236,13 @@ button.calendar-day {
 
   .script-page-sidebar {
     display: none;
+  }
+
+  .marketing-hero,
+  .marketing-card-grid,
+  .marketing-request-form {
+    grid-column: auto;
+    grid-row: auto;
   }
 }
 

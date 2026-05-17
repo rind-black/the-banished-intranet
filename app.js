@@ -81,6 +81,14 @@ const scriptPagesInput = document.querySelector("[data-script-pages]");
 const scriptFormatHint = document.querySelector("[data-script-format-hint]");
 const scriptWordCount = document.querySelector("[data-script-word-count]");
 const scriptLineCount = document.querySelector("[data-script-line-count]");
+const scriptEditor = document.querySelector("[data-script-editor]");
+const scriptExportButtons = document.querySelectorAll("[data-script-export]");
+const storyboardForm = document.querySelector("[data-storyboard-form]");
+const storyboardOutput = document.querySelector("[data-storyboard-output]");
+const comicReviewForm = document.querySelector("[data-comic-review-form]");
+const comicReviewStatus = document.querySelector("[data-comic-review-status]");
+const comicFilesInput = document.querySelector("[data-comic-files]");
+const comicPreview = document.querySelector("[data-comic-preview]");
 const requestDestination = document.querySelector("[data-request-destination]");
 const calendarGrid = document.querySelector("[data-calendar-grid]");
 const calendarFilterButtons = document.querySelectorAll("[data-calendar-filter]");
@@ -206,6 +214,9 @@ const titles = {
   projects: "Projects",
   "project-detail": "Project detail",
   "script-studio": "Script Studio",
+  storyboards: "AI Storyboards",
+  "comic-review": "Comic Artist Review",
+  marketing: "Marketing",
   bonuses: "Bonuses",
   "bonus-detail": "Bonus document",
   benefits: "Benefits and support",
@@ -226,6 +237,9 @@ const editableSections = {
   documents: "Documents",
   projects: "Projects",
   "script-studio": "Script Studio",
+  storyboards: "AI Storyboards",
+  "comic-review": "Comic Review",
+  marketing: "Marketing",
   bonuses: "Bonuses",
   benefits: "Benefits",
   holidays: "Holidays",
@@ -965,6 +979,9 @@ const roleSectionAccess = {
     "documents",
     "projects",
     "script-studio",
+    "storyboards",
+    "comic-review",
+    "marketing",
     "bonuses",
     "monthly-challenge",
     "benefits",
@@ -979,9 +996,13 @@ const roleSectionAccess = {
   Screenwriter: [
     "overview",
     "announcements",
+    "calendar",
     "documents",
     "projects",
     "script-studio",
+    "storyboards",
+    "comic-review",
+    "marketing",
     "bonuses",
     "monthly-challenge",
     "benefits",
@@ -996,6 +1017,9 @@ const roleSectionAccess = {
     "calendar",
     "documents",
     "projects",
+    "storyboards",
+    "comic-review",
+    "marketing",
     "bonuses",
     "monthly-challenge",
     "benefits",
@@ -1009,6 +1033,7 @@ const roleSectionAccess = {
   Intern: [
     "overview",
     "announcements",
+    "calendar",
     "documents",
     "monthly-challenge",
     "holidays",
@@ -1023,6 +1048,9 @@ const roleSectionAccess = {
     "calendar",
     "documents",
     "projects",
+    "storyboards",
+    "comic-review",
+    "marketing",
     "bonuses",
     "monthly-challenge",
     "benefits",
@@ -1371,14 +1399,48 @@ function scriptModeConfig() {
   return scriptStudioModes[scriptFormatSelect?.value] || scriptStudioModes.film;
 }
 
-function updateScriptStats() {
-  if (!scriptPagesInput) {
-    return;
+function scriptBlockType(snippetKey) {
+  return {
+    act: "scene",
+    scene: "scene",
+    action: "action",
+    image: "action",
+    character: "character",
+    dialogue: "dialogue",
+    parenthetical: "parenthetical",
+    transition: "transition",
+    "end-act": "transition",
+    page: "comic-page",
+    panel: "comic-panel",
+    caption: "comic-caption",
+    sfx: "comic-sfx",
+    note: "comic-note",
+  }[snippetKey] || "action";
+}
+
+function scriptText() {
+  if (scriptEditor) {
+    return Array.from(scriptEditor.querySelectorAll(".script-block"))
+      .map((block) => block.innerText.trim())
+      .filter(Boolean)
+      .join("\n\n") || scriptEditor.innerText.trim();
   }
 
-  const text = scriptPagesInput.value.trim();
+  return scriptPagesInput?.value.trim() || "";
+}
+
+function syncScriptDraftFromEditor() {
+  if (scriptPagesInput) {
+    scriptPagesInput.value = scriptText();
+  }
+
+  updateScriptStats();
+}
+
+function updateScriptStats() {
+  const text = scriptText();
   const words = text ? text.split(/\s+/).length : 0;
-  const lines = scriptPagesInput.value ? scriptPagesInput.value.split("\n").length : 0;
+  const lines = text ? text.split("\n").length : 0;
 
   if (scriptWordCount) {
     scriptWordCount.textContent = words;
@@ -1407,11 +1469,49 @@ function renderScriptToolbar() {
     scriptPagesInput.placeholder = config.placeholder;
   }
 
+  if (scriptEditor) {
+    scriptEditor.dataset.placeholder = config.placeholder;
+  }
+
   updateScriptStats();
 }
 
+function placeCaretAtEnd(element) {
+  const selection = window.getSelection();
+
+  if (!selection) {
+    return;
+  }
+
+  const range = document.createRange();
+  range.selectNodeContents(element);
+  range.collapse(false);
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
+function currentScriptBlock() {
+  const selection = window.getSelection();
+  const node = selection?.anchorNode;
+  const element = node?.nodeType === Node.ELEMENT_NODE ? node : node?.parentElement;
+
+  if (!element || !scriptEditor?.contains(element)) {
+    return null;
+  }
+
+  return element.closest(".script-block");
+}
+
+function createScriptBlock(snippetKey, text) {
+  const block = document.createElement("div");
+  block.className = `script-block is-${scriptBlockType(snippetKey)}`;
+  block.dataset.scriptBlock = snippetKey;
+  block.textContent = text.replace(/\n+$/g, "");
+  return block;
+}
+
 function insertScriptSnippet(snippetKey) {
-  if (!scriptPagesInput) {
+  if (!scriptEditor) {
     return;
   }
 
@@ -1422,17 +1522,192 @@ function insertScriptSnippet(snippetKey) {
     return;
   }
 
-  const start = scriptPagesInput.selectionStart ?? scriptPagesInput.value.length;
-  const end = scriptPagesInput.selectionEnd ?? scriptPagesInput.value.length;
-  const before = scriptPagesInput.value.slice(0, start);
-  const after = scriptPagesInput.value.slice(end);
-  const needsBreak = before && !before.endsWith("\n") ? "\n" : "";
-  const inserted = `${needsBreak}${snippet}`;
+  const block = createScriptBlock(snippetKey, snippet);
+  const activeBlock = currentScriptBlock();
 
-  scriptPagesInput.value = `${before}${inserted}${after}`;
-  scriptPagesInput.focus();
-  scriptPagesInput.setSelectionRange(start + inserted.length, start + inserted.length);
-  updateScriptStats();
+  if (activeBlock?.parentElement === scriptEditor) {
+    activeBlock.insertAdjacentElement("afterend", block);
+  } else {
+    scriptEditor.append(block);
+  }
+
+  scriptEditor.focus();
+  placeCaretAtEnd(block);
+  syncScriptDraftFromEditor();
+}
+
+function scriptBlocksHtml() {
+  if (!scriptEditor) {
+    return "";
+  }
+
+  const blocks = Array.from(scriptEditor.querySelectorAll(".script-block"));
+  const source = blocks.length ? blocks : [scriptEditor];
+
+  return source
+    .map((block) => {
+      const className = block.className || "script-block is-action";
+      const text = block.innerText
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+      return `<p class="${className}">${text.replace(/\n/g, "<br>")}</p>`;
+    })
+    .join("\n");
+}
+
+function scriptExportDocument() {
+  const title = String(scriptReviewForm?.elements.scriptTitle?.value || "The Banished Script").trim() || "The Banished Script";
+  const format = scriptModeConfig().label;
+  const body = scriptBlocksHtml();
+  const safeTitle = title.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase() || "script";
+  const escapedTitle = escapeHtml(title);
+  const escapedFormat = escapeHtml(format);
+
+  return {
+    title,
+    safeTitle,
+    html: `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>${escapedTitle}</title>
+  <style>
+    body { margin: 0; padding: 54pt; color: #111; background: #fff; font-family: "Courier New", Courier, monospace; font-size: 12pt; line-height: 1.28; }
+    h1 { font-family: Arial, sans-serif; font-size: 18pt; margin: 0 0 6pt; }
+    .meta { font-family: Arial, sans-serif; font-size: 9pt; margin: 0 0 24pt; color: #555; text-transform: uppercase; }
+    p { margin: 0 0 12pt; white-space: pre-wrap; }
+    .is-scene, .is-comic-page, .is-comic-panel { text-transform: uppercase; font-weight: bold; }
+    .is-character { margin-left: 210pt; text-transform: uppercase; }
+    .is-dialogue { margin-left: 150pt; max-width: 250pt; }
+    .is-parenthetical { margin-left: 178pt; max-width: 180pt; }
+    .is-transition { text-align: right; text-transform: uppercase; }
+    .is-comic-caption, .is-comic-sfx, .is-comic-note { margin-left: 30pt; }
+  </style>
+</head>
+<body>
+  <h1>${escapedTitle}</h1>
+  <p class="meta">${escapedFormat} / Exported from The Banished Internal Portal</p>
+  ${body || "<p></p>"}
+</body>
+</html>`,
+  };
+}
+
+function exportScript(format) {
+  syncScriptDraftFromEditor();
+
+  if (!scriptText()) {
+    setRequestStatus(scriptReviewStatus, "Export needs at least one script block.", "error");
+    return;
+  }
+
+  const documentPayload = scriptExportDocument();
+
+  if (format === "doc") {
+    const blob = new Blob([documentPayload.html], { type: "application/msword;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${documentPayload.safeTitle}.doc`;
+    link.click();
+    URL.revokeObjectURL(url);
+    setRequestStatus(scriptReviewStatus, "Word export prepared.");
+    return;
+  }
+
+  const printWindow = window.open("", "_blank");
+
+  if (!printWindow) {
+    setRequestStatus(scriptReviewStatus, "PDF export could not open. Allow popups and try again.", "error");
+    return;
+  }
+
+  printWindow.document.write(documentPayload.html);
+  printWindow.document.close();
+  printWindow.focus();
+  printWindow.print();
+  setRequestStatus(scriptReviewStatus, "PDF print view opened. Choose Save as PDF in the print dialog.");
+}
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function renderStoryboardFrames(formData) {
+  if (!storyboardOutput) {
+    return;
+  }
+
+  const prompt = String(formData.get("storyboardPrompt") || "").trim();
+  const project = String(formData.get("storyboardProject") || "New / exploratory");
+  const style = String(formData.get("storyboardStyle") || "Cinematic noir");
+  const camera = String(formData.get("storyboardCamera") || "Wide to close");
+  const frameCount = Math.max(1, Math.min(8, Number(formData.get("storyboardFrames") || 4)));
+  const beats = [
+    "Establish the world and emotional temperature.",
+    "Push the character into motion.",
+    "Reveal the conflict or visual problem.",
+    "Cut closer to the decision point.",
+    "Add a texture detail the art team can use.",
+    "Hold on the strongest image.",
+    "Create a transition into the next beat.",
+    "End with the frame that sells the sequence.",
+  ];
+
+  storyboardOutput.innerHTML = "";
+
+  Array.from({ length: frameCount }).forEach((_, index) => {
+    const frame = document.createElement("article");
+    frame.className = "storyboard-frame";
+    frame.style.setProperty("--frame-shift", `${(index % 4) + 1}`);
+    frame.innerHTML = `
+      <div class="storyboard-visual" aria-hidden="true">
+        <span></span>
+        <i></i>
+        <b>${String(index + 1).padStart(2, "0")}</b>
+      </div>
+      <div>
+        <small>${escapeHtml(project)} / ${escapeHtml(style)}</small>
+        <strong>Frame ${index + 1}</strong>
+        <p>${escapeHtml(beats[index])}</p>
+        <em>${escapeHtml(camera)}. Prompt: ${escapeHtml(prompt)}</em>
+      </div>
+    `;
+    storyboardOutput.append(frame);
+  });
+}
+
+function renderComicPreviews() {
+  if (!comicPreview) {
+    return;
+  }
+
+  const files = Array.from(comicFilesInput?.files || []);
+  comicPreview.innerHTML = "";
+
+  if (!files.length) {
+    comicPreview.innerHTML = "<article><strong>No files selected</strong><span>Uploaded artwork previews will appear here.</span></article>";
+    return;
+  }
+
+  files.forEach((file) => {
+    const card = document.createElement("article");
+    const isImage = file.type.startsWith("image/");
+    const preview = isImage
+      ? `<img src="${URL.createObjectURL(file)}" alt="" />`
+      : "<div class=\"comic-file-icon\">PDF</div>";
+    card.innerHTML = `
+      ${preview}
+      <strong>${escapeHtml(file.name)}</strong>
+      <span>${Math.max(1, Math.round(file.size / 1024))} KB</span>
+    `;
+    comicPreview.append(card);
+  });
 }
 
 function currentProfile() {
@@ -1592,6 +1867,7 @@ function requestPaneFromSection(sectionId) {
     "hr-requests": "hr",
     "org-requests": "org",
     "ed-requests": "ed",
+    "legal-requests": "legal",
   }[sectionId] || "it";
 }
 
@@ -1601,6 +1877,7 @@ function normalizeSectionId(sectionId) {
     "hr-requests": "requests",
     "org-requests": "requests",
     "ed-requests": "requests",
+    "legal-requests": "requests",
   }[sectionId] || sectionId;
 }
 
@@ -3357,7 +3634,105 @@ scriptToolbar?.addEventListener("click", (event) => {
   }
 });
 
-scriptPagesInput?.addEventListener("input", updateScriptStats);
+scriptEditor?.addEventListener("input", syncScriptDraftFromEditor);
+
+scriptEditor?.addEventListener("keydown", (event) => {
+  if (scriptText() || event.key.length !== 1 || event.metaKey || event.ctrlKey || event.altKey) {
+    return;
+  }
+
+  event.preventDefault();
+  const block = createScriptBlock("action", event.key);
+  scriptEditor.append(block);
+  placeCaretAtEnd(block);
+  syncScriptDraftFromEditor();
+});
+
+scriptExportButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    exportScript(button.dataset.scriptExport);
+  });
+});
+
+storyboardForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const formData = new FormData(storyboardForm);
+  renderStoryboardFrames(formData);
+});
+
+comicFilesInput?.addEventListener("change", renderComicPreviews);
+
+comicReviewForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(comicReviewForm);
+  const profile = currentProfile();
+  const files = Array.from(comicFilesInput?.files || []);
+  const recipient = "art@the-banished.com";
+  const label = "Comic Art Review";
+  const artistName = String(formData.get("artistName") || profile?.name || "Unknown").trim();
+  const project = String(formData.get("comicProject") || "New / exploratory");
+  const stage = String(formData.get("comicStage") || "Concept sketches");
+  const focus = String(formData.get("comicFocus") || "Composition");
+  const notes = String(formData.get("comicNotes") || "").trim();
+  const createdAt = new Date().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  if (!files.length) {
+    setRequestStatus(comicReviewStatus, "Art review needs at least one uploaded file.", "error");
+    return;
+  }
+
+  setRequestStatus(comicReviewStatus, `Sending art review request to ${recipient}...`, "pending");
+
+  try {
+    await postPortalEmail("/api/requests", {
+      recipient,
+      label,
+      subject: `Comic Art Review: ${project} / ${stage}`,
+      body: [
+        `Artist: ${artistName}`,
+        `Employee email: ${profile?.email || ""}`,
+        `Project: ${project}`,
+        `Stage: ${stage}`,
+        `Review focus: ${focus}`,
+        "",
+        "Uploaded files listed in portal:",
+        files.map((file) => `- ${file.name} (${Math.max(1, Math.round(file.size / 1024))} KB)`).join("\n"),
+        "",
+        "Notes:",
+        notes || "No additional notes.",
+      ].join("\n"),
+      from: profile?.email || "",
+      request: {
+        type: `Comic Art Review - ${stage}`,
+        priority: "Normal",
+        name: artistName,
+        details: notes,
+      },
+    });
+
+    const requests = getRequests();
+    requests.push({
+      createdAt,
+      from: profile?.email || "Unknown",
+      type: `Comic Art Review - ${stage}`,
+      recipient,
+      label,
+    });
+    setRequests(requests);
+    renderRequests();
+    setRequestStatus(comicReviewStatus, `Art review request sent to ${recipient}.`);
+    comicReviewForm.reset();
+    renderComicPreviews();
+  } catch (error) {
+    setRequestStatus(comicReviewStatus, `Art review failed. ${error.message}`, "error");
+  }
+});
 
 authForm?.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -3880,6 +4255,7 @@ internshipActionButtons.forEach((button) => {
 
 scriptReviewForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
+  syncScriptDraftFromEditor();
 
   const formData = new FormData(scriptReviewForm);
   const profile = currentProfile();

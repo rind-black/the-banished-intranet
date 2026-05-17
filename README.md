@@ -9,7 +9,10 @@ Prototype internal portal for The Banished, built with dependency-free frontend 
 - Clickable announcement details
 - Role-based document library preview for Employee, Admin, and Project Manager
 - Film, comics, and IT projects section
-- Screenwriter-only Script Studio with review submission
+- Script Studio with formatted script blocks, Word/PDF export, and review submission
+- AI Storyboards prompt board
+- Comic Artist Review upload and review request section
+- Marketing team campaign section
 - Benefits section based on `Benefits.docx`
 - Culture section based on `The Banished Culture.pptx`
 - Bonuses section
@@ -17,7 +20,7 @@ Prototype internal portal for The Banished, built with dependency-free frontend 
 - Clickable holiday meaning popovers
 - Training placeholder
 - Expandable internship section for interns and early talent
-- Unified request form for IT, HR, Organizational, and Education mailboxes
+- Unified request form for IT, HR, Organizational, Education, and Legal mailboxes
 - Admin console with invitations, user roles, admin permissions, manual content publishing, and local request log
 - Employee profile settings
 - Responsive desktop and mobile layout
