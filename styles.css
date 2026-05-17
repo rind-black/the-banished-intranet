@@ -6780,12 +6780,86 @@ button.calendar-day {
 
 .internship-actions {
   justify-items: center;
+  justify-content: center;
   padding-left: 0;
   text-align: center;
 }
 
 .internship-action-button {
   width: min(100%, 420px);
+  text-align: center;
+}
+
+.request-layout {
+  grid-template-columns: minmax(0, 0.9fr) minmax(360px, 0.86fr);
+  gap: 18px;
+}
+
+.request-layout .intro-panel,
+.request-form {
+  border-radius: 16px;
+}
+
+.request-lane-list {
+  gap: 8px;
+  border: 0;
+  background: transparent;
+}
+
+.request-lane-list article {
+  grid-template-columns: minmax(118px, 0.34fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  min-width: 0;
+  padding: 13px 14px;
+  border: 1px solid rgba(203, 169, 92, 0.18);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(203, 169, 92, 0.07), transparent 55%),
+    rgba(8, 8, 9, 0.76);
+}
+
+.request-lane-list strong,
+.request-lane-list span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.request-form {
+  gap: 14px;
+  padding: 22px;
+  border-color: rgba(203, 169, 92, 0.2);
+  background:
+    linear-gradient(135deg, rgba(247, 243, 234, 0.045), transparent 62%),
+    rgba(14, 14, 16, 0.96);
+}
+
+.request-form input,
+.request-form select,
+.request-form textarea {
+  min-height: 44px;
+  border-radius: 10px;
+  background: rgba(5, 5, 6, 0.78);
+}
+
+.request-form textarea {
+  min-height: 132px;
+}
+
+.request-form .primary-button {
+  justify-self: start;
+  min-height: 44px;
+  border-color: rgba(203, 169, 92, 0.46);
+  border-radius: 999px;
+  background: rgba(203, 169, 92, 0.12);
+  color: var(--ink-strong);
+}
+
+.request-form .primary-button:hover,
+.request-form .primary-button:focus-visible {
+  border-color: rgba(203, 169, 92, 0.72);
+  background: rgba(203, 169, 92, 0.2);
+  color: #ffffff;
 }
 
 .admin-grid {
@@ -6823,6 +6897,7 @@ button.calendar-day {
   .project-command-board,
   .challenge-game-panel,
   .benefit-category-grid,
+  .request-layout,
   .admin-grid {
     grid-template-columns: 1fr;
   }
@@ -6839,7 +6914,12 @@ button.calendar-day {
   .benefit-category-grid,
   .document-card-grid.active,
   .project-list,
-  .challenge-card-grid {
+  .challenge-card-grid,
+  .request-lane-list article {
     grid-template-columns: 1fr;
+  }
+
+  .request-form .primary-button {
+    width: 100%;
   }
 }

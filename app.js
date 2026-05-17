@@ -229,7 +229,7 @@ const titles = {
   internship: "Internship resources",
   "monthly-challenge": "Challenge of the Month",
   requests: "Request center",
-  admin: "Admin console",
+  admin: "Admin operations",
   profile: "Profile",
 };
 
