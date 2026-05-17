@@ -426,6 +426,127 @@ function handleLocation(request, response) {
   });
 }
 
+function storyboardImagePrompt(payload) {
+  const script = cleanHeader(payload.script || "Untitled scene");
+  const project = cleanHeader(payload.project || "Untitled");
+  const frameCount = Math.max(1, Math.min(8, Number(payload.frames || 4)));
+
+  return [
+    "Create a professional black-and-white film storyboard sheet on a clean white production page.",
+    `Project: ${project}.`,
+    `Action/dialogue: ${script}.`,
+    `${frameCount} numbered panels arranged in one row if possible, matching a studio storyboard template.`,
+    "Each panel should look hand-drawn by a professional storyboard artist, with detailed pencil and ink linework, cinematic composition, clear human anatomy, expressive poses, perspective, hatching, shadows, environment detail, and camera movement.",
+    "Below each panel include structured production boxes for ACTION / DIALOGUE, CAMERA / MOVEMENT, and NOTES / SHOT SIZE / ADDITIONAL INFO.",
+    "If the scene includes a demon and knight, draw a real knight in armor and a detailed winged demon, not icons, stick figures, or simple symbols.",
+    "Style: production storyboard, concept art pencil sketch, monochrome, clean page, high detail, no color, no cartoon UI.",
+  ].join(" ");
+}
+
+function storyboardImageRequestBody(provider, prompt) {
+  if (provider === "automatic1111") {
+    return {
+      prompt,
+      negative_prompt: "low quality, stick figure, simple icon, UI mockup, color, blurry, cropped, text errors",
+      width: 1536,
+      height: 1024,
+      steps: Number(process.env.STORYBOARD_IMAGE_STEPS || 28),
+      cfg_scale: Number(process.env.STORYBOARD_IMAGE_CFG_SCALE || 7),
+      sampler_name: process.env.STORYBOARD_IMAGE_SAMPLER || "DPM++ 2M Karras",
+    };
+  }
+
+  return {
+    model: process.env.OPENAI_IMAGE_MODEL || process.env.STORYBOARD_IMAGE_MODEL || "gpt-image-1-mini",
+    prompt,
+    size: process.env.STORYBOARD_IMAGE_SIZE || "1536x1024",
+    quality: process.env.STORYBOARD_IMAGE_QUALITY || "low",
+    n: 1,
+  };
+}
+
+function storyboardImageFromResponse(json) {
+  const openAiImage = json?.data?.[0];
+
+  if (openAiImage?.b64_json) {
+    return {
+      imageDataUrl: `data:image/png;base64,${openAiImage.b64_json}`,
+      imageUrl: "",
+    };
+  }
+
+  if (openAiImage?.url) {
+    return {
+      imageDataUrl: "",
+      imageUrl: openAiImage.url,
+    };
+  }
+
+  if (json?.images?.[0]) {
+    const image = String(json.images[0]);
+    return {
+      imageDataUrl: image.startsWith("data:") ? image : `data:image/png;base64,${image}`,
+      imageUrl: "",
+    };
+  }
+
+  return {
+    imageDataUrl: "",
+    imageUrl: "",
+  };
+}
+
+async function handleStoryboardImage(request, response) {
+  const payload = await readJson(request);
+  const prompt = storyboardImagePrompt(payload);
+  const endpoint = process.env.STORYBOARD_IMAGE_API_URL || "https://api.openai.com/v1/images/generations";
+  const provider = process.env.STORYBOARD_IMAGE_PROVIDER
+    || (endpoint.includes("/sdapi/") ? "automatic1111" : "openai");
+  const apiKey = provider === "openai"
+    ? process.env.OPENAI_API_KEY
+    : process.env.STORYBOARD_IMAGE_API_KEY;
+
+  if (provider === "openai" && !apiKey) {
+    throw new HttpError(
+      501,
+      "AI storyboard renderer is not configured. OpenAI image generation is not free; set OPENAI_API_KEY, or set STORYBOARD_IMAGE_API_URL to a local/free image provider."
+    );
+  }
+
+  const headers = {
+    "Content-Type": "application/json",
+  };
+
+  if (apiKey) {
+    headers.Authorization = `Bearer ${apiKey}`;
+  }
+
+  const imageResponse = await fetch(endpoint, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(storyboardImageRequestBody(provider, prompt)),
+  });
+
+  if (!imageResponse.ok) {
+    const errorText = await imageResponse.text();
+    throw new Error(`AI storyboard renderer rejected the request: ${errorText || imageResponse.status}`);
+  }
+
+  const json = await imageResponse.json();
+  const image = storyboardImageFromResponse(json);
+
+  if (!image.imageDataUrl && !image.imageUrl) {
+    throw new Error("AI storyboard renderer did not return an image.");
+  }
+
+  sendJson(response, 200, {
+    ok: true,
+    provider,
+    prompt,
+    ...image,
+  });
+}
+
 function serveStatic(request, response) {
   const url = new URL(request.url, `http://${request.headers.host}`);
   const requestedPath = decodeURIComponent(url.pathname);
@@ -467,6 +588,11 @@ const server = http.createServer(async (request, response) => {
 
     if (request.method === "POST" && request.url === "/api/requests") {
       await handleRequest(request, response);
+      return;
+    }
+
+    if (request.method === "POST" && request.url === "/api/storyboard-image") {
+      await handleStoryboardImage(request, response);
       return;
     }
 

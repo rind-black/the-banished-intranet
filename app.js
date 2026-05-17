@@ -86,6 +86,7 @@ const scriptSaveStatus = document.querySelector("[data-script-save-status]");
 const scriptExportButtons = document.querySelectorAll("[data-script-export]");
 const storyboardForm = document.querySelector("[data-storyboard-form]");
 const storyboardOutput = document.querySelector("[data-storyboard-output]");
+const storyboardStatus = document.querySelector("[data-storyboard-status]");
 const comicReviewForm = document.querySelector("[data-comic-review-form]");
 const comicReviewStatus = document.querySelector("[data-comic-review-status]");
 const comicFilesInput = document.querySelector("[data-comic-files]");
@@ -2114,7 +2115,57 @@ function buildStoryboardSheet({ project, style, camera, script, beats, scene }) 
   `;
 }
 
-function renderStoryboardFrames(formData) {
+function buildAiStoryboardImageSheet({ imageDataUrl, imageUrl, provider, project, script }) {
+  const source = imageDataUrl || imageUrl;
+  const safeProject = escapeHtml(project || "Untitled");
+  const safeAction = escapeHtml(storyboardSlateText(script));
+  const safeProvider = escapeHtml(provider || "AI renderer");
+
+  return `
+    <div class="storyboard-sheet-wrap ai">
+      <article class="storyboard-ai-sheet">
+        <header class="storyboard-ai-header">
+          <span>PROJECT: <strong>${safeProject}</strong></span>
+          <span>ACTION / DIALOGUE: <strong>${safeAction}</strong></span>
+          <span>RENDERER: <strong>${safeProvider}</strong></span>
+        </header>
+        <img src="${escapeHtml(source)}" alt="Generated professional storyboard sheet for ${safeAction}" />
+      </article>
+    </div>
+  `;
+}
+
+async function requestAiStoryboardImage({ script, project, style, camera, frameCount }) {
+  const response = await fetch("/api/storyboard-image", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      script,
+      project,
+      style,
+      camera,
+      frames: frameCount,
+    }),
+  });
+
+  let payload = null;
+
+  try {
+    payload = await response.json();
+  } catch {
+    payload = null;
+  }
+
+  if (!response.ok || !payload?.ok) {
+    throw new Error(payload?.error || "AI storyboard renderer is not available from this server.");
+  }
+
+  return payload;
+}
+
+async function renderStoryboardFrames(formData) {
   if (!storyboardOutput) {
     return;
   }
@@ -2144,6 +2195,25 @@ function renderStoryboardFrames(formData) {
   const baseScene = analyzeStoryboardScene(script, baseBeats);
   const beats = buildStoryboardBeats(baseBeats, frameCount, baseScene);
   const scene = analyzeStoryboardScene(script, beats);
+
+  setRequestStatus(storyboardStatus, "Generating professional storyboard sheet...", "pending");
+
+  try {
+    const image = await requestAiStoryboardImage({ script, project, style, camera, frameCount });
+    storyboardOutput.innerHTML = buildAiStoryboardImageSheet({
+      ...image,
+      project,
+      script,
+    });
+    setRequestStatus(storyboardStatus, "AI storyboard sheet generated.");
+    return;
+  } catch (error) {
+    setRequestStatus(
+      storyboardStatus,
+      `${error.message} Showing the layout preview until an image renderer is configured.`,
+      "error"
+    );
+  }
 
   storyboardOutput.innerHTML = buildStoryboardSheet({ project, style, camera, script, beats, scene });
 }
@@ -4133,10 +4203,10 @@ scriptExportButtons.forEach((button) => {
   });
 });
 
-storyboardForm?.addEventListener("submit", (event) => {
+storyboardForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   const formData = new FormData(storyboardForm);
-  renderStoryboardFrames(formData);
+  await renderStoryboardFrames(formData);
 });
 
 comicFilesInput?.addEventListener("change", renderComicPreviews);

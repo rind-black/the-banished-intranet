@@ -34,7 +34,7 @@ node server.js
 
 Then visit `http://127.0.0.1:4173`.
 
-Do not use `python3 -m http.server` for this version. It can show the pages, but it cannot handle `/api/invitations` or `/api/requests`, so email forms will fail.
+Do not use `python3 -m http.server` for this version. It can show the pages, but it cannot handle `/api/invitations`, `/api/requests`, or `/api/storyboard-image`, so email forms and AI storyboards will fail.
 
 The portal needs a mail provider before invitations and request forms can send real email. Configure either Resend:
 
@@ -58,6 +58,26 @@ node server.js
 If the mail provider is not configured, the portal will show an error instead of saying that an email was sent.
 
 For local testing, the message `Email service is not configured yet` means the portal backend is running correctly, but no mail provider credentials have been supplied.
+
+## AI storyboard images
+
+The portal can use a real image renderer for professional storyboard sheets. OpenAI image generation is not free, so it requires an API key:
+
+```bash
+OPENAI_API_KEY=your_key \
+OPENAI_IMAGE_MODEL=gpt-image-1-mini \
+node server.js
+```
+
+For a free/local setup, run your own image server and point the portal at it. Automatic1111-style local Stable Diffusion endpoints are supported:
+
+```bash
+STORYBOARD_IMAGE_PROVIDER=automatic1111 \
+STORYBOARD_IMAGE_API_URL=http://127.0.0.1:7860/sdapi/v1/txt2img \
+node server.js
+```
+
+If no renderer is configured, the portal shows a clean production-sheet layout preview instead of pretending the local SVG fallback is final art.
 
 ## Test access
 
