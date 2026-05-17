@@ -1798,26 +1798,25 @@ function buildStoryboardBeats(sourceBeats, frameCount, scene) {
 }
 
 function storyboardBackgroundSvg(scene, frameIndex) {
-  const moonX = 610 - (frameIndex % 3) * 46;
-  const hazeX = 170 + frameIndex * 42;
   const castle = `
-    <g opacity="0.68" stroke="#cba95c" stroke-width="2" fill="rgba(15,15,18,0.88)">
-      <path d="M30 302h118v-86h28v86h130v-124h34v124h102v-70h30v70h116v58H30z" />
-      <path d="M96 216v-42l18 18 18-18 18 18 18-18v42" />
-      <path d="M316 178v-46l18 19 18-19 18 19 18-19v46" />
-      <path d="M640 302v-74l18 18 18-18 18 18 18-18v74" />
+    <g opacity="0.42" stroke="#242424" stroke-width="2.2" fill="none">
+      <path d="M38 304h120v-84h30v84h126v-128h38v128h112v-78h32v78h130v54H38z" />
+      <path d="M92 220v-42l20 18 20-18 20 18 20-18v42" />
+      <path d="M322 176v-46l18 19 18-19 18 19 18-19v46" />
+      <path d="M654 304v-74l18 18 18-18 18 18 18-18v74" />
+      <path d="M64 326h684" />
     </g>
   `;
   const forest = `
-    <g opacity="0.62" stroke="#cba95c" stroke-width="2" fill="rgba(21,28,24,0.86)">
+    <g opacity="0.38" stroke="#242424" stroke-width="2.2" fill="none">
       ${Array.from({ length: 7 }).map((_, index) => {
         const x = 46 + index * 108;
-        return `<path d="M${x} 326l44-116 44 116z" /><path d="M${x + 44} 326v34" />`;
+        return `<path d="M${x} 326l44-116 44 116" /><path d="M${x + 44} 326v34" />`;
       }).join("")}
     </g>
   `;
   const city = `
-    <g opacity="0.62" stroke="#cba95c" stroke-width="2" fill="rgba(12,15,20,0.88)">
+    <g opacity="0.36" stroke="#242424" stroke-width="2.2" fill="none">
       ${Array.from({ length: 9 }).map((_, index) => {
         const x = 34 + index * 86;
         const height = 82 + (index % 4) * 28;
@@ -1826,10 +1825,10 @@ function storyboardBackgroundSvg(scene, frameIndex) {
     </g>
   `;
   const interior = `
-    <g opacity="0.72" stroke="#cba95c" stroke-width="2" fill="none">
+    <g opacity="0.38" stroke="#242424" stroke-width="2.2" fill="none">
       <path d="M84 96h632v244H84z" />
       <path d="M84 340l126-108h380l126 108" />
-      <path d="M220 96v244M580 96v244" opacity="0.35" />
+      <path d="M220 96v244M580 96v244" opacity="0.5" />
     </g>
   `;
   const settingMap = {
@@ -1841,14 +1840,20 @@ function storyboardBackgroundSvg(scene, frameIndex) {
   };
 
   return `
-    <rect width="800" height="450" fill="url(#storySky)" />
-    <rect width="800" height="450" fill="url(#storyGrain)" opacity="0.42" />
-    <circle cx="${moonX}" cy="86" r="42" fill="rgba(247,243,234,0.2)" />
-    <circle cx="${moonX}" cy="86" r="18" fill="rgba(247,243,234,0.28)" />
-    <ellipse cx="${hazeX}" cy="148" rx="128" ry="68" fill="rgba(231,55,47,0.16)" />
-    ${settingMap[scene.setting] || settingMap.soundstage}
-    <path d="M42 362c160-44 324-44 716 0" stroke="#cba95c" stroke-width="3" opacity="0.44" fill="none" />
-    <rect y="354" width="800" height="96" fill="rgba(0,0,0,0.32)" />
+    <rect width="800" height="450" fill="#fbfaf5" />
+    <rect x="18" y="18" width="764" height="354" fill="#fffefa" stroke="#111111" stroke-width="3" />
+    <g opacity="0.08" stroke="#111111" stroke-width="1">
+      ${Array.from({ length: 24 }).map((_, index) => {
+        const y = 32 + index * 14;
+        return `<path d="M24 ${y}L776 ${y - 34}" />`;
+      }).join("")}
+    </g>
+    <g>
+      ${settingMap[scene.setting] || settingMap.soundstage}
+      <path d="M46 326c154-38 308-38 708 0" stroke="#303030" stroke-width="2.8" opacity="0.55" fill="none" />
+      <path d="M86 360L330 238M714 360L492 238" stroke="#303030" stroke-width="1.4" opacity="0.28" fill="none" />
+    </g>
+    <rect x="18" y="372" width="764" height="60" fill="#f3f1ea" stroke="#111111" stroke-width="3" />
   `;
 }
 
@@ -1862,21 +1867,21 @@ function storyboardDemonSvg(x, y, scale, pose) {
   const wingOpacity = pose === "recoil" ? "0.5" : "0.78";
 
   return `
-    <g transform="translate(${x} ${y}) scale(${scale}) rotate(${lean})" stroke-linecap="round" stroke-linejoin="round">
-      <ellipse cx="0" cy="108" rx="68" ry="16" fill="rgba(0,0,0,0.45)" />
-      <path d="M-34 34c-92-18-122 42-146 92 58-18 100-8 138 30" fill="rgba(83,22,22,0.78)" stroke="#cba95c" stroke-width="4" opacity="${wingOpacity}" />
-      <path d="M34 34c92-18 122 42 146 92-58-18-100-8-138 30" fill="rgba(83,22,22,0.78)" stroke="#cba95c" stroke-width="4" opacity="${wingOpacity}" />
-      <path d="M-34 42c-18 30-24 72-14 112M34 42c18 30 24 72 14 112" stroke="#0a0a0c" stroke-width="5" opacity="0.6" />
-      <path d="M-30 46c-22 44-22 88-2 124h64c20-36 20-80-2-124z" fill="#17171a" stroke="#f7f3ea" stroke-width="4" />
-      <circle cx="0" cy="18" r="34" fill="#211616" stroke="#f7f3ea" stroke-width="4" />
-      <path d="M-18-10c-22-24-40-22-58-6 20 2 34 16 44 38M18-10c22-24 40-22 58-6-20 2-34 16-44 38" fill="none" stroke="#cba95c" stroke-width="6" />
-      <circle cx="-11" cy="18" r="4" fill="#e7372f" />
-      <circle cx="11" cy="18" r="4" fill="#e7372f" />
-      <path d="M-10 38c8 6 16 6 24 0" stroke="#e7372f" stroke-width="4" fill="none" />
-      <path d="M-28 88c-34 18-58 42-78 70" stroke="#f7f3ea" stroke-width="8" />
-      <path d="${armPath}" stroke="#f7f3ea" stroke-width="9" />
-      <path d="M146 130l22 0M144 122l20-14M140 138l18 16" stroke="#e7372f" stroke-width="5" />
-      <path d="M-18 168l-20 54M20 168l26 54" stroke="#080809" stroke-width="15" />
+    <g transform="translate(${x} ${y}) scale(${scale}) rotate(${lean})" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <ellipse cx="0" cy="126" rx="76" ry="14" fill="#d8d5ce" opacity="0.45" stroke="none" />
+      <path d="M-36 36c-82-18-122 34-156 104 60-24 112-6 148 42" stroke="#111111" stroke-width="5" opacity="${wingOpacity}" />
+      <path d="M36 36c82-18 122 34 156 104-60-24-112-6-148 42" stroke="#111111" stroke-width="5" opacity="${wingOpacity}" />
+      <path d="M-126 106c34 2 58 18 82 48M126 106c-34 2-58 18-82 48" stroke="#777777" stroke-width="2.2" />
+      <path d="M-30 44c-24 42-24 90-3 130 18 8 46 8 66 0 21-40 21-88-3-130" fill="#ece9e1" stroke="#111111" stroke-width="5" />
+      <path d="M-25 88c16 10 34 10 52 0M-28 126c18 9 38 9 56 0" stroke="#6b6b6b" stroke-width="2.4" />
+      <circle cx="0" cy="18" r="32" fill="#f8f6ef" stroke="#111111" stroke-width="5" />
+      <path d="M-18-10c-24-26-45-23-64-4 24 0 38 14 48 38M18-10c24-26 45-23 64-4-24 0-38 14-48 38" stroke="#111111" stroke-width="5" />
+      <path d="M-10 12h3M10 12h3M-12 36c8 6 18 6 28 0" stroke="#111111" stroke-width="4" />
+      <path d="M-28 88c-34 18-58 42-78 70" stroke="#111111" stroke-width="7" />
+      <path d="${armPath}" stroke="#111111" stroke-width="7" />
+      <path d="M146 130l22 0M144 122l20-14M140 138l18 16" stroke="#111111" stroke-width="4" />
+      <path d="M-20 174l-22 58M22 174l28 58" stroke="#111111" stroke-width="10" />
+      <path d="M-76 54c24 20 44 40 60 72M78 54c-24 20-44 40-60 72" stroke="#111111" stroke-width="1.8" opacity="0.28" />
     </g>
   `;
 }
@@ -1891,18 +1896,19 @@ function storyboardKnightSvg(x, y, scale, pose) {
   const bodyLean = pose === "brace" ? 4 : pose === "counter" ? -10 : 0;
 
   return `
-    <g transform="translate(${x} ${y}) scale(${scale}) rotate(${bodyLean})" stroke-linecap="round" stroke-linejoin="round">
-      <ellipse cx="0" cy="116" rx="66" ry="15" fill="rgba(0,0,0,0.45)" />
-      <path d="M-34 48h68l22 118h-112z" fill="#d9d4c8" stroke="#f7f3ea" stroke-width="4" />
-      <path d="M-44 66h88M-36 96h72M-28 126h56" stroke="#252527" stroke-width="4" opacity="0.62" />
-      <circle cx="0" cy="18" r="33" fill="#c9c2b4" stroke="#f7f3ea" stroke-width="4" />
-      <path d="M-36 14h72v18h-72z" fill="#101013" stroke="#cba95c" stroke-width="4" />
-      <path d="M-12-14c8-26 28-38 58-34-20 10-28 24-28 42" fill="#e7372f" stroke="#cba95c" stroke-width="3" />
-      <path d="M-30 78c-28 24-52 44-74 66" stroke="#f7f3ea" stroke-width="9" />
-      <path d="M${shieldX} 88c-30 6-46 24-46 54 0 44 46 68 46 68s46-24 46-68c0-30-16-48-46-54z" fill="#1a2534" stroke="#cba95c" stroke-width="5" />
-      <path d="${swordPath}" stroke="#f7f3ea" stroke-width="7" />
-      <path d="M148-42l26-16M151-36l28-3" stroke="#cba95c" stroke-width="4" />
-      <path d="M-18 166l-18 54M20 166l20 54" stroke="#080809" stroke-width="15" />
+    <g transform="translate(${x} ${y}) scale(${scale}) rotate(${bodyLean})" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <ellipse cx="0" cy="128" rx="70" ry="14" fill="#d8d5ce" opacity="0.45" stroke="none" />
+      <path d="M-38 48h76l20 120h-116z" fill="#f4f2eb" stroke="#111111" stroke-width="5" />
+      <path d="M-44 68h88M-36 96h72M-28 124h56M-20 152h40" stroke="#6b6b6b" stroke-width="2.6" />
+      <path d="M-30 14c10-26 50-26 60 0v36h-60z" fill="#f8f6ef" stroke="#111111" stroke-width="5" />
+      <path d="M-38 22h76v18h-76z" stroke="#111111" stroke-width="5" />
+      <path d="M-18-14c8-22 32-32 62-28-20 10-28 24-28 42" stroke="#111111" stroke-width="4" />
+      <path d="M-30 78c-28 24-52 44-74 66" stroke="#111111" stroke-width="7" />
+      <path d="M${shieldX} 88c-30 6-46 24-46 54 0 44 46 68 46 68s46-24 46-68c0-30-16-48-46-54z" fill="#f8f6ef" stroke="#111111" stroke-width="5" />
+      <path d="M${shieldX} 102v84M${shieldX - 30} 136h60" stroke="#6b6b6b" stroke-width="2.4" />
+      <path d="${swordPath}" stroke="#111111" stroke-width="6" />
+      <path d="M148-42l26-16M151-36l28-3" stroke="#111111" stroke-width="3.2" />
+      <path d="M-18 166l-18 58M20 166l20 58" stroke="#111111" stroke-width="10" />
     </g>
   `;
 }
@@ -1911,26 +1917,26 @@ function storyboardGenericSubjectSvg(x, y, scale, label, flipped = false) {
   const labelTransform = flipped ? "scale(-1 1)" : "";
 
   return `
-    <g transform="translate(${x} ${y}) scale(${flipped ? -scale : scale} ${scale})" stroke-linecap="round" stroke-linejoin="round">
-      <ellipse cx="0" cy="112" rx="58" ry="14" fill="rgba(0,0,0,0.42)" />
-      <circle cx="0" cy="16" r="30" fill="#26262a" stroke="#f7f3ea" stroke-width="4" />
-      <path d="M-34 52c-18 42-18 80 0 116h68c18-36 18-74 0-116z" fill="#17171a" stroke="#cba95c" stroke-width="4" />
-      <path d="M-32 82c-34 16-58 40-76 72M32 82c34 16 58 40 76 72" stroke="#f7f3ea" stroke-width="8" />
-      <text x="0" y="204" transform="${labelTransform}" text-anchor="middle" fill="#cba95c" font-size="18" font-weight="900">${escapeHtml(label)}</text>
+    <g transform="translate(${x} ${y}) scale(${flipped ? -scale : scale} ${scale})" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <ellipse cx="0" cy="112" rx="58" ry="14" fill="#d8d5ce" opacity="0.45" stroke="none" />
+      <circle cx="0" cy="16" r="30" fill="#f8f6ef" stroke="#111111" stroke-width="4" />
+      <path d="M-34 52c-18 42-18 80 0 116h68c18-36 18-74 0-116z" fill="#f4f2eb" stroke="#111111" stroke-width="4" />
+      <path d="M-32 82c-34 16-58 40-76 72M32 82c34 16 58 40 76 72" stroke="#111111" stroke-width="7" />
+      <text x="0" y="204" transform="${labelTransform}" text-anchor="middle" fill="#111111" font-size="18" font-weight="900">${escapeHtml(label)}</text>
     </g>
   `;
 }
 
 function storyboardImpactSvg(frameIndex) {
   if (frameIndex === 0) {
-    return `<path d="M286 212c-48 8-80 26-112 54M314 236c-36 22-62 50-84 84" stroke="#e7372f" stroke-width="5" opacity="0.62" fill="none" />`;
+    return `<path d="M286 212c-48 8-80 26-112 54M314 236c-36 22-62 50-84 84" stroke="#111111" stroke-width="4" opacity="0.52" fill="none" stroke-dasharray="9 7" />`;
   }
 
   if (frameIndex === 1) {
     return `
       <g transform="translate(414 206)" stroke-linecap="round">
-        <path d="M0-64v128M-64 0h128M-42-42l84 84M42-42l-84 84" stroke="#cba95c" stroke-width="6" />
-        <circle r="22" fill="rgba(231,55,47,0.32)" stroke="#f7f3ea" stroke-width="4" />
+        <path d="M0-64v128M-64 0h128M-42-42l84 84M42-42l-84 84" stroke="#111111" stroke-width="5" />
+        <circle r="22" fill="#ffffff" stroke="#111111" stroke-width="4" />
       </g>
     `;
   }
@@ -1944,13 +1950,13 @@ function storyboardImpactSvg(frameIndex) {
           const y1 = Math.sin(angle) * 18;
           const x2 = Math.cos(angle) * (54 + (index % 3) * 10);
           const y2 = Math.sin(angle) * (54 + (index % 3) * 10);
-          return `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)}L${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${index % 2 ? "#e7372f" : "#cba95c"}" stroke-width="5" />`;
+          return `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)}L${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${index % 2 ? "#111111" : "#666666"}" stroke-width="4.4" />`;
         }).join("")}
       </g>
     `;
   }
 
-  return `<path d="M512 160c54-6 98-30 132-74M530 196c72 4 124-8 178-44" stroke="#cba95c" stroke-width="5" opacity="0.54" fill="none" />`;
+  return `<path d="M512 160c54-6 98-30 132-74M530 196c72 4 124-8 178-44" stroke="#111111" stroke-width="4" opacity="0.44" fill="none" stroke-dasharray="10 8" />`;
 }
 
 function buildStoryboardVisual(scene, frameIndex, frameCount, beat, project, style, camera) {
@@ -1974,20 +1980,11 @@ function buildStoryboardVisual(scene, frameIndex, frameCount, beat, project, sty
 
   return `
     <svg class="storyboard-svg" viewBox="0 0 800 450" role="img" aria-label="Generated storyboard frame ${frameNumber}: ${safeBeat}">
-      <defs>
-        <linearGradient id="storySky" x1="0%" x2="100%" y1="0%" y2="100%">
-          <stop offset="0%" stop-color="${scene.tone === "night" ? "#160909" : "#121214"}" />
-          <stop offset="56%" stop-color="#101012" />
-          <stop offset="100%" stop-color="#050506" />
-        </linearGradient>
-        <pattern id="storyGrain" width="22" height="22" patternUnits="userSpaceOnUse">
-          <path d="M0 22L22 0M-8 8L8-8M14 30L30 14" stroke="rgba(247,243,234,0.05)" stroke-width="1" />
-        </pattern>
-      </defs>
       ${storyboardBackgroundSvg(scene, frameIndex)}
-      <text x="30" y="58" fill="#cba95c" font-size="42" font-weight="950">${frameNumber}</text>
-      <text x="30" y="408" fill="#e7372f" font-size="16" font-weight="900">${safeProject} / ${safeStyle}</text>
-      <text x="30" y="431" fill="rgba(247,243,234,0.72)" font-size="14" font-weight="800">${safeCamera}</text>
+      <text x="34" y="54" fill="#111111" font-size="28" font-weight="950">SHOT ${frameNumber}</text>
+      <text x="628" y="54" fill="#111111" font-size="14" font-weight="900" text-anchor="end">CAMERA: ${safeCamera}</text>
+      <text x="34" y="394" fill="#111111" font-size="16" font-weight="950">${safeProject}</text>
+      <text x="34" y="418" fill="#565656" font-size="13" font-weight="800">${safeStyle} / storyboard pencils</text>
       ${leftActor}
       ${rightActor}
       ${actionLayer}
@@ -2002,7 +1999,7 @@ function renderStoryboardFrames(formData) {
 
   const script = String(formData.get("storyboardScript") || "").trim();
   const project = String(formData.get("storyboardProject") || "New / exploratory");
-  const style = String(formData.get("storyboardStyle") || "Cinematic noir");
+  const style = String(formData.get("storyboardStyle") || "Professional storyboard pencil");
   const camera = String(formData.get("storyboardCamera") || "Wide to close");
   const frameCount = Math.max(1, Math.min(8, Number(formData.get("storyboardFrames") || 4)));
   const scriptLines = script
