@@ -915,12 +915,6 @@
                 </p>
               </div>
             </article>
-            <div class="script-format-grid" aria-label="Screenplay format guide">
-              <article><strong>Scene Heading</strong><span>INT./EXT. LOCATION - DAY/NIGHT</span></article>
-              <article><strong>Action</strong><span>Present tense, visual, tight paragraphs.</span></article>
-              <article><strong>Character</strong><span>Uppercase name above dialogue.</span></article>
-              <article><strong>Dialogue</strong><span>Centered voice, playable beats, no prose padding.</span></article>
-            </div>
           </div>
 
           <form class="script-review-form" data-script-review-form>
@@ -929,7 +923,10 @@
                 <p class="eyebrow">Review submission</p>
                 <h3>Send pages to the story team</h3>
               </div>
-              <span>Review mailbox: scripts@the-banished.com</span>
+              <div class="script-form-meta">
+                <span>Review mailbox: scripts@the-banished.com</span>
+                <span data-script-save-status>Autosave ready</span>
+              </div>
             </div>
             <div class="script-form-grid">
               <label>
@@ -1088,7 +1085,36 @@
             </div>
           </div>
 
+          <div class="comic-quest-hero">
+            <article>
+              <p class="eyebrow">Review quest</p>
+              <h3>Level up a page before it enters production.</h3>
+              <p>Upload art, pick the review boss, and get clean notes on the exact thing blocking the next version.</p>
+            </article>
+            <div class="comic-quest-track" aria-label="Comic review flow">
+              <span><b>01</b>Upload</span>
+              <span><b>02</b>Choose boss</span>
+              <span><b>03</b>Get notes</span>
+              <span><b>04</b>Next build</span>
+            </div>
+          </div>
+
           <div class="comic-review-layout">
+            <aside class="comic-review-panel">
+              <div class="comic-avatar" aria-hidden="true">
+                <span></span>
+                <i></i>
+                <b>ART</b>
+              </div>
+              <h3>Artist loadout</h3>
+              <div class="comic-loadout-grid">
+                <article><strong>Composition</strong><span>Panel power</span></article>
+                <article><strong>Continuity</strong><span>Canon check</span></article>
+                <article><strong>Flow</strong><span>Reader path</span></article>
+                <article><strong>Mood</strong><span>Color signal</span></article>
+              </div>
+              <p>Tip: upload the rough version first. Early review saves more time than late polish.</p>
+            </aside>
             <form class="comic-review-form" data-comic-review-form>
               <div>
                 <p class="eyebrow">Upload work</p>
@@ -1132,7 +1158,7 @@
               <label class="comic-upload-zone">
                 Upload files
                 <input name="comicFiles" type="file" accept="image/*,.pdf" multiple data-comic-files />
-                <span>Images or PDF pages. Previews stay local in this portal session.</span>
+                <span>Drop images or PDF pages. Previews stay local in this portal session.</span>
               </label>
               <label>
                 Notes
@@ -1141,12 +1167,18 @@
               <button class="primary-button" type="submit">Send art review</button>
               <p class="request-status" data-comic-review-status hidden></p>
             </form>
-            <div class="comic-preview-grid" data-comic-preview>
-              <article>
-                <strong>No files selected</strong>
-                <span>Uploaded artwork previews will appear here.</span>
-              </article>
-            </div>
+            <section class="comic-preview-console">
+              <div>
+                <p class="eyebrow">Preview deck</p>
+                <h3>Pages queued for review</h3>
+              </div>
+              <div class="comic-preview-grid" data-comic-preview>
+                <article>
+                  <strong>No files selected</strong>
+                  <span>Uploaded artwork previews will appear here.</span>
+                </article>
+              </div>
+            </section>
           </div>
         </section>
 
@@ -1161,15 +1193,83 @@
           <div class="marketing-board">
             <article class="marketing-hero">
               <p class="eyebrow">Campaign room</p>
-              <h3>Turn creative work into a launch plan.</h3>
-              <p>Use this section for release beats, social assets, press kits, creator outreach, and project positioning.</p>
+              <h3>Franchise-grade campaign control.</h3>
+              <p>Build the brief, define the audience, map assets, and route marketing support from one high-signal workspace.</p>
             </article>
+            <div class="marketing-kpi-grid" aria-label="Marketing campaign indicators">
+              <article><span>Audience</span><strong data-marketing-audience>Core fans</strong><p>Primary segment for the campaign.</p></article>
+              <article><span>Stage</span><strong data-marketing-stage>Development</strong><p>Where the rollout sits now.</p></article>
+              <article><span>Channels</span><strong data-marketing-channel-count>0</strong><p>Selected active lanes.</p></article>
+            </div>
             <div class="marketing-card-grid">
               <article><span>01</span><strong>Campaign brief</strong><p>Audience, promise, channels, core asset list.</p></article>
               <article><span>02</span><strong>Press kit</strong><p>Logline, synopsis, credits, stills, brand facts.</p></article>
               <article><span>03</span><strong>Social rollout</strong><p>Teasers, cadence, captions, creator moments.</p></article>
               <article><span>04</span><strong>Partner outreach</strong><p>Festivals, podcasts, newsletters, communities.</p></article>
             </div>
+            <form class="marketing-planner" data-marketing-planner-form>
+              <div>
+                <p class="eyebrow">Strategy builder</p>
+                <h3>Build campaign spine</h3>
+              </div>
+              <div class="script-form-grid">
+                <label>
+                  Project
+                  <select name="marketingProject">
+                    <option>The Banished</option>
+                    <option>Colorblind</option>
+                    <option>Incompatibility</option>
+                    <option>Four Horsemen of the Apocalypse</option>
+                    <option>Company brand</option>
+                  </select>
+                </label>
+                <label>
+                  Stage
+                  <select name="marketingStage">
+                    <option>Development</option>
+                    <option>Pre-launch</option>
+                    <option>Launch week</option>
+                    <option>Post-launch growth</option>
+                    <option>Awards / festival push</option>
+                  </select>
+                </label>
+                <label>
+                  Audience
+                  <select name="marketingAudience">
+                    <option>Core fans</option>
+                    <option>Press and industry</option>
+                    <option>Streaming/platform partners</option>
+                    <option>Comic readers</option>
+                    <option>Talent and casting network</option>
+                  </select>
+                </label>
+                <label>
+                  KPI focus
+                  <select name="marketingKpi">
+                    <option>Awareness</option>
+                    <option>Engagement</option>
+                    <option>Press pickup</option>
+                    <option>Audience conversion</option>
+                    <option>Partner meetings</option>
+                  </select>
+                </label>
+              </div>
+              <fieldset class="marketing-channel-grid">
+                <legend>Channels</legend>
+                <label><input type="checkbox" name="marketingChannels" value="Trailer / teaser" /> Trailer</label>
+                <label><input type="checkbox" name="marketingChannels" value="Instagram / TikTok" /> Social video</label>
+                <label><input type="checkbox" name="marketingChannels" value="Press outreach" /> Press</label>
+                <label><input type="checkbox" name="marketingChannels" value="Comic community" /> Comic community</label>
+                <label><input type="checkbox" name="marketingChannels" value="Newsletter" /> Newsletter</label>
+                <label><input type="checkbox" name="marketingChannels" value="Events / festivals" /> Events</label>
+              </fieldset>
+              <button class="primary-button" type="submit">Build plan</button>
+            </form>
+            <section class="marketing-plan-output" data-marketing-plan-output aria-live="polite">
+              <p class="eyebrow">Campaign output</p>
+              <h3>Plan preview</h3>
+              <p>Select project, audience, and channels to generate a focused rollout spine.</p>
+            </section>
             <form class="request-form marketing-request-form" action="/api/requests" method="post" data-request-form data-label="Marketing Request" data-recipient="marketing@the-banished.com">
               <label>
                 Full name

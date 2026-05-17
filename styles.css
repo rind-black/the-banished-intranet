@@ -3245,7 +3245,7 @@ h3 {
 
 .script-studio-board {
   display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(360px, 1.18fr);
+  grid-template-columns: 1fr;
   gap: 14px;
   margin-bottom: 18px;
 }
@@ -3266,7 +3266,7 @@ h3 {
   grid-template-columns: 76px minmax(0, 1fr);
   gap: 16px;
   align-items: center;
-  min-height: 220px;
+  min-height: 164px;
   padding: 22px;
   border-radius: 8px 42px 8px 8px;
 }
@@ -3359,6 +3359,13 @@ h3 {
   font-size: 11px;
   font-weight: 850;
   text-transform: uppercase;
+}
+
+.script-form-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
 }
 
 .script-form-grid {
@@ -3662,7 +3669,11 @@ h3 {
 
 .storyboard-form,
 .comic-review-form,
+.comic-review-panel,
+.comic-preview-console,
 .marketing-hero,
+.marketing-planner,
+.marketing-plan-output,
 .marketing-request-form {
   display: grid;
   gap: 16px;
@@ -3677,13 +3688,18 @@ h3 {
 
 .storyboard-form h3,
 .comic-review-form h3,
-.marketing-hero h3 {
+.comic-review-panel h3,
+.comic-preview-console h3,
+.marketing-hero h3,
+.marketing-planner h3,
+.marketing-plan-output h3 {
   margin: 0;
   text-transform: uppercase;
 }
 
 .storyboard-form label,
-.comic-review-form label {
+.comic-review-form label,
+.marketing-planner label {
   display: grid;
   gap: 9px;
   color: var(--ink);
@@ -3697,7 +3713,10 @@ h3 {
 .storyboard-form textarea,
 .comic-review-form input,
 .comic-review-form select,
-.comic-review-form textarea {
+.comic-review-form textarea,
+.marketing-planner input,
+.marketing-planner select,
+.marketing-planner textarea {
   width: 100%;
   min-height: 48px;
   border: 1px solid var(--line-strong);
@@ -3710,12 +3729,15 @@ h3 {
 .storyboard-form input,
 .storyboard-form select,
 .comic-review-form input,
-.comic-review-form select {
+.comic-review-form select,
+.marketing-planner input,
+.marketing-planner select {
   padding: 0 13px;
 }
 
 .storyboard-form textarea,
-.comic-review-form textarea {
+.comic-review-form textarea,
+.marketing-planner textarea {
   resize: vertical;
   padding: 13px;
   line-height: 1.5;
@@ -3839,6 +3861,165 @@ h3 {
   font-style: normal;
 }
 
+.comic-quest-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.comic-quest-hero article,
+.comic-quest-track span {
+  border: 1px solid rgba(203, 169, 92, 0.24);
+  background:
+    var(--section-pattern),
+    linear-gradient(135deg, rgba(70, 112, 160, 0.16), transparent 56%),
+    rgba(17, 17, 19, 0.94);
+  box-shadow: var(--shadow);
+}
+
+.comic-quest-hero article {
+  padding: 22px;
+  border-radius: 8px 44px 8px 8px;
+}
+
+.comic-quest-hero h3 {
+  margin: 0 0 10px;
+  color: var(--ink-strong);
+  font-size: 30px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.comic-quest-hero p:last-child {
+  margin: 0;
+  color: rgba(247, 243, 234, 0.64);
+  line-height: 1.52;
+}
+
+.comic-quest-track {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.comic-quest-track span {
+  display: grid;
+  min-height: 128px;
+  align-content: space-between;
+  padding: 14px;
+  border-radius: 24px 8px 24px 8px;
+  color: rgba(247, 243, 234, 0.76);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.comic-quest-track b {
+  color: var(--gold);
+  font-size: 28px;
+  line-height: 1;
+}
+
+.comic-review-layout {
+  grid-template-columns: minmax(260px, 0.44fr) minmax(0, 0.56fr);
+}
+
+.comic-review-panel {
+  grid-column: 1;
+}
+
+.comic-review-form {
+  grid-column: 2;
+}
+
+.comic-preview-console {
+  grid-column: 1 / -1;
+}
+
+.comic-avatar {
+  position: relative;
+  width: 132px;
+  aspect-ratio: 1;
+  margin-bottom: 4px;
+  border: 1px solid rgba(203, 169, 92, 0.34);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 34%, rgba(247, 243, 234, 0.9) 0 15%, transparent 16%),
+    radial-gradient(circle at 52% 52%, rgba(203, 169, 92, 0.2) 0 36%, transparent 37%),
+    rgba(0, 0, 0, 0.34);
+}
+
+.comic-avatar span,
+.comic-avatar i {
+  position: absolute;
+  display: block;
+}
+
+.comic-avatar span {
+  left: 38px;
+  top: 28px;
+  width: 58px;
+  height: 34px;
+  border-radius: 34px 34px 12px 12px;
+  background: #7f4d3f;
+}
+
+.comic-avatar i {
+  left: 34px;
+  bottom: 24px;
+  width: 66px;
+  height: 42px;
+  border-radius: 22px 22px 12px 12px;
+  background: linear-gradient(135deg, #24394f, #48624f);
+}
+
+.comic-avatar b {
+  position: absolute;
+  right: -10px;
+  bottom: 18px;
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1px solid rgba(203, 169, 92, 0.42);
+  border-radius: 50%;
+  background: #050506;
+  color: var(--gold);
+  font-size: 11px;
+}
+
+.comic-loadout-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.comic-loadout-grid article {
+  min-height: 76px;
+  padding: 12px;
+  border: 1px solid rgba(247, 243, 234, 0.08);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.comic-loadout-grid strong,
+.comic-loadout-grid span {
+  display: block;
+}
+
+.comic-loadout-grid strong {
+  color: var(--gold);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.comic-loadout-grid span,
+.comic-review-panel p {
+  color: rgba(247, 243, 234, 0.58);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 .comic-upload-zone {
   padding: 18px;
   border: 1px dashed rgba(203, 169, 92, 0.4);
@@ -3857,14 +4038,16 @@ h3 {
 }
 
 .comic-preview-grid,
-.marketing-card-grid {
+.marketing-card-grid,
+.marketing-kpi-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
 
 .comic-preview-grid article,
-.marketing-card-grid article {
+.marketing-card-grid article,
+.marketing-kpi-grid article {
   min-height: 160px;
   padding: 16px;
 }
@@ -3902,7 +4085,8 @@ h3 {
 }
 
 .comic-preview-grid span,
-.marketing-card-grid span {
+.marketing-card-grid span,
+.marketing-kpi-grid span {
   color: var(--accent);
   font-size: 11px;
   font-weight: 900;
@@ -3913,13 +4097,111 @@ h3 {
 }
 
 .marketing-hero,
-.marketing-card-grid {
+.marketing-kpi-grid,
+.marketing-card-grid,
+.marketing-planner,
+.marketing-plan-output {
   grid-column: 1;
 }
 
 .marketing-request-form {
   grid-column: 2;
-  grid-row: 1 / span 2;
+  grid-row: 1 / span 5;
+}
+
+.marketing-kpi-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.marketing-kpi-grid article {
+  min-height: 118px;
+  border: 1px solid rgba(203, 169, 92, 0.22);
+  background: rgba(12, 12, 14, 0.9);
+}
+
+.marketing-kpi-grid strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--ink-strong);
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.marketing-kpi-grid p {
+  margin: 8px 0 0;
+  color: rgba(247, 243, 234, 0.56);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.marketing-channel-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid rgba(247, 243, 234, 0.09);
+}
+
+.marketing-channel-grid legend {
+  padding: 0 8px;
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.marketing-channel-grid label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: rgba(247, 243, 234, 0.72);
+  font-size: 11px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.marketing-channel-grid input {
+  accent-color: var(--accent);
+}
+
+.marketing-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.marketing-plan-grid article,
+.marketing-plan-list {
+  padding: 12px;
+  border: 1px solid rgba(247, 243, 234, 0.08);
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.marketing-plan-grid span,
+.marketing-plan-grid strong,
+.marketing-plan-list strong {
+  display: block;
+  text-transform: uppercase;
+}
+
+.marketing-plan-grid span {
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.marketing-plan-grid strong,
+.marketing-plan-list strong {
+  color: var(--ink-strong);
+  font-size: 12px;
+}
+
+.marketing-plan-list ul {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: rgba(247, 243, 234, 0.62);
+  line-height: 1.5;
 }
 
 .bonus-dashboard {
@@ -6158,16 +6440,20 @@ button.calendar-day {
   .company-grid.wide,
   .bonus-dashboard,
   .script-studio-board,
-  .script-format-grid,
   .script-form-grid,
   .script-page-shell,
   .script-review-dock,
+  .comic-quest-hero,
+  .comic-quest-track,
   .storyboard-lab,
   .storyboard-output,
   .comic-review-layout,
   .comic-preview-grid,
   .marketing-board,
   .marketing-card-grid,
+  .marketing-kpi-grid,
+  .marketing-channel-grid,
+  .marketing-plan-grid,
   .bonus-flow,
   .bonus-doc-grid,
   .benefit-key,
@@ -6239,7 +6525,10 @@ button.calendar-day {
   }
 
   .marketing-hero,
+  .marketing-kpi-grid,
   .marketing-card-grid,
+  .marketing-planner,
+  .marketing-plan-output,
   .marketing-request-form {
     grid-column: auto;
     grid-row: auto;

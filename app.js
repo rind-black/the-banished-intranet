@@ -82,6 +82,7 @@ const scriptFormatHint = document.querySelector("[data-script-format-hint]");
 const scriptWordCount = document.querySelector("[data-script-word-count]");
 const scriptLineCount = document.querySelector("[data-script-line-count]");
 const scriptEditor = document.querySelector("[data-script-editor]");
+const scriptSaveStatus = document.querySelector("[data-script-save-status]");
 const scriptExportButtons = document.querySelectorAll("[data-script-export]");
 const storyboardForm = document.querySelector("[data-storyboard-form]");
 const storyboardOutput = document.querySelector("[data-storyboard-output]");
@@ -89,6 +90,11 @@ const comicReviewForm = document.querySelector("[data-comic-review-form]");
 const comicReviewStatus = document.querySelector("[data-comic-review-status]");
 const comicFilesInput = document.querySelector("[data-comic-files]");
 const comicPreview = document.querySelector("[data-comic-preview]");
+const marketingPlannerForm = document.querySelector("[data-marketing-planner-form]");
+const marketingPlanOutput = document.querySelector("[data-marketing-plan-output]");
+const marketingAudience = document.querySelector("[data-marketing-audience]");
+const marketingStage = document.querySelector("[data-marketing-stage]");
+const marketingChannelCount = document.querySelector("[data-marketing-channel-count]");
 const requestDestination = document.querySelector("[data-request-destination]");
 const calendarGrid = document.querySelector("[data-calendar-grid]");
 const calendarFilterButtons = document.querySelectorAll("[data-calendar-filter]");
@@ -104,6 +110,7 @@ const profileStoreKey = "tb-internal-profile";
 const usersStoreKey = "tb-internal-users";
 const requestsStoreKey = "tb-internal-requests";
 const contentStoreKey = "tb-internal-content";
+const scriptDraftStoreKey = "tb-script-studio-draft";
 const inviteTempPassword = "PortalInvite12!";
 const companyEmailDomain = "@the-banished.com";
 let activeChallengeDepartment = "all";
@@ -111,6 +118,7 @@ let activeProjectFilter = "all";
 let activeCalendarFilter = "my";
 let selectedCalendarDate = "";
 let pendingAvatarDataUrl = null;
+let scriptAutosaveTimer = null;
 const companyCalendarYear = 2026;
 const monthNames = [
   "January",
@@ -1437,6 +1445,99 @@ function syncScriptDraftFromEditor() {
   updateScriptStats();
 }
 
+function setScriptAutosaveStatus(message) {
+  if (scriptSaveStatus) {
+    scriptSaveStatus.textContent = message;
+  }
+}
+
+function scriptDraftPayload() {
+  if (!scriptReviewForm) {
+    return null;
+  }
+
+  syncScriptDraftFromEditor();
+
+  return {
+    title: scriptReviewForm.elements.scriptTitle?.value || "",
+    format: scriptFormatSelect?.value || "film",
+    project: scriptReviewForm.elements.scriptProject?.value || "The Banished",
+    priority: scriptReviewForm.elements.scriptPriority?.value || "General notes",
+    logline: scriptReviewForm.elements.scriptLogline?.value || "",
+    notes: scriptReviewForm.elements.scriptNotes?.value || "",
+    editorHtml: scriptEditor?.innerHTML || "",
+    text: scriptPagesInput?.value || "",
+    savedAt: Date.now(),
+  };
+}
+
+function saveScriptDraft() {
+  const payload = scriptDraftPayload();
+
+  if (!payload) {
+    return;
+  }
+
+  writeJson(scriptDraftStoreKey, payload);
+  setScriptAutosaveStatus("Saved just now");
+}
+
+function scheduleScriptAutosave() {
+  if (!scriptReviewForm) {
+    return;
+  }
+
+  window.clearTimeout(scriptAutosaveTimer);
+  setScriptAutosaveStatus("Saving...");
+  scriptAutosaveTimer = window.setTimeout(saveScriptDraft, 450);
+}
+
+function restoreScriptDraft() {
+  const savedDraft = readJson(scriptDraftStoreKey, null);
+
+  if (!savedDraft || !scriptReviewForm) {
+    return;
+  }
+
+  if (scriptReviewForm.elements.scriptTitle) {
+    scriptReviewForm.elements.scriptTitle.value = savedDraft.title || "";
+  }
+
+  if (scriptFormatSelect) {
+    scriptFormatSelect.value = savedDraft.format || "film";
+  }
+
+  if (scriptReviewForm.elements.scriptProject) {
+    scriptReviewForm.elements.scriptProject.value = savedDraft.project || "The Banished";
+  }
+
+  if (scriptReviewForm.elements.scriptPriority) {
+    scriptReviewForm.elements.scriptPriority.value = savedDraft.priority || "General notes";
+  }
+
+  if (scriptReviewForm.elements.scriptLogline) {
+    scriptReviewForm.elements.scriptLogline.value = savedDraft.logline || "";
+  }
+
+  if (scriptReviewForm.elements.scriptNotes) {
+    scriptReviewForm.elements.scriptNotes.value = savedDraft.notes || "";
+  }
+
+  if (scriptEditor) {
+    scriptEditor.innerHTML = savedDraft.editorHtml || "";
+  }
+
+  if (scriptPagesInput) {
+    scriptPagesInput.value = savedDraft.text || "";
+  }
+
+  const savedAt = savedDraft.savedAt ? new Date(savedDraft.savedAt).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  }) : "";
+  setScriptAutosaveStatus(savedAt ? `Autosaved ${savedAt}` : "Autosave restored");
+}
+
 function updateScriptStats() {
   const text = scriptText();
   const words = text ? text.split(/\s+/).length : 0;
@@ -1534,6 +1635,7 @@ function insertScriptSnippet(snippetKey) {
   scriptEditor.focus();
   placeCaretAtEnd(block);
   syncScriptDraftFromEditor();
+  scheduleScriptAutosave();
 }
 
 function scriptBlocksHtml() {
@@ -1573,14 +1675,16 @@ function scriptExportDocument() {
   <meta charset="utf-8" />
   <title>${escapedTitle}</title>
   <style>
-    body { margin: 0; padding: 54pt; color: #111; background: #fff; font-family: "Courier New", Courier, monospace; font-size: 12pt; line-height: 1.28; }
+    @page { margin: 1in 0.8in 1in 1.2in; }
+    body { margin: 0; padding: 0; color: #111; background: #fff; font-family: "Courier New", Courier, monospace; font-size: 12pt; line-height: 1.28; }
     h1 { font-family: Arial, sans-serif; font-size: 18pt; margin: 0 0 6pt; }
     .meta { font-family: Arial, sans-serif; font-size: 9pt; margin: 0 0 24pt; color: #555; text-transform: uppercase; }
     p { margin: 0 0 12pt; white-space: pre-wrap; }
-    .is-scene, .is-comic-page, .is-comic-panel { text-transform: uppercase; font-weight: bold; }
-    .is-character { margin-left: 210pt; text-transform: uppercase; }
-    .is-dialogue { margin-left: 150pt; max-width: 250pt; }
-    .is-parenthetical { margin-left: 178pt; max-width: 180pt; }
+    .script-block { page-break-inside: avoid; }
+    .is-scene, .is-comic-page, .is-comic-panel { text-transform: uppercase; font-weight: bold; margin-left: 0; }
+    .is-character { width: 190pt; margin-left: 205pt; text-align: center; text-transform: uppercase; }
+    .is-dialogue { width: 260pt; margin-left: 132pt; text-align: left; }
+    .is-parenthetical { width: 180pt; margin-left: 170pt; text-align: left; }
     .is-transition { text-align: right; text-transform: uppercase; }
     .is-comic-caption, .is-comic-sfx, .is-comic-note { margin-left: 30pt; }
   </style>
@@ -1596,6 +1700,7 @@ function scriptExportDocument() {
 
 function exportScript(format) {
   syncScriptDraftFromEditor();
+  saveScriptDraft();
 
   if (!scriptText()) {
     setRequestStatus(scriptReviewStatus, "Export needs at least one script block.", "error");
@@ -1708,6 +1813,56 @@ function renderComicPreviews() {
     `;
     comicPreview.append(card);
   });
+}
+
+function renderMarketingPlan(formData) {
+  if (!marketingPlanOutput) {
+    return;
+  }
+
+  const project = String(formData.get("marketingProject") || "The Banished");
+  const stage = String(formData.get("marketingStage") || "Development");
+  const audience = String(formData.get("marketingAudience") || "Core fans");
+  const kpi = String(formData.get("marketingKpi") || "Awareness");
+  const channels = formData.getAll("marketingChannels").map(String);
+  const selectedChannels = channels.length ? channels : ["Owned social", "Press outreach"];
+  const assetMap = {
+    Development: ["Positioning memo", "Audience promise", "Visual reference board"],
+    "Pre-launch": ["Teaser copy", "Key art direction", "Press angle"],
+    "Launch week": ["Launch calendar", "Trailer cutdowns", "Creator captions"],
+    "Post-launch growth": ["Performance readout", "Community follow-ups", "Second-wave assets"],
+    "Awards / festival push": ["Festival one-sheet", "Industry press kit", "Screening invitation"],
+  };
+
+  if (marketingAudience) {
+    marketingAudience.textContent = audience;
+  }
+
+  if (marketingStage) {
+    marketingStage.textContent = stage;
+  }
+
+  if (marketingChannelCount) {
+    marketingChannelCount.textContent = selectedChannels.length;
+  }
+
+  marketingPlanOutput.innerHTML = `
+    <p class="eyebrow">Campaign output</p>
+    <h3>${escapeHtml(project)} / ${escapeHtml(stage)}</h3>
+    <div class="marketing-plan-grid">
+      <article><span>Audience</span><strong>${escapeHtml(audience)}</strong></article>
+      <article><span>KPI</span><strong>${escapeHtml(kpi)}</strong></article>
+      <article><span>Channels</span><strong>${selectedChannels.length}</strong></article>
+    </div>
+    <div class="marketing-plan-list">
+      <strong>Priority assets</strong>
+      <ul>${(assetMap[stage] || assetMap.Development).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+    </div>
+    <div class="marketing-plan-list">
+      <strong>Activation lanes</strong>
+      <ul>${selectedChannels.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+    </div>
+  `;
 }
 
 function currentProfile() {
@@ -3624,6 +3779,7 @@ roleSwitcher?.addEventListener("change", () => {
 
 scriptFormatSelect?.addEventListener("change", () => {
   renderScriptToolbar();
+  scheduleScriptAutosave();
 });
 
 scriptToolbar?.addEventListener("click", (event) => {
@@ -3634,7 +3790,18 @@ scriptToolbar?.addEventListener("click", (event) => {
   }
 });
 
-scriptEditor?.addEventListener("input", syncScriptDraftFromEditor);
+scriptReviewForm?.addEventListener("input", () => {
+  scheduleScriptAutosave();
+});
+
+scriptReviewForm?.addEventListener("change", () => {
+  scheduleScriptAutosave();
+});
+
+scriptEditor?.addEventListener("input", () => {
+  syncScriptDraftFromEditor();
+  scheduleScriptAutosave();
+});
 
 scriptEditor?.addEventListener("keydown", (event) => {
   if (scriptText() || event.key.length !== 1 || event.metaKey || event.ctrlKey || event.altKey) {
@@ -3646,6 +3813,7 @@ scriptEditor?.addEventListener("keydown", (event) => {
   scriptEditor.append(block);
   placeCaretAtEnd(block);
   syncScriptDraftFromEditor();
+  scheduleScriptAutosave();
 });
 
 scriptExportButtons.forEach((button) => {
@@ -3658,6 +3826,12 @@ storyboardForm?.addEventListener("submit", (event) => {
   event.preventDefault();
   const formData = new FormData(storyboardForm);
   renderStoryboardFrames(formData);
+});
+
+marketingPlannerForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const formData = new FormData(marketingPlannerForm);
+  renderMarketingPlan(formData);
 });
 
 comicFilesInput?.addEventListener("change", renderComicPreviews);
@@ -4422,7 +4596,9 @@ if (contentForm) {
   syncContentRoleVisibility(contentForm);
 }
 
+restoreScriptDraft();
 renderScriptToolbar();
+syncScriptDraftFromEditor();
 renderMonthlyChallenge();
 renderCompanyCalendar();
 
