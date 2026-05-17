@@ -3727,9 +3727,7 @@ h3 {
 }
 
 .storyboard-output {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  min-width: 0;
 }
 
 .storyboard-empty,
@@ -3760,66 +3758,126 @@ h3 {
   color: rgba(247, 243, 234, 0.58);
 }
 
-.storyboard-frame {
-  overflow: hidden;
-  border: 1px solid rgba(247, 243, 234, 0.28);
-  background: #f7f4ec;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.38);
+.storyboard-sheet-wrap {
+  overflow-x: auto;
+  padding: 20px;
+  border: 1px solid rgba(203, 169, 92, 0.22);
+  background:
+    linear-gradient(135deg, rgba(0, 0, 0, 0.74), rgba(18, 18, 20, 0.92)),
+    #080809;
+  box-shadow: var(--shadow);
 }
 
-.storyboard-visual {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  min-height: 230px;
-  overflow: hidden;
-  border-bottom: 1px solid #111111;
+.storyboard-sheet {
+  min-width: 1220px;
+  padding: 28px 28px 34px;
   background: #fbfaf5;
+  color: #111111;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+}
+
+.storyboard-sheet-header {
+  display: grid;
+  grid-template-columns: 1.1fr 0.42fr 0.42fr minmax(320px, 1.6fr) auto;
+  gap: 18px;
+  align-items: center;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.storyboard-sheet-header strong {
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+.storyboard-sheet-action strong {
+  font-size: 17px;
+}
+
+.storyboard-sheet-page {
+  padding: 10px 14px;
+  border: 1px solid #111111;
+  white-space: nowrap;
+}
+
+.storyboard-sheet-rule {
+  height: 1px;
+  margin: 20px 0 48px;
+  background: #111111;
+}
+
+.storyboard-sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--storyboard-columns), minmax(0, 1fr));
+  gap: 10px;
+}
+
+.storyboard-panel-card {
+  position: relative;
+  display: grid;
+  gap: 12px;
+}
+
+.storyboard-panel-number {
+  position: absolute;
+  left: -4px;
+  top: -34px;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 1px solid #111111;
+  border-radius: 50%;
+  background: #fbfaf5;
+  color: #111111;
+  font-family: "Courier New", monospace;
+  font-size: 15px;
+  z-index: 2;
+}
+
+.storyboard-panel-art {
+  aspect-ratio: 1 / 1.08;
+  border: 1px solid #111111;
+  background: #fffefa;
+  overflow: hidden;
 }
 
 .storyboard-svg {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: inherit;
 }
 
-.storyboard-svg text {
-  font-family: inherit;
+.storyboard-svg text,
+.storyboard-panel-box {
+  font-family: "Courier New", monospace;
   letter-spacing: 0;
 }
 
-.storyboard-frame > div:last-child {
-  padding: 16px;
+.storyboard-panel-box {
+  min-height: 72px;
+  padding: 10px 12px;
+  border: 1px solid rgba(17, 17, 17, 0.28);
+  background: rgba(255, 255, 255, 0.42);
 }
 
-.storyboard-frame small,
-.storyboard-frame strong,
-.storyboard-frame em {
+.storyboard-panel-box span {
   display: block;
-}
-
-.storyboard-frame small {
-  color: #a3352d;
+  margin-bottom: 10px;
   font-size: 10px;
-  font-weight: 900;
   text-transform: uppercase;
 }
 
-.storyboard-frame strong {
-  margin-top: 6px;
+.storyboard-panel-box p {
+  margin: 0;
   color: #111111;
-  text-transform: uppercase;
+  font-size: 13px;
+  line-height: 1.45;
 }
 
-.storyboard-frame p,
-.storyboard-frame em {
-  color: rgba(17, 17, 17, 0.68);
-  line-height: 1.5;
-}
-
-.storyboard-frame em {
-  font-size: 12px;
-  font-style: normal;
+.storyboard-panel-box.notes {
+  min-height: 132px;
 }
 
 .comic-review-layout {

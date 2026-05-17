@@ -1743,7 +1743,9 @@ function analyzeStoryboardScene(script, beats) {
   const hasAttack = hasStoryboardKeyword(text, ["attack", "attacks", "fight", "strike", "strikes", "battle", "clash", "hit"]);
 
   let setting = "soundstage";
-  if (hasStoryboardKeyword(text, ["castle", "kingdom", "throne", "ruin", "ruins", "knight"])) {
+  if (hasDemon && hasKnight && hasAttack) {
+    setting = "wasteland";
+  } else if (hasStoryboardKeyword(text, ["castle", "kingdom", "throne", "ruin", "ruins", "knight"])) {
     setting = "castle";
   } else if (hasStoryboardKeyword(text, ["forest", "woods", "tree", "trees"])) {
     setting = "forest";
@@ -1798,8 +1800,29 @@ function buildStoryboardBeats(sourceBeats, frameCount, scene) {
 }
 
 function storyboardBackgroundSvg(scene, frameIndex) {
+  const hatch = Array.from({ length: 34 }).map((_, index) => {
+    const x = 18 + ((index * 47 + frameIndex * 19) % 680);
+    const y = 32 + ((index * 29 + frameIndex * 31) % 360);
+    const length = 34 + (index % 5) * 16;
+    return `<path d="M${x} ${y}l${length} -${length * 0.22}" />`;
+  }).join("");
+  const rocks = Array.from({ length: 22 }).map((_, index) => {
+    const x = 26 + ((index * 71 + frameIndex * 17) % 650);
+    const y = 330 + ((index * 13) % 54);
+    const width = 18 + (index % 4) * 12;
+    return `<path d="M${x} ${y}c${width * 0.25}-12 ${width * 0.72}-12 ${width} 0" />`;
+  }).join("");
+  const wasteland = `
+    <g opacity="0.5" stroke="#222222" stroke-width="1.7" fill="none">
+      <path d="M24 318c84-78 148-110 224-118 92-10 166 34 246 32 74-2 126-46 204-114" />
+      <path d="M46 274c62-74 112-104 172-114M514 224c48-42 94-70 144-84" opacity="0.42" />
+      <path d="M70 348c122-38 248-44 366-24 104 18 190 8 286-34" />
+      <path d="M88 172c24-40 58-64 102-74M540 126c34-22 74-34 120-34" opacity="0.22" />
+      ${rocks}
+    </g>
+  `;
   const castle = `
-    <g opacity="0.42" stroke="#242424" stroke-width="2.2" fill="none">
+    <g opacity="0.38" stroke="#222222" stroke-width="1.7" fill="none">
       <path d="M38 304h120v-84h30v84h126v-128h38v128h112v-78h32v78h130v54H38z" />
       <path d="M92 220v-42l20 18 20-18 20 18 20-18v42" />
       <path d="M322 176v-46l18 19 18-19 18 19 18-19v46" />
@@ -1808,7 +1831,7 @@ function storyboardBackgroundSvg(scene, frameIndex) {
     </g>
   `;
   const forest = `
-    <g opacity="0.38" stroke="#242424" stroke-width="2.2" fill="none">
+    <g opacity="0.34" stroke="#222222" stroke-width="1.7" fill="none">
       ${Array.from({ length: 7 }).map((_, index) => {
         const x = 46 + index * 108;
         return `<path d="M${x} 326l44-116 44 116" /><path d="M${x + 44} 326v34" />`;
@@ -1816,7 +1839,7 @@ function storyboardBackgroundSvg(scene, frameIndex) {
     </g>
   `;
   const city = `
-    <g opacity="0.36" stroke="#242424" stroke-width="2.2" fill="none">
+    <g opacity="0.34" stroke="#222222" stroke-width="1.7" fill="none">
       ${Array.from({ length: 9 }).map((_, index) => {
         const x = 34 + index * 86;
         const height = 82 + (index % 4) * 28;
@@ -1825,7 +1848,7 @@ function storyboardBackgroundSvg(scene, frameIndex) {
     </g>
   `;
   const interior = `
-    <g opacity="0.38" stroke="#242424" stroke-width="2.2" fill="none">
+    <g opacity="0.34" stroke="#222222" stroke-width="1.7" fill="none">
       <path d="M84 96h632v244H84z" />
       <path d="M84 340l126-108h380l126 108" />
       <path d="M220 96v244M580 96v244" opacity="0.5" />
@@ -1836,24 +1859,21 @@ function storyboardBackgroundSvg(scene, frameIndex) {
     forest,
     city,
     interior,
+    wasteland,
     soundstage: interior,
   };
 
   return `
-    <rect width="800" height="450" fill="#fbfaf5" />
-    <rect x="18" y="18" width="764" height="354" fill="#fffefa" stroke="#111111" stroke-width="3" />
-    <g opacity="0.08" stroke="#111111" stroke-width="1">
-      ${Array.from({ length: 24 }).map((_, index) => {
-        const y = 32 + index * 14;
-        return `<path d="M24 ${y}L776 ${y - 34}" />`;
-      }).join("")}
+    <rect width="760" height="430" fill="#fbfaf5" />
+    <rect x="0" y="0" width="760" height="430" fill="#fffefa" />
+    <g opacity="0.12" stroke="#111111" stroke-width="0.8">
+      ${hatch}
     </g>
     <g>
       ${settingMap[scene.setting] || settingMap.soundstage}
-      <path d="M46 326c154-38 308-38 708 0" stroke="#303030" stroke-width="2.8" opacity="0.55" fill="none" />
-      <path d="M86 360L330 238M714 360L492 238" stroke="#303030" stroke-width="1.4" opacity="0.28" fill="none" />
+      <path d="M36 350c146-34 294-38 408-20 100 16 182 8 278-30" stroke="#222222" stroke-width="2.2" opacity="0.48" fill="none" />
+      <path d="M72 392L318 238M690 390L492 238" stroke="#222222" stroke-width="1.1" opacity="0.2" fill="none" />
     </g>
-    <rect x="18" y="372" width="764" height="60" fill="#f3f1ea" stroke="#111111" stroke-width="3" />
   `;
 }
 
@@ -1893,7 +1913,7 @@ function storyboardKnightSvg(x, y, scale, pose) {
     : pose === "clash"
       ? "M22 58l120-18"
       : "M24 54l92-64";
-  const bodyLean = pose === "brace" ? 4 : pose === "counter" ? -10 : 0;
+  const bodyLean = pose === "down" ? -58 : pose === "brace" ? 4 : pose === "counter" ? -10 : 0;
 
   return `
     <g transform="translate(${x} ${y}) scale(${scale}) rotate(${bodyLean})" stroke-linecap="round" stroke-linejoin="round" fill="none">
@@ -1960,35 +1980,137 @@ function storyboardImpactSvg(frameIndex) {
 }
 
 function buildStoryboardVisual(scene, frameIndex, frameCount, beat, project, style, camera) {
-  const safeProject = escapeHtml(project);
-  const safeStyle = escapeHtml(style);
-  const safeCamera = escapeHtml(camera);
   const safeBeat = escapeHtml(beat);
   const frameNumber = String(frameIndex + 1).padStart(2, "0");
-  const closeScale = camera.toLowerCase().includes("close") && frameIndex === 2 ? 1.22 : 1;
+  const sequenceIndex = frameIndex % 4;
+  const closeScale = camera.toLowerCase().includes("close") && sequenceIndex === 2 ? 1.18 : 1;
   const demonPose = frameIndex === 1 ? "lunge" : frameIndex === 2 ? "clash" : frameIndex === frameCount - 1 ? "recoil" : "watch";
   const knightPose = frameIndex === 1 ? "brace" : frameIndex === 2 ? "clash" : frameIndex === frameCount - 1 ? "counter" : "ready";
-  const demonX = frameIndex === 1 ? 278 : frameIndex === 2 ? 286 : frameIndex === frameCount - 1 ? 250 : 214;
-  const knightX = frameIndex === 1 ? 572 : frameIndex === 2 ? 514 : frameIndex === frameCount - 1 ? 548 : 592;
-  const actionLayer = scene.hasAttack ? storyboardImpactSvg(frameIndex) : "";
-  const leftActor = scene.hasDemon
-    ? storyboardDemonSvg(demonX, 172, 0.78 * closeScale, demonPose)
-    : storyboardGenericSubjectSvg(236, 180, 0.8 * closeScale, "A", false);
-  const rightActor = scene.hasKnight
-    ? storyboardKnightSvg(knightX, 174, 0.78 * closeScale, knightPose)
-    : storyboardGenericSubjectSvg(566, 182, 0.8 * closeScale, "B", true);
+  const isDemonKnightAttack = scene.hasDemon && scene.hasKnight && scene.hasAttack;
+  const demonX = sequenceIndex === 1 ? 466 : sequenceIndex === 2 ? 484 : sequenceIndex === 3 ? 504 : 220;
+  const knightX = sequenceIndex === 1 ? 230 : sequenceIndex === 2 ? 246 : sequenceIndex === 3 ? 286 : 382;
+  const actionLayer = scene.hasAttack && !(isDemonKnightAttack && sequenceIndex === 0) ? storyboardImpactSvg(frameIndex) : "";
+  let actorLayer = "";
+
+  if (isDemonKnightAttack) {
+    if (sequenceIndex === 0) {
+      actorLayer = storyboardKnightSvg(382, 174, 0.9, "ready");
+    } else if (sequenceIndex === 1) {
+      actorLayer = `
+        ${storyboardDemonSvg(demonX, 102, 0.78, "lunge")}
+        ${storyboardKnightSvg(knightX, 210, 0.72, "brace")}
+      `;
+    } else if (sequenceIndex === 2) {
+      actorLayer = `
+        ${storyboardKnightSvg(knightX, 210, 1.02 * closeScale, "clash")}
+        ${storyboardDemonSvg(demonX, 130, 1.02 * closeScale, "clash")}
+      `;
+    } else {
+      actorLayer = `
+        ${storyboardDemonSvg(demonX, 114, 0.88, "watch")}
+        ${storyboardKnightSvg(knightX, 260, 0.72, "down")}
+      `;
+    }
+  } else {
+    const leftActor = scene.hasDemon
+      ? storyboardDemonSvg(236, 154, 0.78 * closeScale, demonPose)
+      : storyboardGenericSubjectSvg(236, 180, 0.8 * closeScale, "A", false);
+    const rightActor = scene.hasKnight
+      ? storyboardKnightSvg(566, 174, 0.78 * closeScale, knightPose)
+      : storyboardGenericSubjectSvg(566, 182, 0.8 * closeScale, "B", true);
+    actorLayer = `${leftActor}${rightActor}`;
+  }
 
   return `
-    <svg class="storyboard-svg" viewBox="0 0 800 450" role="img" aria-label="Generated storyboard frame ${frameNumber}: ${safeBeat}">
+    <svg class="storyboard-svg" viewBox="0 0 760 430" role="img" aria-label="Generated storyboard frame ${frameNumber}: ${safeBeat}">
       ${storyboardBackgroundSvg(scene, frameIndex)}
-      <text x="34" y="54" fill="#111111" font-size="28" font-weight="950">SHOT ${frameNumber}</text>
-      <text x="628" y="54" fill="#111111" font-size="14" font-weight="900" text-anchor="end">CAMERA: ${safeCamera}</text>
-      <text x="34" y="394" fill="#111111" font-size="16" font-weight="950">${safeProject}</text>
-      <text x="34" y="418" fill="#565656" font-size="13" font-weight="800">${safeStyle} / storyboard pencils</text>
-      ${leftActor}
-      ${rightActor}
+      ${actorLayer}
       ${actionLayer}
     </svg>
+  `;
+}
+
+function storyboardSlateText(script) {
+  const normalized = String(script || "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return normalized ? trimStoryboardBeat(normalized).toUpperCase() : "UNTITLED SEQUENCE";
+}
+
+function storyboardActionText(beat, index, scene) {
+  if (scene.hasDemon && scene.hasKnight && scene.hasAttack) {
+    return [
+      "WIDE ESTABLISHING SHOT. The knight stands alone in a desolate landscape.",
+      "The demon descends from the shadows, attacking the knight.",
+      "The demon strikes. The knight blocks the attack.",
+      "The force knocks the knight back as the demon advances.",
+    ][index % 4];
+  }
+
+  return beat.replace(/^((Wide|Medium|Detail|Exit|Action|Impact|Aftermath) frame:\s*)/i, "");
+}
+
+function storyboardCameraText(camera, index, scene) {
+  if (scene.hasDemon && scene.hasKnight && scene.hasAttack) {
+    return [
+      "STATIC WIDE",
+      "DYNAMIC ANGLE / SLIGHT PUSH IN",
+      "CLOSE / HANDHELD",
+      "WIDE / PULL BACK",
+    ][index % 4];
+  }
+
+  const presets = [
+    "STATIC WIDE",
+    "MEDIUM PUSH IN",
+    "CLOSE / EMPHASIS",
+    "WIDE / TRANSITION",
+  ];
+  return `${presets[index % presets.length]} / ${camera.toUpperCase()}`;
+}
+
+function buildStoryboardSheet({ project, style, camera, script, beats, scene }) {
+  const columnCount = Math.min(4, Math.max(2, beats.length));
+  const frameCount = beats.length;
+  const safeProject = escapeHtml(project || "Untitled");
+  const safeAction = escapeHtml(storyboardSlateText(script));
+  const cards = beats.map((beat, index) => `
+    <article class="storyboard-panel-card">
+      <span class="storyboard-panel-number">${index + 1}</span>
+      <div class="storyboard-panel-art">
+        ${buildStoryboardVisual(scene, index, frameCount, beat, project, style, camera)}
+      </div>
+      <div class="storyboard-panel-box action">
+        <span>ACTION / DIALOGUE</span>
+        <p>${escapeHtml(storyboardActionText(beat, index, scene))}</p>
+      </div>
+      <div class="storyboard-panel-box camera">
+        <span>CAMERA / MOVEMENT</span>
+        <p>${escapeHtml(storyboardCameraText(camera, index, scene))}</p>
+      </div>
+      <div class="storyboard-panel-box notes">
+        <span>NOTES / SHOT SIZE / ADDITIONAL INFO</span>
+      </div>
+    </article>
+  `).join("");
+
+  return `
+    <div class="storyboard-sheet-wrap">
+      <article class="storyboard-sheet" style="--storyboard-columns: ${columnCount}">
+        <header class="storyboard-sheet-header">
+          <span>PROJECT: <strong>${safeProject}</strong></span>
+          <span>SEQ. <strong>07</strong></span>
+          <span>SC. <strong>12</strong></span>
+          <span class="storyboard-sheet-action">ACTION / DIALOGUE: <strong>${safeAction}</strong></span>
+          <span class="storyboard-sheet-page">PAGE <strong>1</strong> OF <strong>1</strong></span>
+        </header>
+        <div class="storyboard-sheet-rule"></div>
+        <div class="storyboard-sheet-grid">
+          ${cards}
+        </div>
+      </article>
+    </div>
   `;
 }
 
@@ -2023,25 +2145,7 @@ function renderStoryboardFrames(formData) {
   const beats = buildStoryboardBeats(baseBeats, frameCount, baseScene);
   const scene = analyzeStoryboardScene(script, beats);
 
-  storyboardOutput.innerHTML = "";
-
-  Array.from({ length: frameCount }).forEach((_, index) => {
-    const frame = document.createElement("article");
-    frame.className = "storyboard-frame";
-    frame.style.setProperty("--frame-shift", `${(index % 4) + 1}`);
-    frame.innerHTML = `
-      <div class="storyboard-visual">
-        ${buildStoryboardVisual(scene, index, frameCount, beats[index], project, style, camera)}
-      </div>
-      <div>
-        <small>${escapeHtml(project)} / ${escapeHtml(style)}</small>
-        <strong>Frame ${index + 1}</strong>
-        <p>${escapeHtml(beats[index])}</p>
-        <em>${escapeHtml(camera)}. Visual generated from prompt beat ${index + 1}.</em>
-      </div>
-    `;
-    storyboardOutput.append(frame);
-  });
+  storyboardOutput.innerHTML = buildStoryboardSheet({ project, style, camera, script, beats, scene });
 }
 
 function renderComicPreviews() {
