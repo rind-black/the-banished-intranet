@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>The Banished Internal Portal</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=storyboard-svg-1" />
   </head>
   <body>
     <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
@@ -1016,12 +1016,12 @@
           <div class="storyboard-lab">
             <form class="storyboard-form" data-storyboard-form>
               <div>
-                <p class="eyebrow">Script to board</p>
-                <h3>Generate storyboard from script</h3>
+                <p class="eyebrow">Prompt / script to board</p>
+                <h3>Generate storyboard from prompt</h3>
               </div>
               <label>
-                Script excerpt
-                <textarea name="storyboardScript" rows="10" placeholder="Paste scene pages, comic script pages, or a sequence beat. The board will break it into visual frames." required></textarea>
+                Script or prompt
+                <textarea name="storyboardScript" rows="10" placeholder="Paste a scene prompt, script pages, comic pages, or a sequence beat. The board will turn it into visual frames." required></textarea>
               </label>
               <div class="script-form-grid">
                 <label>
@@ -1067,7 +1067,7 @@
             <div class="storyboard-output" data-storyboard-output aria-live="polite">
               <article class="storyboard-empty">
                 <strong>Storyboard frames will appear here.</strong>
-                <span>Paste a script excerpt and choose how many frames you need.</span>
+                <span>Paste a prompt or script excerpt and choose how many frames you need.</span>
               </article>
             </div>
           </div>
@@ -2669,6 +2669,6 @@
       </main>
     </div>
 
-    <script src="app.js?v=bonuses-compact-2"></script>
+    <script src="app.js?v=storyboard-svg-1"></script>
   </body>
 </html>
