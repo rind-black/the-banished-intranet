@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>The Banished Internal Portal</title>
-    <link rel="stylesheet" href="styles.css?v=storyboard-ai-1" />
+    <link rel="stylesheet" href="styles.css?v=portal-polish-1" />
   </head>
   <body>
     <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
@@ -154,22 +154,17 @@
         <section class="portal-section active" id="overview" data-section="overview" aria-labelledby="overview-title">
           <div class="overview-hero intro-panel">
             <div class="overview-hero-copy">
-              <p class="eyebrow">Mission Control</p>
+              <p class="eyebrow">Employee center</p>
               <h2 id="overview-title">Welcome back, <span data-overview-name>Employee</span>.</h2>
               <p>
                 This is the employee field map for The Banished Inc. Use it to find official updates, open the right
                 documents, send requests cleanly, and turn useful work into bonus credits.
               </p>
-              <div class="overview-actions" aria-label="Primary portal actions">
-                <button class="primary-button" type="button" data-section-link="monthly-challenge">Start a challenge</button>
-                <button class="ghost-button" type="button" data-section-link="documents">Open documents</button>
-                <button class="ghost-button" type="button" data-section-link="profile">Tune profile</button>
-              </div>
             </div>
 
             <aside class="overview-player-card" aria-label="Employee status">
-              <span>Player status</span>
-              <strong data-overview-level>Level 1 / Scout</strong>
+              <span>Status</span>
+              <strong data-overview-level>Contributor</strong>
               <p data-overview-role>Employee</p>
               <div class="overview-credit-row">
                 <article>
@@ -186,26 +181,15 @@
               </div>
             </aside>
 
-            <div class="overview-guide" aria-hidden="true">
-              <span class="overview-guide-ring"></span>
-              <span class="overview-guide-map"></span>
-              <span class="overview-guide-head">
-                <span></span>
-                <span></span>
-              </span>
-              <span class="overview-guide-body"></span>
-              <span class="overview-guide-arm"></span>
-              <span class="overview-guide-badge">Go</span>
-            </div>
           </div>
 
-          <div class="overview-quest-grid" aria-label="Portal starter quests">
+          <div class="overview-quest-grid" aria-label="Portal quick access">
             <article class="overview-quest-card featured">
               <span class="overview-quest-icon">01</span>
               <div>
-                <p class="eyebrow">Main quest</p>
-                <h3>Check the board</h3>
-                <p>Pick a monthly mission, submit useful proof, and build credits that can convert into bonus dollars.</p>
+                <p class="eyebrow">Bonus work</p>
+                <h3>Check challenges</h3>
+                <p>Review monthly opportunities, submit useful proof, and build credits that can convert into bonus dollars.</p>
               </div>
               <button type="button" data-section-link="monthly-challenge">Open board</button>
             </article>
@@ -232,7 +216,7 @@
               <div>
                 <p class="eyebrow">Support lane</p>
                 <h3>Send requests</h3>
-                <p>Route IT, HR, Organizational, and Education requests with the details teams need.</p>
+                <p>Route IT, HR, Organizational, Educational, Legal, and other questions with the details teams need.</p>
               </div>
               <button type="button" data-section-link="requests">Request help</button>
             </article>
@@ -282,7 +266,8 @@
               <h3>Internal Portal created</h3>
               <p>
                 The Banished Internal Portal was created on May 12 as the central access point for employee resources,
-                company announcements, role-based documents, bonus information, training updates, and support requests.
+                company announcements, role-based documents, bonus information, training updates, support requests, and
+                other work-related questions that need the right internal owner.
               </p>
             </article>
           </div>
@@ -387,6 +372,22 @@
             </div>
           </div>
 
+          <div class="document-library-hero">
+            <article>
+              <p class="eyebrow">Role-based access</p>
+              <h3>Open the documents assigned to your role.</h3>
+              <p>
+                Finished documents open as designed portal pages. Draft or missing documents open to a clean holding
+                page so employees know the material is being prepared.
+              </p>
+            </article>
+            <div class="document-library-stats" aria-label="Document library status">
+              <span><strong>1</strong><small>live guide</small></span>
+              <span><strong>3</strong><small>role lanes</small></span>
+              <span><strong>Soon</strong><small>policy updates</small></span>
+            </div>
+          </div>
+
           <div class="role-selector" aria-label="Document role selector">
             <button class="role-button" type="button" data-role-button="general">Employee</button>
             <button class="role-button" type="button" data-role-button="admin">Admin</button>
@@ -397,27 +398,59 @@
             <p>Select a role to view available documents.</p>
           </div>
 
-          <div class="document-list" data-doc-role="general">
-            <a class="document" href="#">
-              <span class="document-icon">PDF</span>
-              <span>
+          <div class="document-list document-card-grid" data-doc-role="general">
+            <button class="document-tile" type="button" data-document-page="employee-handbook-placeholder">
+              <span class="document-icon-plate document-icon-plate-soft" aria-hidden="true">
+                <svg viewBox="0 0 120 120" focusable="false">
+                  <path d="M32 20h40l16 16v64H32z" />
+                  <path d="M72 20v18h18" />
+                  <path d="M45 51h30" />
+                  <path d="M45 65h22" />
+                  <path d="M45 79h30" />
+                  <path d="M28 96h64" />
+                </svg>
+              </span>
+              <span class="document-tile-caption">
+                <span class="document-label">Coming soon</span>
                 <strong>Employee handbook</strong>
                 <small>Company-wide policies and expectations</small>
               </span>
-            </a>
-            <a class="document" href="#">
-              <span class="document-icon">DOC</span>
-              <span>
-                <strong>IT and HR request guide</strong>
-                <small>Where to send common internal requests</small>
+            </button>
+            <button class="document-tile" type="button" data-document-page="request-guide-placeholder">
+              <span class="document-icon-plate document-icon-plate-soft" aria-hidden="true">
+                <svg viewBox="0 0 120 120" focusable="false">
+                  <path d="M22 34h34v24H22z" />
+                  <path d="M64 62h34v24H64z" />
+                  <path d="M56 46h18" />
+                  <path d="M74 46v16" />
+                  <path d="M42 58v16h22" />
+                  <path d="M78 74h10" />
+                  <path d="M32 46h14" />
+                </svg>
               </span>
-            </a>
+              <span class="document-tile-caption">
+                <span class="document-label">Coming soon</span>
+                <strong>Request routing guide</strong>
+                <small>Where to send IT, HR, Organizational, Educational, Legal, and other requests</small>
+              </span>
+            </button>
           </div>
 
-          <div class="document-list" data-doc-role="admin">
-            <div class="document-empty inline">
-              <p>No admin documents are available yet.</p>
-            </div>
+          <div class="document-list document-card-grid" data-doc-role="admin">
+            <button class="document-tile" type="button" data-document-page="admin-documents-placeholder">
+              <span class="document-icon-plate document-icon-plate-soft" aria-hidden="true">
+                <svg viewBox="0 0 120 120" focusable="false">
+                  <path d="M60 20l34 13v24c0 23-14 38-34 46-20-8-34-23-34-46V33z" />
+                  <path d="M46 62l10 10 22-25" />
+                  <path d="M38 96h44" />
+                </svg>
+              </span>
+              <span class="document-tile-caption">
+                <span class="document-label">Coming soon</span>
+                <strong>Admin operations guide</strong>
+                <small>Permissions, publishing standards, user management, and audit notes</small>
+              </span>
+            </button>
           </div>
 
           <div class="document-list document-card-grid" data-doc-role="project-manager">
@@ -443,6 +476,51 @@
               </span>
             </button>
           </div>
+
+          <article class="policy-document document-placeholder-page" id="employee-handbook-placeholder" hidden>
+            <header class="policy-hero">
+              <p class="eyebrow">Document in progress</p>
+              <h3>Employee Handbook</h3>
+              <p>
+                We are working on this document and it will be added soon. Until it is published, use HR for official
+                employment, policy, benefits, or workplace questions.
+              </p>
+            </header>
+            <div class="policy-callout">
+              <strong>Owner</strong>
+              <p>HR will publish the finished handbook here once the approved version is ready.</p>
+            </div>
+          </article>
+
+          <article class="policy-document document-placeholder-page" id="request-guide-placeholder" hidden>
+            <header class="policy-hero">
+              <p class="eyebrow">Document in progress</p>
+              <h3>Request Routing Guide</h3>
+              <p>
+                We are working on this document and it will be added soon. For now, use the Requests section and choose
+                the destination that best matches the question.
+              </p>
+            </header>
+            <div class="policy-callout">
+              <strong>Temporary route</strong>
+              <p>If the owner is unclear, send the request to Organizational and include the project, deadline, and links.</p>
+            </div>
+          </article>
+
+          <article class="policy-document document-placeholder-page" id="admin-documents-placeholder" hidden>
+            <header class="policy-hero">
+              <p class="eyebrow">Document in progress</p>
+              <h3>Admin Operations Guide</h3>
+              <p>
+                We are working on this document and it will be added soon. It will cover user invitations, role access,
+                manual publishing, credit edits, and local request records.
+              </p>
+            </header>
+            <div class="policy-callout">
+              <strong>Current source of truth</strong>
+              <p>Use the Admin Operations section for live user and content controls until the guide is finalized.</p>
+            </div>
+          </article>
 
           <article class="policy-document department-document" id="departments-document" hidden>
             <header class="policy-hero department-hero">
@@ -506,7 +584,7 @@
                 <article><strong>Same day</strong><span>Press and media only</span></article>
                 <article><strong>1 business day</strong><span>IT support for active film or comics projects</span></article>
                 <article><strong>2 business days</strong><span>HR, project milestones, corporate communications, and brand questions</span></article>
-                <article><strong>2-5 business days</strong><span>Production, Creative, Financial, and Education</span></article>
+                <article><strong>2-5 business days</strong><span>Production, Creative, Financial, and Educational Department</span></article>
                 <article><strong>3 business days</strong><span>R&D and Organizational</span></article>
                 <article><strong>3-5 business days</strong><span>Partner company teams</span></article>
                 <article><strong>Up to 3 weeks</strong><span>Legal and Events</span></article>
@@ -649,7 +727,7 @@
                   <p>If press contacts you directly, do not respond. Forward the message to PR.</p>
                 </article>
                 <article>
-                  <span>Education and Training</span>
+                  <span>Educational Department</span>
                   <h5>education@the-banished.com</h5>
                   <p>Workshops, onboarding resources, courses, certifications, academic partnerships, and skill-building support.</p>
                   <strong>PM tip</strong>
@@ -713,17 +791,17 @@
         <section class="portal-section" id="projects" data-section="projects" aria-labelledby="projects-title">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">Work in motion</p>
-              <h2 id="projects-title">Project board</h2>
+              <p class="eyebrow">Slate management</p>
+              <h2 id="projects-title">Projects</h2>
             </div>
           </div>
 
           <div class="project-command-board">
             <article class="project-command-hero">
-              <p class="eyebrow">Mission board</p>
-              <h3>Pick a project. Move one piece.</h3>
+              <p class="eyebrow">Current slate</p>
+              <h3>Project status, required assets, and next decisions.</h3>
               <p>
-                Quick project dossiers for creative worlds, film packages, comics/IP, and internal tools.
+                Open a dossier to see what is moving, what is missing, and which team needs to act next.
               </p>
               <div class="project-command-stats" aria-label="Project board stats">
                 <article><strong>5</strong><span>Active dossiers</span></article>
@@ -732,11 +810,11 @@
               </div>
             </article>
             <aside class="project-scout-card">
-              <span class="project-scout-orb">PM</span>
+              <span class="project-scout-orb">SL</span>
               <div>
-                <p class="eyebrow">Current mode</p>
-                <h3>Project scout</h3>
-                <p>Open a dossier, check the signal, and move one useful piece forward.</p>
+                <p class="eyebrow">Slate review</p>
+                <h3>Clean signal</h3>
+                <p>Each project page is built for status, dependencies, and useful next actions.</p>
               </div>
             </aside>
           </div>
@@ -756,7 +834,7 @@
                 <h3>AI Casting Platform</h3>
                 <p>Talent search, shortlists, and cleaner casting data.</p>
                 <div class="project-progress" style="--project-progress: 42%">
-                  <span>Mission progress</span>
+                  <span>Readiness</span>
                   <i aria-hidden="true"><b></b></i>
                 </div>
                 <ul class="project-need-list">
@@ -773,7 +851,7 @@
                 <h3>The Banished</h3>
                 <p>Core universe, canon, visuals, and planning.</p>
                 <div class="project-progress" style="--project-progress: 58%">
-                  <span>Mission progress</span>
+                  <span>Readiness</span>
                   <i aria-hidden="true"><b></b></i>
                 </div>
                 <ul class="project-need-list">
@@ -790,7 +868,7 @@
                 <h3>Colorblind</h3>
                 <p>Advertising-world film package with a visual hook.</p>
                 <div class="project-progress" style="--project-progress: 52%">
-                  <span>Mission progress</span>
+                  <span>Readiness</span>
                   <i aria-hidden="true"><b></b></i>
                 </div>
                 <ul class="project-need-list">
@@ -807,7 +885,7 @@
                 <h3>Incompatibility</h3>
                 <p>Dark romantic comedy with sharp emotional rules.</p>
                 <div class="project-progress" style="--project-progress: 46%">
-                  <span>Mission progress</span>
+                  <span>Readiness</span>
                   <i aria-hidden="true"><b></b></i>
                 </div>
                 <ul class="project-need-list">
@@ -824,7 +902,7 @@
                 <h3>Four Horsemen of the Apocalypse</h3>
                 <p>Comics/IP mythology with franchise potential.</p>
                 <div class="project-progress" style="--project-progress: 36%">
-                  <span>Mission progress</span>
+                  <span>Readiness</span>
                   <i aria-hidden="true"><b></b></i>
                 </div>
                 <ul class="project-need-list">
@@ -846,9 +924,9 @@
               <p data-project-detail-summary></p>
             </header>
 
-            <section class="project-detail-brief" aria-label="Project mission progress">
+            <section class="project-detail-brief" aria-label="Project readiness">
               <div>
-                <span>Mission progress</span>
+                <span>Readiness</span>
                 <strong data-project-detail-progress-label>0%</strong>
               </div>
               <i aria-hidden="true"><b data-project-detail-progress-bar></b></i>
@@ -1193,7 +1271,7 @@
               <span class="policy-number">02</span>
               <span>
                 <strong>Challenge Bonuses</strong>
-                <small>Monthly missions that earn portal credits</small>
+                <small>Monthly challenges that earn portal credits</small>
               </span>
               <i class="bonus-doc-glyph" aria-hidden="true">+</i>
             </button>
@@ -1420,47 +1498,26 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">Bonus opportunity</p>
-              <h2 id="monthly-challenge-title">Mission Board</h2>
+              <h2 id="monthly-challenge-title">Challenge Board</h2>
             </div>
           </div>
 
           <div class="challenge-campaign">
             <article class="challenge-campaign-copy">
-              <span>Season briefing</span>
-              <h3>The Board is a monthly side quest system for real company wins.</h3>
+              <span>Monthly bonus work</span>
+              <h3>Focused challenges for useful company contributions.</h3>
               <p>
-                Each mission is a small operation with a clear reward. Pick a quest, bring back proof, get manager
-                approval, and turn useful work into portal credits that convert into bonus dollars.
+                Each challenge has a clear reward, practical proof, manager approval, and portal credits that convert
+                into bonus dollars.
               </p>
             </article>
-            <div class="challenge-operator" aria-hidden="true">
-              <span class="operator-ring operator-ring-one"></span>
-              <span class="operator-ring operator-ring-two"></span>
-              <span class="operator-ponytail"></span>
-              <span class="operator-hair"></span>
-              <span class="operator-star"></span>
-              <span class="operator-head">
-                <span class="operator-eye"></span>
-                <span class="operator-eye"></span>
-                <span class="operator-smile"></span>
-              </span>
-              <span class="operator-headset"></span>
-              <span class="operator-body"></span>
-              <span class="operator-arm operator-arm-left"></span>
-              <span class="operator-arm operator-arm-right"></span>
-              <span class="operator-scarf"></span>
-              <span class="operator-boots"></span>
-              <span class="operator-signal"></span>
-              <span class="operator-badge">Mila</span>
-              <span class="operator-title">Mission Guide</span>
-            </div>
           </div>
 
           <div class="challenge-game-panel">
             <article class="challenge-player-card">
-              <span>Player level</span>
-              <strong data-challenge-level>Level 1</strong>
-              <p>Complete monthly missions, get manager approval, and convert credits into real bonus dollars.</p>
+              <span>Status</span>
+              <strong data-challenge-level>Contributor</strong>
+              <p>Complete monthly challenges, get manager approval, and convert credits into real bonus dollars.</p>
             </article>
             <article class="challenge-reward-card">
               <span data-challenge-month>Month</span>
@@ -1480,7 +1537,7 @@
             </article>
           </div>
 
-          <div class="challenge-filter-bar" aria-label="Mission department filter" data-challenge-filter-bar></div>
+          <div class="challenge-filter-bar" aria-label="Challenge department filter" data-challenge-filter-bar></div>
 
           <div class="challenge-card-grid quest-board" data-challenge-list></div>
         </section>
@@ -1504,6 +1561,80 @@
             </header>
 
             <section class="benefits-infographic" aria-label="Benefits summary infographic">
+              <div class="benefit-category-grid" aria-label="Benefit categories">
+                <article>
+                  <span class="benefit-category-icon" aria-hidden="true">
+                    <svg viewBox="0 0 64 64" focusable="false">
+                      <path d="M32 54S12 43 12 24c0-7 5-12 12-12 4 0 7 2 8 5 1-3 4-5 8-5 7 0 12 5 12 12 0 19-20 30-20 30Z" />
+                      <path d="M22 33h7l4-10 5 18 4-8h7" />
+                    </svg>
+                  </span>
+                  <strong>Health</strong>
+                  <small>Medical, dental, vision, mental health, and care navigation.</small>
+                </article>
+                <article>
+                  <span class="benefit-category-icon" aria-hidden="true">
+                    <svg viewBox="0 0 64 64" focusable="false">
+                      <path d="M14 22h36v26H14z" />
+                      <path d="M20 22v-4h24v4" />
+                      <path d="M21 35h22" />
+                      <path d="M32 28v14" />
+                    </svg>
+                  </span>
+                  <strong>Financial</strong>
+                  <small>Retirement support, reimbursements, grants, and employee assistance.</small>
+                </article>
+                <article>
+                  <span class="benefit-category-icon" aria-hidden="true">
+                    <svg viewBox="0 0 64 64" focusable="false">
+                      <circle cx="32" cy="32" r="19" />
+                      <path d="M32 18v15l10 6" />
+                      <path d="M18 10l-6 7" />
+                      <path d="M46 10l6 7" />
+                    </svg>
+                  </span>
+                  <strong>Time</strong>
+                  <small>Holidays, recharge days, leaves, and flexible work support.</small>
+                </article>
+                <article>
+                  <span class="benefit-category-icon" aria-hidden="true">
+                    <svg viewBox="0 0 64 64" focusable="false">
+                      <path d="M14 46V18h36v28" />
+                      <path d="M18 46h28" />
+                      <path d="M24 36l7-8 6 5 8-11" />
+                      <path d="M25 50h14" />
+                    </svg>
+                  </span>
+                  <strong>Growth</strong>
+                  <small>Learning budget, mentoring, certifications, and conference access.</small>
+                </article>
+                <article>
+                  <span class="benefit-category-icon" aria-hidden="true">
+                    <svg viewBox="0 0 64 64" focusable="false">
+                      <path d="M20 48V30a12 12 0 0 1 24 0v18" />
+                      <path d="M14 48h36" />
+                      <path d="M25 28c2 3 12 3 14 0" />
+                      <path d="M22 18l-4-6" />
+                      <path d="M42 18l4-6" />
+                    </svg>
+                  </span>
+                  <strong>Family</strong>
+                  <small>Parental leave, dependent coverage, and caregiver resources.</small>
+                </article>
+                <article>
+                  <span class="benefit-category-icon" aria-hidden="true">
+                    <svg viewBox="0 0 64 64" focusable="false">
+                      <path d="M18 47c8-2 13-7 15-15l13-13 5 5-13 13c-8 2-13 7-15 15z" />
+                      <path d="M39 20l5 5" />
+                      <path d="M18 47l-5 4 4-5" />
+                      <path d="M18 16h15" />
+                    </svg>
+                  </span>
+                  <strong>Creative</strong>
+                  <small>Creator grants, software access, project support, and portfolio growth.</small>
+                </article>
+              </div>
+
               <div class="benefit-snapshot">
                 <article>
                   <span>Health coverage</span>
@@ -1920,7 +2051,7 @@
               <span>09</span>
               <div>
                 <h4>How to propose your own event</h4>
-                <p>You do not need a polished deck or a full plan. You need a clear enough idea that Organizational or Education can help shape it.</p>
+                <p>You do not need a polished deck or a full plan. You need a clear enough idea that Organizational or the Educational Department can help shape it.</p>
                 <div class="holiday-flow">
                   <article><span>01</span><strong>Work out the idea</strong><p>Clarify what the event is, who it is for, and roughly when it should happen.</p></article>
                   <article><span>02</span><strong>Submit it through the internal system</strong><p>Use the event request form and leave notes on anything you are not sure about.</p></article>
@@ -2260,14 +2391,14 @@
               <p class="eyebrow">One form</p>
               <h2>Choose the right lane</h2>
               <p>
-                Use one request form for IT, HR, Organizational, Education, and Legal support. Select the destination first,
+                Use one request form for IT, HR, Organizational, Educational, and Legal support. Select the destination first,
                 then add the request type, priority, and details the receiving team needs.
               </p>
               <div class="request-lane-list" aria-label="Request routing guide">
                 <article><strong>IT</strong><span>Access, devices, email, software, security, login issues.</span></article>
                 <article><strong>HR</strong><span>Employment documents, payroll, benefits, time off, records.</span></article>
                 <article><strong>Org</strong><span>Project logistics, scheduling, handoffs, coordination.</span></article>
-                <article><strong>ED</strong><span>Training, assignments, workshops, onboarding resources.</span></article>
+                <article><strong>Educational</strong><span>Training, assignments, workshops, onboarding resources.</span></article>
                 <article><strong>Legal</strong><span>Contracts, permissions, releases, rights, policy review.</span></article>
               </div>
             </div>
@@ -2283,7 +2414,7 @@
                   <option value="it" data-recipient="support@the-banished.com" data-label="IT Request">IT</option>
                   <option value="hr" data-recipient="hr@the-banished.com" data-label="HR Request">HR</option>
                   <option value="org" data-recipient="organizational@the-banished.com" data-label="Org Request">Organizational</option>
-                  <option value="ed" data-recipient="education@the-banished.com" data-label="ED Request">Education</option>
+                  <option value="ed" data-recipient="education@the-banished.com" data-label="Educational Request">Educational Department</option>
                   <option value="legal" data-recipient="legal@the-banished.com" data-label="Legal Request">Legal</option>
                 </select>
               </label>
@@ -2329,7 +2460,7 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">Administration</p>
-              <h2 id="admin-title">Admin Console</h2>
+              <h2 id="admin-title">Admin Operations</h2>
             </div>
           </div>
 
@@ -2551,7 +2682,7 @@
               <div class="profile-avatar-editor">
                 <span class="profile-avatar profile-avatar-large" data-profile-avatar-preview>TB</span>
                 <div>
-                  <p class="eyebrow">Player card</p>
+                  <p class="eyebrow">Employee card</p>
                   <h3 data-profile-card-name>Employee</h3>
                   <p data-profile-card-role>Employee / Team member</p>
                   <div class="profile-rank-track" aria-label="Profile rank progress">
@@ -2571,8 +2702,8 @@
                 </div>
               </div>
               <div class="profile-level-orb">
-                <span data-profile-card-level>Level 1 / Scout</span>
-                <small>Portal level</small>
+                <span data-profile-card-level>Contributor</span>
+                <small>Portal status</small>
               </div>
             </article>
 
@@ -2585,7 +2716,7 @@
               <article>
                 <span>This month</span>
                 <strong data-profile-bonus-potential>+0</strong>
-                <p>Credits available through current missions.</p>
+                <p>Credits available through current challenges.</p>
               </article>
               <article>
                 <span>Country by IP</span>

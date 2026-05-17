@@ -290,7 +290,7 @@ const holidayDescriptions = {
   "Project Wrap Celebration": "Every closed project gets marked. Smaller projects may get a team dinner, medium projects an evening out, and major productions a full wrap party.",
   "Hackathons and Game Jams": "A dedicated window, usually 24 hours, where developers, designers, and writers collaborate on something new and finish something tangible.",
   "Movie Nights and Screenwriting Meetups": "A craft space for film, television, and narrative discussion, with in-office screenings or remote viewing and structured conversation.",
-  "Workshops and Knowledge-Sharing Sessions": "Open sessions for masterclasses, panels, webinars, and skill-building. Education handles logistics once a session is approved.",
+  "Workshops and Knowledge-Sharing Sessions": "Open sessions for masterclasses, panels, webinars, and skill-building. The Educational Department handles logistics once a session is approved.",
   "Themed Thursdays": "A monthly optional theme announced at least one week in advance, with a quick sign-off from Organizational before it goes out.",
 };
 
@@ -2428,30 +2428,30 @@ function setRequestDestination(type = "it") {
 
 function challengeLevelFromCredits(credits) {
   if (credits >= 150) {
-    return "Level 5 / Producer";
+    return "Producer";
   }
 
   if (credits >= 100) {
-    return "Level 4 / Lead";
+    return "Lead contributor";
   }
 
   if (credits >= 50) {
-    return "Level 3 / Specialist";
+    return "Specialist contributor";
   }
 
   if (credits >= 20) {
-    return "Level 2 / Builder";
+    return "Builder";
   }
 
-  return "Level 1 / Scout";
+  return "Contributor";
 }
 
 function rankProgressFromCredits(credits) {
   const ranks = [
-    { threshold: 0, label: "Scout" },
+    { threshold: 0, label: "Contributor" },
     { threshold: 20, label: "Builder" },
-    { threshold: 50, label: "Specialist" },
-    { threshold: 100, label: "Lead" },
+    { threshold: 50, label: "Specialist contributor" },
+    { threshold: 100, label: "Lead contributor" },
     { threshold: 150, label: "Producer" },
   ];
   const currentCredits = Number(credits || 0);
@@ -2478,14 +2478,14 @@ function rankProgressFromCredits(credits) {
 
 function challengeDifficulty(challenge) {
   if (challenge.credits >= 15) {
-    return { key: "boss", label: "Boss mission", tier: "S" };
+    return { key: "boss", label: "High-value challenge", tier: "S" };
   }
 
   if (challenge.credits >= 12) {
-    return { key: "advanced", label: "Advanced quest", tier: "A" };
+    return { key: "advanced", label: "Advanced challenge", tier: "A" };
   }
 
-  return { key: "core", label: "Core quest", tier: "C" };
+  return { key: "core", label: "Core challenge", tier: "C" };
 }
 
 function challengeIconType(challenge) {
@@ -2758,7 +2758,7 @@ function renderMonthlyChallenge() {
     credits.className = "challenge-credit-pill";
     credits.textContent = `Reward +${challenge.credits} / $${challenge.credits}`;
     action.className = "challenge-action";
-    action.textContent = "Start mission";
+    action.textContent = "Open challenge";
     agent.className = "challenge-agent";
     agent.dataset.role = difficulty.key;
     agent.dataset.lane = department.key;
@@ -2787,9 +2787,9 @@ function renderMonthlyChallenge() {
       "Approved credits are added to your profile by an admin. 1 credit = $1.",
     ];
 
-    detailTitle.textContent = "Mission dossier";
+    detailTitle.textContent = "Challenge brief";
     detailText.textContent = challenge.details;
-    statDifficulty.innerHTML = `<strong>${difficulty.label}</strong><small>Threat tier ${difficulty.tier}</small>`;
+    statDifficulty.innerHTML = `<strong>${difficulty.label}</strong><small>Tier ${difficulty.tier}</small>`;
     statProof.innerHTML = `<strong>${department.label}</strong><small>Department lane</small>`;
     statReward.innerHTML = `<strong>+${challenge.credits}</strong><small>Credits / $${challenge.credits}</small>`;
     stats.append(statDifficulty, statProof, statReward);
@@ -2815,7 +2815,7 @@ function renderMonthlyChallenge() {
         openCard.classList.remove("open");
         openButton?.setAttribute("aria-expanded", "false");
         if (openAction) {
-          openAction.textContent = "Start mission";
+          openAction.textContent = "Open challenge";
         }
 
         if (openDetail) {
@@ -2826,7 +2826,7 @@ function renderMonthlyChallenge() {
       if (!isOpen) {
         card.classList.add("open");
         button.setAttribute("aria-expanded", "true");
-        action.textContent = "Mission active";
+        action.textContent = "Challenge open";
         detail.hidden = false;
       }
     });
@@ -2835,7 +2835,7 @@ function renderMonthlyChallenge() {
   if (!challengeList.children.length) {
     const empty = document.createElement("article");
     empty.className = "challenge-empty-state";
-    empty.innerHTML = "<strong>No missions in this lane</strong><span>Switch department to see the rest of this month's board.</span>";
+    empty.innerHTML = "<strong>No challenges in this lane</strong><span>Switch department to see the rest of this month's board.</span>";
     challengeList.append(empty);
   }
 }
@@ -3568,7 +3568,7 @@ function openBonusDetail(documentId) {
   history.replaceState(null, "", "#bonus-detail");
 }
 
-function openDocumentDetail(documentId) {
+function openDocumentDetail(documentId, returnRole = "project-manager") {
   const source = document.getElementById(documentId);
 
   if (!source || !documentDetailContent) {
@@ -3583,6 +3583,7 @@ function openDocumentDetail(documentId) {
   detail.removeAttribute("id");
   heading?.setAttribute("id", "document-detail-title");
   documentDetailContent.replaceChildren(detail);
+  document.querySelector('#document-detail [data-return-section="documents"]')?.setAttribute("data-return-role", returnRole);
   showSection("document-detail");
 
   if (pageTitle) {
@@ -3655,7 +3656,7 @@ function createProjectCard(item) {
   title.textContent = project.title;
   summary.textContent = project.summary;
   progressWrap.className = "project-progress";
-  progressLabel.textContent = "Mission progress";
+  progressLabel.textContent = "Readiness";
   progressTrack.setAttribute("aria-hidden", "true");
   progressTrack.append(progressFill);
   progressWrap.append(progressLabel, progressTrack);
@@ -4655,7 +4656,8 @@ document.querySelectorAll("[data-bonus-page]").forEach((button) => {
 
 document.querySelectorAll("[data-document-page]").forEach((button) => {
   button.addEventListener("click", () => {
-    openDocumentDetail(button.dataset.documentPage);
+    const returnRole = button.closest("[data-doc-role]")?.dataset.docRole || "project-manager";
+    openDocumentDetail(button.dataset.documentPage, returnRole);
   });
 });
 
