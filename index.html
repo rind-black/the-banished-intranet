@@ -68,44 +68,40 @@
             <span aria-hidden="true">07</span>
             Comic Review
           </a>
-          <a class="nav-link" href="#marketing" data-section-link="marketing">
-            <span aria-hidden="true">08</span>
-            Marketing
-          </a>
           <a class="nav-link" href="#bonuses" data-section-link="bonuses">
-            <span aria-hidden="true">09</span>
+            <span aria-hidden="true">08</span>
             Bonuses
           </a>
           <a class="nav-link" href="#monthly-challenge" data-section-link="monthly-challenge">
-            <span aria-hidden="true">10</span>
+            <span aria-hidden="true">09</span>
             Challenge
           </a>
           <a class="nav-link" href="#benefits" data-section-link="benefits">
-            <span aria-hidden="true">11</span>
+            <span aria-hidden="true">10</span>
             Benefits
           </a>
           <a class="nav-link" href="#holidays" data-section-link="holidays">
-            <span aria-hidden="true">12</span>
+            <span aria-hidden="true">11</span>
             Holidays
           </a>
           <a class="nav-link" href="#culture" data-section-link="culture">
-            <span aria-hidden="true">13</span>
+            <span aria-hidden="true">12</span>
             Culture
           </a>
           <a class="nav-link" href="#training" data-section-link="training">
-            <span aria-hidden="true">14</span>
+            <span aria-hidden="true">13</span>
             Training
           </a>
           <a class="nav-link" href="#internship" data-section-link="internship">
-            <span aria-hidden="true">15</span>
+            <span aria-hidden="true">14</span>
             Internship
           </a>
           <a class="nav-link" href="#requests" data-section-link="requests">
-            <span aria-hidden="true">16</span>
+            <span aria-hidden="true">15</span>
             Requests
           </a>
           <a class="nav-link" href="#admin" data-section-link="admin" data-admin-only hidden>
-            <span aria-hidden="true">17</span>
+            <span aria-hidden="true">16</span>
             Admin
           </a>
         </nav>
@@ -1020,12 +1016,12 @@
           <div class="storyboard-lab">
             <form class="storyboard-form" data-storyboard-form>
               <div>
-                <p class="eyebrow">Prompt board</p>
-                <h3>Generate a shot sequence</h3>
+                <p class="eyebrow">Script to board</p>
+                <h3>Generate storyboard from script</h3>
               </div>
               <label>
-                Prompt
-                <textarea name="storyboardPrompt" rows="5" placeholder="Describe the scene, mood, characters, action, and visual style." required></textarea>
+                Script excerpt
+                <textarea name="storyboardScript" rows="10" placeholder="Paste scene pages, comic script pages, or a sequence beat. The board will break it into visual frames." required></textarea>
               </label>
               <div class="script-form-grid">
                 <label>
@@ -1071,7 +1067,7 @@
             <div class="storyboard-output" data-storyboard-output aria-live="polite">
               <article class="storyboard-empty">
                 <strong>Storyboard frames will appear here.</strong>
-                <span>Use a concrete scene prompt and choose how many frames you need.</span>
+                <span>Paste a script excerpt and choose how many frames you need.</span>
               </article>
             </div>
           </div>
@@ -1085,40 +1081,12 @@
             </div>
           </div>
 
-          <div class="comic-quest-hero">
-            <article>
-              <p class="eyebrow">Review quest</p>
-              <h3>Level up a page before it enters production.</h3>
-              <p>Upload art, pick the review boss, and get clean notes on the exact thing blocking the next version.</p>
-            </article>
-            <div class="comic-quest-track" aria-label="Comic review flow">
-              <span><b>01</b>Upload</span>
-              <span><b>02</b>Choose boss</span>
-              <span><b>03</b>Get notes</span>
-              <span><b>04</b>Next build</span>
-            </div>
-          </div>
-
           <div class="comic-review-layout">
-            <aside class="comic-review-panel">
-              <div class="comic-avatar" aria-hidden="true">
-                <span></span>
-                <i></i>
-                <b>ART</b>
-              </div>
-              <h3>Artist loadout</h3>
-              <div class="comic-loadout-grid">
-                <article><strong>Composition</strong><span>Panel power</span></article>
-                <article><strong>Continuity</strong><span>Canon check</span></article>
-                <article><strong>Flow</strong><span>Reader path</span></article>
-                <article><strong>Mood</strong><span>Color signal</span></article>
-              </div>
-              <p>Tip: upload the rough version first. Early review saves more time than late polish.</p>
-            </aside>
             <form class="comic-review-form" data-comic-review-form>
               <div>
                 <p class="eyebrow">Upload work</p>
                 <h3>Send pages for art review</h3>
+                <p class="form-intro">Upload concept art, thumbnails, pencils, inks, colors, or lettered pages and tell the reviewer what decision you need.</p>
               </div>
               <div class="script-form-grid">
                 <label>
@@ -1179,130 +1147,6 @@
                 </article>
               </div>
             </section>
-          </div>
-        </section>
-
-        <section class="portal-section" id="marketing" data-section="marketing" aria-labelledby="marketing-title">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Audience growth</p>
-              <h2 id="marketing-title">Marketing</h2>
-            </div>
-          </div>
-
-          <div class="marketing-board">
-            <article class="marketing-hero">
-              <p class="eyebrow">Campaign room</p>
-              <h3>Franchise-grade campaign control.</h3>
-              <p>Build the brief, define the audience, map assets, and route marketing support from one high-signal workspace.</p>
-            </article>
-            <div class="marketing-kpi-grid" aria-label="Marketing campaign indicators">
-              <article><span>Audience</span><strong data-marketing-audience>Core fans</strong><p>Primary segment for the campaign.</p></article>
-              <article><span>Stage</span><strong data-marketing-stage>Development</strong><p>Where the rollout sits now.</p></article>
-              <article><span>Channels</span><strong data-marketing-channel-count>0</strong><p>Selected active lanes.</p></article>
-            </div>
-            <div class="marketing-card-grid">
-              <article><span>01</span><strong>Campaign brief</strong><p>Audience, promise, channels, core asset list.</p></article>
-              <article><span>02</span><strong>Press kit</strong><p>Logline, synopsis, credits, stills, brand facts.</p></article>
-              <article><span>03</span><strong>Social rollout</strong><p>Teasers, cadence, captions, creator moments.</p></article>
-              <article><span>04</span><strong>Partner outreach</strong><p>Festivals, podcasts, newsletters, communities.</p></article>
-            </div>
-            <form class="marketing-planner" data-marketing-planner-form>
-              <div>
-                <p class="eyebrow">Strategy builder</p>
-                <h3>Build campaign spine</h3>
-              </div>
-              <div class="script-form-grid">
-                <label>
-                  Project
-                  <select name="marketingProject">
-                    <option>The Banished</option>
-                    <option>Colorblind</option>
-                    <option>Incompatibility</option>
-                    <option>Four Horsemen of the Apocalypse</option>
-                    <option>Company brand</option>
-                  </select>
-                </label>
-                <label>
-                  Stage
-                  <select name="marketingStage">
-                    <option>Development</option>
-                    <option>Pre-launch</option>
-                    <option>Launch week</option>
-                    <option>Post-launch growth</option>
-                    <option>Awards / festival push</option>
-                  </select>
-                </label>
-                <label>
-                  Audience
-                  <select name="marketingAudience">
-                    <option>Core fans</option>
-                    <option>Press and industry</option>
-                    <option>Streaming/platform partners</option>
-                    <option>Comic readers</option>
-                    <option>Talent and casting network</option>
-                  </select>
-                </label>
-                <label>
-                  KPI focus
-                  <select name="marketingKpi">
-                    <option>Awareness</option>
-                    <option>Engagement</option>
-                    <option>Press pickup</option>
-                    <option>Audience conversion</option>
-                    <option>Partner meetings</option>
-                  </select>
-                </label>
-              </div>
-              <fieldset class="marketing-channel-grid">
-                <legend>Channels</legend>
-                <label><input type="checkbox" name="marketingChannels" value="Trailer / teaser" /> Trailer</label>
-                <label><input type="checkbox" name="marketingChannels" value="Instagram / TikTok" /> Social video</label>
-                <label><input type="checkbox" name="marketingChannels" value="Press outreach" /> Press</label>
-                <label><input type="checkbox" name="marketingChannels" value="Comic community" /> Comic community</label>
-                <label><input type="checkbox" name="marketingChannels" value="Newsletter" /> Newsletter</label>
-                <label><input type="checkbox" name="marketingChannels" value="Events / festivals" /> Events</label>
-              </fieldset>
-              <button class="primary-button" type="submit">Build plan</button>
-            </form>
-            <section class="marketing-plan-output" data-marketing-plan-output aria-live="polite">
-              <p class="eyebrow">Campaign output</p>
-              <h3>Plan preview</h3>
-              <p>Select project, audience, and channels to generate a focused rollout spine.</p>
-            </section>
-            <form class="request-form marketing-request-form" action="/api/requests" method="post" data-request-form data-label="Marketing Request" data-recipient="marketing@the-banished.com">
-              <label>
-                Full name
-                <input name="name" type="text" autocomplete="name" placeholder="Your name" />
-              </label>
-              <div class="script-form-grid">
-                <label>
-                  Request type
-                  <select name="type">
-                    <option>Campaign brief</option>
-                    <option>Social rollout</option>
-                    <option>Press kit</option>
-                    <option>Audience research</option>
-                    <option>Creator or partner outreach</option>
-                  </select>
-                </label>
-                <label>
-                  Priority
-                  <select name="priority">
-                    <option>Normal</option>
-                    <option>Time-sensitive</option>
-                    <option>Before project kickoff</option>
-                    <option>Launch blocker</option>
-                  </select>
-                </label>
-              </div>
-              <label>
-                Details
-                <textarea name="details" rows="5" placeholder="Project, target audience, deadline, assets needed, and links."></textarea>
-              </label>
-              <button class="primary-button" type="submit">Send to marketing</button>
-              <p class="request-status" data-request-status hidden></p>
-            </form>
           </div>
         </section>
 
@@ -2602,7 +2446,6 @@
                     <option value="script-studio">Script Studio</option>
                     <option value="storyboards">AI Storyboards</option>
                     <option value="comic-review">Comic Review</option>
-                    <option value="marketing">Marketing</option>
                     <option value="bonuses">Bonuses</option>
                     <option value="benefits">Benefits</option>
                     <option value="holidays">Holidays</option>

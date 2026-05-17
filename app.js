@@ -90,11 +90,6 @@ const comicReviewForm = document.querySelector("[data-comic-review-form]");
 const comicReviewStatus = document.querySelector("[data-comic-review-status]");
 const comicFilesInput = document.querySelector("[data-comic-files]");
 const comicPreview = document.querySelector("[data-comic-preview]");
-const marketingPlannerForm = document.querySelector("[data-marketing-planner-form]");
-const marketingPlanOutput = document.querySelector("[data-marketing-plan-output]");
-const marketingAudience = document.querySelector("[data-marketing-audience]");
-const marketingStage = document.querySelector("[data-marketing-stage]");
-const marketingChannelCount = document.querySelector("[data-marketing-channel-count]");
 const requestDestination = document.querySelector("[data-request-destination]");
 const calendarGrid = document.querySelector("[data-calendar-grid]");
 const calendarFilterButtons = document.querySelectorAll("[data-calendar-filter]");
@@ -224,7 +219,6 @@ const titles = {
   "script-studio": "Script Studio",
   storyboards: "AI Storyboards",
   "comic-review": "Comic Artist Review",
-  marketing: "Marketing",
   bonuses: "Bonuses",
   "bonus-detail": "Bonus document",
   benefits: "Benefits and support",
@@ -247,7 +241,6 @@ const editableSections = {
   "script-studio": "Script Studio",
   storyboards: "AI Storyboards",
   "comic-review": "Comic Review",
-  marketing: "Marketing",
   bonuses: "Bonuses",
   benefits: "Benefits",
   holidays: "Holidays",
@@ -989,7 +982,6 @@ const roleSectionAccess = {
     "script-studio",
     "storyboards",
     "comic-review",
-    "marketing",
     "bonuses",
     "monthly-challenge",
     "benefits",
@@ -1010,7 +1002,6 @@ const roleSectionAccess = {
     "script-studio",
     "storyboards",
     "comic-review",
-    "marketing",
     "bonuses",
     "monthly-challenge",
     "benefits",
@@ -1027,7 +1018,6 @@ const roleSectionAccess = {
     "projects",
     "storyboards",
     "comic-review",
-    "marketing",
     "bonuses",
     "monthly-challenge",
     "benefits",
@@ -1058,7 +1048,6 @@ const roleSectionAccess = {
     "projects",
     "storyboards",
     "comic-review",
-    "marketing",
     "bonuses",
     "monthly-challenge",
     "benefits",
@@ -1748,21 +1737,31 @@ function renderStoryboardFrames(formData) {
     return;
   }
 
-  const prompt = String(formData.get("storyboardPrompt") || "").trim();
+  const script = String(formData.get("storyboardScript") || "").trim();
   const project = String(formData.get("storyboardProject") || "New / exploratory");
   const style = String(formData.get("storyboardStyle") || "Cinematic noir");
   const camera = String(formData.get("storyboardCamera") || "Wide to close");
   const frameCount = Math.max(1, Math.min(8, Number(formData.get("storyboardFrames") || 4)));
-  const beats = [
-    "Establish the world and emotional temperature.",
-    "Push the character into motion.",
-    "Reveal the conflict or visual problem.",
-    "Cut closer to the decision point.",
-    "Add a texture detail the art team can use.",
-    "Hold on the strongest image.",
-    "Create a transition into the next beat.",
-    "End with the frame that sells the sequence.",
+  const scriptLines = script
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const visualLines = scriptLines.filter((line) => {
+    const upperLine = line.toUpperCase();
+    return /^((INT|EXT|INT\/EXT)\.|PAGE\s+\d+|PANEL\s+\d+)/i.test(line)
+      || (line.length > 28 && upperLine !== line);
+  });
+  const sourceBeats = visualLines.length ? visualLines : scriptLines;
+  const fallbackBeats = [
+    "Establish the location, mood, and first visual tension from the script.",
+    "Move closer to the character action or conflict.",
+    "Show the turning point that changes the beat.",
+    "End on the strongest visual image before the next cut.",
   ];
+  const beats = Array.from({ length: frameCount }).map((_, index) => {
+    const source = sourceBeats[index % Math.max(1, sourceBeats.length)] || fallbackBeats[index % fallbackBeats.length];
+    return source.length > 150 ? `${source.slice(0, 147)}...` : source;
+  });
 
   storyboardOutput.innerHTML = "";
 
@@ -1780,7 +1779,7 @@ function renderStoryboardFrames(formData) {
         <small>${escapeHtml(project)} / ${escapeHtml(style)}</small>
         <strong>Frame ${index + 1}</strong>
         <p>${escapeHtml(beats[index])}</p>
-        <em>${escapeHtml(camera)}. Prompt: ${escapeHtml(prompt)}</em>
+        <em>${escapeHtml(camera)}. Generated from script beat ${index + 1}.</em>
       </div>
     `;
     storyboardOutput.append(frame);
@@ -1813,56 +1812,6 @@ function renderComicPreviews() {
     `;
     comicPreview.append(card);
   });
-}
-
-function renderMarketingPlan(formData) {
-  if (!marketingPlanOutput) {
-    return;
-  }
-
-  const project = String(formData.get("marketingProject") || "The Banished");
-  const stage = String(formData.get("marketingStage") || "Development");
-  const audience = String(formData.get("marketingAudience") || "Core fans");
-  const kpi = String(formData.get("marketingKpi") || "Awareness");
-  const channels = formData.getAll("marketingChannels").map(String);
-  const selectedChannels = channels.length ? channels : ["Owned social", "Press outreach"];
-  const assetMap = {
-    Development: ["Positioning memo", "Audience promise", "Visual reference board"],
-    "Pre-launch": ["Teaser copy", "Key art direction", "Press angle"],
-    "Launch week": ["Launch calendar", "Trailer cutdowns", "Creator captions"],
-    "Post-launch growth": ["Performance readout", "Community follow-ups", "Second-wave assets"],
-    "Awards / festival push": ["Festival one-sheet", "Industry press kit", "Screening invitation"],
-  };
-
-  if (marketingAudience) {
-    marketingAudience.textContent = audience;
-  }
-
-  if (marketingStage) {
-    marketingStage.textContent = stage;
-  }
-
-  if (marketingChannelCount) {
-    marketingChannelCount.textContent = selectedChannels.length;
-  }
-
-  marketingPlanOutput.innerHTML = `
-    <p class="eyebrow">Campaign output</p>
-    <h3>${escapeHtml(project)} / ${escapeHtml(stage)}</h3>
-    <div class="marketing-plan-grid">
-      <article><span>Audience</span><strong>${escapeHtml(audience)}</strong></article>
-      <article><span>KPI</span><strong>${escapeHtml(kpi)}</strong></article>
-      <article><span>Channels</span><strong>${selectedChannels.length}</strong></article>
-    </div>
-    <div class="marketing-plan-list">
-      <strong>Priority assets</strong>
-      <ul>${(assetMap[stage] || assetMap.Development).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-    </div>
-    <div class="marketing-plan-list">
-      <strong>Activation lanes</strong>
-      <ul>${selectedChannels.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-    </div>
-  `;
 }
 
 function currentProfile() {
@@ -3826,12 +3775,6 @@ storyboardForm?.addEventListener("submit", (event) => {
   event.preventDefault();
   const formData = new FormData(storyboardForm);
   renderStoryboardFrames(formData);
-});
-
-marketingPlannerForm?.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const formData = new FormData(marketingPlannerForm);
-  renderMarketingPlan(formData);
 });
 
 comicFilesInput?.addEventListener("change", renderComicPreviews);

@@ -19,7 +19,6 @@ const allowedRecipients = new Set([
   "scripts@the-banished.com",
   "legal@the-banished.com",
   "art@the-banished.com",
-  "marketing@the-banished.com",
 ]);
 const countryNames = new Intl.DisplayNames(["en"], { type: "region" });
 const mimeTypes = {
