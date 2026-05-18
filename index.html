@@ -2523,8 +2523,20 @@
                   </select>
                 </label>
                 <label>
+                  Department
+                  <input name="createDepartment" type="text" placeholder="Department" />
+                </label>
+                <label>
                   Starting credits
                   <input name="createBonusCredits" type="number" min="0" step="1" value="0" />
+                </label>
+                <label>
+                  Status
+                  <select name="createStatus">
+                    <option selected>Active</option>
+                    <option>Invited</option>
+                    <option>Paused</option>
+                  </select>
                 </label>
               </div>
               <label class="checkbox-row">
@@ -2543,96 +2555,38 @@
               <div>
                 <p class="eyebrow">Users</p>
                 <h3>Users and permissions</h3>
-                <p class="admin-note">Admins can edit roles, admin access, and bonus credits here. 1 credit = $1.</p>
+                <p class="admin-note">Admins can update profile basics, roles, access, status, temporary passwords, and credits here. 1 credit = $1.</p>
               </div>
               <div class="admin-table-wrap">
-                <table class="admin-table">
+                <table class="admin-table user-table">
                   <thead>
                     <tr>
                       <th>User</th>
                       <th>Role</th>
+                      <th>Department</th>
+                      <th>Status</th>
                       <th>Admin</th>
                       <th>Credits ($)</th>
-                      <th>Status</th>
+                      <th>Password</th>
                     </tr>
                   </thead>
                   <tbody data-user-rows></tbody>
                 </table>
               </div>
-              <button class="primary-button" type="button" data-save-users>Save permissions</button>
+              <div class="admin-actions">
+                <button class="primary-button" type="button" data-save-users>Save user changes</button>
+                <p class="request-status" data-save-users-status hidden></p>
+              </div>
             </div>
-
-            <form class="admin-card wide content-admin-card" data-content-form>
-              <div>
-                <p class="eyebrow">Content</p>
-                <h3>Add to a portal section</h3>
-              </div>
-              <div class="admin-form-grid">
-                <label>
-                  Section
-                  <select name="contentSection">
-                    <option value="overview">Overview</option>
-                    <option value="announcements">Announcements</option>
-                    <option value="calendar">Calendar</option>
-                    <option value="documents">Documents</option>
-                    <option value="projects">Projects</option>
-                    <option value="script-studio">Script Studio</option>
-                    <option value="storyboards">AI Storyboards</option>
-                    <option value="comic-review">Comic Review</option>
-                    <option value="bonuses">Bonuses</option>
-                    <option value="benefits">Benefits</option>
-                    <option value="holidays">Holidays</option>
-                    <option value="culture">Culture</option>
-                    <option value="training">Training</option>
-                    <option value="internship">Internship</option>
-                    <option value="monthly-challenge">Challenge of the Month</option>
-                    <option value="requests">Requests</option>
-                  </select>
-                </label>
-                <label>
-                  Type
-                  <select name="contentType">
-                    <option value="update">Update</option>
-                    <option value="document">Document</option>
-                    <option value="project">Project</option>
-                  </select>
-                </label>
-                <label data-content-role-field>
-                  Document role
-                  <select name="contentRole">
-                    <option value="general">Employee</option>
-                    <option value="admin">Admin</option>
-                    <option value="project-manager">Project Manager</option>
-                  </select>
-                </label>
-              </div>
-              <label>
-                Label
-                <input name="contentLabel" type="text" placeholder="Policy, guide, memo, update" />
-              </label>
-              <label>
-                Title
-                <input name="contentTitle" type="text" placeholder="Document or update title" required />
-              </label>
-              <label>
-                Short summary
-                <input name="contentSummary" type="text" placeholder="One sentence employees will see first" required />
-              </label>
-              <label>
-                Details
-                <textarea name="contentBody" rows="6" placeholder="Add the content, notes, or document description" required></textarea>
-              </label>
-              <button class="primary-button" type="submit">Publish content</button>
-              <p class="request-status" data-content-status hidden></p>
-            </form>
 
             <div class="admin-card wide">
               <div>
                 <p class="eyebrow">Published</p>
-                <h3>Manual content</h3>
+                <h3>Section content log</h3>
+                <p class="admin-note">Content is added from the compact admin editor inside each portal section.</p>
               </div>
               <div class="admin-table-wrap">
-                <table class="admin-table">
+                <table class="admin-table content-log-table">
                   <thead>
                     <tr>
                       <th>Section</th>
@@ -2649,11 +2603,32 @@
 
             <div class="admin-card wide">
               <div>
+                <p class="eyebrow">Logs</p>
+                <h3>Activity log</h3>
+                <p class="admin-note">A local audit trail for invitations, user changes, and section updates.</p>
+              </div>
+              <div class="admin-table-wrap">
+                <table class="admin-table audit-log-table">
+                  <thead>
+                    <tr>
+                      <th>Created</th>
+                      <th>Actor</th>
+                      <th>Action</th>
+                      <th>Details</th>
+                    </tr>
+                  </thead>
+                  <tbody data-audit-rows></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="admin-card wide">
+              <div>
                 <p class="eyebrow">Requests</p>
                 <h3>Local request log</h3>
               </div>
               <div class="admin-table-wrap">
-                <table class="admin-table">
+                <table class="admin-table request-log-table">
                   <thead>
                     <tr>
                       <th>Created</th>

@@ -6891,6 +6891,103 @@ button.calendar-day {
   background: rgba(247, 243, 234, 0.035);
 }
 
+.admin-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-actions .request-status {
+  flex: 1 1 260px;
+}
+
+.admin-card .primary-button,
+.section-admin-tools .primary-button {
+  justify-self: start;
+  min-height: 38px;
+  padding: 0 14px;
+  border-color: rgba(203, 169, 92, 0.46);
+  border-radius: 999px;
+  background: rgba(203, 169, 92, 0.12);
+  color: var(--ink-strong);
+  box-shadow: none;
+}
+
+.admin-card .primary-button:hover,
+.admin-card .primary-button:focus-visible,
+.section-admin-tools .primary-button:hover,
+.section-admin-tools .primary-button:focus-visible {
+  border-color: rgba(203, 169, 92, 0.72);
+  background: rgba(203, 169, 92, 0.2);
+  color: #ffffff;
+}
+
+.admin-table.user-table {
+  min-width: 1120px;
+}
+
+.admin-table.content-log-table,
+.admin-table.audit-log-table,
+.admin-table.request-log-table {
+  min-width: 760px;
+}
+
+.admin-inline-field {
+  gap: 6px !important;
+}
+
+.admin-inline-field span {
+  color: rgba(203, 169, 92, 0.76);
+  font-size: 9px;
+  letter-spacing: 0.04em;
+}
+
+.user-identity-cell {
+  min-width: 230px;
+}
+
+.admin-table input[type="text"],
+.admin-table select,
+.admin-table input[type="number"] {
+  min-height: 36px;
+  border-radius: 8px;
+  background: rgba(5, 5, 6, 0.78);
+}
+
+.admin-table input[type="text"] {
+  min-width: 150px;
+  padding: 0 10px;
+}
+
+.admin-table .user-edit-name {
+  min-width: 190px;
+}
+
+.admin-table .user-edit-department,
+.admin-table .user-edit-password {
+  min-width: 150px;
+}
+
+.admin-check-cell {
+  text-align: center;
+}
+
+.table-action {
+  min-height: 32px;
+  padding: 0 11px;
+  border-color: rgba(203, 169, 92, 0.34);
+  border-radius: 999px;
+  background: rgba(203, 169, 92, 0.08);
+  color: var(--gold);
+}
+
+.table-action:hover {
+  border-color: rgba(203, 169, 92, 0.58);
+  background: rgba(203, 169, 92, 0.16);
+  color: var(--ink-strong);
+}
+
 @media (max-width: 1180px) {
   .overview-hero.intro-panel,
   .document-library-hero,

@@ -68,9 +68,11 @@ const createUserStatus = document.querySelector("[data-create-user-status]");
 const userRows = document.querySelector("[data-user-rows]");
 const requestRows = document.querySelector("[data-request-rows]");
 const saveUsersButton = document.querySelector("[data-save-users]");
+const saveUsersStatus = document.querySelector("[data-save-users-status]");
 const contentForm = document.querySelector("[data-content-form]");
 const contentStatus = document.querySelector("[data-content-status]");
 const contentRows = document.querySelector("[data-content-rows]");
+const auditRows = document.querySelector("[data-audit-rows]");
 const adminOnlyElements = document.querySelectorAll("[data-admin-only]");
 const unifiedRequestForm = document.querySelector("[data-unified-request-form]");
 const scriptReviewForm = document.querySelector("[data-script-review-form]");
@@ -106,6 +108,7 @@ const profileStoreKey = "tb-internal-profile";
 const usersStoreKey = "tb-internal-users";
 const requestsStoreKey = "tb-internal-requests";
 const contentStoreKey = "tb-internal-content";
+const auditLogStoreKey = "tb-internal-audit-log";
 const scriptDraftStoreKey = "tb-script-studio-draft";
 const inviteTempPassword = "PortalInvite12!";
 const companyEmailDomain = "@the-banished.com";
@@ -1272,6 +1275,30 @@ function setContentItems(items) {
   writeJson(contentStoreKey, items);
 }
 
+function getAuditLogs() {
+  return readJson(auditLogStoreKey, []);
+}
+
+function setAuditLogs(logs) {
+  writeJson(auditLogStoreKey, logs.slice(-120));
+}
+
+function appendAuditLog(action, detail = "") {
+  const profile = currentProfile();
+  const logs = getAuditLogs();
+
+  logs.push({
+    id: `log-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    createdAt: new Date().toLocaleString(),
+    actor: profile?.email || "system",
+    action,
+    detail,
+  });
+
+  setAuditLogs(logs);
+  renderAuditLogs();
+}
+
 function initialsFromName(name) {
   return name
     .split(" ")
@@ -1731,6 +1758,10 @@ function escapeHtml(value) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+function escapeAttribute(value) {
+  return escapeHtml(value);
 }
 
 function hasStoryboardKeyword(text, keywords) {
@@ -3098,27 +3129,45 @@ function renderUsers() {
     .map(([email, user]) => {
       const userRole = normalizeRole(user.role);
       const roleOptions = roleNames
-        .map((role) => `<option ${userRole === role ? "selected" : ""}>${role}</option>`)
+        .map((role) => `<option value="${escapeAttribute(role)}" ${userRole === role ? "selected" : ""}>${escapeHtml(role)}</option>`)
         .join("");
+      const userStatus = user.status || "Active";
+      const statusOptions = ["Active", "Invited", "Paused"]
+        .map((status) => `<option value="${status}" ${userStatus === status ? "selected" : ""}>${status}</option>`)
+        .join("");
+      const safeEmail = escapeAttribute(email);
 
       return `
-        <tr>
-          <td>
-            <strong>${user.name}</strong>
-            <small>${email}</small>
+        <tr data-user-row="${safeEmail}">
+          <td class="user-identity-cell">
+            <label class="admin-inline-field">
+              <span>Name</span>
+              <input class="user-edit-name" type="text" data-user-name value="${escapeAttribute(user.name || createDisplayName(email))}" />
+            </label>
+            <small>${escapeHtml(email)}</small>
           </td>
           <td>
-            <select data-user-role="${email}">
+            <select data-user-role>
               ${roleOptions}
             </select>
           </td>
           <td>
-            <input type="checkbox" data-user-admin="${email}" ${user.admin ? "checked" : ""} />
+            <input class="user-edit-department" type="text" data-user-department value="${escapeAttribute(user.department || "")}" placeholder="Department" />
           </td>
           <td>
-            <input type="number" min="0" step="1" data-user-bonus="${email}" value="${Number(user.bonusCredits || 0)}" />
+            <select data-user-status>
+              ${statusOptions}
+            </select>
           </td>
-          <td>${user.status || "Active"}</td>
+          <td class="admin-check-cell">
+            <input type="checkbox" data-user-admin ${user.admin ? "checked" : ""} />
+          </td>
+          <td>
+            <input type="number" min="0" step="1" data-user-bonus value="${Number(user.bonusCredits || 0)}" />
+          </td>
+          <td>
+            <input class="user-edit-password" type="text" data-user-password placeholder="Leave unchanged" />
+          </td>
         </tr>
       `;
     })
@@ -3142,10 +3191,37 @@ function renderRequests() {
     .reverse()
     .map((request) => `
       <tr>
-        <td>${request.createdAt}</td>
-        <td>${request.from}</td>
-        <td>${request.type}</td>
-        <td>${request.recipient}</td>
+        <td>${escapeHtml(request.createdAt)}</td>
+        <td>${escapeHtml(request.from)}</td>
+        <td>${escapeHtml(request.type)}</td>
+        <td>${escapeHtml(request.recipient)}</td>
+      </tr>
+    `)
+    .join("");
+}
+
+function renderAuditLogs() {
+  if (!auditRows) {
+    return;
+  }
+
+  const logs = getAuditLogs();
+
+  if (!logs.length) {
+    auditRows.innerHTML = `<tr><td colspan="4">No activity logs yet.</td></tr>`;
+    return;
+  }
+
+  auditRows.innerHTML = logs
+    .slice()
+    .reverse()
+    .slice(0, 80)
+    .map((log) => `
+      <tr>
+        <td>${escapeHtml(log.createdAt)}</td>
+        <td>${escapeHtml(log.actor)}</td>
+        <td>${escapeHtml(log.action)}</td>
+        <td>${escapeHtml(log.detail)}</td>
       </tr>
     `)
     .join("");
@@ -3812,7 +3888,7 @@ function renderContentRows() {
     const row = document.createElement("tr");
     const cell = document.createElement("td");
     cell.colSpan = 5;
-    cell.textContent = "No admin content yet.";
+    cell.textContent = "No section content has been published yet.";
     row.append(cell);
     contentRows.append(row);
     return;
@@ -3875,6 +3951,70 @@ function typeOptionsForSection(sectionId) {
     ["update", "Update"],
     ["document", "Document"],
   ];
+}
+
+function sectionContentOptions(sectionId) {
+  const items = getContentItems()
+    .filter((item) => item.section === sectionId)
+    .slice()
+    .reverse();
+
+  return [
+    `<option value="">New section item</option>`,
+    ...items.map((item) => `<option value="${escapeAttribute(item.id)}">${escapeHtml(item.title)}</option>`),
+  ].join("");
+}
+
+function hydrateSectionContentForm(form) {
+  const selectedId = form.elements.contentExisting?.value || "";
+
+  if (!selectedId) {
+    form.elements.contentLabel.value = "";
+    form.elements.contentTitle.value = "";
+    form.elements.contentSummary.value = "";
+    form.elements.contentBody.value = "";
+    return;
+  }
+
+  const item = getContentItems().find((contentItem) => contentItem.id === selectedId);
+
+  if (!item) {
+    return;
+  }
+
+  if (form.elements.contentType) {
+    form.elements.contentType.value = item.type;
+  }
+
+  if (form.elements.contentRole) {
+    form.elements.contentRole.value = item.role || "general";
+  }
+
+  form.elements.contentLabel.value = item.label || "";
+  form.elements.contentTitle.value = item.title || "";
+  form.elements.contentSummary.value = item.summary || "";
+  form.elements.contentBody.value = item.body || "";
+}
+
+function updateContentItem(itemId, payload) {
+  const items = getContentItems();
+  const index = items.findIndex((item) => item.id === itemId);
+
+  if (index === -1) {
+    return null;
+  }
+
+  items[index] = {
+    ...items[index],
+    ...payload,
+    updatedAt: new Date().toLocaleString(),
+  };
+
+  setContentItems(items);
+  renderContentRows();
+  renderContentItems();
+
+  return items[index];
 }
 
 function normalizeContentPayload(formData, fallbackSection = "overview") {
@@ -3945,6 +4085,7 @@ function createSectionAdminForm(sectionId) {
   const typeOptions = typeOptionsForSection(sectionId)
     .map(([value, label]) => `<option value="${value}">${label}</option>`)
     .join("");
+  const existingOptions = sectionContentOptions(sectionId);
 
   panel.className = "section-admin-panel";
   panel.dataset.sectionAdminTools = sectionId;
@@ -3963,6 +4104,12 @@ function createSectionAdminForm(sectionId) {
       <span>Visible to admins only</span>
     </div>
     <div class="section-admin-grid">
+      <label>
+        Existing item
+        <select name="contentExisting" data-content-existing>
+          ${existingOptions}
+        </select>
+      </label>
       <label>
         Type
         <select name="contentType">
@@ -4007,7 +4154,11 @@ function createSectionAdminForm(sectionId) {
 
   syncContentRoleVisibility(form);
 
-  form.addEventListener("change", () => {
+  form.addEventListener("change", (event) => {
+    if (event.target?.matches?.("[data-content-existing]")) {
+      hydrateSectionContentForm(form);
+    }
+
     syncContentRoleVisibility(form);
   });
 
@@ -4018,13 +4169,41 @@ function createSectionAdminForm(sectionId) {
     formData.set("contentSection", sectionId);
     const payload = normalizeContentPayload(formData, sectionId);
     const status = form.querySelector("[data-section-admin-status]");
+    const existingId = String(formData.get("contentExisting") || "");
 
     if (!payload.title || !payload.summary || !payload.body) {
       setRequestStatus(status, "Content was not published. Add a title, summary, and details.", "error");
       return;
     }
 
-    publishContentItem(payload);
+    if (existingId) {
+      const updatedItem = updateContentItem(existingId, payload);
+
+      if (!updatedItem) {
+        setRequestStatus(status, "Content was not updated. Select an existing item and try again.", "error");
+        return;
+      }
+
+      const selectedOption = form.elements.contentExisting.selectedOptions?.[0];
+
+      if (selectedOption) {
+        selectedOption.textContent = updatedItem.title;
+      }
+
+      appendAuditLog("Section content updated", `${payload.title} -> ${editableSections[sectionId] || sectionId}`);
+      setRequestStatus(status, `Updated ${editableSections[sectionId] || sectionId}.`);
+      return;
+    }
+
+    const item = publishContentItem(payload);
+    const existingSelect = form.elements.contentExisting;
+
+    if (existingSelect) {
+      const option = new Option(item.title, item.id);
+      existingSelect.append(option);
+    }
+
+    appendAuditLog("Section content published", `${payload.title} -> ${editableSections[sectionId] || sectionId}`);
     setRequestStatus(status, `Published to ${editableSections[sectionId] || sectionId}.`);
     form.reset();
     syncContentRoleVisibility(form);
@@ -4063,6 +4242,7 @@ function renderAdmin() {
   renderUsers();
   renderRequests();
   renderContentRows();
+  renderAuditLogs();
   renderContentItems();
 }
 
@@ -4507,6 +4687,7 @@ inviteForm?.addEventListener("submit", async (event) => {
     });
 
     setUsers(users);
+    appendAuditLog("Invitation sent", `${email} (${role})`);
     setRequestStatus(inviteStatus, `Invitation email sent to ${email}.`);
     inviteForm.reset();
     renderUsers();
@@ -4523,8 +4704,10 @@ createUserForm?.addEventListener("submit", (event) => {
   const role = normalizeRole(formData.get("createRole") || "Employee");
   const isAdmin = formData.get("createAdmin") === "on" || role === "Admin";
   const name = String(formData.get("createName") || "").trim();
+  const department = String(formData.get("createDepartment") || "").trim();
   const password = String(formData.get("createPassword") || inviteTempPassword).trim();
   const bonusCredits = Math.max(0, Number(formData.get("createBonusCredits") || 0));
+  const status = String(formData.get("createStatus") || "Active");
 
   if (!email.endsWith(companyEmailDomain) || email === companyEmailDomain) {
     setRequestStatus(createUserStatus, "User was not added. Enter a valid The Banished company email.", "error");
@@ -4541,7 +4724,7 @@ createUserForm?.addEventListener("submit", (event) => {
     password,
     name,
     role,
-    department: users[email]?.department || "",
+    department,
     timezone: users[email]?.timezone || "America/New_York",
     employmentType: normalizeEmploymentType(users[email]?.employmentType),
     calendarRegion: normalizeCalendarRegion(users[email]?.calendarRegion || "us"),
@@ -4550,12 +4733,13 @@ createUserForm?.addEventListener("submit", (event) => {
     ipCountrySource: users[email]?.ipCountrySource || "",
     avatarDataUrl: users[email]?.avatarDataUrl || "",
     admin: isAdmin,
-    status: users[email]?.status || "Active",
+    status,
     bonusCredits,
   };
 
   setUsers(users);
   renderUsers();
+  appendAuditLog("User added", `${email} (${role})`);
   setRequestStatus(createUserStatus, `User added: ${email}.`);
   createUserForm.reset();
   createUserForm.elements.createPassword.value = inviteTempPassword;
@@ -4564,27 +4748,68 @@ createUserForm?.addEventListener("submit", (event) => {
 
 saveUsersButton?.addEventListener("click", () => {
   const users = getUsers();
+  const changedUsers = [];
 
-  userRows?.querySelectorAll("[data-user-role]").forEach((select) => {
-    const email = select.dataset.userRole;
-    users[email].role = normalizeRole(select.value);
-  });
+  userRows?.querySelectorAll("[data-user-row]").forEach((row) => {
+    const email = row.dataset.userRow;
 
-  userRows?.querySelectorAll("[data-user-admin]").forEach((checkbox) => {
-    const email = checkbox.dataset.userAdmin;
-    users[email].admin = checkbox.checked || normalizeRole(users[email].role) === "Admin";
+    if (!email || !users[email]) {
+      return;
+    }
 
-    if (users[email].admin && users[email].role !== "Admin") {
-      users[email].role = "Admin";
+    const existing = users[email];
+    const before = JSON.stringify({
+      name: existing.name || "",
+      role: normalizeRole(existing.role),
+      department: existing.department || "",
+      status: existing.status || "Active",
+      admin: Boolean(existing.admin),
+      bonusCredits: Number(existing.bonusCredits || 0),
+      password: "",
+    });
+    const nextRole = normalizeRole(row.querySelector("[data-user-role]")?.value || existing.role);
+    const nextAdmin = Boolean(row.querySelector("[data-user-admin]")?.checked || nextRole === "Admin");
+    const nextPassword = String(row.querySelector("[data-user-password]")?.value || "").trim();
+
+    users[email] = {
+      ...existing,
+      name: String(row.querySelector("[data-user-name]")?.value || "").trim() || createDisplayName(email),
+      role: nextAdmin ? "Admin" : nextRole,
+      department: String(row.querySelector("[data-user-department]")?.value || "").trim(),
+      status: String(row.querySelector("[data-user-status]")?.value || "Active"),
+      admin: nextAdmin,
+      bonusCredits: Math.max(0, Number(row.querySelector("[data-user-bonus]")?.value || 0)),
+    };
+
+    if (nextPassword) {
+      users[email].password = nextPassword;
+    }
+
+    const after = JSON.stringify({
+      name: users[email].name || "",
+      role: normalizeRole(users[email].role),
+      department: users[email].department || "",
+      status: users[email].status || "Active",
+      admin: Boolean(users[email].admin),
+      bonusCredits: Number(users[email].bonusCredits || 0),
+      password: nextPassword ? "updated" : "",
+    });
+
+    if (before !== after) {
+      changedUsers.push(email);
     }
   });
 
-  userRows?.querySelectorAll("[data-user-bonus]").forEach((input) => {
-    const email = input.dataset.userBonus;
-    users[email].bonusCredits = Math.max(0, Number(input.value || 0));
-  });
-
   setUsers(users);
+  renderUsers();
+  setRequestStatus(
+    saveUsersStatus,
+    changedUsers.length ? `Saved user changes for ${changedUsers.join(", ")}.` : "No user changes detected."
+  );
+
+  if (changedUsers.length) {
+    appendAuditLog("Users updated", changedUsers.join(", "));
+  }
 
   const profile = syncProfileFromDirectory(currentProfile());
   if (profile) {
@@ -4605,6 +4830,7 @@ contentForm?.addEventListener("submit", (event) => {
   }
 
   publishContentItem(payload);
+  appendAuditLog("Section content published", `${payload.title} -> ${editableSections[payload.section] || payload.section}`);
   setRequestStatus(contentStatus, `Published to ${editableSections[payload.section] || payload.section}.`);
   contentForm.reset();
   syncContentRoleVisibility(contentForm);
@@ -4617,10 +4843,19 @@ contentRows?.addEventListener("click", (event) => {
     return;
   }
 
-  const nextItems = getContentItems().filter((item) => item.id !== button.dataset.contentDelete);
+  const items = getContentItems();
+  const deletedItem = items.find((item) => item.id === button.dataset.contentDelete);
+  const nextItems = items.filter((item) => item.id !== button.dataset.contentDelete);
   setContentItems(nextItems);
   renderContentRows();
   renderContentItems();
+
+  if (deletedItem) {
+    appendAuditLog(
+      "Section content removed",
+      `${deletedItem.title} -> ${editableSections[deletedItem.section] || deletedItem.section}`
+    );
+  }
 });
 
 contentForm?.addEventListener("change", () => {
