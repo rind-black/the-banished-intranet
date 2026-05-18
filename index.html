@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>The Banished Internal Portal</title>
-    <link rel="stylesheet" href="styles.css?v=requests-mobile-polish-1" />
+    <link rel="stylesheet" href="styles.css?v=portal-ui-polish-2" />
   </head>
   <body>
     <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
@@ -216,7 +216,7 @@
               <div>
                 <p class="eyebrow">Support lane</p>
                 <h3>Send requests</h3>
-                <p>Route IT, HR, Organizational, Educational, Legal, and other questions with the details teams need.</p>
+                <p>Route IT, HR, Organizational, Learning&amp;Development, Legal, and other questions with the details teams need.</p>
               </div>
               <button type="button" data-section-link="requests">Request help</button>
             </article>
@@ -431,7 +431,7 @@
               <span class="document-tile-caption">
                 <span class="document-label">Coming soon</span>
                 <strong>Request routing guide</strong>
-                <small>Where to send IT, HR, Organizational, Educational, Legal, and other requests</small>
+                <small>Where to send IT, HR, Organizational, Learning&amp;Development, Legal, and other requests</small>
               </span>
             </button>
           </div>
@@ -584,7 +584,7 @@
                 <article><strong>Same day</strong><span>Press and media only</span></article>
                 <article><strong>1 business day</strong><span>IT support for active film or comics projects</span></article>
                 <article><strong>2 business days</strong><span>HR, project milestones, corporate communications, and brand questions</span></article>
-                <article><strong>2-5 business days</strong><span>Production, Creative, Financial, and Educational Department</span></article>
+                <article><strong>2-5 business days</strong><span>Production, Creative, Financial, and Learning&amp;Development Department</span></article>
                 <article><strong>3 business days</strong><span>R&D and Organizational</span></article>
                 <article><strong>3-5 business days</strong><span>Partner company teams</span></article>
                 <article><strong>Up to 3 weeks</strong><span>Legal and Events</span></article>
@@ -727,8 +727,8 @@
                   <p>If press contacts you directly, do not respond. Forward the message to PR.</p>
                 </article>
                 <article>
-                  <span>Educational Department</span>
-                  <h5>education@the-banished.com</h5>
+                  <span>Learning&amp;Development Department</span>
+                  <h5>learning-development@the-banished.com</h5>
                   <p>Workshops, onboarding resources, courses, certifications, academic partnerships, and skill-building support.</p>
                   <strong>PM tip</strong>
                   <p>Flag workshop needs a few weeks before a major project phase.</p>
@@ -1256,6 +1256,22 @@
               <article><span>04</span><strong>Payout review</strong><small>Finance processes eligible money.</small></article>
             </div>
           </div>
+
+          <section class="bonus-doc-intro" aria-label="Bonus document guide">
+            <div>
+              <p class="eyebrow">Useful documents</p>
+              <h3>Read these before you request, earn, or convert bonus credits.</h3>
+              <p>
+                These documents explain what bonus credits mean, how challenge rewards are reviewed, and how discretionary
+                bonuses are considered. Start here before asking a manager or admin to approve a bonus-related item.
+              </p>
+            </div>
+            <div class="bonus-info-strip" aria-label="Bonus document highlights">
+              <article><span class="resource-icon bonus-impact-icon" aria-hidden="true"></span><strong>Eligibility</strong><small>Who can be considered and what counts as meaningful contribution.</small></article>
+              <article><span class="resource-icon bonus-proof-icon" aria-hidden="true"></span><strong>Proof</strong><small>What to submit so a manager can evaluate the work clearly.</small></article>
+              <article><span class="resource-icon bonus-payout-icon" aria-hidden="true"></span><strong>Payout</strong><small>How credits connect to money and annual payout review.</small></article>
+            </div>
+          </section>
 
           <div class="bonus-doc-grid" aria-label="Bonus documents">
             <button class="policy-card bonus-doc-card" type="button" data-bonus-page="bonus-policy">
@@ -2051,11 +2067,11 @@
               <span>09</span>
               <div>
                 <h4>How to propose your own event</h4>
-                <p>You do not need a polished deck or a full plan. You need a clear enough idea that Organizational or the Educational Department can help shape it.</p>
+                <p>You do not need a polished deck or a full plan. You need a clear enough idea that Organizational or the Learning&amp;Development Department can help shape it.</p>
                 <div class="holiday-flow">
                   <article><span>01</span><strong>Work out the idea</strong><p>Clarify what the event is, who it is for, and roughly when it should happen.</p></article>
                   <article><span>02</span><strong>Submit it through the internal system</strong><p>Use the event request form and leave notes on anything you are not sure about.</p></article>
-                  <article><span>03</span><strong>Organizational or Educational reviews it</strong><p>Organizational reviews community, social, or cultural events. Educational reviews learning sessions, workshops, and speaker events.</p></article>
+                  <article><span>03</span><strong>Organizational or Learning&amp;Development reviews it</strong><p>Organizational reviews community, social, or cultural events. Learning&amp;Development reviews learning sessions, workshops, and speaker events.</p></article>
                   <article><span>04</span><strong>They help make it happen</strong><p>Once approved, they help with logistics, space, budget, and company-wide announcements.</p></article>
                 </div>
               </div>
@@ -2213,7 +2229,39 @@
           <div class="intro-panel">
             <p class="eyebrow">Learning</p>
             <h2 id="training-title">Training</h2>
-            <p>Training resources will be added in a future update.</p>
+            <p>Training resources are being built into a role-based learning library. These tracks show what is coming first and where the team will be able to request guidance.</p>
+            <div class="resource-orbit-grid training-resource-grid" aria-label="Training resources">
+              <article class="resource-orbit-card">
+                <span class="resource-icon screenplay-icon" aria-hidden="true"></span>
+                <strong>Screenwriting</strong>
+                <small>Scene structure, dialogue, loglines, beat sheets, and American screenplay format.</small>
+              </article>
+              <article class="resource-orbit-card">
+                <span class="resource-icon edit-icon" aria-hidden="true"></span>
+                <strong>Editing</strong>
+                <small>Continuity, pacing, assembly notes, revision passes, and review-ready exports.</small>
+              </article>
+              <article class="resource-orbit-card">
+                <span class="resource-icon production-icon" aria-hidden="true"></span>
+                <strong>Production</strong>
+                <small>Briefs, call sheets, milestone planning, approvals, and handoff discipline.</small>
+              </article>
+              <article class="resource-orbit-card">
+                <span class="resource-icon comic-icon" aria-hidden="true"></span>
+                <strong>Comic Art</strong>
+                <small>Layouts, thumbnails, pencils, inks, colors, lettering, and review standards.</small>
+              </article>
+              <article class="resource-orbit-card">
+                <span class="resource-icon sound-icon" aria-hidden="true"></span>
+                <strong>Sound</strong>
+                <small>Reference boards, mood, temp tracks, cue notes, and audio handoff language.</small>
+              </article>
+              <article class="resource-orbit-card">
+                <span class="resource-icon ai-icon" aria-hidden="true"></span>
+                <strong>AI Tools</strong>
+                <small>Prompting, responsible use, storyboard prototyping, and internal review rules.</small>
+              </article>
+            </div>
           </div>
         </section>
 
@@ -2233,6 +2281,23 @@
                 This section is for team members completing an internship with The Banished Inc. Every step below opens into
                 the practical detail an intern needs before, during, and after the program.
               </p>
+              <div class="resource-orbit-grid internship-resource-grid" aria-label="Internship resources">
+                <article class="resource-orbit-card">
+                  <span class="resource-icon document-icon" aria-hidden="true"></span>
+                  <strong>Signing pack</strong>
+                  <small>Offer, NDA, confidentiality, IP, handbook, payroll, and school-credit paperwork.</small>
+                </article>
+                <article class="resource-orbit-card">
+                  <span class="resource-icon access-icon" aria-hidden="true"></span>
+                  <strong>Access setup</strong>
+                  <small>Email, portal, tools, MFA, files, calendar, chat, and approved software.</small>
+                </article>
+                <article class="resource-orbit-card">
+                  <span class="resource-icon milestone-icon" aria-hidden="true"></span>
+                  <strong>Work rhythm</strong>
+                  <small>Weekly goals, check-ins, blockers, proof of work, and manager feedback.</small>
+                </article>
+              </div>
             </article>
             <div class="internship-step-grid">
               <article class="internship-step" role="button" tabindex="0" aria-expanded="false" data-internship-popup>
@@ -2391,15 +2456,17 @@
               <p class="eyebrow">One form</p>
               <h2>Choose the right lane</h2>
               <p>
-                Use one request form for IT, HR, Organizational, Educational, and Legal support. Select the destination first,
+                Use one request form for IT, HR, Organizational, Learning&amp;Development, Legal, Corporate Communications, and Production support. Select the destination first,
                 then add the request type, priority, and details the receiving team needs.
               </p>
               <div class="request-lane-list" aria-label="Request routing guide">
                 <article><strong>IT</strong><span>Access, devices, email, software, security, login issues.</span></article>
                 <article><strong>HR</strong><span>Employment documents, payroll, benefits, time off, records.</span></article>
                 <article><strong>Organizational</strong><span>Project logistics, scheduling, handoffs, coordination.</span></article>
-                <article><strong>Educational</strong><span>Training, assignments, workshops, onboarding resources.</span></article>
+                <article><strong>Learning&amp;Development</strong><span>Training, assignments, workshops, onboarding resources.</span></article>
                 <article><strong>Legal</strong><span>Contracts, permissions, releases, rights, policy review.</span></article>
+                <article><strong>Comms</strong><span>Announcements, press, brand language, media, public-facing updates.</span></article>
+                <article><strong>Production</strong><span>Creative deliverables, shoots, art, sound, editing, schedules.</span></article>
               </div>
             </div>
 
@@ -2411,11 +2478,13 @@
               <label>
                 Request destination
                 <select name="destination" data-request-destination>
-                  <option value="it" data-recipient="support@the-banished.com" data-label="IT Request">IT</option>
-                  <option value="hr" data-recipient="hr@the-banished.com" data-label="HR Request">HR</option>
-                  <option value="org" data-recipient="organizational@the-banished.com" data-label="Organizational Request">Organizational</option>
-                  <option value="ed" data-recipient="education@the-banished.com" data-label="Educational Request">Educational Department</option>
-                  <option value="legal" data-recipient="legal@the-banished.com" data-label="Legal Request">Legal</option>
+                  <option value="it" data-recipient="support@the-banished.com" data-label="IT Request">IT Department</option>
+                  <option value="hr" data-recipient="hr@the-banished.com" data-label="HR Request">HR Department</option>
+                  <option value="org" data-recipient="organizational@the-banished.com" data-label="Organizational Request">Organizational Department</option>
+                  <option value="ed" data-recipient="learning-development@the-banished.com" data-label="Learning&amp;Development Request">Learning&amp;Development Department</option>
+                  <option value="legal" data-recipient="legal@the-banished.com" data-label="Legal Request">Legal Department</option>
+                  <option value="communications" data-recipient="pr@the-banished.com" data-label="Corporate Communications Request">Corporate Communications Department</option>
+                  <option value="production" data-recipient="production@the-banished.com" data-label="Production Request">Production Department</option>
                 </select>
               </label>
               <label>
@@ -2425,14 +2494,27 @@
                   <option>Account access</option>
                   <option>Password or login issue</option>
                   <option>Device or software issue</option>
+                  <option>Email, calendar, or file access</option>
+                  <option>New user onboarding</option>
                   <option>Employment document</option>
                   <option>Benefits, payroll, or time off</option>
+                  <option>Role, status, or profile correction</option>
                   <option>Project logistics or scheduling</option>
                   <option>Handoff or ownership question</option>
+                  <option>Meeting, calendar, or travel coordination</option>
                   <option>Training resource</option>
                   <option>Assignment request</option>
+                  <option>Workshop or learning session</option>
+                  <option>Certification or course request</option>
                   <option>Contract, rights, or release review</option>
                   <option>Legal policy question</option>
+                  <option>Press or media question</option>
+                  <option>Internal announcement</option>
+                  <option>Brand or public copy review</option>
+                  <option>Production milestone support</option>
+                  <option>Creative asset review</option>
+                  <option>Editing, sound, or post-production support</option>
+                  <option>Vendor, location, or shoot coordination</option>
                   <option>Other request</option>
                 </select>
               </label>

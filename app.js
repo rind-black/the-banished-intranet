@@ -293,7 +293,7 @@ const holidayDescriptions = {
   "Project Wrap Celebration": "Every closed project gets marked. Smaller projects may get a team dinner, medium projects an evening out, and major productions a full wrap party.",
   "Hackathons and Game Jams": "A dedicated window, usually 24 hours, where developers, designers, and writers collaborate on something new and finish something tangible.",
   "Movie Nights and Screenwriting Meetups": "A craft space for film, television, and narrative discussion, with in-office screenings or remote viewing and structured conversation.",
-  "Workshops and Knowledge-Sharing Sessions": "Open sessions for masterclasses, panels, webinars, and skill-building. The Educational Department handles logistics once a session is approved.",
+  "Workshops and Knowledge-Sharing Sessions": "Open sessions for masterclasses, panels, webinars, and skill-building. The Learning&Development Department handles logistics once a session is approved.",
   "Themed Thursdays": "A monthly optional theme announced at least one week in advance, with a quick sign-off from Organizational before it goes out.",
 };
 
@@ -5033,7 +5033,7 @@ internshipActionButtons.forEach((button) => {
     }
 
     if (details && !details.value) {
-      details.placeholder = "Tell ED which internship track you are in, what you have already completed, and what assignment or brief you need next.";
+      details.placeholder = "Tell Learning&Development which internship track you are in, what you have already completed, and what assignment or brief you need next.";
       details.focus();
     }
   });
