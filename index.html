@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>The Banished Internal Portal</title>
-    <link rel="stylesheet" href="styles.css?v=portal-ui-polish-2" />
+    <link rel="stylesheet" href="styles.css?v=portal-ui-polish-3" />
   </head>
   <body>
     <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
@@ -139,6 +139,10 @@
                 <path d="M14 13h2" />
                 <path d="M8 17h2" />
               </svg>
+            </button>
+            <button class="theme-toggle-button" type="button" data-theme-toggle aria-label="Switch to light theme" title="Switch theme">
+              <span class="theme-toggle-orb" aria-hidden="true"></span>
+              <strong data-theme-label>Dark</strong>
             </button>
             <button class="profile-chip" type="button" data-section-link="profile" data-profile-button>
               <span class="profile-avatar" data-profile-avatar data-profile-initials>TB</span>
@@ -2273,6 +2277,16 @@
                   <span>Feedback hoarding</span>
                   <span>Hidden rules</span>
                   <span>Escalation before conversation</span>
+                  <span>Fear-based leadership</span>
+                  <span>Ego over story</span>
+                  <span>Gatekeeping knowledge</span>
+                  <span>Blame culture</span>
+                  <span>Performative urgency</span>
+                  <span>Siloed ownership</span>
+                  <span>Ambiguity as power</span>
+                  <span>Ignoring accessibility</span>
+                  <span>Extractive AI use</span>
+                  <span>Disrespecting boundaries</span>
                 </div>
               </div>
             </div>
@@ -2350,6 +2364,46 @@
                 <strong>Data &amp; Pipeline</strong>
                 <small>Automation, content pipelines, AI-assisted workflows, metadata, and system handoffs.</small>
               </article>
+              <article class="resource-orbit-card">
+                <span class="resource-icon cloud-icon" aria-hidden="true"></span>
+                <strong>Cloud &amp; DevOps</strong>
+                <small>Environments, deployments, monitoring, uptime basics, and production-safe release routines.</small>
+              </article>
+              <article class="resource-orbit-card">
+                <span class="resource-icon api-icon" aria-hidden="true"></span>
+                <strong>API Design</strong>
+                <small>Contracts, auth, errors, versioning, integration notes, and clean handoffs between systems.</small>
+              </article>
+              <article class="resource-orbit-card">
+                <span class="resource-icon tooling-icon" aria-hidden="true"></span>
+                <strong>Internal Tooling</strong>
+                <small>Admin flows, dashboards, request systems, permissions, and workflow automation for teams.</small>
+              </article>
+              <article class="resource-orbit-card">
+                <span class="resource-icon automation-icon" aria-hidden="true"></span>
+                <strong>QA Automation</strong>
+                <small>Regression suites, mobile checks, visual QA, bug triage, and release confidence signals.</small>
+              </article>
+              <article class="resource-orbit-card">
+                <span class="resource-icon cyber-icon" aria-hidden="true"></span>
+                <strong>Security Operations</strong>
+                <small>Access reviews, MFA, incident notes, vendor risk, secure files, and practical escalation paths.</small>
+              </article>
+              <article class="resource-orbit-card">
+                <span class="resource-icon data-engineering-icon" aria-hidden="true"></span>
+                <strong>Data Engineering</strong>
+                <small>Data models, clean imports, audit trails, reporting reliability, and privacy-aware analytics.</small>
+              </article>
+              <article class="resource-orbit-card">
+                <span class="resource-icon ux-icon" aria-hidden="true"></span>
+                <strong>Product Design</strong>
+                <small>User journeys, wireframes, interaction states, accessibility, and production-ready UI specs.</small>
+              </article>
+              <article class="resource-orbit-card">
+                <span class="resource-icon docs-icon" aria-hidden="true"></span>
+                <strong>Technical Documentation</strong>
+                <small>Runbooks, specs, onboarding notes, decision records, and clear instructions for handoff.</small>
+              </article>
             </div>
           </div>
         </section>
@@ -2365,7 +2419,6 @@
           <div class="internship-layout">
             <article class="internship-panel intro-panel">
               <p class="eyebrow">For interns</p>
-              <h3>Start here</h3>
               <p>
                 This section is for team members completing an internship with The Banished Inc. Every step below opens into
                 the practical detail an intern needs before, during, and after the program.
@@ -2507,7 +2560,6 @@
             </div>
             <div class="internship-actions" aria-label="Internship actions">
               <button class="internship-action-button" type="button" data-internship-action="assignment">
-                <span>Assignment</span>
                 <strong>Get assignment</strong>
                 <small>Request the next internship task, brief, milestone, or learning objective.</small>
               </button>

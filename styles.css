@@ -7003,6 +7003,7 @@ button.calendar-day {
 .role-switcher,
 .profile-chip,
 .calendar-icon-button,
+.theme-toggle-button,
 .ghost-button {
   min-height: 42px;
   border-color: rgba(203, 169, 92, 0.2);
@@ -7042,6 +7043,37 @@ button.calendar-day {
   height: 19px;
 }
 
+.theme-toggle-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 82px;
+  padding: 0 11px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.theme-toggle-button strong {
+  color: var(--ink-strong);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.theme-toggle-orb {
+  position: relative;
+  display: block;
+  width: 18px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(203, 169, 92, 0.62);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 30%, #fff6d8 0 16%, transparent 17%),
+    radial-gradient(circle at 62% 64%, rgba(0, 0, 0, 0.7) 0 34%, transparent 35%),
+    var(--gold);
+  box-shadow: inset -4px -4px 0 rgba(0, 0, 0, 0.32);
+}
+
 .profile-chip {
   gap: 9px;
   min-width: 0;
@@ -7075,6 +7107,7 @@ button.calendar-day {
 .profile-chip.active,
 .calendar-icon-button:hover,
 .calendar-icon-button.active,
+.theme-toggle-button:hover,
 .ghost-button:hover,
 .role-switcher:focus-within {
   border-color: rgba(203, 169, 92, 0.46);
@@ -7344,6 +7377,128 @@ button.calendar-day {
   border-radius: 50%;
   background: var(--gold);
   box-shadow: -12px 0 0 var(--gold), 12px 0 0 var(--gold), 0 -12px 0 var(--gold), 0 12px 0 var(--gold);
+}
+
+.cloud-icon::before {
+  width: 27px;
+  height: 16px;
+  border: 2px solid var(--gold);
+  border-radius: 999px 999px 8px 8px;
+}
+
+.cloud-icon::after {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: -9px 2px 0 var(--gold), 9px 2px 0 rgba(203, 169, 92, 0.74);
+}
+
+.api-icon::before {
+  width: 27px;
+  height: 18px;
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+}
+
+.api-icon::after {
+  content: "{}";
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.tooling-icon::before {
+  width: 26px;
+  height: 20px;
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  transform: rotate(-6deg);
+}
+
+.tooling-icon::after {
+  width: 19px;
+  height: 2px;
+  background: var(--gold);
+  box-shadow: 0 7px 0 var(--gold), 0 -7px 0 rgba(203, 169, 92, 0.66);
+}
+
+.automation-icon::before {
+  width: 27px;
+  height: 27px;
+  border: 2px solid var(--gold);
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+
+.automation-icon::after {
+  right: 9px;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid var(--gold);
+  border-right: 2px solid var(--gold);
+  transform: rotate(45deg);
+}
+
+.cyber-icon::before {
+  width: 25px;
+  height: 29px;
+  border: 1px solid var(--gold);
+  border-radius: 14px 14px 7px 7px;
+}
+
+.cyber-icon::after {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 8px 0 -3px var(--gold);
+}
+
+.data-engineering-icon::before {
+  width: 26px;
+  height: 25px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  transform: scaleY(0.68);
+}
+
+.data-engineering-icon::after {
+  width: 26px;
+  height: 25px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  transform: scaleY(0.68) translateY(10px);
+}
+
+.ux-icon::before {
+  width: 28px;
+  height: 22px;
+  border: 1px solid var(--gold);
+  border-radius: 5px;
+}
+
+.ux-icon::after {
+  width: 11px;
+  height: 11px;
+  border-right: 2px solid var(--gold);
+  border-bottom: 2px solid var(--gold);
+  transform: rotate(45deg);
+}
+
+.docs-icon::before {
+  width: 22px;
+  height: 28px;
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  box-shadow: 6px 5px 0 rgba(203, 169, 92, 0.24);
+}
+
+.docs-icon::after {
+  width: 14px;
+  height: 1px;
+  background: var(--gold);
+  box-shadow: 0 6px 0 var(--gold), 0 12px 0 rgba(203, 169, 92, 0.68);
 }
 
 .bonus-impact-icon::before {
@@ -7761,6 +7916,261 @@ button.calendar-day {
   border-radius: 34px 999px 999px 34px;
 }
 
+.benefits-guide .policy-hero,
+.holiday-guide .policy-hero,
+.culture-guide .policy-hero {
+  position: relative;
+  margin: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(203, 169, 92, 0.24);
+  border-radius: 42px 16px 42px 16px;
+  box-shadow: inset 0 1px 0 rgba(247, 243, 234, 0.045);
+}
+
+.benefits-guide .policy-hero::after,
+.holiday-guide .policy-hero::after,
+.culture-guide .policy-hero::after {
+  content: "";
+  position: absolute;
+  right: -44px;
+  bottom: -52px;
+  width: 150px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(203, 169, 92, 0.18);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(203, 169, 92, 0.08), transparent 62%);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --ink: #27231d;
+  --ink-strong: #0f0d0a;
+  --muted: #6e665c;
+  --quiet: #8e8578;
+  --line: rgba(31, 27, 21, 0.12);
+  --line-strong: rgba(31, 27, 21, 0.24);
+  --panel: #fffaf0;
+  --panel-raised: #fffdf8;
+  --paper: #f5efe4;
+  --accent: #c9362f;
+  --accent-dark: #8f241f;
+  --gold: #a9792f;
+  --green: #2d8065;
+  --shadow: 0 22px 58px rgba(81, 63, 35, 0.16);
+  --section-pattern:
+    linear-gradient(135deg, rgba(169, 121, 47, 0.11) 0 1px, transparent 1px 28px),
+    linear-gradient(45deg, rgba(201, 54, 47, 0.07) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, rgba(31, 27, 21, 0.035) 0 1px, transparent 1px 72px);
+}
+
+:root[data-theme="light"] body {
+  background:
+    linear-gradient(90deg, rgba(31, 27, 21, 0.04) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(31, 27, 21, 0.032) 1px, transparent 1px),
+    radial-gradient(circle at 18% 12%, rgba(201, 54, 47, 0.08), transparent 26%),
+    linear-gradient(180deg, #fffaf0 0%, #f4ede0 54%, #eee4d4 100%);
+  background-size: 80px 80px, 80px 80px, auto, auto;
+}
+
+:root[data-theme="light"] .auth-panel,
+:root[data-theme="light"] .intro-panel,
+:root[data-theme="light"] .policy-document,
+:root[data-theme="light"] .admin-card,
+:root[data-theme="light"] .content-admin-card,
+:root[data-theme="light"] .request-form,
+:root[data-theme="light"] .script-review-form,
+:root[data-theme="light"] .storyboard-form,
+:root[data-theme="light"] .comic-review-form,
+:root[data-theme="light"] .comic-preview-console,
+:root[data-theme="light"] .profile-edit-panel,
+:root[data-theme="light"] .document-library-hero,
+:root[data-theme="light"] .project-command-board,
+:root[data-theme="light"] .challenge-game-panel,
+:root[data-theme="light"] .bonus-doc-intro > div:first-child,
+:root[data-theme="light"] #training .intro-panel,
+:root[data-theme="light"] .internship-panel.intro-panel {
+  border-color: rgba(169, 121, 47, 0.24);
+  background:
+    var(--section-pattern),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.72), transparent 58%),
+    rgba(255, 251, 244, 0.96);
+  box-shadow: var(--shadow);
+}
+
+:root[data-theme="light"] .sidebar {
+  border-right-color: rgba(31, 27, 21, 0.12);
+  background:
+    linear-gradient(180deg, rgba(169, 121, 47, 0.09), transparent 34%),
+    rgba(255, 250, 240, 0.98);
+}
+
+:root[data-theme="light"] .brand-logo {
+  filter: invert(1) saturate(0) contrast(1.08);
+}
+
+:root[data-theme="light"] .nav-link {
+  border-top-color: rgba(31, 27, 21, 0.12);
+  color: rgba(39, 35, 29, 0.62);
+}
+
+:root[data-theme="light"] .nav-link:last-child {
+  border-bottom-color: rgba(31, 27, 21, 0.12);
+}
+
+:root[data-theme="light"] .nav-link.active {
+  background:
+    linear-gradient(90deg, rgba(201, 54, 47, 0.11), transparent 44%),
+    linear-gradient(135deg, rgba(169, 121, 47, 0.08) 0 1px, transparent 1px 22px);
+}
+
+:root[data-theme="light"] .sidebar-note,
+:root[data-theme="light"] .role-switcher,
+:root[data-theme="light"] .profile-chip,
+:root[data-theme="light"] .calendar-icon-button,
+:root[data-theme="light"] .theme-toggle-button,
+:root[data-theme="light"] .ghost-button {
+  border-color: rgba(169, 121, 47, 0.22);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.66), transparent 54%),
+    rgba(255, 250, 240, 0.92);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.64);
+}
+
+:root[data-theme="light"] .profile-chip:hover,
+:root[data-theme="light"] .profile-chip.active,
+:root[data-theme="light"] .calendar-icon-button:hover,
+:root[data-theme="light"] .calendar-icon-button.active,
+:root[data-theme="light"] .theme-toggle-button:hover,
+:root[data-theme="light"] .ghost-button:hover,
+:root[data-theme="light"] .role-switcher:focus-within {
+  border-color: rgba(169, 121, 47, 0.48);
+  background:
+    linear-gradient(135deg, rgba(169, 121, 47, 0.12), transparent 58%),
+    rgba(255, 253, 248, 0.98);
+}
+
+:root[data-theme="light"] .calendar-icon-button {
+  color: rgba(39, 35, 29, 0.76);
+}
+
+:root[data-theme="light"] .theme-toggle-orb {
+  background:
+    radial-gradient(circle at 38% 34%, #fff9d8 0 18%, transparent 19%),
+    radial-gradient(circle at 58% 58%, #f0bf56 0 38%, transparent 39%),
+    #d89435;
+  box-shadow: 0 0 0 4px rgba(169, 121, 47, 0.12);
+}
+
+:root[data-theme="light"] .profile-avatar,
+:root[data-theme="light"] .brand-mark {
+  background: #15120e;
+  color: #fffaf0;
+}
+
+:root[data-theme="light"] .auth-form input,
+:root[data-theme="light"] .profile-form input,
+:root[data-theme="light"] .profile-form select,
+:root[data-theme="light"] .request-form input,
+:root[data-theme="light"] .request-form select,
+:root[data-theme="light"] .request-form textarea,
+:root[data-theme="light"] .admin-card input,
+:root[data-theme="light"] .admin-card select,
+:root[data-theme="light"] .admin-card textarea,
+:root[data-theme="light"] .script-review-form input,
+:root[data-theme="light"] .script-review-form select,
+:root[data-theme="light"] .script-review-form textarea,
+:root[data-theme="light"] .storyboard-form input,
+:root[data-theme="light"] .storyboard-form select,
+:root[data-theme="light"] .storyboard-form textarea,
+:root[data-theme="light"] .comic-review-form input,
+:root[data-theme="light"] .comic-review-form select,
+:root[data-theme="light"] .comic-review-form textarea,
+:root[data-theme="light"] .email-field,
+:root[data-theme="light"] .script-page-editor {
+  border-color: rgba(31, 27, 21, 0.2);
+  background: rgba(255, 253, 248, 0.92);
+  color: var(--ink-strong);
+}
+
+:root[data-theme="light"] .primary-button,
+:root[data-theme="light"] .admin-card .primary-button,
+:root[data-theme="light"] .request-form .primary-button,
+:root[data-theme="light"] .script-submit-panel .primary-button,
+:root[data-theme="light"] .storyboard-form .primary-button,
+:root[data-theme="light"] .comic-review-form .primary-button,
+:root[data-theme="light"] .section-admin-tools .primary-button {
+  border-color: rgba(169, 121, 47, 0.42);
+  background:
+    linear-gradient(135deg, rgba(169, 121, 47, 0.2), rgba(169, 121, 47, 0.08)),
+    rgba(255, 250, 240, 0.9);
+  color: var(--ink-strong);
+}
+
+:root[data-theme="light"] .primary-button:hover,
+:root[data-theme="light"] .admin-card .primary-button:hover,
+:root[data-theme="light"] .request-form .primary-button:hover,
+:root[data-theme="light"] .script-submit-panel .primary-button:hover,
+:root[data-theme="light"] .storyboard-form .primary-button:hover,
+:root[data-theme="light"] .comic-review-form .primary-button:hover,
+:root[data-theme="light"] .section-admin-tools .primary-button:hover {
+  border-color: rgba(169, 121, 47, 0.66);
+  background: rgba(169, 121, 47, 0.2);
+  color: var(--ink-strong);
+}
+
+:root[data-theme="light"] .policy-hero,
+:root[data-theme="light"] .resource-orbit-card,
+:root[data-theme="light"] .bonus-info-strip article,
+:root[data-theme="light"] .section-showcase-strip article,
+:root[data-theme="light"] .culture-values article,
+:root[data-theme="light"] .benefit-stack article,
+:root[data-theme="light"] .holiday-list article,
+:root[data-theme="light"] .internship-step,
+:root[data-theme="light"] .request-lane-list article,
+:root[data-theme="light"] .calendar-flex-grid article,
+:root[data-theme="light"] .document-card,
+:root[data-theme="light"] .project-card,
+:root[data-theme="light"] .challenge-card {
+  border-color: rgba(169, 121, 47, 0.22);
+  background:
+    radial-gradient(circle at 82% 18%, rgba(169, 121, 47, 0.12), transparent 24%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.66), transparent 58%),
+    rgba(255, 253, 248, 0.88);
+}
+
+:root[data-theme="light"] .policy-hero p,
+:root[data-theme="light"] .resource-orbit-card small,
+:root[data-theme="light"] .bonus-info-strip small,
+:root[data-theme="light"] .section-showcase-strip small,
+:root[data-theme="light"] .culture-values small,
+:root[data-theme="light"] .benefit-stack p,
+:root[data-theme="light"] .holiday-list p,
+:root[data-theme="light"] .sidebar-note p,
+:root[data-theme="light"] .bonus-doc-intro p:last-child,
+:root[data-theme="light"] .document-card p,
+:root[data-theme="light"] .project-card p,
+:root[data-theme="light"] .challenge-card p,
+:root[data-theme="light"] .request-lane-list p,
+:root[data-theme="light"] .internship-step p,
+:root[data-theme="light"] .calendar-flex-grid p,
+:root[data-theme="light"] p:not(.eyebrow),
+:root[data-theme="light"] li {
+  color: rgba(39, 35, 29, 0.68);
+}
+
+:root[data-theme="light"] .showcase-icon,
+:root[data-theme="light"] .resource-icon {
+  background:
+    radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.82), transparent 32%),
+    rgba(255, 250, 240, 0.88);
+}
+
+:root[data-theme="light"] .anti-values span {
+  border-color: rgba(201, 54, 47, 0.28);
+  background: rgba(201, 54, 47, 0.08);
+  color: #8e2a25;
+}
+
 @media (max-width: 1180px) {
   .overview-hero.intro-panel,
   .document-library-hero,
@@ -7807,7 +8217,8 @@ button.calendar-day {
   }
 
   .role-switcher,
-  .profile-chip {
+  .profile-chip,
+  .theme-toggle-button {
     max-width: 100%;
   }
 
