@@ -5188,11 +5188,18 @@ weeklyReportForm?.addEventListener("submit", async (event) => {
   const name = String(formData.get("name") || profile?.name || "").trim();
   const role = String(formData.get("role") || profile?.role || "Employee").trim();
   const reportWeek = String(formData.get("reportWeek") || "Current week").trim();
-  const focus = String(formData.get("focus") || "General work").trim();
+  const project = String(formData.get("project") || "General weekly report").trim();
   const completed = String(formData.get("completed") || "").trim();
-  const blockers = String(formData.get("blockers") || "No blockers reported.").trim();
-  const nextSteps = String(formData.get("nextSteps") || "").trim();
-  const links = String(formData.get("links") || "No links provided.").trim();
+  const inProgress = String(formData.get("inProgress") || "").trim();
+  const blockers = String(formData.get("blockers") || "No blockers or risks reported.").trim();
+  const primaryKpi = String(formData.get("primaryKpi") || "Not reported").trim();
+  const secondaryKpi = String(formData.get("secondaryKpi") || "Not reported").trim();
+  const deliveryCount = String(formData.get("deliveryCount") || "Not reported").trim();
+  const budgetMetric = String(formData.get("budgetMetric") || "Not reported").trim();
+  const budget = String(formData.get("budget") || "No budget updates reported.").trim();
+  const proposals = String(formData.get("proposals") || "No proposals or decisions reported.").trim();
+  const actions = String(formData.get("actions") || "No action items reported.").trim();
+  const teamPerformance = String(formData.get("teamPerformance") || "No team performance notes reported.").trim();
   const recipient = "organizational@the-banished.com";
   const label = "Weekly Report";
   const from = profile?.email || "";
@@ -5203,8 +5210,8 @@ weeklyReportForm?.addEventListener("submit", async (event) => {
     minute: "2-digit",
   });
 
-  if (!completed || !nextSteps) {
-    setRequestStatus(weeklyReportStatus, "Weekly report was not sent. Add completed work and next-week priorities.", "error");
+  if (!completed && !inProgress && !blockers) {
+    setRequestStatus(weeklyReportStatus, "Weekly report was not sent. Add at least completed work, in-progress work, or blockers.", "error");
     return;
   }
 
@@ -5214,19 +5221,34 @@ weeklyReportForm?.addEventListener("submit", async (event) => {
     `Role: ${role}`,
     `Employee email: ${from}`,
     `Reporting week: ${reportWeek}`,
-    `Project or focus: ${focus}`,
+    `Project / report type: ${project}`,
     "",
     "Completed this week:",
-    completed,
+    completed || "Nothing reported.",
+    "",
+    "In progress:",
+    inProgress || "Nothing reported.",
     "",
     "Blockers or risks:",
     blockers,
     "",
-    "Next week priorities:",
-    nextSteps,
+    "Key metrics:",
+    `Primary KPI: ${primaryKpi}`,
+    `Secondary KPI: ${secondaryKpi}`,
+    `Delivery count: ${deliveryCount}`,
+    `Budget / spend: ${budgetMetric}`,
     "",
-    "Links or proof:",
-    links,
+    "Budget snapshot:",
+    budget,
+    "",
+    "Proposals or decisions:",
+    proposals,
+    "",
+    "Action items required:",
+    actions,
+    "",
+    "Team performance:",
+    teamPerformance,
   ].join("\n");
 
   setRequestStatus(weeklyReportStatus, `Sending weekly report to ${recipient}...`, "pending");
@@ -5242,7 +5264,7 @@ weeklyReportForm?.addEventListener("submit", async (event) => {
         type: `Weekly Report - ${role}`,
         priority: "Weekly status",
         name: name || profile?.name || "",
-        details: `${focus}\n\n${completed}\n\nNext:\n${nextSteps}`,
+        details: `${project}\n\nCompleted:\n${completed || "Nothing reported."}\n\nIn progress:\n${inProgress || "Nothing reported."}\n\nBlockers:\n${blockers}`,
       },
     });
 
