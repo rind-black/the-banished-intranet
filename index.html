@@ -56,52 +56,56 @@
             <span aria-hidden="true">04</span>
             Projects
           </a>
-          <a class="nav-link" href="#script-studio" data-section-link="script-studio">
+          <a class="nav-link" href="#weekly-report" data-section-link="weekly-report">
             <span aria-hidden="true">05</span>
+            Weekly Report
+          </a>
+          <a class="nav-link" href="#script-studio" data-section-link="script-studio">
+            <span aria-hidden="true">06</span>
             Script Studio
           </a>
           <a class="nav-link" href="#storyboards" data-section-link="storyboards">
-            <span aria-hidden="true">06</span>
+            <span aria-hidden="true">07</span>
             Storyboards
           </a>
           <a class="nav-link" href="#comic-review" data-section-link="comic-review">
-            <span aria-hidden="true">07</span>
+            <span aria-hidden="true">08</span>
             Comic Review
           </a>
           <a class="nav-link" href="#bonuses" data-section-link="bonuses">
-            <span aria-hidden="true">08</span>
+            <span aria-hidden="true">09</span>
             Bonuses
           </a>
           <a class="nav-link" href="#monthly-challenge" data-section-link="monthly-challenge">
-            <span aria-hidden="true">09</span>
+            <span aria-hidden="true">10</span>
             Challenge
           </a>
           <a class="nav-link" href="#benefits" data-section-link="benefits">
-            <span aria-hidden="true">10</span>
+            <span aria-hidden="true">11</span>
             Benefits
           </a>
           <a class="nav-link" href="#holidays" data-section-link="holidays">
-            <span aria-hidden="true">11</span>
+            <span aria-hidden="true">12</span>
             Holidays
           </a>
           <a class="nav-link" href="#culture" data-section-link="culture">
-            <span aria-hidden="true">12</span>
+            <span aria-hidden="true">13</span>
             Culture
           </a>
           <a class="nav-link" href="#training" data-section-link="training">
-            <span aria-hidden="true">13</span>
+            <span aria-hidden="true">14</span>
             Training
           </a>
           <a class="nav-link" href="#internship" data-section-link="internship">
-            <span aria-hidden="true">14</span>
+            <span aria-hidden="true">15</span>
             Internship
           </a>
           <a class="nav-link" href="#requests" data-section-link="requests">
-            <span aria-hidden="true">15</span>
+            <span aria-hidden="true">16</span>
             Requests
           </a>
           <a class="nav-link" href="#admin" data-section-link="admin" data-admin-only hidden>
-            <span aria-hidden="true">16</span>
+            <span aria-hidden="true">17</span>
             Admin
           </a>
         </nav>
@@ -217,6 +221,15 @@
             </article>
             <article class="overview-quest-card">
               <span class="overview-quest-icon">04</span>
+              <div>
+                <p class="eyebrow">Weekly pulse</p>
+                <h3>Send report</h3>
+                <p>Share what moved, what is blocked, and what needs attention next week.</p>
+              </div>
+              <button type="button" data-section-link="weekly-report">Report week</button>
+            </article>
+            <article class="overview-quest-card">
+              <span class="overview-quest-icon">05</span>
               <div>
                 <p class="eyebrow">Support lane</p>
                 <h3>Send requests</h3>
@@ -963,6 +976,82 @@
               </section>
             </div>
           </article>
+        </section>
+
+        <section class="portal-section" id="weekly-report" data-section="weekly-report" aria-labelledby="weekly-report-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Weekly pulse</p>
+              <h2 id="weekly-report-title">Weekly Report</h2>
+            </div>
+          </div>
+
+          <div class="weekly-report-layout">
+            <article class="weekly-report-brief intro-panel">
+              <p class="eyebrow">Clear status</p>
+              <h2>Send one useful weekly update.</h2>
+              <p>
+                Use this report to summarize completed work, open risks, next-week priorities, and support needed from
+                leadership or another department.
+              </p>
+              <div class="weekly-report-points" aria-label="Weekly report structure">
+                <span>Done</span>
+                <span>Blocked</span>
+                <span>Next</span>
+                <span>Support</span>
+              </div>
+            </article>
+
+            <form class="request-form weekly-report-form" action="/api/requests" method="post" data-weekly-report-form>
+              <div class="weekly-report-form-head">
+                <p class="eyebrow">Status email</p>
+                <h3>Report the past week</h3>
+              </div>
+              <div class="script-form-grid">
+                <label>
+                  Full name
+                  <input name="name" type="text" autocomplete="name" placeholder="Your name" />
+                </label>
+                <label>
+                  Role
+                  <select name="role">
+                    <option>Project Manager</option>
+                    <option>Screenwriter</option>
+                    <option>Employee</option>
+                    <option>Intern</option>
+                    <option>Admin</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+                <label>
+                  Reporting week
+                  <input name="reportWeek" type="week" />
+                </label>
+                <label>
+                  Project or focus
+                  <input name="focus" type="text" placeholder="Project, department, or main focus" />
+                </label>
+              </div>
+              <label>
+                Completed this week
+                <textarea name="completed" rows="4" placeholder="List the concrete work completed, decisions made, files delivered, or milestones reached."></textarea>
+              </label>
+              <label>
+                Blockers or risks
+                <textarea name="blockers" rows="3" placeholder="Name anything that delayed work, needs a decision, or could affect schedule, budget, or quality."></textarea>
+              </label>
+              <label>
+                Next week priorities
+                <textarea name="nextSteps" rows="3" placeholder="Add the most important next steps for the coming week."></textarea>
+              </label>
+              <label>
+                Links or proof
+                <input name="links" type="text" placeholder="Links to docs, boards, files, screenshots, or deliverables" />
+              </label>
+              <button class="primary-button" type="submit">Send weekly report</button>
+              <p class="request-status" data-weekly-report-status hidden></p>
+            </form>
+          </div>
         </section>
 
         <section class="portal-section" id="script-studio" data-section="script-studio" aria-labelledby="script-studio-title">

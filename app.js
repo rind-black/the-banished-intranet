@@ -75,6 +75,8 @@ const contentRows = document.querySelector("[data-content-rows]");
 const auditRows = document.querySelector("[data-audit-rows]");
 const adminOnlyElements = document.querySelectorAll("[data-admin-only]");
 const unifiedRequestForm = document.querySelector("[data-unified-request-form]");
+const weeklyReportForm = document.querySelector("[data-weekly-report-form]");
+const weeklyReportStatus = document.querySelector("[data-weekly-report-status]");
 const scriptReviewForm = document.querySelector("[data-script-review-form]");
 const scriptReviewStatus = document.querySelector("[data-script-review-status]");
 const scriptFormatSelect = document.querySelector("[data-script-format]");
@@ -223,6 +225,7 @@ const titles = {
   "document-detail": "Document detail",
   projects: "Projects",
   "project-detail": "Project detail",
+  "weekly-report": "Weekly Report",
   "script-studio": "Script Studio",
   storyboards: "AI Storyboards",
   "comic-review": "Comic Artist Review",
@@ -245,6 +248,7 @@ const editableSections = {
   calendar: "Calendar",
   documents: "Documents",
   projects: "Projects",
+  "weekly-report": "Weekly Report",
   "script-studio": "Script Studio",
   storyboards: "AI Storyboards",
   "comic-review": "Comic Review",
@@ -986,6 +990,7 @@ const roleSectionAccess = {
     "calendar",
     "documents",
     "projects",
+    "weekly-report",
     "script-studio",
     "storyboards",
     "comic-review",
@@ -1006,6 +1011,7 @@ const roleSectionAccess = {
     "calendar",
     "documents",
     "projects",
+    "weekly-report",
     "script-studio",
     "storyboards",
     "comic-review",
@@ -1023,6 +1029,7 @@ const roleSectionAccess = {
     "calendar",
     "documents",
     "projects",
+    "weekly-report",
     "storyboards",
     "comic-review",
     "bonuses",
@@ -1053,6 +1060,7 @@ const roleSectionAccess = {
     "calendar",
     "documents",
     "projects",
+    "weekly-report",
     "storyboards",
     "comic-review",
     "bonuses",
@@ -2969,6 +2977,19 @@ function applyProfile(profile) {
 
   if (roleSwitcher) {
     roleSwitcher.value = profile.role || "Employee";
+  }
+
+  if (weeklyReportForm) {
+    const weeklyName = weeklyReportForm.elements.name;
+    const weeklyRole = weeklyReportForm.elements.role;
+
+    if (weeklyName && !weeklyName.value) {
+      weeklyName.value = profile.name || "";
+    }
+
+    if (weeklyRole && Array.from(weeklyRole.options).some((option) => option.value === profile.role)) {
+      weeklyRole.value = profile.role;
+    }
   }
 
   updateAvatarPreviews(profile);
@@ -5156,6 +5177,97 @@ scriptReviewForm?.addEventListener("submit", async (event) => {
     scriptReviewForm.reset();
   } catch (error) {
     setRequestStatus(scriptReviewStatus, `Script review failed. ${error.message}`, "error");
+  }
+});
+
+weeklyReportForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(weeklyReportForm);
+  const profile = currentProfile();
+  const name = String(formData.get("name") || profile?.name || "").trim();
+  const role = String(formData.get("role") || profile?.role || "Employee").trim();
+  const reportWeek = String(formData.get("reportWeek") || "Current week").trim();
+  const focus = String(formData.get("focus") || "General work").trim();
+  const completed = String(formData.get("completed") || "").trim();
+  const blockers = String(formData.get("blockers") || "No blockers reported.").trim();
+  const nextSteps = String(formData.get("nextSteps") || "").trim();
+  const links = String(formData.get("links") || "No links provided.").trim();
+  const recipient = "organizational@the-banished.com";
+  const label = "Weekly Report";
+  const from = profile?.email || "";
+  const createdAt = new Date().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  if (!completed || !nextSteps) {
+    setRequestStatus(weeklyReportStatus, "Weekly report was not sent. Add completed work and next-week priorities.", "error");
+    return;
+  }
+
+  const subject = `Weekly Report: ${name || profile?.email || "Employee"} / ${reportWeek}`;
+  const body = [
+    `Report owner: ${name || "Unknown"}`,
+    `Role: ${role}`,
+    `Employee email: ${from}`,
+    `Reporting week: ${reportWeek}`,
+    `Project or focus: ${focus}`,
+    "",
+    "Completed this week:",
+    completed,
+    "",
+    "Blockers or risks:",
+    blockers,
+    "",
+    "Next week priorities:",
+    nextSteps,
+    "",
+    "Links or proof:",
+    links,
+  ].join("\n");
+
+  setRequestStatus(weeklyReportStatus, `Sending weekly report to ${recipient}...`, "pending");
+
+  try {
+    await postPortalEmail("/api/requests", {
+      recipient,
+      label,
+      subject,
+      body,
+      from,
+      request: {
+        type: `Weekly Report - ${role}`,
+        priority: "Weekly status",
+        name: name || profile?.name || "",
+        details: `${focus}\n\n${completed}\n\nNext:\n${nextSteps}`,
+      },
+    });
+
+    const requests = getRequests();
+    requests.push({
+      createdAt,
+      from: from || "Unknown",
+      type: `Weekly Report - ${role}`,
+      recipient,
+      label,
+    });
+    setRequests(requests);
+    renderRequests();
+    setRequestStatus(weeklyReportStatus, `Weekly report email sent to ${recipient}.`);
+    weeklyReportForm.reset();
+
+    if (weeklyReportForm.elements.name) {
+      weeklyReportForm.elements.name.value = profile?.name || "";
+    }
+
+    if (weeklyReportForm.elements.role && Array.from(weeklyReportForm.elements.role.options).some((option) => option.value === profile?.role)) {
+      weeklyReportForm.elements.role.value = profile.role;
+    }
+  } catch (error) {
+    setRequestStatus(weeklyReportStatus, `Weekly report failed. ${error.message}`, "error");
   }
 });
 

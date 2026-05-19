@@ -6225,6 +6225,7 @@ button.calendar-day {
   .overview-hero.intro-panel,
   .purpose-grid,
   .overview-quest-grid,
+  .weekly-report-layout,
   .request-layout,
   .policy-grid,
   .company-grid,
@@ -6500,7 +6501,8 @@ button.calendar-day {
 
 /* Final cascade for the May polish pass. */
 .overview-hero.intro-panel {
-  grid-template-columns: minmax(0, 1.35fr) minmax(270px, 0.65fr);
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.34fr);
+  gap: 12px;
 }
 
 .overview-hero-copy,
@@ -6861,6 +6863,59 @@ button.calendar-day {
   border-color: rgba(203, 169, 92, 0.72);
   background: rgba(203, 169, 92, 0.2);
   color: #ffffff;
+}
+
+.weekly-report-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.68fr) minmax(360px, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.weekly-report-brief {
+  display: grid;
+  gap: 14px;
+  min-height: 0;
+  padding: 24px;
+  border-radius: 8px 38px 8px 8px;
+}
+
+.weekly-report-brief h2 {
+  max-width: 520px;
+  margin: 0;
+  font-size: clamp(26px, 2.6vw, 42px);
+}
+
+.weekly-report-brief p:not(.eyebrow) {
+  max-width: 560px;
+  font-size: 14px;
+  line-height: 1.52;
+}
+
+.weekly-report-points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.weekly-report-points span {
+  display: inline-grid;
+  min-height: 34px;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid rgba(203, 169, 92, 0.28);
+  border-radius: 999px;
+  background: rgba(203, 169, 92, 0.08);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.weekly-report-form-head h3 {
+  margin: 0;
+  font-size: 24px;
+  text-transform: uppercase;
 }
 
 .admin-grid {
@@ -7947,9 +8002,9 @@ button.calendar-day {
 }
 
 .overview-hero-copy {
-  min-height: 220px;
-  padding: 26px 30px;
-  border-radius: 8px 46px 8px 8px;
+  min-height: 150px;
+  padding: 20px 24px;
+  border-radius: 8px 34px 8px 8px;
 }
 
 .overview-hero-copy::after {
@@ -7957,18 +8012,42 @@ button.calendar-day {
 }
 
 .overview-hero-copy h2 {
-  max-width: 760px;
-  margin-bottom: 12px;
-  font-size: clamp(34px, 3.6vw, 56px);
+  max-width: 660px;
+  margin-bottom: 8px;
+  font-size: clamp(24px, 2.4vw, 38px);
 }
 
 .overview-hero-copy p:not(.eyebrow) {
-  max-width: 820px;
-  font-size: clamp(15px, 1.25vw, 19px);
+  max-width: 720px;
+  font-size: 14px;
+  line-height: 1.46;
 }
 
 .overview-player-card {
-  min-height: 220px;
+  min-height: 150px;
+  padding: 18px;
+}
+
+.overview-player-card > strong {
+  margin: 8px 0 5px;
+  font-size: 20px;
+}
+
+.overview-player-card > p {
+  margin-bottom: 10px;
+  font-size: 11px;
+}
+
+.overview-credit-row {
+  margin-bottom: 10px;
+}
+
+.overview-credit-row article {
+  padding: 10px;
+}
+
+.overview-credit-row b {
+  font-size: 22px;
 }
 
 .document-card-grid.active {
@@ -8421,11 +8500,84 @@ button.calendar-day {
   color: var(--ink-strong);
 }
 
+:root[data-theme="light"] .weekly-report-brief,
+:root[data-theme="light"] .bonus-hero,
+:root[data-theme="light"] .bonus-flow article,
+:root[data-theme="light"] .benefit-category-grid article,
+:root[data-theme="light"] .comic-preview-grid article,
+:root[data-theme="light"] .storyboard-empty {
+  border-color: rgba(169, 121, 47, 0.22);
+  background:
+    radial-gradient(circle at 84% 18%, rgba(169, 121, 47, 0.11), transparent 24%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.76), transparent 58%),
+    rgba(255, 253, 248, 0.94);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+
+:root[data-theme="light"] .benefit-category-grid {
+  border-color: rgba(169, 121, 47, 0.2);
+  background: rgba(169, 121, 47, 0.2);
+}
+
+:root[data-theme="light"] .benefit-category-icon,
+:root[data-theme="light"] .comic-file-icon,
+:root[data-theme="light"] .bonus-flow span,
+:root[data-theme="light"] .bonus-conversion span,
+:root[data-theme="light"] .bonus-conversion strong,
+:root[data-theme="light"] .weekly-report-points span {
+  border-color: rgba(169, 121, 47, 0.28);
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.84), transparent 34%),
+    rgba(255, 250, 240, 0.9);
+  color: var(--gold);
+}
+
+:root[data-theme="light"] .bonus-conversion i {
+  background: linear-gradient(90deg, rgba(201, 54, 47, 0.55), rgba(169, 121, 47, 0.58));
+}
+
+:root[data-theme="light"] .bonus-hero > p,
+:root[data-theme="light"] .bonus-flow small,
+:root[data-theme="light"] .benefit-category-grid small,
+:root[data-theme="light"] .comic-preview-grid span,
+:root[data-theme="light"] .storyboard-empty span,
+:root[data-theme="light"] .weekly-report-brief p:not(.eyebrow) {
+  color: rgba(39, 35, 29, 0.68);
+}
+
+:root[data-theme="light"] .bonus-hero h3,
+:root[data-theme="light"] .bonus-flow strong,
+:root[data-theme="light"] .benefit-category-grid strong,
+:root[data-theme="light"] .comic-preview-grid strong,
+:root[data-theme="light"] .storyboard-empty strong,
+:root[data-theme="light"] .weekly-report-form-head h3 {
+  color: var(--ink-strong);
+}
+
+:root[data-theme="light"] .storyboard-output {
+  color: var(--ink);
+}
+
+:root[data-theme="light"] .internship-step-grid::before {
+  background: linear-gradient(180deg, rgba(169, 121, 47, 0.12), rgba(169, 121, 47, 0.48), rgba(169, 121, 47, 0.12));
+}
+
+:root[data-theme="light"] .internship-step > span {
+  border-color: rgba(169, 121, 47, 0.42);
+  background:
+    radial-gradient(circle at 46% 36%, rgba(255, 255, 255, 0.86), transparent 32%),
+    rgba(255, 250, 240, 0.94);
+  color: var(--gold);
+  box-shadow: 0 0 0 8px rgba(255, 250, 240, 0.92);
+}
+
 @media (max-width: 1180px) {
   .overview-hero.intro-panel,
   .document-library-hero,
   .project-command-board,
   .challenge-game-panel,
+  .weekly-report-layout,
   .benefit-category-grid,
   .bonus-doc-intro,
   .bonus-info-strip,
