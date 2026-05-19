@@ -200,6 +200,21 @@ const defaultUsers = {
     status: "Active",
     bonusCredits: 0,
   },
+  "actor@the-banished.com": {
+    password: inviteTempPassword,
+    name: "Actor User",
+    role: "Actor",
+    department: "Casting",
+    timezone: "America/New_York",
+    employmentType: "contractor",
+    calendarRegion: "us",
+    ipCountryCode: "US",
+    ipCountryName: "United States",
+    avatarDataUrl: "",
+    admin: false,
+    status: "Active",
+    bonusCredits: 0,
+  },
   "intern@the-banished.com": {
     password: inviteTempPassword,
     name: "Intern User",
@@ -225,6 +240,7 @@ const titles = {
   "document-detail": "Document detail",
   projects: "Projects",
   "project-detail": "Project detail",
+  actors: "Actor Hub",
   "weekly-report": "Weekly Report",
   "script-studio": "Script Studio",
   storyboards: "AI Storyboards",
@@ -248,6 +264,7 @@ const editableSections = {
   calendar: "Calendar",
   documents: "Documents",
   projects: "Projects",
+  actors: "Actor Hub",
   "weekly-report": "Weekly Report",
   "script-studio": "Script Studio",
   storyboards: "AI Storyboards",
@@ -972,10 +989,11 @@ const projectPages = {
   },
 };
 
-const roleNames = ["Admin", "Screenwriter", "Project Manager", "Intern", "Employee"];
+const roleNames = ["Admin", "Actor", "Screenwriter", "Project Manager", "Intern", "Employee"];
 
 const roleSlugs = {
   Admin: "admin",
+  Actor: "actor",
   Screenwriter: "screenwriter",
   "Project Manager": "project-manager",
   Intern: "intern",
@@ -990,6 +1008,7 @@ const roleSectionAccess = {
     "calendar",
     "documents",
     "projects",
+    "actors",
     "weekly-report",
     "script-studio",
     "storyboards",
@@ -1029,6 +1048,7 @@ const roleSectionAccess = {
     "calendar",
     "documents",
     "projects",
+    "actors",
     "weekly-report",
     "storyboards",
     "comic-review",
@@ -1051,6 +1071,22 @@ const roleSectionAccess = {
     "holidays",
     "culture",
     "internship",
+    "requests",
+    "profile",
+  ],
+  Actor: [
+    "overview",
+    "announcements",
+    "calendar",
+    "documents",
+    "projects",
+    "actors",
+    "weekly-report",
+    "monthly-challenge",
+    "benefits",
+    "holidays",
+    "culture",
+    "training",
     "requests",
     "profile",
   ],
@@ -1091,6 +1127,10 @@ function normalizeRole(role) {
 
   if (rawRole.toLowerCase() === "general") {
     return "Employee";
+  }
+
+  if (rawRole.toLowerCase() === "actors") {
+    return "Actor";
   }
 
   return "Employee";

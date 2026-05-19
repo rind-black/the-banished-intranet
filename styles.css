@@ -15,9 +15,10 @@
   --green: #45a785;
   --shadow: 0 22px 62px rgba(0, 0, 0, 0.36);
   --section-pattern:
-    linear-gradient(135deg, rgba(203, 169, 92, 0.08) 0 1px, transparent 1px 28px),
-    linear-gradient(45deg, rgba(231, 55, 47, 0.065) 0 1px, transparent 1px 34px),
-    repeating-linear-gradient(90deg, rgba(247, 243, 234, 0.028) 0 1px, transparent 1px 72px);
+    repeating-linear-gradient(118deg, rgba(203, 169, 92, 0.052) 0 1px, transparent 1px 42px),
+    repeating-linear-gradient(32deg, rgba(231, 55, 47, 0.042) 0 1px, transparent 1px 58px),
+    radial-gradient(ellipse 80px 26px at 20% 24%, transparent 58%, rgba(247, 243, 234, 0.034) 59% 60%, transparent 61%),
+    radial-gradient(ellipse 64px 20px at 82% 76%, transparent 56%, rgba(203, 169, 92, 0.034) 57% 59%, transparent 60%);
 }
 
 * {
@@ -29,19 +30,40 @@ html {
 }
 
 body {
+  position: relative;
+  isolation: isolate;
   margin: 0;
   min-width: 320px;
   background:
-    linear-gradient(90deg, rgba(247, 243, 234, 0.026) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(247, 243, 234, 0.022) 1px, transparent 1px),
-    linear-gradient(180deg, #101010 0%, var(--paper) 42%);
-  background-size: 80px 80px, 80px 80px, auto;
+    radial-gradient(ellipse at 24% 8%, rgba(203, 169, 92, 0.08), transparent 36%),
+    linear-gradient(180deg, #101010 0%, var(--paper) 46%);
   color: var(--ink);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(124deg, transparent 0 42px, rgba(203, 169, 92, 0.038) 43px 44px, transparent 45px 96px),
+    repeating-linear-gradient(28deg, transparent 0 54px, rgba(231, 55, 47, 0.03) 55px 56px, transparent 57px 118px),
+    radial-gradient(ellipse 92px 28px at 12% 18%, transparent 56%, rgba(247, 243, 234, 0.036) 57% 58%, transparent 59%),
+    radial-gradient(ellipse 78px 24px at 78% 28%, transparent 56%, rgba(203, 169, 92, 0.038) 57% 58%, transparent 59%),
+    radial-gradient(ellipse 108px 32px at 52% 82%, transparent 57%, rgba(247, 243, 234, 0.028) 58% 59%, transparent 60%);
+  background-size: 360px 260px, 420px 300px, 460px 340px, 520px 360px, 560px 380px;
+  opacity: 0.72;
+}
+
+.auth-screen,
+.shell {
+  position: relative;
+  z-index: 1;
 }
 
 button,
@@ -8176,18 +8198,26 @@ button.calendar-day {
   --green: #2d8065;
   --shadow: 0 22px 58px rgba(81, 63, 35, 0.16);
   --section-pattern:
-    linear-gradient(135deg, rgba(169, 121, 47, 0.11) 0 1px, transparent 1px 28px),
-    linear-gradient(45deg, rgba(201, 54, 47, 0.07) 0 1px, transparent 1px 34px),
-    repeating-linear-gradient(90deg, rgba(31, 27, 21, 0.035) 0 1px, transparent 1px 72px);
+    repeating-linear-gradient(118deg, rgba(169, 121, 47, 0.072) 0 1px, transparent 1px 42px),
+    repeating-linear-gradient(32deg, rgba(201, 54, 47, 0.046) 0 1px, transparent 1px 58px),
+    radial-gradient(ellipse 80px 26px at 20% 24%, transparent 58%, rgba(31, 27, 21, 0.034) 59% 60%, transparent 61%),
+    radial-gradient(ellipse 64px 20px at 82% 76%, transparent 56%, rgba(169, 121, 47, 0.052) 57% 59%, transparent 60%);
 }
 
 :root[data-theme="light"] body {
   background:
-    linear-gradient(90deg, rgba(31, 27, 21, 0.04) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(31, 27, 21, 0.032) 1px, transparent 1px),
-    radial-gradient(circle at 18% 12%, rgba(201, 54, 47, 0.08), transparent 26%),
-    linear-gradient(180deg, #fffaf0 0%, #f4ede0 54%, #eee4d4 100%);
-  background-size: 80px 80px, 80px 80px, auto, auto;
+    radial-gradient(ellipse at 20% 8%, rgba(169, 121, 47, 0.13), transparent 36%),
+    linear-gradient(180deg, #fffaf0 0%, #f4ede0 56%, #eee4d4 100%);
+}
+
+:root[data-theme="light"] body::before {
+  background:
+    repeating-linear-gradient(124deg, transparent 0 42px, rgba(169, 121, 47, 0.06) 43px 44px, transparent 45px 96px),
+    repeating-linear-gradient(28deg, transparent 0 54px, rgba(201, 54, 47, 0.035) 55px 56px, transparent 57px 118px),
+    radial-gradient(ellipse 92px 28px at 12% 18%, transparent 56%, rgba(31, 27, 21, 0.038) 57% 58%, transparent 59%),
+    radial-gradient(ellipse 78px 24px at 78% 28%, transparent 56%, rgba(169, 121, 47, 0.05) 57% 58%, transparent 59%),
+    radial-gradient(ellipse 108px 32px at 52% 82%, transparent 57%, rgba(31, 27, 21, 0.03) 58% 59%, transparent 60%);
+  opacity: 0.66;
 }
 
 :root[data-theme="light"] .auth-panel,
@@ -8825,6 +8855,500 @@ h1[data-page-title] {
     rgba(255, 250, 240, 0.94);
 }
 
+/* Actor hub and final theme repair pass. */
+.actor-hub-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.actor-hero-panel,
+.actor-resource-grid article {
+  border: 1px solid rgba(203, 169, 92, 0.22);
+  background:
+    var(--section-pattern),
+    linear-gradient(135deg, rgba(203, 169, 92, 0.1), transparent 60%),
+    rgba(14, 14, 16, 0.96);
+  box-shadow: var(--shadow);
+}
+
+.actor-hero-panel {
+  display: grid;
+  gap: 14px;
+  min-height: 318px;
+  padding: 24px;
+  border-radius: 8px 46px 8px 8px;
+}
+
+.actor-hero-panel h3 {
+  max-width: 620px;
+  margin: 0;
+  color: var(--ink-strong);
+  font-size: clamp(24px, 2.1vw, 36px);
+  line-height: 1.04;
+  text-transform: uppercase;
+}
+
+.actor-hero-panel p:not(.eyebrow) {
+  max-width: 620px;
+  margin: 0;
+  color: rgba(247, 243, 234, 0.64);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.actor-status-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-self: end;
+}
+
+.actor-status-strip span {
+  display: inline-grid;
+  min-height: 34px;
+  align-items: center;
+  padding: 0 12px;
+  border: 1px solid rgba(203, 169, 92, 0.28);
+  border-radius: 999px;
+  background: rgba(203, 169, 92, 0.08);
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.actor-resource-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.actor-resource-grid article {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 8px 13px;
+  min-height: 136px;
+  padding: 16px;
+  overflow: hidden;
+  border-radius: 24px 10px 24px 10px;
+}
+
+.actor-resource-grid strong,
+.actor-resource-grid p {
+  display: block;
+}
+
+.actor-resource-grid strong {
+  align-self: end;
+  color: var(--ink-strong);
+  font-size: 13px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.actor-resource-grid p {
+  grid-column: 2;
+  margin: 0;
+  color: rgba(247, 243, 234, 0.62);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.actor-update-form {
+  grid-column: 1 / -1;
+  border-radius: 22px;
+}
+
+.actor-resource-icon {
+  position: relative;
+  display: grid;
+  width: 50px;
+  aspect-ratio: 1;
+  place-items: center;
+  grid-row: span 2;
+  border: 1px solid rgba(203, 169, 92, 0.42);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 30%, rgba(247, 243, 234, 0.18), transparent 32%),
+    rgba(0, 0, 0, 0.5);
+}
+
+.actor-resource-icon::before,
+.actor-resource-icon::after {
+  content: "";
+  position: absolute;
+  border-color: var(--gold);
+}
+
+.actor-profile-icon::before {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  transform: translateY(-6px);
+}
+
+.actor-profile-icon::after {
+  width: 28px;
+  height: 14px;
+  border: 2px solid var(--gold);
+  border-top: 0;
+  border-radius: 0 0 18px 18px;
+  transform: translateY(13px);
+}
+
+.actor-audition-icon::before {
+  width: 24px;
+  height: 18px;
+  border: 2px solid var(--gold);
+  border-radius: 5px;
+}
+
+.actor-audition-icon::after {
+  right: 9px;
+  width: 11px;
+  height: 11px;
+  border-top: 2px solid var(--gold);
+  border-right: 2px solid var(--gold);
+  transform: rotate(45deg);
+}
+
+.actor-calendar-icon::before {
+  width: 26px;
+  height: 24px;
+  border: 2px solid var(--gold);
+  border-radius: 5px;
+}
+
+.actor-calendar-icon::after {
+  width: 16px;
+  height: 2px;
+  background: var(--gold);
+  box-shadow: 0 7px 0 var(--gold);
+}
+
+.actor-contract-icon::before {
+  width: 22px;
+  height: 28px;
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+}
+
+.actor-contract-icon::after {
+  width: 14px;
+  height: 8px;
+  border-left: 2px solid var(--gold);
+  border-bottom: 2px solid var(--gold);
+  transform: rotate(-45deg);
+}
+
+.actor-set-icon::before {
+  width: 28px;
+  height: 18px;
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  transform: rotate(-8deg);
+}
+
+.actor-set-icon::after {
+  width: 26px;
+  height: 2px;
+  background: var(--gold);
+  transform: rotate(-28deg);
+}
+
+.actor-feedback-icon::before {
+  width: 26px;
+  height: 20px;
+  border: 2px solid var(--gold);
+  border-radius: 6px;
+}
+
+.actor-feedback-icon::after {
+  width: 8px;
+  height: 8px;
+  border-left: 2px solid var(--gold);
+  border-bottom: 2px solid var(--gold);
+  transform: translate(-6px, 12px) rotate(-28deg);
+}
+
+.document-card-grid.active {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 144px));
+  gap: 18px;
+}
+
+.document-tile {
+  max-width: 144px;
+  gap: 9px;
+}
+
+.document-icon-plate {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px 10px 24px 10px;
+}
+
+.document-icon-plate::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(203, 169, 92, 0.14);
+  border-radius: 18px 8px 18px 8px;
+}
+
+.document-icon-plate::after {
+  content: "";
+  position: absolute;
+  right: 13px;
+  top: 13px;
+  width: 12px;
+  height: 12px;
+  border: 1px solid rgba(203, 169, 92, 0.5);
+  border-radius: 50%;
+}
+
+.document-icon-plate svg {
+  width: 38px;
+  z-index: 1;
+}
+
+.document-label {
+  padding: 4px 7px;
+  font-size: 9px;
+}
+
+.document-tile strong {
+  font-size: 12px;
+  line-height: 1.18;
+}
+
+.document-tile small {
+  max-width: 18ch;
+  -webkit-line-clamp: 2;
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+:root[data-theme="light"] .script-hero-card,
+:root[data-theme="light"] .script-format-grid article,
+:root[data-theme="light"] .script-review-form,
+:root[data-theme="light"] .script-page-shell,
+:root[data-theme="light"] .script-toolbar,
+:root[data-theme="light"] .script-submit-panel,
+:root[data-theme="light"] .script-stats span,
+:root[data-theme="light"] .script-export-actions button,
+:root[data-theme="light"] .bonus-hero,
+:root[data-theme="light"] .bonus-flow article,
+:root[data-theme="light"] .bonus-doc-intro > div:first-child,
+:root[data-theme="light"] .bonus-info-strip article,
+:root[data-theme="light"] .policy-card,
+:root[data-theme="light"] .policy-document,
+:root[data-theme="light"] .policy-hero,
+:root[data-theme="light"] .policy-callout,
+:root[data-theme="light"] .policy-section,
+:root[data-theme="light"] .policy-grid div,
+:root[data-theme="light"] .policy-footer,
+:root[data-theme="light"] .benefit-snapshot article,
+:root[data-theme="light"] .benefit-timeline-card,
+:root[data-theme="light"] .benefit-matrix-card,
+:root[data-theme="light"] .benefit-timeline li,
+:root[data-theme="light"] .benefit-matrix span,
+:root[data-theme="light"] .benefit-matrix strong,
+:root[data-theme="light"] .benefit-key span,
+:root[data-theme="light"] .benefit-stack article,
+:root[data-theme="light"] .holiday-list article,
+:root[data-theme="light"] .holiday-popover,
+:root[data-theme="light"] .holiday-flow article,
+:root[data-theme="light"] .internship-panel.intro-panel,
+:root[data-theme="light"] .internship-step,
+:root[data-theme="light"] .internship-popover,
+:root[data-theme="light"] .internship-action-button,
+:root[data-theme="light"] .internship-card,
+:root[data-theme="light"] .internship-detail,
+:root[data-theme="light"] .admin-card,
+:root[data-theme="light"] .admin-table-wrap,
+:root[data-theme="light"] .admin-table,
+:root[data-theme="light"] .admin-table th,
+:root[data-theme="light"] .admin-table td,
+:root[data-theme="light"] .challenge-player-card,
+:root[data-theme="light"] .challenge-reward-card,
+:root[data-theme="light"] .challenge-card-button,
+:root[data-theme="light"] .challenge-card-detail,
+:root[data-theme="light"] .challenge-detail-stats span,
+:root[data-theme="light"] .challenge-empty-state,
+:root[data-theme="light"] .profile-player-card,
+:root[data-theme="light"] .profile-quick-stats article,
+:root[data-theme="light"] .profile-level-orb,
+:root[data-theme="light"] .profile-edit-panel,
+:root[data-theme="light"] .profile-form,
+:root[data-theme="light"] .profile-edit-panel .profile-form,
+:root[data-theme="light"] .actor-hero-panel,
+:root[data-theme="light"] .actor-resource-grid article,
+:root[data-theme="light"] .actor-update-form {
+  border-color: rgba(169, 121, 47, 0.22);
+  background:
+    var(--section-pattern),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.78), transparent 60%),
+    rgba(255, 253, 248, 0.95);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+
+:root[data-theme="light"] .script-page-editor {
+  border-color: rgba(31, 27, 21, 0.18);
+  background:
+    linear-gradient(90deg, transparent 0 10%, rgba(169, 121, 47, 0.08) 10% 10.3%, transparent 10.3%),
+    #fffefa;
+  color: #17130f;
+}
+
+:root[data-theme="light"] .script-page-sidebar,
+:root[data-theme="light"] .script-form-head span,
+:root[data-theme="light"] .script-toolbar button,
+:root[data-theme="light"] .bonus-conversion span,
+:root[data-theme="light"] .bonus-conversion strong,
+:root[data-theme="light"] .bonus-flow span,
+:root[data-theme="light"] .policy-number,
+:root[data-theme="light"] .bonus-doc-glyph,
+:root[data-theme="light"] .benefit-meter,
+:root[data-theme="light"] .benefit-timeline li::before,
+:root[data-theme="light"] .holiday-list span,
+:root[data-theme="light"] .internship-step > span,
+:root[data-theme="light"] .challenge-icon,
+:root[data-theme="light"] .challenge-icon::after,
+:root[data-theme="light"] .challenge-orbit,
+:root[data-theme="light"] .profile-rank-track i,
+:root[data-theme="light"] .actor-resource-icon,
+:root[data-theme="light"] .actor-status-strip span {
+  border-color: rgba(169, 121, 47, 0.3);
+  background:
+    radial-gradient(circle at 36% 30%, rgba(255, 255, 255, 0.86), transparent 34%),
+    rgba(255, 250, 240, 0.92);
+  color: var(--gold);
+}
+
+:root[data-theme="light"] .script-page-sidebar span,
+:root[data-theme="light"] .script-editor-footer,
+:root[data-theme="light"] .script-stats span,
+:root[data-theme="light"] .script-export-actions button,
+:root[data-theme="light"] .script-hero-card p:last-child,
+:root[data-theme="light"] .script-format-grid span,
+:root[data-theme="light"] .script-submit-panel strong,
+:root[data-theme="light"] .bonus-hero > p,
+:root[data-theme="light"] .bonus-flow small,
+:root[data-theme="light"] .bonus-info-strip small,
+:root[data-theme="light"] .policy-card small,
+:root[data-theme="light"] .policy-hero p,
+:root[data-theme="light"] .policy-callout p,
+:root[data-theme="light"] .policy-section p,
+:root[data-theme="light"] .policy-section li,
+:root[data-theme="light"] .policy-footer span,
+:root[data-theme="light"] .benefit-snapshot p,
+:root[data-theme="light"] .benefit-timeline small,
+:root[data-theme="light"] .benefit-stack p,
+:root[data-theme="light"] .holiday-list p,
+:root[data-theme="light"] .holiday-popover,
+:root[data-theme="light"] .holiday-flow p,
+:root[data-theme="light"] .internship-step p,
+:root[data-theme="light"] .internship-popover li,
+:root[data-theme="light"] .internship-action-button small,
+:root[data-theme="light"] .internship-detail li,
+:root[data-theme="light"] .admin-note,
+:root[data-theme="light"] .admin-table td,
+:root[data-theme="light"] .admin-table small,
+:root[data-theme="light"] .challenge-card-copy small,
+:root[data-theme="light"] .challenge-card-detail p,
+:root[data-theme="light"] .challenge-card-detail li,
+:root[data-theme="light"] .challenge-detail-stats small,
+:root[data-theme="light"] .profile-player-card p:not(.eyebrow),
+:root[data-theme="light"] .profile-quick-stats p,
+:root[data-theme="light"] .profile-form small,
+:root[data-theme="light"] .actor-hero-panel p:not(.eyebrow),
+:root[data-theme="light"] .actor-resource-grid p {
+  color: rgba(39, 35, 29, 0.68);
+}
+
+:root[data-theme="light"] .script-hero-card h3,
+:root[data-theme="light"] .script-form-head h3,
+:root[data-theme="light"] .bonus-hero h3,
+:root[data-theme="light"] .bonus-flow strong,
+:root[data-theme="light"] .bonus-info-strip strong,
+:root[data-theme="light"] .policy-card strong,
+:root[data-theme="light"] .policy-hero h3,
+:root[data-theme="light"] .policy-callout strong,
+:root[data-theme="light"] .policy-section h4,
+:root[data-theme="light"] .policy-footer strong,
+:root[data-theme="light"] .benefit-snapshot strong,
+:root[data-theme="light"] .benefit-timeline strong,
+:root[data-theme="light"] .benefit-matrix strong,
+:root[data-theme="light"] .benefit-stack strong,
+:root[data-theme="light"] .holiday-list strong,
+:root[data-theme="light"] .holiday-flow strong,
+:root[data-theme="light"] .internship-step h3,
+:root[data-theme="light"] .internship-popover h4,
+:root[data-theme="light"] .internship-action-button strong,
+:root[data-theme="light"] .internship-card h3,
+:root[data-theme="light"] .internship-detail h4,
+:root[data-theme="light"] .admin-card h3,
+:root[data-theme="light"] .admin-table strong,
+:root[data-theme="light"] .challenge-card-copy strong,
+:root[data-theme="light"] .challenge-card-detail h4,
+:root[data-theme="light"] .challenge-player-card strong,
+:root[data-theme="light"] .profile-player-card h3,
+:root[data-theme="light"] .profile-quick-stats strong,
+:root[data-theme="light"] .profile-form-head h3,
+:root[data-theme="light"] .actor-hero-panel h3,
+:root[data-theme="light"] .actor-resource-grid strong {
+  color: var(--ink-strong);
+}
+
+:root[data-theme="light"] .script-block,
+:root[data-theme="light"] .script-block.is-scene,
+:root[data-theme="light"] .script-block.is-character,
+:root[data-theme="light"] .script-block.is-comic-page,
+:root[data-theme="light"] .script-block.is-comic-panel,
+:root[data-theme="light"] .script-block.is-comic-caption,
+:root[data-theme="light"] .script-block.is-comic-sfx,
+:root[data-theme="light"] .script-block.is-comic-note {
+  color: #17130f;
+}
+
+:root[data-theme="light"] .script-page-editor:empty::before {
+  color: rgba(39, 35, 29, 0.36);
+}
+
+:root[data-theme="light"] .benefit-matrix .full {
+  color: #1e6e52;
+  background:
+    linear-gradient(135deg, rgba(45, 128, 101, 0.14), transparent 55%),
+    rgba(255, 253, 248, 0.96);
+}
+
+:root[data-theme="light"] .benefit-matrix .some {
+  color: #8a6327;
+  background:
+    linear-gradient(135deg, rgba(169, 121, 47, 0.14), transparent 55%),
+    rgba(255, 253, 248, 0.96);
+}
+
+:root[data-theme="light"] .admin-table select,
+:root[data-theme="light"] .admin-table input[type="number"],
+:root[data-theme="light"] .admin-table input[type="text"] {
+  background: rgba(255, 253, 248, 0.96);
+  color: var(--ink-strong);
+}
+
+:root[data-theme="light"] .request-form .primary-button:hover,
+:root[data-theme="light"] .admin-card .primary-button:hover,
+:root[data-theme="light"] .script-submit-panel .primary-button:hover,
+:root[data-theme="light"] .storyboard-form .primary-button:hover,
+:root[data-theme="light"] .comic-review-form .primary-button:hover,
+:root[data-theme="light"] .section-admin-tools .primary-button:hover {
+  color: var(--ink-strong);
+}
+
 @media (max-width: 1180px) {
   .overview-hero.intro-panel,
   .document-library-hero,
@@ -8834,6 +9358,8 @@ h1[data-page-title] {
   .benefit-category-grid,
   .bonus-doc-intro,
   .bonus-info-strip,
+  .actor-hub-layout,
+  .actor-resource-grid,
   .request-layout,
   .admin-grid {
     grid-template-columns: 1fr;
@@ -8861,12 +9387,15 @@ h1[data-page-title] {
 @media (max-width: 680px) {
   .document-library-stats,
   .benefit-category-grid,
-  .document-card-grid.active,
   .project-list,
   .challenge-card-grid,
   .resource-orbit-grid,
   .request-lane-list article {
     grid-template-columns: 1fr;
+  }
+
+  .document-card-grid.active {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .request-lane-list {

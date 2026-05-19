@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>The Banished Internal Portal</title>
-    <link rel="stylesheet" href="styles.css?v=portal-ui-polish-3" />
+    <link rel="stylesheet" href="styles.css?v=actor-theme-polish-1" />
   </head>
   <body>
     <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
@@ -56,48 +56,52 @@
             <span aria-hidden="true">04</span>
             Projects
           </a>
-          <a class="nav-link" href="#script-studio" data-section-link="script-studio">
+          <a class="nav-link" href="#actors" data-section-link="actors">
             <span aria-hidden="true">05</span>
+            Actor Hub
+          </a>
+          <a class="nav-link" href="#script-studio" data-section-link="script-studio">
+            <span aria-hidden="true">06</span>
             Script Studio
           </a>
           <a class="nav-link" href="#storyboards" data-section-link="storyboards">
-            <span aria-hidden="true">06</span>
+            <span aria-hidden="true">07</span>
             Storyboards
           </a>
           <a class="nav-link" href="#comic-review" data-section-link="comic-review">
-            <span aria-hidden="true">07</span>
+            <span aria-hidden="true">08</span>
             Comic Review
           </a>
           <a class="nav-link" href="#bonuses" data-section-link="bonuses">
-            <span aria-hidden="true">08</span>
+            <span aria-hidden="true">09</span>
             Bonuses
           </a>
           <a class="nav-link" href="#benefits" data-section-link="benefits">
-            <span aria-hidden="true">09</span>
+            <span aria-hidden="true">10</span>
             Benefits
           </a>
           <a class="nav-link" href="#holidays" data-section-link="holidays">
-            <span aria-hidden="true">10</span>
+            <span aria-hidden="true">11</span>
             Holidays
           </a>
           <a class="nav-link" href="#culture" data-section-link="culture">
-            <span aria-hidden="true">11</span>
+            <span aria-hidden="true">12</span>
             Culture
           </a>
           <a class="nav-link" href="#training" data-section-link="training">
-            <span aria-hidden="true">12</span>
+            <span aria-hidden="true">13</span>
             Training
           </a>
           <a class="nav-link" href="#internship" data-section-link="internship">
-            <span aria-hidden="true">13</span>
+            <span aria-hidden="true">14</span>
             Internship
           </a>
           <a class="nav-link" href="#requests" data-section-link="requests">
-            <span aria-hidden="true">14</span>
+            <span aria-hidden="true">15</span>
             Requests
           </a>
           <a class="nav-link" href="#admin" data-section-link="admin" data-admin-only hidden>
-            <span aria-hidden="true">15</span>
+            <span aria-hidden="true">16</span>
             Admin
           </a>
         </nav>
@@ -120,6 +124,7 @@
                 <span>Role</span>
                 <select data-role-switcher aria-label="Switch portal role">
                   <option>Admin</option>
+                  <option>Actor</option>
                   <option>Screenwriter</option>
                   <option>Project Manager</option>
                   <option>Intern</option>
@@ -978,6 +983,103 @@
               </section>
             </div>
           </article>
+        </section>
+
+        <section class="portal-section" id="actors" data-section="actors" aria-labelledby="actors-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Talent room</p>
+              <h2 id="actors-title">Actor Hub</h2>
+            </div>
+          </div>
+
+          <div class="actor-hub-layout">
+            <article class="actor-hero-panel">
+              <p class="eyebrow">Actor workspace</p>
+              <h3>Prepare materials, availability, and production readiness in one place.</h3>
+              <p>
+                This section is for actors connected to The Banished Inc. projects. Keep your profile materials,
+                audition updates, schedule notes, and set-readiness items clear for casting and production.
+              </p>
+              <div class="actor-status-strip" aria-label="Actor readiness checklist">
+                <span>Profile</span>
+                <span>Availability</span>
+                <span>Self-tape</span>
+                <span>Set ready</span>
+              </div>
+            </article>
+
+            <div class="actor-resource-grid">
+              <article>
+                <span class="actor-resource-icon actor-profile-icon" aria-hidden="true"></span>
+                <strong>Profile materials</strong>
+                <p>Headshot, resume, reel, union status, representation, location, languages, and special skills.</p>
+              </article>
+              <article>
+                <span class="actor-resource-icon actor-audition-icon" aria-hidden="true"></span>
+                <strong>Auditions and self-tapes</strong>
+                <p>Open sides, taping notes, deadlines, file naming, delivery links, and callback instructions.</p>
+              </article>
+              <article>
+                <span class="actor-resource-icon actor-calendar-icon" aria-hidden="true"></span>
+                <strong>Availability</strong>
+                <p>Holds, conflicts, travel windows, time zone, fittings, rehearsal blocks, and shoot dates.</p>
+              </article>
+              <article>
+                <span class="actor-resource-icon actor-contract-icon" aria-hidden="true"></span>
+                <strong>Contracts and releases</strong>
+                <p>NDA, appearance releases, deal memo status, payment details, and HR/legal follow-ups.</p>
+              </article>
+              <article>
+                <span class="actor-resource-icon actor-set-icon" aria-hidden="true"></span>
+                <strong>Set readiness</strong>
+                <p>Call time, wardrobe notes, makeup/hair requirements, safety rules, transport, and contact tree.</p>
+              </article>
+              <article>
+                <span class="actor-resource-icon actor-feedback-icon" aria-hidden="true"></span>
+                <strong>Notes and feedback</strong>
+                <p>Performance notes, dialect work, scene questions, continuity reminders, and coaching requests.</p>
+              </article>
+            </div>
+
+            <form class="request-form actor-update-form" action="/api/requests" method="post" data-request-form data-recipient="production@the-banished.com" data-label="Actor Update">
+              <div>
+                <p class="eyebrow">Production update</p>
+                <h3>Send actor availability or material update</h3>
+              </div>
+              <div class="script-form-grid">
+                <label>
+                  Full name
+                  <input name="name" type="text" placeholder="Your name" />
+                </label>
+                <label>
+                  Request type
+                  <select name="type">
+                    <option>Availability update</option>
+                    <option>Audition / self-tape question</option>
+                    <option>Profile material update</option>
+                    <option>Contract or release question</option>
+                    <option>Set readiness question</option>
+                    <option>Other actor request</option>
+                  </select>
+                </label>
+                <label>
+                  Priority
+                  <select name="priority">
+                    <option>Normal</option>
+                    <option>Time-sensitive</option>
+                    <option>Blocking production</option>
+                  </select>
+                </label>
+              </div>
+              <label>
+                Details
+                <textarea name="details" rows="5" placeholder="Add project, role, dates, links, files, or the decision you need from casting/production."></textarea>
+              </label>
+              <button class="primary-button" type="submit">Send actor update</button>
+              <p class="request-status" data-request-status hidden></p>
+            </form>
+          </div>
         </section>
 
         <section class="portal-section" id="weekly-report" data-section="weekly-report" aria-labelledby="weekly-report-title">
@@ -2791,6 +2893,7 @@
                 Initial role
                 <select name="inviteRole">
                   <option>Admin</option>
+                  <option>Actor</option>
                   <option>Screenwriter</option>
                   <option>Project Manager</option>
                   <option>Intern</option>
@@ -2826,6 +2929,7 @@
                   Role
                   <select name="createRole">
                     <option>Admin</option>
+                    <option>Actor</option>
                     <option>Screenwriter</option>
                     <option>Project Manager</option>
                     <option>Intern</option>
@@ -3045,6 +3149,7 @@
                   Role
                   <select name="profileRole">
                     <option>Admin</option>
+                    <option>Actor</option>
                     <option>Screenwriter</option>
                     <option>Project Manager</option>
                     <option>Intern</option>
