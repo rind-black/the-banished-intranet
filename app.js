@@ -31,6 +31,7 @@ const profileCardOffice = document.querySelector("[data-profile-card-office]");
 const profileCardStatus = document.querySelector("[data-profile-card-status]");
 const profileNextRank = document.querySelector("[data-profile-next-rank]");
 const profileRankProgress = document.querySelector("[data-profile-rank-progress]");
+const profileAge = document.querySelector("[data-profile-age]");
 const overviewName = document.querySelector("[data-overview-name]");
 const overviewRole = document.querySelector("[data-overview-role]");
 const overviewCredits = document.querySelector("[data-overview-credits]");
@@ -163,6 +164,10 @@ const defaultUsers = {
     role: "Admin",
     department: "Administration",
     timezone: "America/New_York",
+    city: "",
+    gender: "",
+    pronouns: "",
+    birthdate: "",
     employmentType: "employee",
     calendarRegion: "us",
     ipCountryCode: "US",
@@ -178,6 +183,10 @@ const defaultUsers = {
     role: "Employee",
     department: "Operations",
     timezone: "America/New_York",
+    city: "",
+    gender: "",
+    pronouns: "",
+    birthdate: "",
     employmentType: "employee",
     calendarRegion: "us",
     ipCountryCode: "US",
@@ -193,6 +202,10 @@ const defaultUsers = {
     role: "Screenwriter",
     department: "Writing Room",
     timezone: "America/New_York",
+    city: "",
+    gender: "",
+    pronouns: "",
+    birthdate: "",
     employmentType: "employee",
     calendarRegion: "us",
     ipCountryCode: "US",
@@ -208,6 +221,10 @@ const defaultUsers = {
     role: "Project Manager",
     department: "Production",
     timezone: "America/New_York",
+    city: "",
+    gender: "",
+    pronouns: "",
+    birthdate: "",
     employmentType: "employee",
     calendarRegion: "us",
     ipCountryCode: "US",
@@ -223,6 +240,10 @@ const defaultUsers = {
     role: "Actor",
     department: "Casting",
     timezone: "America/New_York",
+    city: "",
+    gender: "",
+    pronouns: "",
+    birthdate: "",
     employmentType: "contractor",
     calendarRegion: "us",
     ipCountryCode: "US",
@@ -239,6 +260,10 @@ const defaultUsers = {
     role: "Intern",
     department: "Internship",
     timezone: "America/New_York",
+    city: "",
+    gender: "",
+    pronouns: "",
+    birthdate: "",
     employmentType: "employee",
     calendarRegion: "us",
     ipCountryCode: "US",
@@ -2786,6 +2811,32 @@ function normalizeCalendarRegion(region) {
   return ["auto", "us", "canada", "all"].includes(region) ? region : "auto";
 }
 
+function normalizeAssignedOfficeRegion(region) {
+  return region === "canada" ? "canada" : "us";
+}
+
+function calculateAge(birthdate) {
+  if (!birthdate) {
+    return "";
+  }
+
+  const born = new Date(`${birthdate}T00:00:00`);
+
+  if (Number.isNaN(born.getTime())) {
+    return "";
+  }
+
+  const today = new Date();
+  let age = today.getFullYear() - born.getFullYear();
+  const monthDelta = today.getMonth() - born.getMonth();
+
+  if (monthDelta < 0 || (monthDelta === 0 && today.getDate() < born.getDate())) {
+    age -= 1;
+  }
+
+  return age >= 0 && age < 130 ? String(age) : "";
+}
+
 function normalizeEmploymentType(type) {
   return type === "contractor" ? "contractor" : "employee";
 }
@@ -3312,6 +3363,10 @@ function syncProfileFromDirectory(profile) {
     role: normalizeRole(user.role),
     department: user.department,
     timezone: user.timezone,
+    city: user.city || "",
+    gender: user.gender || "",
+    pronouns: user.pronouns || "",
+    birthdate: user.birthdate || "",
     employmentType: normalizeEmploymentType(user.employmentType || profile.employmentType),
     calendarRegion: normalizeCalendarRegion(user.calendarRegion || profile.calendarRegion || "auto"),
     ipCountryCode: user.ipCountryCode || profile.ipCountryCode || "",
@@ -3417,7 +3472,7 @@ function applyProfile(profile) {
   }
 
   if (profileCardOffice) {
-    profileCardOffice.textContent = calendarOfficeLabel(inferCalendarRegion(profile)).replace(/^the /, "");
+    profileCardOffice.textContent = calendarOfficeLabel(normalizeAssignedOfficeRegion(inferCalendarRegion(profile))).replace(/^the /, "");
   }
 
   if (profileCardStatus) {
@@ -3454,9 +3509,17 @@ function applyProfile(profile) {
     profileForm.elements.profileRole.value = profile.role || "Employee";
     profileForm.elements.profileRole.disabled = !profile.admin;
     profileForm.elements.profileDepartment.value = profile.department || "";
-    profileForm.elements.profileTimezone.value = profile.timezone || "";
+    profileForm.elements.profileTimezone.value = profile.timezone || "America/Mexico_City";
+    profileForm.elements.profileCity.value = profile.city || "";
+    profileForm.elements.profileGender.value = profile.gender || "";
+    profileForm.elements.profilePronouns.value = profile.pronouns || "";
+    profileForm.elements.profileBirthdate.value = profile.birthdate || "";
     profileForm.elements.profileEmploymentType.value = normalizeEmploymentType(profile.employmentType);
-    profileForm.elements.profileCalendarRegion.value = inferCalendarRegion(profile);
+    profileForm.elements.profileCalendarRegion.value = normalizeAssignedOfficeRegion(inferCalendarRegion(profile));
+  }
+
+  if (profileAge) {
+    profileAge.value = calculateAge(profile.birthdate) || "-";
   }
 
   if (profileCountry) {
@@ -5081,6 +5144,10 @@ authForm?.addEventListener("submit", (event) => {
     role: normalizeRole(user.role),
     department: user.department,
     timezone: user.timezone,
+    city: user.city || "",
+    gender: user.gender || "",
+    pronouns: user.pronouns || "",
+    birthdate: user.birthdate || "",
     employmentType: normalizeEmploymentType(user.employmentType),
     calendarRegion: normalizeCalendarRegion(user.calendarRegion || "auto"),
     ipCountryCode: user.ipCountryCode || "",
@@ -5160,6 +5227,12 @@ profileAvatarRemove?.addEventListener("click", () => {
   }
 });
 
+profileForm?.elements.profileBirthdate?.addEventListener("input", (event) => {
+  if (profileAge) {
+    profileAge.value = calculateAge(event.target.value) || "-";
+  }
+});
+
 profileForm?.addEventListener("submit", (event) => {
   event.preventDefault();
 
@@ -5174,6 +5247,10 @@ profileForm?.addEventListener("submit", (event) => {
     role: nextRole,
     department: formData.get("profileDepartment") || "",
     timezone: formData.get("profileTimezone") || "",
+    city: String(formData.get("profileCity") || "").trim(),
+    gender: formData.get("profileGender") || "",
+    pronouns: formData.get("profilePronouns") || "",
+    birthdate: formData.get("profileBirthdate") || "",
     employmentType: normalizeEmploymentType(formData.get("profileEmploymentType")),
     calendarRegion: normalizeCalendarRegion(formData.get("profileCalendarRegion") || "auto"),
     ipCountryCode: previousProfile.ipCountryCode || "",
@@ -5194,6 +5271,10 @@ profileForm?.addEventListener("submit", (event) => {
       role: profile.role,
       department: profile.department,
       timezone: profile.timezone,
+      city: profile.city,
+      gender: profile.gender,
+      pronouns: profile.pronouns,
+      birthdate: profile.birthdate,
       employmentType: profile.employmentType,
       calendarRegion: profile.calendarRegion,
       ipCountryCode: profile.ipCountryCode,
@@ -5297,6 +5378,10 @@ inviteForm?.addEventListener("submit", async (event) => {
     role,
     department: users[email]?.department || "",
     timezone: users[email]?.timezone || "",
+    city: users[email]?.city || "",
+    gender: users[email]?.gender || "",
+    pronouns: users[email]?.pronouns || "",
+    birthdate: users[email]?.birthdate || "",
     employmentType: normalizeEmploymentType(users[email]?.employmentType),
     calendarRegion: normalizeCalendarRegion(users[email]?.calendarRegion || "us"),
     ipCountryCode: users[email]?.ipCountryCode || "",
@@ -5359,6 +5444,10 @@ createUserForm?.addEventListener("submit", (event) => {
     role,
     department,
     timezone: users[email]?.timezone || "America/New_York",
+    city: users[email]?.city || "",
+    gender: users[email]?.gender || "",
+    pronouns: users[email]?.pronouns || "",
+    birthdate: users[email]?.birthdate || "",
     employmentType: normalizeEmploymentType(users[email]?.employmentType),
     calendarRegion: normalizeCalendarRegion(users[email]?.calendarRegion || "us"),
     ipCountryCode: users[email]?.ipCountryCode || "",

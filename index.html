@@ -3199,7 +3199,10 @@
           <div class="profile-dashboard">
             <article class="profile-player-card">
               <div class="profile-avatar-editor">
-                <span class="profile-avatar profile-avatar-large" data-profile-avatar-preview>TB</span>
+                <label class="profile-avatar-upload-shell" aria-label="Upload avatar">
+                  <span class="profile-avatar profile-avatar-large" data-profile-avatar-preview>TB</span>
+                  <input name="profileAvatar" type="file" accept="image/*" data-profile-avatar-input />
+                </label>
                 <div>
                   <p class="eyebrow">Employee card</p>
                   <h3 data-profile-card-name>Employee</h3>
@@ -3212,10 +3215,7 @@
                     <i aria-hidden="true"><b data-profile-rank-progress></b></i>
                   </div>
                   <div class="profile-avatar-actions">
-                    <label class="avatar-upload-button">
-                      Upload avatar
-                      <input name="profileAvatar" type="file" accept="image/*" data-profile-avatar-input />
-                    </label>
+                    <small>Click avatar to change photo.</small>
                     <button class="ghost-button compact" type="button" data-profile-avatar-remove>Remove</button>
                   </div>
                 </div>
@@ -3296,7 +3296,49 @@
                 </label>
                 <label>
                   Time zone
-                  <input name="profileTimezone" type="text" placeholder="Time zone" />
+                  <select name="profileTimezone">
+                    <option value="America/Mexico_City">Mexico City (GMT-6)</option>
+                    <option value="America/Los_Angeles">Los Angeles (Pacific)</option>
+                    <option value="America/New_York">New York (Eastern)</option>
+                    <option value="America/Toronto">Toronto (Eastern)</option>
+                    <option value="America/Vancouver">Vancouver (Pacific)</option>
+                    <option value="Europe/London">London</option>
+                    <option value="Europe/Paris">Paris</option>
+                    <option value="Asia/Dubai">Dubai</option>
+                    <option value="Asia/Tbilisi">Tbilisi</option>
+                  </select>
+                </label>
+                <label>
+                  Current city
+                  <input name="profileCity" type="text" autocomplete="address-level2" placeholder="City" />
+                </label>
+                <label>
+                  Gender
+                  <select name="profileGender">
+                    <option value="">Prefer not to say</option>
+                    <option>Female</option>
+                    <option>Male</option>
+                    <option>Non-binary</option>
+                    <option>Self-described</option>
+                  </select>
+                </label>
+                <label>
+                  How to address you
+                  <select name="profilePronouns">
+                    <option value="">Not specified</option>
+                    <option value="she/her">She / her</option>
+                    <option value="he/him">He / him</option>
+                    <option value="they/them">They / them</option>
+                    <option value="other">Other / by name</option>
+                  </select>
+                </label>
+                <label>
+                  Date of birth
+                  <input name="profileBirthdate" type="date" />
+                </label>
+                <label>
+                  Age
+                  <input name="profileAge" type="text" readonly data-profile-age value="-" />
                 </label>
                 <label>
                   Country by IP
@@ -3315,7 +3357,6 @@
                   <select name="profileCalendarRegion">
                     <option value="us">United States office</option>
                     <option value="canada">Canada office</option>
-                    <option value="all">Full company calendar</option>
                   </select>
                 </label>
               </div>
