@@ -125,6 +125,10 @@
                 <select data-role-switcher aria-label="Switch portal role">
                   <option>Admin</option>
                   <option>Actor</option>
+                  <option>Director</option>
+                  <option>Art Director</option>
+                  <option>Musician</option>
+                  <option>Post-Editing</option>
                   <option>Screenwriter</option>
                   <option>Project Manager</option>
                   <option>Intern</option>
@@ -136,6 +140,13 @@
               </button>
               <button class="topbar-tool-button" type="button" data-section-link="monthly-challenge" title="Open challenge board">
                 Challenge
+              </button>
+              <button class="system-message-button" type="button" data-system-messages-toggle aria-expanded="false" aria-controls="system-message-panel" title="System messages">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+                  <path d="M10 21h4" />
+                </svg>
+                <span data-system-message-count hidden>0</span>
               </button>
               <button class="calendar-icon-button" type="button" data-section-link="calendar" aria-label="Open my calendar" title="My calendar">
                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -163,6 +174,17 @@
               </button>
               <button class="ghost-button" type="button" data-sign-out>Sign out</button>
             </div>
+            <section class="system-message-panel" id="system-message-panel" data-system-message-panel hidden aria-label="System messages">
+              <div class="system-message-head">
+                <div>
+                  <p class="eyebrow">System messages</p>
+                  <strong>Read-only notices</strong>
+                </div>
+                <small>No replies here</small>
+              </div>
+              <div class="system-message-list" data-system-message-list></div>
+              <p class="system-message-empty" data-system-message-empty>No system messages yet.</p>
+            </section>
           </div>
         </header>
 
@@ -171,10 +193,7 @@
             <div class="overview-hero-copy">
               <p class="eyebrow">Employee center</p>
               <h2 id="overview-title">Welcome back, <span data-overview-name>Employee</span>.</h2>
-              <p>
-                This is the employee field map for The Banished Inc. Use it to find official updates, open the right
-                documents, send requests cleanly, and turn useful work into bonus credits.
-              </p>
+              <p>Updates, documents, requests, reports, and credits.</p>
             </div>
 
             <aside class="overview-player-card" aria-label="Employee status">
@@ -396,22 +415,6 @@
             </div>
           </div>
 
-          <div class="document-library-hero">
-            <article>
-              <p class="eyebrow">Role-based access</p>
-              <h3>Open the documents assigned to your role.</h3>
-              <p>
-                Finished documents open as designed portal pages. Draft or missing documents open to a clean holding
-                page so employees know the material is being prepared.
-              </p>
-            </article>
-            <div class="document-library-stats" aria-label="Document library status">
-              <span><strong>1</strong><small>live guide</small></span>
-              <span><strong>3</strong><small>role lanes</small></span>
-              <span><strong>Soon</strong><small>policy updates</small></span>
-            </div>
-          </div>
-
           <div class="role-selector" aria-label="Document role selector">
             <button class="role-button" type="button" data-role-button="general">Employee</button>
             <button class="role-button" type="button" data-role-button="admin">Admin</button>
@@ -437,7 +440,6 @@
               <span class="document-tile-caption">
                 <span class="document-label">Coming soon</span>
                 <strong>Employee handbook</strong>
-                <small>Company-wide policies and expectations</small>
               </span>
             </button>
             <button class="document-tile" type="button" data-document-page="request-guide-placeholder">
@@ -455,7 +457,6 @@
               <span class="document-tile-caption">
                 <span class="document-label">Coming soon</span>
                 <strong>Request routing guide</strong>
-                <small>Where to send IT, HR, Organizational, Learning&amp;Development, Legal, and other requests</small>
               </span>
             </button>
           </div>
@@ -472,7 +473,6 @@
               <span class="document-tile-caption">
                 <span class="document-label">Coming soon</span>
                 <strong>Admin operations guide</strong>
-                <small>Permissions, publishing standards, user management, and audit notes</small>
               </span>
             </button>
           </div>
@@ -496,7 +496,6 @@
               <span class="document-tile-caption">
                 <span class="document-label">PM Guide</span>
                 <strong>Departments</strong>
-                <small>Who to contact, response times, escalation paths, and PM working rules.</small>
               </span>
             </button>
           </div>
@@ -820,26 +819,13 @@
             </div>
           </div>
 
-          <div class="project-command-board">
-            <article class="project-command-hero">
-              <p class="eyebrow">Current slate</p>
-              <h3>Project status, required assets, and next decisions.</h3>
-              <p>
-                Open a dossier to see what is moving, what is missing, and which team needs to act next.
-              </p>
-              <div class="project-command-stats" aria-label="Project board stats">
-                <article><strong>5</strong><span>Active dossiers</span></article>
-                <article><strong>3</strong><span>Creative lanes</span></article>
-                <article><strong>1</strong><span>Internal tool</span></article>
-              </div>
-            </article>
-          </div>
-
           <div class="project-filter-bar" data-project-filter-bar aria-label="Project filters">
             <button class="active" type="button" data-project-filter="all">All projects</button>
             <button type="button" data-project-filter="film">Film</button>
+            <button type="button" data-project-filter="tv">TV</button>
             <button type="button" data-project-filter="comics">Comics / IP</button>
             <button type="button" data-project-filter="it">IT / Product</button>
+            <button type="button" data-project-filter="talent">Talent</button>
           </div>
 
           <div class="project-list" data-project-list>
@@ -848,7 +834,6 @@
                 <span class="project-orb">AI</span>
                 <span class="project-meta"><small>IT / Product</small><b>Discovery</b></span>
                 <h3>AI Casting Platform</h3>
-                <p>Talent search, shortlists, and cleaner casting data.</p>
                 <div class="project-progress" style="--project-progress: 42%">
                   <span>Readiness</span>
                   <i aria-hidden="true"><b></b></i>
@@ -865,7 +850,6 @@
                 <span class="project-orb">TB</span>
                 <span class="project-meta"><small>Film / Comics</small><b>Flagship</b></span>
                 <h3>The Banished</h3>
-                <p>Core universe, canon, visuals, and planning.</p>
                 <div class="project-progress" style="--project-progress: 58%">
                   <span>Readiness</span>
                   <i aria-hidden="true"><b></b></i>
@@ -882,7 +866,6 @@
                 <span class="project-orb">CB</span>
                 <span class="project-meta"><small>Film</small><b>Active</b></span>
                 <h3>Colorblind</h3>
-                <p>Advertising-world film package with a visual hook.</p>
                 <div class="project-progress" style="--project-progress: 52%">
                   <span>Readiness</span>
                   <i aria-hidden="true"><b></b></i>
@@ -899,7 +882,6 @@
                 <span class="project-orb">IN</span>
                 <span class="project-meta"><small>Film</small><b>Tone lock</b></span>
                 <h3>Incompatibility</h3>
-                <p>Dark romantic comedy with sharp emotional rules.</p>
                 <div class="project-progress" style="--project-progress: 46%">
                   <span>Readiness</span>
                   <i aria-hidden="true"><b></b></i>
@@ -916,7 +898,6 @@
                 <span class="project-orb">4H</span>
                 <span class="project-meta"><small>Comics / IP</small><b>World rules</b></span>
                 <h3>Four Horsemen of the Apocalypse</h3>
-                <p>Comics/IP mythology with franchise potential.</p>
                 <div class="project-progress" style="--project-progress: 36%">
                   <span>Readiness</span>
                   <i aria-hidden="true"><b></b></i>
@@ -924,6 +905,86 @@
                 <ul class="project-need-list">
                   <li>Mythology rules</li>
                   <li>Power sheets</li>
+                </ul>
+                <strong class="project-open">Open dossier</strong>
+              </button>
+            </article>
+            <article class="project-card" data-project-card data-project-category="tv">
+              <button class="project-button" type="button" data-project-page="witches">
+                <span class="project-orb">WI</span>
+                <span class="project-meta"><small>TV Series</small><b>Development</b></span>
+                <h3>Witches</h3>
+                <div class="project-progress" style="--project-progress: 32%">
+                  <span>Readiness</span>
+                  <i aria-hidden="true"><b></b></i>
+                </div>
+                <ul class="project-need-list">
+                  <li>Series bible</li>
+                  <li>Visual tone</li>
+                </ul>
+                <strong class="project-open">Open dossier</strong>
+              </button>
+            </article>
+            <article class="project-card" data-project-card data-project-category="comics">
+              <button class="project-button" type="button" data-project-page="madness">
+                <span class="project-orb">MA</span>
+                <span class="project-meta"><small>Comics / IP</small><b>Concept</b></span>
+                <h3>Madness</h3>
+                <div class="project-progress" style="--project-progress: 28%">
+                  <span>Readiness</span>
+                  <i aria-hidden="true"><b></b></i>
+                </div>
+                <ul class="project-need-list">
+                  <li>Issue plan</li>
+                  <li>Art direction</li>
+                </ul>
+                <strong class="project-open">Open dossier</strong>
+              </button>
+            </article>
+            <article class="project-card" data-project-card data-project-category="comics">
+              <button class="project-button" type="button" data-project-page="crossing-north">
+                <span class="project-orb">CN</span>
+                <span class="project-meta"><small>Comics / IP</small><b>Research</b></span>
+                <h3>Crossing North</h3>
+                <div class="project-progress" style="--project-progress: 30%">
+                  <span>Readiness</span>
+                  <i aria-hidden="true"><b></b></i>
+                </div>
+                <ul class="project-need-list">
+                  <li>World notes</li>
+                  <li>Character sheets</li>
+                </ul>
+                <strong class="project-open">Open dossier</strong>
+              </button>
+            </article>
+            <article class="project-card" data-project-card data-project-category="tv">
+              <button class="project-button" type="button" data-project-page="bloody-bond">
+                <span class="project-orb">BB</span>
+                <span class="project-meta"><small>TV Series</small><b>Packaging</b></span>
+                <h3>Bloody Bond</h3>
+                <div class="project-progress" style="--project-progress: 34%">
+                  <span>Readiness</span>
+                  <i aria-hidden="true"><b></b></i>
+                </div>
+                <ul class="project-need-list">
+                  <li>Pilot notes</li>
+                  <li>Casting lane</li>
+                </ul>
+                <strong class="project-open">Open dossier</strong>
+              </button>
+            </article>
+            <article class="project-card" data-project-card data-project-category="talent">
+              <button class="project-button" type="button" data-project-page="marco-de-marlo">
+                <span class="project-orb">MM</span>
+                <span class="project-meta"><small>Actor Promotion</small><b>Campaign</b></span>
+                <h3>Marco de Marlo</h3>
+                <div class="project-progress" style="--project-progress: 26%">
+                  <span>Readiness</span>
+                  <i aria-hidden="true"><b></b></i>
+                </div>
+                <ul class="project-need-list">
+                  <li>Positioning</li>
+                  <li>Press assets</li>
                 </ul>
                 <strong class="project-open">Open dossier</strong>
               </button>
@@ -996,11 +1057,6 @@
           <div class="actor-hub-layout">
             <article class="actor-hero-panel">
               <p class="eyebrow">Actor workspace</p>
-              <h3>Prepare materials, availability, and production readiness in one place.</h3>
-              <p>
-                This section is for actors connected to The Banished Inc. projects. Keep your profile materials,
-                audition updates, schedule notes, and set-readiness items clear for casting and production.
-              </p>
               <div class="actor-status-strip" aria-label="Actor readiness checklist">
                 <span>Profile</span>
                 <span>Availability</span>
@@ -1042,10 +1098,81 @@
               </article>
             </div>
 
+            <section class="actor-project-room" aria-label="Actor project information">
+              <div class="section-heading compact">
+                <div>
+                  <p class="eyebrow">Project access</p>
+                  <h3>Project information for actors</h3>
+                </div>
+              </div>
+              <div class="actor-project-grid">
+                <article class="actor-project-card">
+                  <span>Flagship</span>
+                  <strong>The Banished</strong>
+                  <p>Canon, tone, character logic, wardrobe direction, confidentiality rules, and approved materials.</p>
+                  <button type="button" data-project-page="the-banished">Open dossier</button>
+                </article>
+                <article class="actor-project-card">
+                  <span>Film</span>
+                  <strong>Colorblind</strong>
+                  <p>Character pressure, advertising-world context, visual rules, audition tone, and packaging notes.</p>
+                  <button type="button" data-project-page="colorblind">Open dossier</button>
+                </article>
+                <article class="actor-project-card">
+                  <span>Film</span>
+                  <strong>Incompatibility</strong>
+                  <p>Relationship engine, dark-comedy tone, scene rhythm, chemistry notes, and character boundaries.</p>
+                  <button type="button" data-project-page="incompatibility">Open dossier</button>
+                </article>
+                <article class="actor-project-card">
+                  <span>TV Series</span>
+                  <strong>Witches</strong>
+                  <p>Series tone, character direction, audition lane, world rules, and visual references.</p>
+                  <button type="button" data-project-page="witches">Open dossier</button>
+                </article>
+                <article class="actor-project-card">
+                  <span>TV Series</span>
+                  <strong>Bloody Bond</strong>
+                  <p>Pilot context, character pressure, callback notes, production timing, and packaging needs.</p>
+                  <button type="button" data-project-page="bloody-bond">Open dossier</button>
+                </article>
+                <article class="actor-project-card">
+                  <span>Actor promotion</span>
+                  <strong>Marco de Marlo</strong>
+                  <p>Positioning, public materials, press angle, portfolio needs, and project team next actions.</p>
+                  <button type="button" data-project-page="marco-de-marlo">Open dossier</button>
+                </article>
+              </div>
+            </section>
+
+            <section class="actor-team-board" aria-label="Actor team communication">
+              <article class="actor-team-channel">
+                <span class="actor-resource-icon actor-audition-icon" aria-hidden="true"></span>
+                <div>
+                  <strong>Ask casting</strong>
+                  <p>Use this for sides, self-tape format, callback timing, role fit, or material delivery questions.</p>
+                </div>
+              </article>
+              <article class="actor-team-channel">
+                <span class="actor-resource-icon actor-set-icon" aria-hidden="true"></span>
+                <div>
+                  <strong>Ask production</strong>
+                  <p>Use this for call time, schedule holds, travel, wardrobe, set rules, contacts, and readiness.</p>
+                </div>
+              </article>
+              <article class="actor-team-channel">
+                <span class="actor-resource-icon actor-feedback-icon" aria-hidden="true"></span>
+                <div>
+                  <strong>Ask creative</strong>
+                  <p>Use this for character intent, scene context, dialect, emotional direction, and continuity notes.</p>
+                </div>
+              </article>
+            </section>
+
             <form class="request-form actor-update-form" action="/api/requests" method="post" data-request-form data-recipient="production@the-banished.com" data-label="Actor Update">
               <div>
-                <p class="eyebrow">Production update</p>
-                <h3>Send actor availability or material update</h3>
+                <p class="eyebrow">Project team</p>
+                <h3>Send a question or update to the project team</h3>
               </div>
               <div class="script-form-grid">
                 <label>
@@ -1053,8 +1180,26 @@
                   <input name="name" type="text" placeholder="Your name" />
                 </label>
                 <label>
+                  Project
+                  <select name="project">
+                    <option>The Banished</option>
+                    <option>Colorblind</option>
+                    <option>Incompatibility</option>
+                    <option>Witches</option>
+                    <option>Madness</option>
+                    <option>Crossing North</option>
+                    <option>Bloody Bond</option>
+                    <option>Marco de Marlo</option>
+                    <option>Four Horsemen of the Apocalypse</option>
+                    <option>AI Casting Platform</option>
+                    <option>Other / not assigned yet</option>
+                  </select>
+                </label>
+                <label>
                   Request type
                   <select name="type">
+                    <option>Project briefing request</option>
+                    <option>Message project team</option>
                     <option>Availability update</option>
                     <option>Audition / self-tape question</option>
                     <option>Profile material update</option>
@@ -1074,9 +1219,9 @@
               </div>
               <label>
                 Details
-                <textarea name="details" rows="5" placeholder="Add project, role, dates, links, files, or the decision you need from casting/production."></textarea>
+                <textarea name="details" rows="5" placeholder="Add the project, role, scene, dates, links, files, question, or decision you need from the team."></textarea>
               </label>
-              <button class="primary-button" type="submit">Send actor update</button>
+              <button class="primary-button" type="submit">Send to project team</button>
               <p class="request-status" data-request-status hidden></p>
             </form>
           </div>
@@ -1120,6 +1265,11 @@
                   Role / Department
                   <select name="role">
                     <option>Admin</option>
+                    <option>Actor</option>
+                    <option>Director</option>
+                    <option>Art Director</option>
+                    <option>Musician</option>
+                    <option>Post-Editing</option>
                     <option>Project Manager</option>
                     <option>Production / Creative</option>
                     <option>IT / Product</option>
@@ -2894,6 +3044,10 @@
                 <select name="inviteRole">
                   <option>Admin</option>
                   <option>Actor</option>
+                  <option>Director</option>
+                  <option>Art Director</option>
+                  <option>Musician</option>
+                  <option>Post-Editing</option>
                   <option>Screenwriter</option>
                   <option>Project Manager</option>
                   <option>Intern</option>
@@ -2930,6 +3084,10 @@
                   <select name="createRole">
                     <option>Admin</option>
                     <option>Actor</option>
+                    <option>Director</option>
+                    <option>Art Director</option>
+                    <option>Musician</option>
+                    <option>Post-Editing</option>
                     <option>Screenwriter</option>
                     <option>Project Manager</option>
                     <option>Intern</option>
@@ -2963,6 +3121,24 @@
               </label>
               <button class="primary-button" type="submit">Add user</button>
               <p class="request-status" data-create-user-status hidden></p>
+            </form>
+
+            <form class="admin-card system-message-admin-card" data-system-message-form>
+              <div>
+                <p class="eyebrow">System</p>
+                <h3>Post system message</h3>
+                <p class="admin-note">Visible in the read-only notification panel for portal users.</p>
+              </div>
+              <label>
+                Message title
+                <input name="systemMessageTitle" type="text" placeholder="Short system notice" required />
+              </label>
+              <label>
+                Message
+                <textarea name="systemMessageBody" rows="4" placeholder="What should employees know?" required></textarea>
+              </label>
+              <button class="primary-button" type="submit">Publish system message</button>
+              <p class="request-status" data-system-message-status hidden></p>
             </form>
 
             <div class="admin-card wide">
@@ -3150,6 +3326,10 @@
                   <select name="profileRole">
                     <option>Admin</option>
                     <option>Actor</option>
+                    <option>Director</option>
+                    <option>Art Director</option>
+                    <option>Musician</option>
+                    <option>Post-Editing</option>
                     <option>Screenwriter</option>
                     <option>Project Manager</option>
                     <option>Intern</option>

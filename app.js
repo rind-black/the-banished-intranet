@@ -107,12 +107,21 @@ const calendarDetailList = document.querySelector("[data-calendar-detail-list]")
 const calendarScopeNote = document.querySelector("[data-calendar-scope-note]");
 const themeToggle = document.querySelector("[data-theme-toggle]");
 const themeLabel = document.querySelector("[data-theme-label]");
+const systemMessagesToggle = document.querySelector("[data-system-messages-toggle]");
+const systemMessagesPanel = document.querySelector("[data-system-message-panel]");
+const systemMessageCount = document.querySelector("[data-system-message-count]");
+const systemMessageList = document.querySelector("[data-system-message-list]");
+const systemMessageEmpty = document.querySelector("[data-system-message-empty]");
+const systemMessageForm = document.querySelector("[data-system-message-form]");
+const systemMessageStatus = document.querySelector("[data-system-message-status]");
 
 const profileStoreKey = "tb-internal-profile";
 const usersStoreKey = "tb-internal-users";
 const requestsStoreKey = "tb-internal-requests";
 const contentStoreKey = "tb-internal-content";
 const auditLogStoreKey = "tb-internal-audit-log";
+const systemMessagesStoreKey = "tb-internal-system-messages";
+const systemMessageReadStoreKey = "tb-internal-system-message-read";
 const scriptDraftStoreKey = "tb-script-studio-draft";
 const themeStoreKey = "tb-internal-theme";
 const inviteTempPassword = "PortalInvite12!";
@@ -865,7 +874,7 @@ const projectPages = {
   "ai-casting": {
     label: "IT / Product",
     title: "AI Casting Platform",
-    summary: "Talent search, shortlists, and cleaner casting data for production teams.",
+    summary: "",
     categories: ["it"],
     signal: "Discovery",
     progress: 42,
@@ -890,7 +899,7 @@ const projectPages = {
   "the-banished": {
     label: "Film / Comics",
     title: "The Banished",
-    summary: "Core universe, canon, visuals, and internal planning for the flagship IP.",
+    summary: "",
     categories: ["film", "comics"],
     signal: "Flagship",
     progress: 58,
@@ -915,7 +924,7 @@ const projectPages = {
   colorblind: {
     label: "Film",
     title: "Colorblind",
-    summary: "Advertising-world film package with a strong visual hook and identity conflict.",
+    summary: "",
     categories: ["film"],
     signal: "Active",
     progress: 52,
@@ -940,7 +949,7 @@ const projectPages = {
   incompatibility: {
     label: "Film",
     title: "Incompatibility",
-    summary: "Dark romantic comedy with sharp emotional rules and an impossible match.",
+    summary: "",
     categories: ["film"],
     signal: "Tone lock",
     progress: 46,
@@ -965,7 +974,7 @@ const projectPages = {
   "four-horsemen": {
     label: "Comics / IP",
     title: "Four Horsemen of the Apocalypse",
-    summary: "Comics/IP mythology about students pulled into mythic Horsemen powers.",
+    summary: "",
     categories: ["comics"],
     signal: "World rules",
     progress: 36,
@@ -987,19 +996,153 @@ const projectPages = {
     ],
     notes: "The project has franchise potential, so internal documentation should protect consistency early: rules, visuals, and character logic need to be easy to reuse.",
   },
+  witches: {
+    label: "TV Series",
+    title: "Witches",
+    summary: "",
+    categories: ["tv"],
+    signal: "Development",
+    progress: 32,
+    focus: "Define the series engine, tone, character lanes, and first-season creative spine.",
+    stage: "Series development",
+    owner: "TV Development",
+    priority: "Development",
+    requirements: [
+      "Draft the series bible structure with world rules, lead characters, and season arc.",
+      "Collect visual references for tone, locations, wardrobe, and key supernatural language.",
+      "Map the first wave of casting needs and audition materials.",
+      "Identify which production questions must be resolved before pitch materials are shared.",
+    ],
+    deliverables: ["Series bible", "Visual tone board", "Casting lane", "Pitch notes"],
+    notes: "The page should help the team keep Witches organized as a professional TV package: bible, tone, roles, and next materials in one place.",
+  },
+  madness: {
+    label: "Comics / IP",
+    title: "Madness",
+    summary: "",
+    categories: ["comics"],
+    signal: "Concept",
+    progress: 28,
+    focus: "Turn the core concept into a readable comics plan with issue structure and art direction.",
+    stage: "Comics concept development",
+    owner: "Comics Development",
+    priority: "Concept",
+    requirements: [
+      "Define the premise, central conflict, character logic, and issue-by-issue escalation.",
+      "Create an art direction brief covering panel energy, visual motifs, and tone.",
+      "Prepare character sheets for the initial cast.",
+      "Identify what is approved for internal review versus external artist review.",
+    ],
+    deliverables: ["Issue plan", "Art direction brief", "Character sheets", "Review checklist"],
+    notes: "Madness needs a clean creative spine before production moves forward: story logic, art rules, and a reviewable first package.",
+  },
+  "crossing-north": {
+    label: "Comics / IP",
+    title: "Crossing North",
+    summary: "",
+    categories: ["comics"],
+    signal: "Research",
+    progress: 30,
+    focus: "Clarify world context, character stakes, and the research needed for a grounded comics package.",
+    stage: "Research and story architecture",
+    owner: "Comics Development",
+    priority: "Development",
+    requirements: [
+      "Organize world notes, reference material, and continuity constraints.",
+      "Build character sheets with motivation, conflict, and visual identifiers.",
+      "Outline the first issue or opening chapter path.",
+      "Flag research gaps that must be resolved before scripting or art begins.",
+    ],
+    deliverables: ["World notes", "Character sheets", "Opening issue outline", "Research gap list"],
+    notes: "Crossing North should feel clear before it becomes large: context, characters, and research decisions need to be easy to inspect.",
+  },
+  "bloody-bond": {
+    label: "TV Series",
+    title: "Bloody Bond",
+    summary: "",
+    categories: ["tv"],
+    signal: "Packaging",
+    progress: 34,
+    focus: "Build the pilot package, casting path, tone references, and first production assumptions.",
+    stage: "Pilot packaging",
+    owner: "TV Development",
+    priority: "Development",
+    requirements: [
+      "Prepare pilot notes with premise, episode engine, lead relationships, and tonal boundaries.",
+      "Build casting lanes for principal characters and key recurring roles.",
+      "Collect visual and tonal references for pitch and internal review.",
+      "Identify production dependencies that affect budget, schedule, and crew needs.",
+    ],
+    deliverables: ["Pilot notes", "Casting lane", "Tone references", "Production dependency list"],
+    notes: "Bloody Bond needs sharp packaging discipline: story, tone, talent, and production readiness should move together.",
+  },
+  "marco-de-marlo": {
+    label: "Actor Promotion",
+    title: "Marco de Marlo",
+    summary: "",
+    categories: ["talent"],
+    signal: "Campaign",
+    progress: 26,
+    focus: "Package positioning, materials, and next actions for a focused actor promotion campaign.",
+    stage: "Talent promotion planning",
+    owner: "Talent / Corporate Communications",
+    priority: "Campaign",
+    requirements: [
+      "Define the actor positioning, target audience, and approved public-facing angle.",
+      "Gather current headshots, reel links, bio, credits, and press-ready assets.",
+      "Map outreach needs across casting, press, social, and project-aligned opportunities.",
+      "Confirm approval flow before any external campaign material is published.",
+    ],
+    deliverables: ["Positioning note", "Press asset pack", "Outreach list", "Approval checklist"],
+    notes: "This page keeps Marco de Marlo promotion work professional and controlled: assets, messaging, approvals, and campaign status.",
+  },
 };
 
-const roleNames = ["Admin", "Actor", "Screenwriter", "Project Manager", "Intern", "Employee"];
+const roleNames = [
+  "Admin",
+  "Actor",
+  "Director",
+  "Art Director",
+  "Musician",
+  "Post-Editing",
+  "Screenwriter",
+  "Project Manager",
+  "Intern",
+  "Employee",
+];
 
 const roleSlugs = {
   Admin: "admin",
   Actor: "actor",
+  Director: "director",
+  "Art Director": "art-director",
+  Musician: "musician",
+  "Post-Editing": "post-editing",
   Screenwriter: "screenwriter",
   "Project Manager": "project-manager",
   Intern: "intern",
   Employee: "employee",
   General: "employee",
 };
+
+const creativeProductionSections = [
+  "overview",
+  "announcements",
+  "calendar",
+  "documents",
+  "projects",
+  "weekly-report",
+  "storyboards",
+  "comic-review",
+  "bonuses",
+  "monthly-challenge",
+  "benefits",
+  "holidays",
+  "culture",
+  "training",
+  "requests",
+  "profile",
+];
 
 const roleSectionAccess = {
   Admin: [
@@ -1090,6 +1233,22 @@ const roleSectionAccess = {
     "requests",
     "profile",
   ],
+  Director: [
+    ...creativeProductionSections,
+    "script-studio",
+    "actors",
+  ],
+  "Art Director": [
+    ...creativeProductionSections,
+    "actors",
+  ],
+  Musician: [
+    ...creativeProductionSections,
+  ],
+  "Post-Editing": [
+    ...creativeProductionSections,
+    "actors",
+  ],
   Employee: [
     "overview",
     "announcements",
@@ -1131,6 +1290,10 @@ function normalizeRole(role) {
 
   if (rawRole.toLowerCase() === "actors") {
     return "Actor";
+  }
+
+  if (["post editing", "post-editing", "post production", "post-production"].includes(rawRole.toLowerCase())) {
+    return "Post-Editing";
   }
 
   return "Employee";
@@ -1359,6 +1522,113 @@ function getAuditLogs() {
 
 function setAuditLogs(logs) {
   writeJson(auditLogStoreKey, logs.slice(-120));
+}
+
+function getSystemMessages() {
+  return readJson(systemMessagesStoreKey, []);
+}
+
+function setSystemMessages(messages) {
+  writeJson(systemMessagesStoreKey, messages.slice(-160));
+}
+
+function getSystemMessageReadState() {
+  return readJson(systemMessageReadStoreKey, {});
+}
+
+function setSystemMessageReadState(state) {
+  writeJson(systemMessageReadStoreKey, state);
+}
+
+function systemMessageReadKey(profile = currentProfile()) {
+  return profile?.email || "guest";
+}
+
+function systemMessageUnreadCount(profile = currentProfile()) {
+  const readState = getSystemMessageReadState();
+  const lastReadAt = Number(readState[systemMessageReadKey(profile)] || 0);
+
+  return getSystemMessages().filter((message) => Number(message.timestamp || 0) > lastReadAt).length;
+}
+
+function renderSystemMessages(profile = currentProfile()) {
+  if (!systemMessageList || !systemMessageEmpty) {
+    return;
+  }
+
+  const messages = getSystemMessages()
+    .slice()
+    .sort((left, right) => Number(right.timestamp || 0) - Number(left.timestamp || 0));
+  const unreadCount = systemMessageUnreadCount(profile);
+
+  systemMessageList.replaceChildren();
+  systemMessageEmpty.hidden = Boolean(messages.length);
+
+  if (systemMessageCount) {
+    systemMessageCount.hidden = unreadCount === 0;
+    systemMessageCount.textContent = unreadCount > 9 ? "9+" : String(unreadCount);
+  }
+
+  messages.slice(0, 40).forEach((message) => {
+    const item = document.createElement("article");
+    const meta = document.createElement("span");
+    const title = document.createElement("strong");
+    const body = document.createElement("p");
+
+    item.className = "system-message-item";
+    item.classList.toggle("unread", Number(message.timestamp || 0) > Number(getSystemMessageReadState()[systemMessageReadKey(profile)] || 0));
+    meta.textContent = `${message.source || "System"} · ${message.createdAt || ""}`;
+    title.textContent = message.title || "System notice";
+    body.textContent = message.body || "";
+    item.append(meta, title, body);
+    systemMessageList.append(item);
+  });
+}
+
+function publishSystemMessage({ title, body, source = "System", section = "" }) {
+  const profile = currentProfile();
+  const messages = getSystemMessages();
+  const createdAt = new Date().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  messages.push({
+    id: `system-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    timestamp: Date.now(),
+    createdAt,
+    title,
+    body,
+    source,
+    section,
+    author: profile?.name || profile?.email || "System",
+  });
+
+  setSystemMessages(messages);
+  renderSystemMessages(profile);
+}
+
+function markSystemMessagesRead() {
+  const readState = getSystemMessageReadState();
+
+  readState[systemMessageReadKey()] = Date.now();
+  setSystemMessageReadState(readState);
+  renderSystemMessages();
+}
+
+function setSystemMessagesPanel(open) {
+  if (!systemMessagesPanel || !systemMessagesToggle) {
+    return;
+  }
+
+  systemMessagesPanel.hidden = !open;
+  systemMessagesToggle.setAttribute("aria-expanded", String(open));
+
+  if (open) {
+    markSystemMessagesRead();
+  }
 }
 
 function appendAuditLog(action, detail = "") {
@@ -3127,6 +3397,7 @@ function applyProfile(profile) {
   configureRoleSelector(profile);
   renderSectionAdminTools(profile);
   renderAdmin();
+  renderSystemMessages(profile);
 }
 
 function unlockPortal(profile) {
@@ -3586,8 +3857,16 @@ function projectCategoryTokens(project = {}) {
     tokens.add("film");
   }
 
+  if (/tv|series|pilot|episode|show/.test(categoryText)) {
+    tokens.add("tv");
+  }
+
   if (/comic|comics|ip|franchise|mythology/.test(categoryText)) {
     tokens.add("comics");
+  }
+
+  if (/actor|talent|promotion|campaign|press|publicity/.test(categoryText)) {
+    tokens.add("talent");
   }
 
   return tokens.size ? Array.from(tokens) : ["other"];
@@ -3641,7 +3920,9 @@ function openProjectDetail(project) {
   }
 
   if (projectDetailSummary) {
-    projectDetailSummary.textContent = project.summary;
+    const summary = String(project.summary || "").trim();
+    projectDetailSummary.hidden = !summary;
+    projectDetailSummary.textContent = summary;
   }
 
   if (projectDetailStage) {
@@ -3800,7 +4081,6 @@ function createProjectCard(item) {
   const laneLabel = document.createElement("small");
   const signal = document.createElement("b");
   const title = document.createElement("h3");
-  const summary = document.createElement("p");
   const progressWrap = document.createElement("div");
   const progressLabel = document.createElement("span");
   const progressTrack = document.createElement("i");
@@ -3821,7 +4101,6 @@ function createProjectCard(item) {
   signal.textContent = project.signal || project.priority || "Review";
   meta.append(laneLabel, signal);
   title.textContent = project.title;
-  summary.textContent = project.summary;
   progressWrap.className = "project-progress";
   progressLabel.textContent = "Readiness";
   progressTrack.setAttribute("aria-hidden", "true");
@@ -3835,7 +4114,7 @@ function createProjectCard(item) {
   });
   open.className = "project-open";
   open.textContent = "Open dossier";
-  button.append(orb, meta, title, summary, progressWrap, needList, open);
+  button.append(orb, meta, title, progressWrap, needList, open);
   card.append(button);
 
   button.addEventListener("click", () => {
@@ -4282,6 +4561,12 @@ function createSectionAdminForm(sectionId) {
       }
 
       appendAuditLog("Section content updated", `${payload.title} -> ${editableSections[sectionId] || sectionId}`);
+      publishSystemMessage({
+        title: "Section updated",
+        body: `${payload.title} was updated in ${editableSections[sectionId] || sectionId}.`,
+        source: "Section update",
+        section: sectionId,
+      });
       setRequestStatus(status, `Updated ${editableSections[sectionId] || sectionId}.`);
       return;
     }
@@ -4295,6 +4580,12 @@ function createSectionAdminForm(sectionId) {
     }
 
     appendAuditLog("Section content published", `${payload.title} -> ${editableSections[sectionId] || sectionId}`);
+    publishSystemMessage({
+      title: "Section updated",
+      body: `${payload.title} was published in ${editableSections[sectionId] || sectionId}.`,
+      source: "Section update",
+      section: sectionId,
+    });
     setRequestStatus(status, `Published to ${editableSections[sectionId] || sectionId}.`);
     form.reset();
     syncContentRoleVisibility(form);
@@ -4335,6 +4626,7 @@ function renderAdmin() {
   renderContentRows();
   renderAuditLogs();
   renderContentItems();
+  renderSystemMessages();
 }
 
 function createDisplayName(email) {
@@ -4715,6 +5007,49 @@ profileForm?.addEventListener("submit", (event) => {
   showSection("profile");
 });
 
+systemMessagesToggle?.addEventListener("click", (event) => {
+  event.stopPropagation();
+  setSystemMessagesPanel(Boolean(systemMessagesPanel?.hidden));
+});
+
+systemMessagesPanel?.addEventListener("click", (event) => {
+  event.stopPropagation();
+});
+
+document.addEventListener("click", () => {
+  if (!systemMessagesPanel?.hidden) {
+    setSystemMessagesPanel(false);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !systemMessagesPanel?.hidden) {
+    setSystemMessagesPanel(false);
+  }
+});
+
+systemMessageForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(systemMessageForm);
+  const title = String(formData.get("systemMessageTitle") || "").trim();
+  const body = String(formData.get("systemMessageBody") || "").trim();
+
+  if (!title || !body) {
+    setRequestStatus(systemMessageStatus, "System message was not published. Add a title and message.", "error");
+    return;
+  }
+
+  publishSystemMessage({
+    title,
+    body,
+    source: "Admin message",
+  });
+  appendAuditLog("System message published", title);
+  setRequestStatus(systemMessageStatus, "System message published.");
+  systemMessageForm.reset();
+});
+
 roleButtons.forEach((button) => {
   button.addEventListener("click", () => {
     showDocumentRole(button.dataset.roleButton);
@@ -4926,6 +5261,12 @@ contentForm?.addEventListener("submit", (event) => {
 
   publishContentItem(payload);
   appendAuditLog("Section content published", `${payload.title} -> ${editableSections[payload.section] || payload.section}`);
+  publishSystemMessage({
+    title: "Section updated",
+    body: `${payload.title} was published in ${editableSections[payload.section] || payload.section}.`,
+    source: "Section update",
+    section: payload.section,
+  });
   setRequestStatus(contentStatus, `Published to ${editableSections[payload.section] || payload.section}.`);
   contentForm.reset();
   syncContentRoleVisibility(contentForm);
@@ -4950,6 +5291,12 @@ contentRows?.addEventListener("click", (event) => {
       "Section content removed",
       `${deletedItem.title} -> ${editableSections[deletedItem.section] || deletedItem.section}`
     );
+    publishSystemMessage({
+      title: "Section content removed",
+      body: `${deletedItem.title} was removed from ${editableSections[deletedItem.section] || deletedItem.section}.`,
+      source: "Section update",
+      section: deletedItem.section,
+    });
   }
 });
 
@@ -5347,10 +5694,12 @@ document.querySelectorAll("[data-request-form]").forEach((form) => {
     const name = formData.get("name") || profile?.name || "[your name]";
     const type = formData.get("type") || "General request";
     const priority = formData.get("priority") || "Normal";
+    const project = String(formData.get("project") || "").trim();
     const details = formData.get("details") || "[describe the request here]";
     const subject = `${label}: ${type}`;
     const body = [
       `Destination: ${destinationLabel}`,
+      project ? `Project: ${project}` : "",
       `Request type: ${type}`,
       `Priority: ${priority}`,
       `Employee name: ${name}`,
@@ -5358,7 +5707,7 @@ document.querySelectorAll("[data-request-form]").forEach((form) => {
       "",
       "Request details:",
       details,
-    ].join("\n");
+    ].filter((line) => line !== "").join("\n");
     const status = form.querySelector("[data-request-status]");
     const requests = getRequests();
     const createdAt = new Date().toLocaleString("en-US", {
@@ -5387,6 +5736,7 @@ document.querySelectorAll("[data-request-form]").forEach((form) => {
           type,
           priority,
           name,
+          project,
           details,
         },
       });
