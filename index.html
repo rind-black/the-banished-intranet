@@ -9,8 +9,19 @@
   <body>
     <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
       <div class="auth-panel">
-        <p class="eyebrow">Invite only</p>
-        <h1 id="auth-title">Internal Portal access</h1>
+        <div class="auth-panel-copy">
+          <div class="auth-brand-lockup">
+            <img src="assets/banished-logo-transparent.png?v=2" alt="The Banished logo" />
+            <span>Internal Portal</span>
+          </div>
+          <p class="eyebrow">Invite only</p>
+          <h1 id="auth-title">Internal Portal access</h1>
+          <div class="auth-access-mark" aria-hidden="true">
+            <span></span>
+            <i></i>
+            <b></b>
+          </div>
+        </div>
         <form class="auth-form" data-auth-form>
           <label>
             Company email
@@ -1011,34 +1022,34 @@
 
             <div class="project-status-grid">
               <article>
-                <span>Stage</span>
+                <span data-project-detail-stage-label>Stage</span>
                 <strong data-project-detail-stage></strong>
               </article>
               <article>
-                <span>Owner lane</span>
+                <span data-project-detail-owner-label>Owner lane</span>
                 <strong data-project-detail-owner></strong>
               </article>
               <article>
-                <span>Priority</span>
+                <span data-project-detail-priority-label>Priority</span>
                 <strong data-project-detail-priority></strong>
               </article>
               <article>
-                <span>Signal</span>
+                <span data-project-detail-signal-label>Signal</span>
                 <strong data-project-detail-signal></strong>
               </article>
             </div>
 
             <div class="project-detail-grid">
               <section>
-                <h3>What is required</h3>
+                <h3 data-project-detail-requirements-title>What is required</h3>
                 <ul data-project-detail-requirements></ul>
               </section>
               <section>
-                <h3>Next deliverables</h3>
+                <h3 data-project-detail-deliverables-title>Next deliverables</h3>
                 <ul data-project-detail-deliverables></ul>
               </section>
               <section>
-                <h3>Internal notes</h3>
+                <h3 data-project-detail-notes-title>Internal notes</h3>
                 <p data-project-detail-notes></p>
               </section>
             </div>
@@ -1054,39 +1065,6 @@
           </div>
 
           <div class="actor-hub-layout">
-            <div class="actor-resource-grid">
-              <article>
-                <span class="actor-resource-icon actor-profile-icon" aria-hidden="true"></span>
-                <strong>Profile materials</strong>
-                <p>Headshot, resume, reel, union status, representation, location, languages, and special skills.</p>
-              </article>
-              <article>
-                <span class="actor-resource-icon actor-audition-icon" aria-hidden="true"></span>
-                <strong>Auditions and self-tapes</strong>
-                <p>Open sides, taping notes, deadlines, file naming, delivery links, and callback instructions.</p>
-              </article>
-              <article>
-                <span class="actor-resource-icon actor-calendar-icon" aria-hidden="true"></span>
-                <strong>Availability</strong>
-                <p>Holds, conflicts, travel windows, time zone, fittings, rehearsal blocks, and shoot dates.</p>
-              </article>
-              <article>
-                <span class="actor-resource-icon actor-contract-icon" aria-hidden="true"></span>
-                <strong>Contracts and releases</strong>
-                <p>NDA, appearance releases, deal memo status, payment details, and HR/legal follow-ups.</p>
-              </article>
-              <article>
-                <span class="actor-resource-icon actor-set-icon" aria-hidden="true"></span>
-                <strong>Set readiness</strong>
-                <p>Call time, wardrobe notes, makeup/hair requirements, safety rules, transport, and contact tree.</p>
-              </article>
-              <article>
-                <span class="actor-resource-icon actor-feedback-icon" aria-hidden="true"></span>
-                <strong>Notes and feedback</strong>
-                <p>Performance notes, dialect work, scene questions, continuity reminders, and coaching requests.</p>
-              </article>
-            </div>
-
             <section class="actor-project-room" aria-label="Actor project information">
               <div class="section-heading compact">
                 <div>
@@ -3341,7 +3319,7 @@
                   </select>
                 </label>
               </div>
-              <button class="primary-button" type="submit">Save profile</button>
+              <button class="primary-button profile-save-button" type="submit">Save profile</button>
             </form>
           </details>
         </section>

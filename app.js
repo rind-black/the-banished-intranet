@@ -49,6 +49,11 @@ const projectFilterBar = document.querySelector("[data-project-filter-bar]");
 const projectDetailLabel = document.querySelector("[data-project-detail-label]");
 const projectDetailTitle = document.querySelector("[data-project-detail-title]");
 const projectDetailSummary = document.querySelector("[data-project-detail-summary]");
+const projectDetailPage = document.querySelector(".project-detail-page");
+const projectDetailStageLabel = document.querySelector("[data-project-detail-stage-label]");
+const projectDetailOwnerLabel = document.querySelector("[data-project-detail-owner-label]");
+const projectDetailPriorityLabel = document.querySelector("[data-project-detail-priority-label]");
+const projectDetailSignalLabel = document.querySelector("[data-project-detail-signal-label]");
 const projectDetailStage = document.querySelector("[data-project-detail-stage]");
 const projectDetailOwner = document.querySelector("[data-project-detail-owner]");
 const projectDetailPriority = document.querySelector("[data-project-detail-priority]");
@@ -56,6 +61,9 @@ const projectDetailSignal = document.querySelector("[data-project-detail-signal]
 const projectDetailFocus = document.querySelector("[data-project-detail-focus]");
 const projectDetailProgressLabel = document.querySelector("[data-project-detail-progress-label]");
 const projectDetailProgressBar = document.querySelector("[data-project-detail-progress-bar]");
+const projectDetailRequirementsTitle = document.querySelector("[data-project-detail-requirements-title]");
+const projectDetailDeliverablesTitle = document.querySelector("[data-project-detail-deliverables-title]");
+const projectDetailNotesTitle = document.querySelector("[data-project-detail-notes-title]");
 const projectDetailRequirements = document.querySelector("[data-project-detail-requirements]");
 const projectDetailDeliverables = document.querySelector("[data-project-detail-deliverables]");
 const projectDetailNotes = document.querySelector("[data-project-detail-notes]");
@@ -3965,12 +3973,121 @@ function applyProjectFilter(filter = activeProjectFilter) {
   });
 }
 
+const projectDetailTemplates = {
+  it: {
+    className: "is-it-project",
+    readinessLabel: "Build readiness",
+    stageLabel: "Product phase",
+    ownerLabel: "Product owner",
+    priorityLabel: "Delivery priority",
+    signalLabel: "Technical signal",
+    requirementsTitle: "Product requirements",
+    deliverablesTitle: "Engineering deliverables",
+    notesTitle: "Technical notes",
+  },
+  film: {
+    className: "is-film-project",
+    readinessLabel: "Production readiness",
+    stageLabel: "Development stage",
+    ownerLabel: "Production lane",
+    priorityLabel: "Slate priority",
+    signalLabel: "Creative signal",
+    requirementsTitle: "Creative requirements",
+    deliverablesTitle: "Production deliverables",
+    notesTitle: "Producer notes",
+  },
+  tv: {
+    className: "is-tv-project",
+    readinessLabel: "Package readiness",
+    stageLabel: "Series phase",
+    ownerLabel: "Show lane",
+    priorityLabel: "Slate priority",
+    signalLabel: "Room signal",
+    requirementsTitle: "Series requirements",
+    deliverablesTitle: "Room deliverables",
+    notesTitle: "Showrunner notes",
+  },
+  comics: {
+    className: "is-comics-project",
+    readinessLabel: "Issue readiness",
+    stageLabel: "Comics phase",
+    ownerLabel: "Comics lane",
+    priorityLabel: "IP priority",
+    signalLabel: "Canon signal",
+    requirementsTitle: "Story and art requirements",
+    deliverablesTitle: "Comics deliverables",
+    notesTitle: "Editor notes",
+  },
+  talent: {
+    className: "is-talent-project",
+    readinessLabel: "Campaign readiness",
+    stageLabel: "Campaign phase",
+    ownerLabel: "Talent lane",
+    priorityLabel: "Campaign priority",
+    signalLabel: "Publicity signal",
+    requirementsTitle: "Campaign requirements",
+    deliverablesTitle: "Press deliverables",
+    notesTitle: "Representation notes",
+  },
+  other: {
+    className: "is-general-project",
+    readinessLabel: "Readiness",
+    stageLabel: "Stage",
+    ownerLabel: "Owner lane",
+    priorityLabel: "Priority",
+    signalLabel: "Signal",
+    requirementsTitle: "What is required",
+    deliverablesTitle: "Next deliverables",
+    notesTitle: "Internal notes",
+  },
+};
+
+function projectDetailType(project = {}) {
+  const categories = projectCategoryTokens(project);
+
+  if (categories.includes("it")) {
+    return "it";
+  }
+
+  if (categories.includes("tv")) {
+    return "tv";
+  }
+
+  if (categories.includes("talent")) {
+    return "talent";
+  }
+
+  if (categories.includes("film")) {
+    return "film";
+  }
+
+  if (categories.includes("comics")) {
+    return "comics";
+  }
+
+  return "other";
+}
+
+function setProjectDetailText(target, text) {
+  if (target) {
+    target.textContent = text;
+  }
+}
+
 function openProjectDetail(project) {
   if (!project) {
     return;
   }
 
   const progress = clampProjectProgress(project.progress || 0);
+  const template = projectDetailTemplates[projectDetailType(project)] || projectDetailTemplates.other;
+
+  if (projectDetailPage) {
+    projectDetailPage.classList.remove(
+      ...Object.values(projectDetailTemplates).map((item) => item.className)
+    );
+    projectDetailPage.classList.add(template.className);
+  }
 
   if (projectDetailLabel) {
     projectDetailLabel.textContent = project.label || "Project";
@@ -3989,6 +4106,14 @@ function openProjectDetail(project) {
   if (projectDetailStage) {
     projectDetailStage.textContent = project.stage || "Planning";
   }
+
+  setProjectDetailText(projectDetailStageLabel, template.stageLabel);
+  setProjectDetailText(projectDetailOwnerLabel, template.ownerLabel);
+  setProjectDetailText(projectDetailPriorityLabel, template.priorityLabel);
+  setProjectDetailText(projectDetailSignalLabel, template.signalLabel);
+  setProjectDetailText(projectDetailRequirementsTitle, template.requirementsTitle);
+  setProjectDetailText(projectDetailDeliverablesTitle, template.deliverablesTitle);
+  setProjectDetailText(projectDetailNotesTitle, template.notesTitle);
 
   if (projectDetailOwner) {
     projectDetailOwner.textContent = project.owner || "Project owner TBD";
@@ -4009,6 +4134,9 @@ function openProjectDetail(project) {
   if (projectDetailProgressLabel) {
     projectDetailProgressLabel.textContent = `${progress}%`;
   }
+
+  const readinessLabel = document.querySelector(".project-detail-brief div span");
+  setProjectDetailText(readinessLabel, template.readinessLabel);
 
   if (projectDetailProgressBar) {
     projectDetailProgressBar.style.width = `${progress}%`;
