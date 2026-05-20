@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const fs = require("fs");
+const https = require("https");
 const http = require("http");
 const net = require("net");
 const path = require("path");
@@ -110,7 +111,65 @@ function isLocalIp(ip) {
   return /^(::1|127\.|::ffff:127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)/.test(String(ip || ""));
 }
 
-function countryFromRequest(request) {
+function publicClientIp(request) {
+  const ip = clientIp(request)
+    .replace(/^::ffff:/, "")
+    .trim();
+
+  return ip && !isLocalIp(ip) ? ip : "";
+}
+
+function lookupCountryByIp(ip) {
+  return new Promise((resolve) => {
+    const safeIp = encodeURIComponent(ip);
+    const request = https.get(
+      {
+        hostname: "ipwho.is",
+        path: `/${safeIp}`,
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "TheBanishedInternalPortal/1.0",
+        },
+        timeout: 1800,
+      },
+      (response) => {
+        let body = "";
+
+        response.setEncoding("utf8");
+        response.on("data", (chunk) => {
+          body += chunk;
+        });
+        response.on("end", () => {
+          try {
+            const data = JSON.parse(body || "{}");
+            const countryCode = cleanCountryCode(data.country_code);
+
+            if (response.statusCode >= 200 && response.statusCode < 300 && data.success !== false && countryCode) {
+              resolve({
+                countryCode,
+                countryName: countryNames.of(countryCode) || data.country || countryCode,
+                source: "ipwho.is",
+              });
+              return;
+            }
+          } catch {
+            // Fall through to unavailable below.
+          }
+
+          resolve(null);
+        });
+      }
+    );
+
+    request.on("timeout", () => {
+      request.destroy();
+      resolve(null);
+    });
+    request.on("error", () => resolve(null));
+  });
+}
+
+async function countryFromRequest(request) {
   const candidates = [
     ["cf-ipcountry", request.headers["cf-ipcountry"]],
     ["x-vercel-ip-country", request.headers["x-vercel-ip-country"]],
@@ -133,6 +192,7 @@ function countryFromRequest(request) {
   }
 
   const ip = clientIp(request);
+  const publicIp = publicClientIp(request);
   const fallbackCode = cleanCountryCode(process.env.DEFAULT_COUNTRY_CODE);
 
   if (fallbackCode) {
@@ -149,6 +209,14 @@ function countryFromRequest(request) {
       countryName: "United States",
       source: "dev-localhost",
     };
+  }
+
+  if (publicIp) {
+    const geoCountry = await lookupCountryByIp(publicIp);
+
+    if (geoCountry) {
+      return geoCountry;
+    }
   }
 
   return {
@@ -421,10 +489,10 @@ async function handleRequest(request, response) {
   sendJson(response, 200, { ok: true });
 }
 
-function handleLocation(request, response) {
+async function handleLocation(request, response) {
   sendJson(response, 200, {
     ok: true,
-    ...countryFromRequest(request),
+    ...await countryFromRequest(request),
   });
 }
 
@@ -579,7 +647,7 @@ function serveStatic(request, response) {
 const server = http.createServer(async (request, response) => {
   try {
     if (request.method === "GET" && request.url === "/api/location") {
-      handleLocation(request, response);
+      await handleLocation(request, response);
       return;
     }
 

@@ -1438,14 +1438,23 @@ function setUsers(users) {
   writeJson(usersStoreKey, users);
 }
 
+function withProfileLocationFallback(user = {}, fallback = {}) {
+  return {
+    ...user,
+    ipCountryCode: user.ipCountryCode || fallback.ipCountryCode || "",
+    ipCountryName: user.ipCountryName || fallback.ipCountryName || "",
+    ipCountrySource: user.ipCountrySource || fallback.ipCountrySource || "",
+  };
+}
+
 function mergeUserDirectory(users = {}) {
   const merged = { ...users };
 
   Object.entries(defaultUsers).forEach(([email, defaultUser]) => {
-    merged[email] = {
+    merged[email] = withProfileLocationFallback({
       ...defaultUser,
       ...(users[email] || {}),
-    };
+    }, defaultUser);
 
     if (!merged[email].password) {
       merged[email].password = defaultUser.password;
@@ -2754,7 +2763,9 @@ async function lockProfileCountryFromIp() {
     ipCountryCode: location.countryCode || latestProfile.ipCountryCode || "",
     ipCountryName: location.countryName || latestProfile.ipCountryName || "",
     ipCountrySource: location.source || "ip",
-    calendarRegion: latestProfile.calendarRegion || detectedOffice || "us",
+    calendarRegion: normalizeCalendarRegion(latestProfile.calendarRegion) === "auto"
+      ? detectedOffice || "us"
+      : normalizeCalendarRegion(latestProfile.calendarRegion),
   };
   const users = getUsers();
 
@@ -2791,6 +2802,8 @@ function inferCalendarRegion(profile = currentProfile()) {
     profile?.timezone,
     profile?.department,
     profile?.role,
+    profile?.ipCountryName,
+    profile?.ipCountryCode,
   ]
     .filter(Boolean)
     .join(" ")
@@ -5077,6 +5090,7 @@ authForm?.addEventListener("submit", (event) => {
     avatarDataUrl: user.avatarDataUrl || "",
     admin: Boolean(user.admin || normalizeRole(user.role) === "Admin"),
     bonusCredits: Number(user.bonusCredits || 0),
+    assignedProjects: Array.isArray(user.assignedProjects) ? user.assignedProjects : [],
   };
 
   if (authError) {
