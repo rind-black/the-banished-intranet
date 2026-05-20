@@ -2655,7 +2655,7 @@ function formatIpCountry(profile) {
     return `${name} (${code})`;
   }
 
-  return name || code || "Detecting...";
+  return name || code || "Unable to detect";
 }
 
 function normalizeProjectAssignment(projectId = "") {
@@ -2747,24 +2747,23 @@ async function lockProfileCountryFromIp() {
 
   const location = await fetchIpLocation();
 
-  if (!location?.countryCode && !location?.countryName) {
-    return;
-  }
-
   const latestProfile = currentProfile();
 
   if (!latestProfile || latestProfile.email !== profile.email) {
     return;
   }
 
-  const detectedOffice = officeFromCountryCode(location.countryCode);
+  const detectedCountryCode = location?.countryCode || "";
+  const detectedCountryName = location?.countryName || "";
+  const hasDetectedCountry = Boolean(detectedCountryCode || detectedCountryName);
+  const detectedOffice = officeFromCountryCode(detectedCountryCode);
   const updatedProfile = {
     ...latestProfile,
-    ipCountryCode: location.countryCode || latestProfile.ipCountryCode || "",
-    ipCountryName: location.countryName || latestProfile.ipCountryName || "",
-    ipCountrySource: location.source || "ip",
+    ipCountryCode: hasDetectedCountry ? detectedCountryCode : "",
+    ipCountryName: hasDetectedCountry ? detectedCountryName : "",
+    ipCountrySource: location?.source || "unavailable",
     calendarRegion: normalizeCalendarRegion(latestProfile.calendarRegion) === "auto"
-      ? detectedOffice || "us"
+      ? detectedOffice || "all"
       : normalizeCalendarRegion(latestProfile.calendarRegion),
   };
   const users = getUsers();
@@ -3465,9 +3464,9 @@ function applyProfile(profile) {
   }
 
   if (profileCountryNote) {
-    const source = profile.ipCountrySource === "dev-localhost"
-      ? "Local development fallback. In production, this locks from the request IP country."
-      : "Locked from your request IP country when you sign in.";
+    const source = profile.ipCountrySource === "unavailable"
+      ? "We could not detect your country from this network. Try again from production or contact admin."
+      : "Locked from your current network location.";
     profileCountryNote.textContent = source;
   }
 

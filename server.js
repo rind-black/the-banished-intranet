@@ -119,13 +119,13 @@ function publicClientIp(request) {
   return ip && !isLocalIp(ip) ? ip : "";
 }
 
-function lookupCountryByIp(ip) {
+function lookupCountryByIp(ip, source = "ipwho.is") {
   return new Promise((resolve) => {
     const safeIp = encodeURIComponent(ip);
     const request = https.get(
       {
         hostname: "ipwho.is",
-        path: `/${safeIp}`,
+        path: safeIp ? `/${safeIp}` : "/",
         headers: {
           Accept: "application/json",
           "User-Agent": "TheBanishedInternalPortal/1.0",
@@ -148,7 +148,7 @@ function lookupCountryByIp(ip) {
               resolve({
                 countryCode,
                 countryName: countryNames.of(countryCode) || data.country || countryCode,
-                source: "ipwho.is",
+                source,
               });
               return;
             }
@@ -204,11 +204,11 @@ async function countryFromRequest(request) {
   }
 
   if (isLocalIp(ip)) {
-    return {
-      countryCode: "US",
-      countryName: "United States",
-      source: "dev-localhost",
-    };
+    const localGeoCountry = await lookupCountryByIp("", "local-public-ip");
+
+    if (localGeoCountry) {
+      return localGeoCountry;
+    }
   }
 
   if (publicIp) {
