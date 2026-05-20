@@ -223,6 +223,7 @@ const defaultUsers = {
     admin: false,
     status: "Active",
     bonusCredits: 0,
+    assignedProjects: ["the-banished", "witches", "marco-de-marlo"],
   },
   "intern@the-banished.com": {
     password: inviteTempPassword,
@@ -2640,6 +2641,60 @@ function formatIpCountry(profile) {
   return name || code || "Detecting...";
 }
 
+function normalizeProjectAssignment(projectId = "") {
+  return String(projectId)
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function actorAssignedProjectSet(profile = currentProfile()) {
+  return new Set(
+    (Array.isArray(profile?.assignedProjects) ? profile.assignedProjects : [])
+      .map(normalizeProjectAssignment)
+      .filter(Boolean)
+  );
+}
+
+function renderActorProjectAccess(profile = currentProfile()) {
+  const isActor = normalizeRole(profile?.role) === "Actor";
+  const assignedProjects = actorAssignedProjectSet(profile);
+  const projectCards = document.querySelectorAll("[data-actor-project]");
+  const projectOptions = document.querySelectorAll("[data-actor-project-option]");
+  const emptyState = document.querySelector("[data-actor-project-empty]");
+  const projectSelect = document.querySelector(".actor-update-form select[name='project']");
+  let visibleCards = 0;
+
+  projectCards.forEach((card) => {
+    const projectId = normalizeProjectAssignment(card.dataset.actorProject);
+    const visible = !isActor || assignedProjects.has(projectId);
+
+    card.hidden = !visible;
+
+    if (visible) {
+      visibleCards += 1;
+    }
+  });
+
+  projectOptions.forEach((option) => {
+    const projectId = normalizeProjectAssignment(option.dataset.actorProjectOption);
+    option.hidden = isActor && !assignedProjects.has(projectId);
+  });
+
+  if (projectSelect && projectSelect.selectedOptions[0]?.hidden) {
+    const firstVisibleOption = Array.from(projectSelect.options).find((option) => !option.hidden);
+    if (firstVisibleOption) {
+      projectSelect.value = firstVisibleOption.value;
+    }
+  }
+
+  if (emptyState) {
+    emptyState.hidden = !isActor || visibleCards > 0;
+  }
+}
+
 function officeFromCountryCode(countryCode) {
   return {
     US: "us",
@@ -3245,6 +3300,11 @@ function syncProfileFromDirectory(profile) {
     avatarDataUrl: user.avatarDataUrl || profile.avatarDataUrl || "",
     admin: Boolean(user.admin || normalizeRole(user.role) === "Admin"),
     bonusCredits: Number(user.bonusCredits || 0),
+    assignedProjects: Array.isArray(user.assignedProjects)
+      ? user.assignedProjects
+      : Array.isArray(profile.assignedProjects)
+        ? profile.assignedProjects
+        : [],
   };
 }
 
@@ -3398,6 +3458,7 @@ function applyProfile(profile) {
   renderSectionAdminTools(profile);
   renderAdmin();
   renderSystemMessages(profile);
+  renderActorProjectAccess(profile);
 }
 
 function unlockPortal(profile) {
@@ -4980,6 +5041,7 @@ profileForm?.addEventListener("submit", (event) => {
     avatarDataUrl: pendingAvatarDataUrl !== null ? pendingAvatarDataUrl : previousProfile.avatarDataUrl || "",
     admin: Boolean(previousProfile.admin || nextRole === "Admin"),
     bonusCredits: Number(previousProfile.bonusCredits || 0),
+    assignedProjects: Array.isArray(previousProfile.assignedProjects) ? previousProfile.assignedProjects : [],
   };
   const users = getUsers();
 

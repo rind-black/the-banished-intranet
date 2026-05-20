@@ -15,10 +15,10 @@
   --green: #45a785;
   --shadow: 0 22px 62px rgba(0, 0, 0, 0.36);
   --section-pattern:
-    repeating-linear-gradient(118deg, rgba(203, 169, 92, 0.052) 0 1px, transparent 1px 42px),
-    repeating-linear-gradient(32deg, rgba(231, 55, 47, 0.042) 0 1px, transparent 1px 58px),
-    radial-gradient(ellipse 80px 26px at 20% 24%, transparent 58%, rgba(247, 243, 234, 0.034) 59% 60%, transparent 61%),
-    radial-gradient(ellipse 64px 20px at 82% 76%, transparent 56%, rgba(203, 169, 92, 0.034) 57% 59%, transparent 60%);
+    conic-gradient(from 218deg at 12% 18%, rgba(203, 169, 92, 0.11) 0 12deg, transparent 12deg 118deg, rgba(231, 55, 47, 0.07) 118deg 130deg, transparent 130deg),
+    linear-gradient(132deg, transparent 0 35%, rgba(247, 243, 234, 0.05) 35.4% 36%, transparent 36.4% 68%, rgba(203, 169, 92, 0.045) 68.3% 69%, transparent 69.4%),
+    linear-gradient(26deg, transparent 0 42%, rgba(231, 55, 47, 0.035) 42.4% 43%, transparent 43.5%),
+    radial-gradient(ellipse 120% 70% at 100% 0%, rgba(203, 169, 92, 0.08), transparent 44%);
 }
 
 * {
@@ -51,13 +51,12 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    repeating-linear-gradient(124deg, transparent 0 42px, rgba(203, 169, 92, 0.038) 43px 44px, transparent 45px 96px),
-    repeating-linear-gradient(28deg, transparent 0 54px, rgba(231, 55, 47, 0.03) 55px 56px, transparent 57px 118px),
-    radial-gradient(ellipse 92px 28px at 12% 18%, transparent 56%, rgba(247, 243, 234, 0.036) 57% 58%, transparent 59%),
-    radial-gradient(ellipse 78px 24px at 78% 28%, transparent 56%, rgba(203, 169, 92, 0.038) 57% 58%, transparent 59%),
-    radial-gradient(ellipse 108px 32px at 52% 82%, transparent 57%, rgba(247, 243, 234, 0.028) 58% 59%, transparent 60%);
-  background-size: 360px 260px, 420px 300px, 460px 340px, 520px 360px, 560px 380px;
-  opacity: 0.72;
+    conic-gradient(from 220deg at 18% 16%, transparent 0 40deg, rgba(203, 169, 92, 0.105) 42deg 50deg, transparent 52deg 140deg, rgba(231, 55, 47, 0.07) 142deg 150deg, transparent 152deg),
+    conic-gradient(from 48deg at 84% 70%, transparent 0 52deg, rgba(247, 243, 234, 0.052) 54deg 61deg, transparent 63deg 160deg, rgba(203, 169, 92, 0.068) 162deg 170deg, transparent 172deg),
+    linear-gradient(128deg, transparent 0 24%, rgba(247, 243, 234, 0.032) 24.5% 25%, transparent 25.5% 64%, rgba(203, 169, 92, 0.04) 64.5% 65%, transparent 65.5%),
+    linear-gradient(28deg, transparent 0 34%, rgba(231, 55, 47, 0.028) 34.4% 35%, transparent 35.5%);
+  background-size: 680px 460px, 760px 520px, 620px 420px, 840px 560px;
+  opacity: 0.78;
 }
 
 .auth-screen,
@@ -8203,10 +8202,10 @@ button.calendar-day {
   --green: #2d8065;
   --shadow: 0 22px 58px rgba(81, 63, 35, 0.16);
   --section-pattern:
-    repeating-linear-gradient(118deg, rgba(169, 121, 47, 0.072) 0 1px, transparent 1px 42px),
-    repeating-linear-gradient(32deg, rgba(201, 54, 47, 0.046) 0 1px, transparent 1px 58px),
-    radial-gradient(ellipse 80px 26px at 20% 24%, transparent 58%, rgba(31, 27, 21, 0.034) 59% 60%, transparent 61%),
-    radial-gradient(ellipse 64px 20px at 82% 76%, transparent 56%, rgba(169, 121, 47, 0.052) 57% 59%, transparent 60%);
+    conic-gradient(from 218deg at 12% 18%, rgba(169, 121, 47, 0.13) 0 12deg, transparent 12deg 118deg, rgba(201, 54, 47, 0.07) 118deg 130deg, transparent 130deg),
+    linear-gradient(132deg, transparent 0 35%, rgba(31, 27, 21, 0.042) 35.4% 36%, transparent 36.4% 68%, rgba(169, 121, 47, 0.055) 68.3% 69%, transparent 69.4%),
+    linear-gradient(26deg, transparent 0 42%, rgba(201, 54, 47, 0.035) 42.4% 43%, transparent 43.5%),
+    radial-gradient(ellipse 120% 70% at 100% 0%, rgba(169, 121, 47, 0.09), transparent 44%);
 }
 
 :root[data-theme="light"] body {
@@ -8217,12 +8216,12 @@ button.calendar-day {
 
 :root[data-theme="light"] body::before {
   background:
-    repeating-linear-gradient(124deg, transparent 0 42px, rgba(169, 121, 47, 0.06) 43px 44px, transparent 45px 96px),
-    repeating-linear-gradient(28deg, transparent 0 54px, rgba(201, 54, 47, 0.035) 55px 56px, transparent 57px 118px),
-    radial-gradient(ellipse 92px 28px at 12% 18%, transparent 56%, rgba(31, 27, 21, 0.038) 57% 58%, transparent 59%),
-    radial-gradient(ellipse 78px 24px at 78% 28%, transparent 56%, rgba(169, 121, 47, 0.05) 57% 58%, transparent 59%),
-    radial-gradient(ellipse 108px 32px at 52% 82%, transparent 57%, rgba(31, 27, 21, 0.03) 58% 59%, transparent 60%);
-  opacity: 0.66;
+    conic-gradient(from 220deg at 18% 16%, transparent 0 40deg, rgba(169, 121, 47, 0.115) 42deg 50deg, transparent 52deg 140deg, rgba(201, 54, 47, 0.06) 142deg 150deg, transparent 152deg),
+    conic-gradient(from 48deg at 84% 70%, transparent 0 52deg, rgba(31, 27, 21, 0.04) 54deg 61deg, transparent 63deg 160deg, rgba(169, 121, 47, 0.075) 162deg 170deg, transparent 172deg),
+    linear-gradient(128deg, transparent 0 24%, rgba(31, 27, 21, 0.026) 24.5% 25%, transparent 25.5% 64%, rgba(169, 121, 47, 0.05) 64.5% 65%, transparent 65.5%),
+    linear-gradient(28deg, transparent 0 34%, rgba(201, 54, 47, 0.024) 34.4% 35%, transparent 35.5%);
+  background-size: 680px 460px, 760px 520px, 620px 420px, 840px 560px;
+  opacity: 0.7;
 }
 
 :root[data-theme="light"] .auth-panel,
@@ -9819,6 +9818,291 @@ h1[data-page-title] {
 
 .actor-status-strip {
   align-self: start;
+}
+
+/* Abstract polish: smaller overview, softer dossiers, and less boxy reference pages. */
+.overview-hero.intro-panel {
+  width: min(100%, 860px);
+  grid-template-columns: minmax(0, 1fr) minmax(178px, 0.28fr);
+  gap: 8px;
+}
+
+.overview-hero-copy {
+  min-height: 84px;
+  padding: 12px 14px;
+  border-radius: 7px 20px 7px 7px;
+}
+
+.overview-hero-copy .eyebrow {
+  margin-bottom: 5px;
+  font-size: 10px;
+}
+
+.overview-hero-copy h2 {
+  margin-bottom: 4px;
+  font-size: clamp(18px, 1.28vw, 22px);
+}
+
+.overview-hero-copy p:not(.eyebrow) {
+  max-width: 440px;
+  font-size: 11px;
+  line-height: 1.32;
+}
+
+.overview-player-card {
+  min-height: 84px;
+  padding: 10px;
+}
+
+.overview-player-card > span {
+  font-size: 9px;
+}
+
+.overview-player-card > strong {
+  margin: 3px 0 2px;
+  font-size: 14px;
+}
+
+.overview-player-card > p {
+  margin-bottom: 5px;
+  font-size: 9px;
+}
+
+.overview-credit-row {
+  margin-bottom: 5px;
+}
+
+.overview-credit-row article {
+  min-height: 42px;
+  padding: 6px;
+}
+
+.overview-credit-row small {
+  font-size: 8px;
+}
+
+.overview-credit-row b {
+  font-size: 18px;
+}
+
+.project-detail-page,
+.document-detail-shell .department-document {
+  overflow: hidden;
+  border-radius: 28px 10px 28px 10px;
+  background:
+    var(--section-pattern),
+    linear-gradient(135deg, rgba(247, 243, 234, 0.045), transparent 58%),
+    rgba(14, 14, 16, 0.96);
+}
+
+.project-detail-page .detail-hero,
+.department-document .policy-hero {
+  margin: 18px;
+  padding: 24px;
+  border: 1px solid rgba(203, 169, 92, 0.2);
+  border-radius: 24px 56px 24px 24px;
+  background:
+    var(--section-pattern),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.13), transparent 52%),
+    rgba(7, 7, 8, 0.86);
+}
+
+.project-detail-page .detail-hero h2,
+.department-document .policy-hero h3 {
+  max-width: 780px;
+  margin-bottom: 10px;
+  font-size: clamp(28px, 3vw, 42px);
+}
+
+.project-detail-brief {
+  grid-template-columns: 132px minmax(130px, 220px) minmax(0, 1fr);
+  margin: 0 18px 16px;
+  padding: 16px 18px;
+  border: 1px solid rgba(203, 169, 92, 0.18);
+  border-radius: 999px 26px 26px 999px;
+  background:
+    linear-gradient(128deg, rgba(203, 169, 92, 0.12), transparent 58%),
+    rgba(7, 7, 8, 0.7);
+}
+
+.project-status-grid {
+  gap: 10px;
+  padding: 0 18px 18px;
+  border: 0;
+  background: transparent;
+}
+
+.project-status-grid article {
+  min-height: 92px;
+  padding: 16px;
+  border: 1px solid rgba(203, 169, 92, 0.18);
+  border-radius: 20px 8px 20px 8px;
+  background:
+    var(--section-pattern),
+    rgba(7, 7, 8, 0.72);
+}
+
+.project-detail-grid {
+  gap: 12px;
+  padding: 0 18px 22px;
+}
+
+.project-detail-grid section {
+  min-height: 220px;
+  border-color: rgba(203, 169, 92, 0.18);
+  border-radius: 26px 10px 26px 10px;
+  background:
+    var(--section-pattern),
+    linear-gradient(140deg, rgba(203, 169, 92, 0.08), transparent 62%),
+    rgba(7, 7, 8, 0.68);
+}
+
+.department-alert {
+  margin: 18px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(203, 169, 92, 0.16), transparent 70%),
+    rgba(7, 7, 8, 0.7);
+}
+
+.department-section {
+  margin: 18px;
+  padding: 22px;
+  border: 1px solid rgba(203, 169, 92, 0.16);
+  border-radius: 26px 10px 26px 10px;
+  background:
+    var(--section-pattern),
+    linear-gradient(142deg, rgba(247, 243, 234, 0.04), transparent 58%),
+    rgba(8, 8, 9, 0.58);
+}
+
+.department-section-heading > span {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid rgba(203, 169, 92, 0.32);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.42);
+  color: var(--gold);
+}
+
+.department-org,
+.department-fit-card,
+.department-sla-grid article,
+.department-team-grid article,
+.department-rules article,
+.department-table-wrap {
+  border-color: rgba(203, 169, 92, 0.18);
+  background:
+    var(--section-pattern),
+    linear-gradient(135deg, rgba(203, 169, 92, 0.075), transparent 62%),
+    rgba(7, 7, 8, 0.7);
+}
+
+.department-org {
+  border-radius: 28px;
+}
+
+.org-apex {
+  border-radius: 999px;
+}
+
+.department-org div span {
+  min-height: 36px;
+  border-color: rgba(203, 169, 92, 0.16);
+  border-radius: 999px;
+  background: rgba(247, 243, 234, 0.035);
+}
+
+.department-fit-card {
+  border-radius: 28px 72px 28px 28px;
+}
+
+.department-sla-grid article {
+  border-radius: 22px 10px 22px 10px;
+}
+
+.department-team-grid article {
+  border-radius: 26px 10px 26px 10px;
+}
+
+.department-rules article {
+  border-radius: 10px 26px 10px 26px;
+}
+
+.department-table-wrap {
+  border-radius: 24px;
+}
+
+.department-table {
+  background: transparent;
+}
+
+.department-table th {
+  background: rgba(203, 169, 92, 0.08);
+}
+
+.actor-resource-grid,
+.actor-update-form {
+  grid-column: 1 / -1;
+}
+
+.actor-resource-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.actor-project-empty {
+  margin: 14px 0 0;
+  padding: 14px 16px;
+  border: 1px dashed rgba(203, 169, 92, 0.28);
+  border-radius: 18px;
+  color: rgba(247, 243, 234, 0.64);
+  font-size: 13px;
+}
+
+.system-message-head {
+  align-items: center;
+}
+
+.system-message-head .eyebrow {
+  margin: 0;
+}
+
+:root[data-theme="light"] .project-detail-page,
+:root[data-theme="light"] .document-detail-shell .department-document,
+:root[data-theme="light"] .project-detail-page .detail-hero,
+:root[data-theme="light"] .department-document .policy-hero,
+:root[data-theme="light"] .project-detail-brief,
+:root[data-theme="light"] .project-status-grid article,
+:root[data-theme="light"] .project-detail-grid section,
+:root[data-theme="light"] .department-alert,
+:root[data-theme="light"] .department-section,
+:root[data-theme="light"] .department-org,
+:root[data-theme="light"] .department-fit-card,
+:root[data-theme="light"] .department-sla-grid article,
+:root[data-theme="light"] .department-team-grid article,
+:root[data-theme="light"] .department-rules article,
+:root[data-theme="light"] .department-table-wrap {
+  border-color: rgba(169, 121, 47, 0.22);
+  background:
+    var(--section-pattern),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.74), transparent 60%),
+    rgba(255, 253, 248, 0.95);
+}
+
+:root[data-theme="light"] .department-org div span,
+:root[data-theme="light"] .department-section-heading > span {
+  border-color: rgba(169, 121, 47, 0.24);
+  background: rgba(255, 250, 240, 0.82);
+}
+
+:root[data-theme="light"] .department-table th {
+  background: rgba(169, 121, 47, 0.09);
+}
+
+:root[data-theme="light"] .actor-project-empty {
+  color: rgba(39, 35, 29, 0.64);
 }
 
 @media (max-width: 1180px) {

@@ -178,7 +178,6 @@
               <div class="system-message-head">
                 <div>
                   <p class="eyebrow">System messages</p>
-                  <strong>Read-only notices</strong>
                 </div>
                 <small>No replies here</small>
               </div>
@@ -1055,16 +1054,6 @@
           </div>
 
           <div class="actor-hub-layout">
-            <article class="actor-hero-panel">
-              <p class="eyebrow">Actor workspace</p>
-              <div class="actor-status-strip" aria-label="Actor readiness checklist">
-                <span>Profile</span>
-                <span>Availability</span>
-                <span>Self-tape</span>
-                <span>Set ready</span>
-              </div>
-            </article>
-
             <div class="actor-resource-grid">
               <article>
                 <span class="actor-resource-icon actor-profile-icon" aria-hidden="true"></span>
@@ -1106,43 +1095,44 @@
                 </div>
               </div>
               <div class="actor-project-grid">
-                <article class="actor-project-card">
+                <article class="actor-project-card" data-actor-project="the-banished">
                   <span>Flagship</span>
                   <strong>The Banished</strong>
                   <p>Canon, tone, character logic, wardrobe direction, confidentiality rules, and approved materials.</p>
                   <button type="button" data-project-page="the-banished">Open dossier</button>
                 </article>
-                <article class="actor-project-card">
+                <article class="actor-project-card" data-actor-project="colorblind">
                   <span>Film</span>
                   <strong>Colorblind</strong>
                   <p>Character pressure, advertising-world context, visual rules, audition tone, and packaging notes.</p>
                   <button type="button" data-project-page="colorblind">Open dossier</button>
                 </article>
-                <article class="actor-project-card">
+                <article class="actor-project-card" data-actor-project="incompatibility">
                   <span>Film</span>
                   <strong>Incompatibility</strong>
                   <p>Relationship engine, dark-comedy tone, scene rhythm, chemistry notes, and character boundaries.</p>
                   <button type="button" data-project-page="incompatibility">Open dossier</button>
                 </article>
-                <article class="actor-project-card">
+                <article class="actor-project-card" data-actor-project="witches">
                   <span>TV Series</span>
                   <strong>Witches</strong>
                   <p>Series tone, character direction, audition lane, world rules, and visual references.</p>
                   <button type="button" data-project-page="witches">Open dossier</button>
                 </article>
-                <article class="actor-project-card">
+                <article class="actor-project-card" data-actor-project="bloody-bond">
                   <span>TV Series</span>
                   <strong>Bloody Bond</strong>
                   <p>Pilot context, character pressure, callback notes, production timing, and packaging needs.</p>
                   <button type="button" data-project-page="bloody-bond">Open dossier</button>
                 </article>
-                <article class="actor-project-card">
+                <article class="actor-project-card" data-actor-project="marco-de-marlo">
                   <span>Actor promotion</span>
                   <strong>Marco de Marlo</strong>
                   <p>Positioning, public materials, press angle, portfolio needs, and project team next actions.</p>
                   <button type="button" data-project-page="marco-de-marlo">Open dossier</button>
                 </article>
               </div>
+              <p class="actor-project-empty" data-actor-project-empty hidden>No assigned actor projects yet.</p>
             </section>
 
             <section class="actor-team-board" aria-label="Actor team communication">
@@ -1182,16 +1172,16 @@
                 <label>
                   Project
                   <select name="project">
-                    <option>The Banished</option>
-                    <option>Colorblind</option>
-                    <option>Incompatibility</option>
-                    <option>Witches</option>
-                    <option>Madness</option>
-                    <option>Crossing North</option>
-                    <option>Bloody Bond</option>
-                    <option>Marco de Marlo</option>
-                    <option>Four Horsemen of the Apocalypse</option>
-                    <option>AI Casting Platform</option>
+                    <option data-actor-project-option="the-banished">The Banished</option>
+                    <option data-actor-project-option="colorblind">Colorblind</option>
+                    <option data-actor-project-option="incompatibility">Incompatibility</option>
+                    <option data-actor-project-option="witches">Witches</option>
+                    <option data-actor-project-option="madness">Madness</option>
+                    <option data-actor-project-option="crossing-north">Crossing North</option>
+                    <option data-actor-project-option="bloody-bond">Bloody Bond</option>
+                    <option data-actor-project-option="marco-de-marlo">Marco de Marlo</option>
+                    <option data-actor-project-option="four-horsemen">Four Horsemen of the Apocalypse</option>
+                    <option data-actor-project-option="ai-casting">AI Casting Platform</option>
                     <option>Other / not assigned yet</option>
                   </select>
                 </label>
@@ -1347,20 +1337,6 @@
               <p class="eyebrow">Writing room</p>
               <h2 id="script-studio-title">Script Studio</h2>
             </div>
-          </div>
-
-          <div class="script-studio-board">
-            <article class="script-hero-card">
-              <span class="script-badge">WGA</span>
-              <div>
-                <p class="eyebrow">American screenplay format</p>
-                <h3>Draft clean. Submit with context.</h3>
-                <p>
-                  Use the workspace to prepare pages with standard scene headings, concise action lines, character
-                  cues, and dialogue blocks before sending them for internal review.
-                </p>
-              </div>
-            </article>
           </div>
 
           <form class="script-review-form" data-script-review-form>
