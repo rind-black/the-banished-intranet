@@ -1039,24 +1039,24 @@ h3 {
 
 .overview-quest-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
 }
 
 .overview-quest-card {
   display: grid;
-  grid-template-columns: 62px minmax(0, 1fr) auto;
-  gap: 16px;
-  align-items: center;
-  min-height: 146px;
-  padding: 20px;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 10px 12px;
+  align-items: start;
+  min-height: 112px;
+  padding: 14px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 10px;
   background:
     linear-gradient(135deg, rgba(247, 243, 234, 0.045), transparent 62%),
     rgba(17, 17, 19, 0.94);
-  box-shadow: var(--shadow);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
 }
 
 .overview-quest-card.featured {
@@ -1068,26 +1068,34 @@ h3 {
 
 .overview-quest-icon {
   display: grid;
-  width: 58px;
-  height: 58px;
+  width: 36px;
+  height: 36px;
   place-items: center;
   border: 1px solid rgba(203, 169, 92, 0.5);
   border-radius: 50%;
   background: #050506;
   color: var(--gold);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 900;
 }
 
 .overview-quest-card h3 {
-  margin-bottom: 8px;
+  margin-bottom: 5px;
+  font-size: 18px;
+  line-height: 1.05;
   text-transform: uppercase;
 }
 
 .overview-quest-card p:not(.eyebrow) {
   margin: 0;
   color: rgba(247, 243, 234, 0.62);
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.36;
+}
+
+.overview-quest-card .eyebrow {
+  margin-bottom: 5px;
+  font-size: 10px;
 }
 
 .overview-quest-card button,
@@ -1102,9 +1110,13 @@ h3 {
 }
 
 .overview-quest-card button {
-  min-height: 42px;
-  padding: 0 12px;
+  grid-column: 2;
+  justify-self: start;
+  min-height: 32px;
+  margin-top: 2px;
+  padding: 0 10px;
   border-radius: 999px;
+  font-size: 10px;
   white-space: nowrap;
 }
 
@@ -6483,6 +6495,7 @@ button.calendar-day {
   }
 
   .overview-quest-card button {
+    grid-column: auto;
     justify-self: start;
   }
 
