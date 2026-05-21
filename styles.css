@@ -10577,3 +10577,86 @@ h1[data-page-title] {
     max-width: 110px;
   }
 }
+
+/* Final profile pass: keep the overview welcome block compact. */
+.overview-hero.intro-panel {
+  width: min(100%, 720px);
+  grid-template-columns: minmax(0, 1fr) minmax(150px, 0.25fr);
+  gap: 7px;
+}
+
+.overview-hero-copy {
+  min-height: 66px;
+  padding: 9px 12px;
+  border-radius: 7px 18px 7px 7px;
+}
+
+.overview-hero-copy .eyebrow {
+  margin-bottom: 3px;
+  font-size: 9px;
+}
+
+.overview-hero-copy h2 {
+  margin-bottom: 3px;
+  font-size: clamp(16px, 1.05vw, 18px);
+  line-height: 1.04;
+}
+
+.overview-hero-copy p:not(.eyebrow) {
+  max-width: 390px;
+  font-size: 10px;
+  line-height: 1.25;
+}
+
+.overview-player-card {
+  min-height: 66px;
+  padding: 8px;
+  border-radius: 18px 7px 7px 7px;
+}
+
+.overview-player-card > span {
+  font-size: 8px;
+}
+
+.overview-player-card > strong {
+  margin: 2px 0;
+  font-size: 12px;
+}
+
+.overview-player-card > p {
+  margin-bottom: 4px;
+  font-size: 8px;
+  line-height: 1.2;
+}
+
+.overview-credit-row {
+  margin-bottom: 4px;
+}
+
+.overview-credit-row article {
+  min-height: 34px;
+  padding: 5px;
+}
+
+.overview-credit-row small {
+  font-size: 7px;
+}
+
+.overview-credit-row b {
+  font-size: 15px;
+}
+
+.overview-progress {
+  height: 6px;
+}
+
+@media (max-width: 900px) {
+  .overview-hero.intro-panel {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
+
+  .overview-player-card {
+    border-radius: 7px 18px 7px 7px;
+  }
+}
