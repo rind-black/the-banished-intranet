@@ -10660,3 +10660,46 @@ h1[data-page-title] {
     border-radius: 7px 18px 7px 7px;
   }
 }
+
+/* Overview welcome should behave like a compact strip, not a hero card. */
+.overview-hero.intro-panel {
+  width: fit-content;
+  max-width: 100%;
+  grid-template-columns: minmax(0, auto) auto;
+  align-items: start;
+}
+
+.overview-hero-copy {
+  width: fit-content;
+  max-width: min(100%, 560px);
+  min-height: 0;
+  align-self: start;
+  padding: 12px 18px 13px;
+}
+
+.overview-hero-copy h2 {
+  max-width: none;
+  white-space: nowrap;
+}
+
+.overview-hero-copy p:not(.eyebrow) {
+  max-width: none;
+  white-space: nowrap;
+}
+
+.overview-player-card {
+  min-height: 0;
+  align-self: start;
+}
+
+@media (max-width: 760px) {
+  .overview-hero.intro-panel,
+  .overview-hero-copy {
+    width: 100%;
+  }
+
+  .overview-hero-copy h2,
+  .overview-hero-copy p:not(.eyebrow) {
+    white-space: normal;
+  }
+}
