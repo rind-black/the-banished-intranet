@@ -913,7 +913,7 @@ const projectPages = {
     signal: "Discovery",
     progress: 42,
     focus: "Make the casting workflow clear enough to build: data, review steps, and permissions.",
-    stage: "Product discovery and workflow design",
+    stage: "Discovery",
     owner: "Technology / Casting Operations",
     priority: "High",
     requirements: [
@@ -938,7 +938,7 @@ const projectPages = {
     signal: "Flagship",
     progress: 58,
     focus: "Keep canon, visual language, and approved materials easy to find and trust.",
-    stage: "Creative development",
+    stage: "Pre-production",
     owner: "Creative / IP",
     priority: "Flagship",
     requirements: [
@@ -963,7 +963,7 @@ const projectPages = {
     signal: "Active",
     progress: 52,
     focus: "Shape the visual rules so the concept supports character, pressure, and feasibility.",
-    stage: "Script and packaging",
+    stage: "Pre-production",
     owner: "Film Development",
     priority: "Active",
     requirements: [
@@ -988,7 +988,7 @@ const projectPages = {
     signal: "Tone lock",
     progress: 46,
     focus: "Keep the comedy sharp while the relationship logic stays clear and pitchable.",
-    stage: "Tone and character development",
+    stage: "Pre-production",
     owner: "Film Development",
     priority: "Active",
     requirements: [
@@ -1013,7 +1013,7 @@ const projectPages = {
     signal: "World rules",
     progress: 36,
     focus: "Lock the mythology rules early so powers, costs, and visuals stay consistent.",
-    stage: "IP architecture",
+    stage: "Discovery",
     owner: "Comics / Franchise Development",
     priority: "Development",
     requirements: [
@@ -1038,7 +1038,7 @@ const projectPages = {
     signal: "Development",
     progress: 32,
     focus: "Define the series engine, tone, character lanes, and first-season creative spine.",
-    stage: "Series development",
+    stage: "Discovery",
     owner: "TV Development",
     priority: "Development",
     requirements: [
@@ -1058,7 +1058,7 @@ const projectPages = {
     signal: "Concept",
     progress: 28,
     focus: "Turn the core concept into a readable comics plan with issue structure and art direction.",
-    stage: "Comics concept development",
+    stage: "Discovery",
     owner: "Comics Development",
     priority: "Concept",
     requirements: [
@@ -1078,7 +1078,7 @@ const projectPages = {
     signal: "Research",
     progress: 30,
     focus: "Clarify world context, character stakes, and the research needed for a grounded comics package.",
-    stage: "Research and story architecture",
+    stage: "Discovery",
     owner: "Comics Development",
     priority: "Development",
     requirements: [
@@ -1098,7 +1098,7 @@ const projectPages = {
     signal: "Packaging",
     progress: 34,
     focus: "Build the pilot package, casting path, tone references, and first production assumptions.",
-    stage: "Pilot packaging",
+    stage: "Pre-production",
     owner: "TV Development",
     priority: "Development",
     requirements: [
@@ -1118,7 +1118,7 @@ const projectPages = {
     signal: "Campaign",
     progress: 26,
     focus: "Package positioning, materials, and next actions for a focused actor promotion campaign.",
-    stage: "Talent promotion planning",
+    stage: "Production",
     owner: "Talent / Corporate Communications",
     priority: "Campaign",
     requirements: [
@@ -4052,7 +4052,7 @@ const projectDetailTemplates = {
   it: {
     className: "is-it-project",
     readinessLabel: "Build readiness",
-    stageLabel: "Product phase",
+    stageLabel: "Project status",
     ownerLabel: "Product owner",
     priorityLabel: "Delivery priority",
     signalLabel: "Technical signal",
@@ -4063,7 +4063,7 @@ const projectDetailTemplates = {
   film: {
     className: "is-film-project",
     readinessLabel: "Production readiness",
-    stageLabel: "Development stage",
+    stageLabel: "Project status",
     ownerLabel: "Production lane",
     priorityLabel: "Slate priority",
     signalLabel: "Creative signal",
@@ -4074,7 +4074,7 @@ const projectDetailTemplates = {
   tv: {
     className: "is-tv-project",
     readinessLabel: "Package readiness",
-    stageLabel: "Series phase",
+    stageLabel: "Project status",
     ownerLabel: "Show lane",
     priorityLabel: "Slate priority",
     signalLabel: "Room signal",
@@ -4085,7 +4085,7 @@ const projectDetailTemplates = {
   comics: {
     className: "is-comics-project",
     readinessLabel: "Issue readiness",
-    stageLabel: "Comics phase",
+    stageLabel: "Project status",
     ownerLabel: "Comics lane",
     priorityLabel: "IP priority",
     signalLabel: "Canon signal",
@@ -4096,7 +4096,7 @@ const projectDetailTemplates = {
   talent: {
     className: "is-talent-project",
     readinessLabel: "Campaign readiness",
-    stageLabel: "Campaign phase",
+    stageLabel: "Project status",
     ownerLabel: "Talent lane",
     priorityLabel: "Campaign priority",
     signalLabel: "Publicity signal",
@@ -4107,7 +4107,7 @@ const projectDetailTemplates = {
   other: {
     className: "is-general-project",
     readinessLabel: "Readiness",
-    stageLabel: "Stage",
+    stageLabel: "Project status",
     ownerLabel: "Owner lane",
     priorityLabel: "Priority",
     signalLabel: "Signal",
@@ -4247,7 +4247,7 @@ function projectFromContentItem(item) {
     signal: "Admin brief",
     progress: 18,
     focus: bodyLines[0] || "Admin-added project. Confirm the owner, next milestone, and first usable artifact.",
-    stage: "Admin-added project",
+    stage: "Discovery",
     owner: "Assigned by admin",
     priority: "Review",
     requirements: bodyLines.length ? bodyLines : ["Review the project brief and confirm what is required next."],
