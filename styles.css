@@ -10756,3 +10756,22 @@ h1[data-page-title] {
     white-space: normal;
   }
 }
+
+/* Keep the top control dock clearly separated from section backgrounds. */
+.topbar {
+  margin-bottom: 42px;
+}
+
+.portal-section.active::before {
+  inset: -12px -28px -26px;
+}
+
+@media (max-width: 900px) {
+  .topbar {
+    margin-bottom: 32px;
+  }
+
+  .portal-section.active::before {
+    inset: -10px -18px -20px;
+  }
+}
