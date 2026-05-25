@@ -11330,3 +11330,60 @@ h1[data-page-title] {
     grid-template-columns: 1fr;
   }
 }
+
+/* Bonus cards: shorter width, taller shape, stronger readable titles. */
+#bonuses .bonus-doc-grid {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 232px));
+  justify-content: end;
+}
+
+#bonuses .bonus-doc-card.policy-card {
+  grid-template-areas:
+    "number . glyph"
+    "copy copy copy";
+  grid-template-columns: 42px minmax(0, 1fr) 34px;
+  align-content: space-between;
+  min-height: 132px;
+  padding: 16px;
+  border-radius: 12px 6px 12px 6px;
+}
+
+#bonuses .bonus-doc-card .policy-number {
+  grid-area: number;
+  width: 38px;
+  height: 38px;
+  font-size: 10px;
+}
+
+#bonuses .bonus-doc-card > span:not(.policy-number) {
+  display: block;
+  grid-area: copy;
+  align-self: end;
+}
+
+#bonuses .bonus-doc-card strong {
+  margin-bottom: 7px;
+  font-size: 15px;
+  line-height: 1.12;
+}
+
+#bonuses .bonus-doc-card small {
+  font-size: 12px;
+  line-height: 1.32;
+}
+
+#bonuses .bonus-doc-glyph {
+  grid-area: glyph;
+  align-self: start;
+}
+
+@media (max-width: 720px) {
+  #bonuses .bonus-doc-grid {
+    grid-template-columns: 1fr;
+    justify-content: stretch;
+  }
+
+  #bonuses .bonus-doc-card.policy-card {
+    min-height: 118px;
+  }
+}
