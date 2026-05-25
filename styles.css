@@ -10775,3 +10775,76 @@ h1[data-page-title] {
     inset: -10px -18px -20px;
   }
 }
+
+/* Compact section title pass for Announcements, Documents, Projects, and sibling pages. */
+.portal-section > .section-heading {
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 7px 0 11px;
+}
+
+.portal-section > .section-heading > div {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding-left: 13px;
+}
+
+.portal-section > .section-heading > div::before {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 0;
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent), var(--gold));
+  content: "";
+}
+
+.portal-section > .section-heading .eyebrow {
+  margin: 0;
+  color: var(--gold);
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.portal-section > .section-heading h2 {
+  font-size: clamp(18px, 1.25vw, 24px);
+  line-height: 1.04;
+}
+
+.portal-section:not(#overview) > .intro-panel {
+  padding: 24px;
+}
+
+.portal-section:not(#overview) > .intro-panel h2 {
+  margin-bottom: 10px;
+  font-size: clamp(18px, 1.3vw, 22px);
+  line-height: 1.06;
+}
+
+.portal-section:not(#overview) > .intro-panel > .eyebrow {
+  margin-bottom: 6px;
+  font-size: 9px;
+  line-height: 1;
+}
+
+.portal-section:not(#overview) > .intro-panel p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@media (max-width: 760px) {
+  .portal-section > .section-heading {
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .portal-section > .section-heading h2,
+  .portal-section:not(#overview) > .intro-panel h2 {
+    font-size: 20px;
+  }
+}
