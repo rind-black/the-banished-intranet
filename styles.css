@@ -11259,3 +11259,25 @@ h1[data-page-title] {
     max-width: 100%;
   }
 }
+
+/* Final bonus pass: align the credit summary to the right and remove intro spacing. */
+#bonuses .bonus-dashboard {
+  justify-items: end;
+}
+
+#bonuses .bonus-hero {
+  justify-self: end;
+}
+
+#bonuses .bonus-doc-grid {
+  margin-top: 0;
+}
+
+@media (max-width: 720px) {
+  #bonuses .bonus-dashboard,
+  #bonuses .bonus-hero {
+    justify-items: stretch;
+    justify-self: stretch;
+    width: 100%;
+  }
+}
