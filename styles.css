@@ -10848,3 +10848,235 @@ h1[data-page-title] {
     font-size: 20px;
   }
 }
+
+/* Documents polish: richer role cards and smaller document glyphs. */
+.document-role-selector {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 20px;
+  border: 0;
+  background: transparent;
+}
+
+.document-role-selector .role-button {
+  position: relative;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  min-height: 78px;
+  padding: 13px 14px;
+  border: 1px solid rgba(203, 169, 92, 0.22);
+  border-radius: 26px 9px 26px 9px;
+  background:
+    radial-gradient(circle at 90% 14%, rgba(203, 169, 92, 0.15), transparent 28%),
+    linear-gradient(135deg, rgba(247, 243, 234, 0.05), transparent 60%),
+    rgba(12, 12, 14, 0.9);
+  box-shadow: inset 0 1px 0 rgba(247, 243, 234, 0.05);
+  text-align: left;
+}
+
+.document-role-selector .role-button:hover,
+.document-role-selector .role-button.active {
+  border-color: rgba(203, 169, 92, 0.52);
+  background:
+    radial-gradient(circle at 90% 14%, rgba(203, 169, 92, 0.2), transparent 28%),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.1), transparent 60%),
+    rgba(16, 16, 18, 0.96);
+  color: var(--ink-strong);
+  transform: translateY(-1px);
+}
+
+.document-role-selector .role-button.active {
+  box-shadow:
+    inset 0 0 0 1px rgba(203, 169, 92, 0.12),
+    0 18px 38px rgba(0, 0, 0, 0.28);
+}
+
+.document-role-selector .role-button.active::after {
+  position: absolute;
+  right: 13px;
+  top: 12px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 5px rgba(231, 55, 47, 0.12);
+  content: "";
+}
+
+.role-card-mark {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid rgba(203, 169, 92, 0.32);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 36% 24%, rgba(247, 243, 234, 0.16), transparent 32%),
+    rgba(5, 5, 6, 0.9);
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.role-card-copy {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+}
+
+.role-card-copy strong,
+.role-card-copy small {
+  display: block;
+}
+
+.role-card-copy strong {
+  color: var(--ink-strong);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.role-card-copy small {
+  max-width: 24ch;
+  color: rgba(247, 243, 234, 0.6);
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.35;
+  text-transform: none;
+}
+
+.document-card-grid.active {
+  grid-template-columns: repeat(auto-fit, minmax(188px, 232px));
+  gap: 12px;
+}
+
+.document-tile,
+.document-tile:hover {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  align-items: center;
+  gap: 11px;
+  max-width: none;
+  min-height: 70px;
+  padding: 10px 12px;
+  border: 1px solid rgba(203, 169, 92, 0.2);
+  border-radius: 18px 8px 18px 8px;
+  background:
+    radial-gradient(circle at 94% 12%, rgba(203, 169, 92, 0.1), transparent 25%),
+    rgba(12, 12, 14, 0.78);
+  box-shadow: none;
+  text-align: left;
+  transform: none;
+}
+
+.document-tile:hover {
+  border-color: rgba(203, 169, 92, 0.5);
+  background:
+    radial-gradient(circle at 94% 12%, rgba(203, 169, 92, 0.16), transparent 25%),
+    rgba(16, 16, 18, 0.92);
+  transform: translateY(-1px);
+}
+
+.document-icon-plate {
+  width: 46px;
+  height: 46px;
+  aspect-ratio: auto;
+  border-radius: 15px 6px 15px 6px;
+}
+
+.document-icon-plate::before {
+  inset: 7px;
+  border-radius: 10px 4px 10px 4px;
+}
+
+.document-icon-plate::after {
+  right: 8px;
+  top: 8px;
+  width: 7px;
+  height: 7px;
+}
+
+.document-icon-plate svg {
+  width: 24px;
+}
+
+.document-icon-plate path {
+  stroke-width: 4.5;
+}
+
+.document-tile-caption {
+  justify-items: start;
+  gap: 5px;
+  padding: 0;
+}
+
+.document-label {
+  padding: 3px 6px;
+  font-size: 8px;
+}
+
+.document-tile strong {
+  font-size: 12px;
+  line-height: 1.16;
+}
+
+.document-tile small {
+  max-width: 22ch;
+  -webkit-line-clamp: 2;
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+:root[data-theme="light"] .document-role-selector .role-button {
+  border-color: rgba(169, 121, 47, 0.24);
+  background:
+    radial-gradient(circle at 90% 14%, rgba(169, 121, 47, 0.12), transparent 28%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.78), transparent 60%),
+    rgba(255, 253, 248, 0.92);
+}
+
+:root[data-theme="light"] .document-role-selector .role-button:hover,
+:root[data-theme="light"] .document-role-selector .role-button.active {
+  border-color: rgba(169, 121, 47, 0.46);
+  background:
+    radial-gradient(circle at 90% 14%, rgba(169, 121, 47, 0.18), transparent 28%),
+    linear-gradient(135deg, rgba(169, 121, 47, 0.1), transparent 60%),
+    rgba(255, 253, 248, 0.98);
+}
+
+:root[data-theme="light"] .role-card-copy small {
+  color: rgba(18, 16, 13, 0.58);
+}
+
+:root[data-theme="light"] .document-tile,
+:root[data-theme="light"] .document-tile:hover {
+  border-color: rgba(169, 121, 47, 0.22);
+  background:
+    radial-gradient(circle at 94% 12%, rgba(169, 121, 47, 0.12), transparent 25%),
+    rgba(255, 253, 248, 0.9);
+}
+
+@media (max-width: 900px) {
+  .document-role-selector {
+    grid-template-columns: 1fr;
+  }
+
+  .document-card-grid.active {
+    grid-template-columns: repeat(auto-fit, minmax(178px, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .document-tile,
+  .document-tile:hover {
+    grid-template-columns: 42px minmax(0, 1fr);
+  }
+
+  .document-icon-plate {
+    width: 42px;
+    height: 42px;
+  }
+}

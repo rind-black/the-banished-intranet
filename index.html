@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>The Banished Internal Portal</title>
-    <link rel="stylesheet" href="styles.css?v=compact-section-headings-2" />
+    <link rel="stylesheet" href="styles.css?v=documents-polish-1" />
   </head>
   <body>
     <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
@@ -397,10 +397,28 @@
             </div>
           </div>
 
-          <div class="role-selector" aria-label="Document role selector">
-            <button class="role-button" type="button" data-role-button="general">Employee</button>
-            <button class="role-button" type="button" data-role-button="admin">Admin</button>
-            <button class="role-button" type="button" data-role-button="project-manager">Project Manager</button>
+          <div class="role-selector document-role-selector" aria-label="Document role selector">
+            <button class="role-button" type="button" data-role-button="general">
+              <span class="role-card-mark" aria-hidden="true">01</span>
+              <span class="role-card-copy">
+                <strong>Employee</strong>
+                <small>Company basics and shared policies</small>
+              </span>
+            </button>
+            <button class="role-button" type="button" data-role-button="admin">
+              <span class="role-card-mark" aria-hidden="true">02</span>
+              <span class="role-card-copy">
+                <strong>Admin</strong>
+                <small>Operations, access, and portal control</small>
+              </span>
+            </button>
+            <button class="role-button" type="button" data-role-button="project-manager">
+              <span class="role-card-mark" aria-hidden="true">03</span>
+              <span class="role-card-copy">
+                <strong>Project Manager</strong>
+                <small>Teams, handoffs, and project lanes</small>
+              </span>
+            </button>
           </div>
 
           <div class="document-empty" data-doc-empty>
