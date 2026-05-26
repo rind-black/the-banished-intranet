@@ -12711,7 +12711,181 @@ h1[data-page-title] {
     padding-right: 0;
   }
 
-  #internship .internship-actions {
+#internship .internship-actions {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Internship timeline refinement: lighter copy and more polished milestone rhythm. */
+#internship .internship-panel.intro-panel {
+  grid-template-columns: minmax(190px, 0.28fr) minmax(0, 0.72fr);
+}
+
+#internship .internship-panel.intro-panel p:not(.eyebrow) {
+  align-self: center;
+  max-width: 680px;
+  padding-right: 58px;
+  color: rgba(247, 243, 234, 0.66);
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+#internship .internship-step-grid {
+  gap: 10px;
+  padding: 4px 0 0;
+}
+
+#internship .internship-step-grid::before {
+  top: 24px;
+  bottom: 52px;
+  left: 24px;
+  background: linear-gradient(
+    180deg,
+    rgba(203, 169, 92, 0.08),
+    rgba(203, 169, 92, 0.56) 18%,
+    rgba(231, 55, 47, 0.3) 50%,
+    rgba(203, 169, 92, 0.5) 82%,
+    rgba(203, 169, 92, 0.08)
+  );
+}
+
+#internship .internship-step {
+  isolation: isolate;
+  grid-template-columns: 50px minmax(0, 1fr);
+  gap: 16px;
+  min-height: 86px;
+  padding: 0 0 10px;
+}
+
+#internship .internship-step::before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  bottom: 10px;
+  left: 66px;
+  border: 1px solid rgba(203, 169, 92, 0.18);
+  border-radius: 18px 6px 18px 6px;
+  background:
+    radial-gradient(circle at 92% 14%, rgba(203, 169, 92, 0.1), transparent 24%),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.045), transparent 52%),
+    rgba(12, 12, 14, 0.78);
+  box-shadow: inset 0 1px 0 rgba(247, 243, 234, 0.035);
+  content: "";
+}
+
+#internship .internship-step::after {
+  position: absolute;
+  top: 19px;
+  left: 82px;
+  width: 28px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--gold), rgba(231, 55, 47, 0.55));
+  content: "";
+}
+
+#internship .internship-step:hover,
+#internship .internship-step:focus-visible,
+#internship .internship-step.open {
+  transform: translateX(2px);
+}
+
+#internship .internship-step:hover::before,
+#internship .internship-step:focus-visible::before,
+#internship .internship-step.open::before {
+  border-color: rgba(203, 169, 92, 0.34);
+  background:
+    radial-gradient(circle at 92% 14%, rgba(203, 169, 92, 0.13), transparent 24%),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.07), transparent 52%),
+    rgba(15, 15, 17, 0.92);
+}
+
+#internship .internship-step > span {
+  width: 48px;
+  height: 48px;
+  border-color: rgba(203, 169, 92, 0.5);
+  background:
+    radial-gradient(circle at 50% 42%, rgba(203, 169, 92, 0.14), transparent 58%),
+    rgba(7, 7, 8, 0.98);
+  font-size: 10.5px;
+  box-shadow:
+    0 0 0 6px rgba(8, 8, 9, 0.94),
+    0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+#internship .internship-step h3 {
+  position: relative;
+  z-index: 1;
+  margin: 18px 18px 6px 48px;
+  font-size: 13px;
+  line-height: 1.12;
+}
+
+#internship .internship-step p {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+  margin: 0 18px 18px 48px;
+  color: rgba(247, 243, 234, 0.62);
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+#internship .internship-popover {
+  position: relative;
+  z-index: 2;
+  margin: 0 18px 18px 48px;
+  padding: 16px 18px;
+  border-color: rgba(203, 169, 92, 0.24);
+  border-radius: 14px 6px 14px 6px;
+  background:
+    radial-gradient(circle at 94% 8%, rgba(203, 169, 92, 0.08), transparent 24%),
+    rgba(8, 8, 9, 0.95);
+}
+
+#internship .internship-popover h4 {
+  font-size: 10.5px;
+}
+
+#internship .internship-popover li {
+  font-size: 12px;
+  font-weight: 520;
+  line-height: 1.52;
+}
+
+@media (max-width: 780px) {
+  #internship .internship-panel.intro-panel {
+    grid-template-columns: 1fr;
+  }
+
+  #internship .internship-panel.intro-panel p:not(.eyebrow) {
+    padding-right: 0;
+  }
+
+  #internship .internship-step {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  #internship .internship-step::before {
+    left: 56px;
+  }
+
+  #internship .internship-step::after {
+    left: 70px;
+  }
+
+  #internship .internship-step > span {
+    width: 42px;
+    height: 42px;
+  }
+
+  #internship .internship-step h3,
+  #internship .internship-step p,
+  #internship .internship-popover {
+    margin-left: 38px;
   }
 }
