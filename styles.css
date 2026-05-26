@@ -11447,3 +11447,52 @@ h1[data-page-title] {
     radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.82), transparent 34%),
     rgba(255, 250, 240, 0.92);
 }
+
+/* Bonus credit summary: keep it as a compact utility badge. */
+#bonuses .bonus-dashboard {
+  margin-bottom: 22px;
+}
+
+#bonuses .bonus-hero {
+  width: min(100%, 560px);
+  padding: 10px 12px;
+  border-radius: 16px 6px 16px 6px;
+}
+
+#bonuses .bonus-hero > div:first-child {
+  gap: 3px;
+}
+
+#bonuses .bonus-hero .eyebrow {
+  margin: 0;
+  font-size: 8px;
+  line-height: 1;
+}
+
+#bonuses .bonus-hero h3 {
+  font-size: clamp(15px, 1.05vw, 17px);
+  line-height: 1.04;
+}
+
+#bonuses .bonus-conversion {
+  grid-template-columns: auto 20px auto;
+  max-width: 172px;
+  gap: 7px;
+}
+
+#bonuses .bonus-conversion span,
+#bonuses .bonus-conversion strong {
+  min-height: 28px;
+  padding: 0 8px;
+  font-size: 9px;
+}
+
+#bonuses .bonus-conversion strong {
+  font-size: 13px;
+}
+
+@media (max-width: 720px) {
+  #bonuses .bonus-hero {
+    width: 100%;
+  }
+}
