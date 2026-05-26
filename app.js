@@ -114,8 +114,6 @@ const calendarDetailTitle = document.querySelector("[data-calendar-detail-title]
 const calendarDetailCopy = document.querySelector("[data-calendar-detail-copy]");
 const calendarDetailList = document.querySelector("[data-calendar-detail-list]");
 const calendarScopeNote = document.querySelector("[data-calendar-scope-note]");
-const themeToggle = document.querySelector("[data-theme-toggle]");
-const themeLabel = document.querySelector("[data-theme-label]");
 const systemMessagesToggle = document.querySelector("[data-system-messages-toggle]");
 const systemMessagesPanel = document.querySelector("[data-system-message-panel]");
 const systemMessageCount = document.querySelector("[data-system-message-count]");
@@ -1541,31 +1539,10 @@ function setProfile(profile) {
   writeJson(profileStoreKey, profile);
 }
 
-function getTheme() {
-  return localStorage.getItem(themeStoreKey) === "light" ? "light" : "dark";
-}
-
-function applyTheme(theme) {
-  const normalizedTheme = theme === "light" ? "light" : "dark";
-
-  document.documentElement.dataset.theme = normalizedTheme;
-  document.body.classList.toggle("is-light-theme", normalizedTheme === "light");
-
-  if (themeLabel) {
-    themeLabel.textContent = normalizedTheme === "light" ? "Light" : "Dark";
-  }
-
-  if (themeToggle) {
-    const nextTheme = normalizedTheme === "light" ? "dark" : "light";
-    themeToggle.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
-    themeToggle.title = `Switch to ${nextTheme} theme`;
-  }
-}
-
-function setTheme(theme) {
-  const normalizedTheme = theme === "light" ? "light" : "dark";
-  localStorage.setItem(themeStoreKey, normalizedTheme);
-  applyTheme(normalizedTheme);
+function applyTheme() {
+  localStorage.removeItem(themeStoreKey);
+  document.documentElement.dataset.theme = "dark";
+  document.body.classList.remove("is-light-theme");
 }
 
 function getRequests() {
@@ -5219,10 +5196,6 @@ signOutButton?.addEventListener("click", () => {
   authForm?.reset();
 });
 
-themeToggle?.addEventListener("click", () => {
-  setTheme(getTheme() === "light" ? "dark" : "light");
-});
-
 profileAvatarInput?.addEventListener("change", () => {
   const file = profileAvatarInput.files?.[0];
 
@@ -6088,7 +6061,7 @@ renderScriptToolbar();
 syncScriptDraftFromEditor();
 renderMonthlyChallenge();
 renderCompanyCalendar();
-applyTheme(getTheme());
+applyTheme();
 
 const savedProfile = getProfile();
 
