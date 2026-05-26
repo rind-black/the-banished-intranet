@@ -11470,7 +11470,7 @@ h1[data-page-title] {
 }
 
 #bonuses .bonus-hero h3 {
-  font-size: clamp(15px, 1.05vw, 17px);
+  font-size: clamp(12px, 0.86vw, 14px);
   line-height: 1.04;
 }
 
