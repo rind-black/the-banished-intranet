@@ -12889,3 +12889,90 @@ h1[data-page-title] {
     margin-left: 38px;
   }
 }
+
+/* Requests compact header: match the darker guide language without the bulky panel feel. */
+#requests .request-layout .intro-panel {
+  position: relative;
+  padding: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(203, 169, 92, 0.22);
+  border-left: 3px solid rgba(203, 169, 92, 0.62);
+  border-radius: 16px 6px 16px 6px;
+  background:
+    radial-gradient(circle at 94% 12%, rgba(203, 169, 92, 0.1), transparent 24%),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.06), transparent 50%),
+    rgba(10, 10, 12, 0.88);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 243, 234, 0.04),
+    0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+#requests .request-layout .intro-panel::before {
+  width: 34px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--gold), rgba(231, 55, 47, 0.58));
+}
+
+#requests .request-layout .intro-panel::after {
+  position: absolute;
+  right: -22px;
+  bottom: -30px;
+  width: 78px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(203, 169, 92, 0.14);
+  border-radius: 50%;
+  content: "";
+}
+
+#requests .request-layout .intro-panel > .eyebrow {
+  margin: 10px 0 5px;
+  color: var(--gold);
+  font-size: 7.5px;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+}
+
+#requests .request-layout .intro-panel > h2 {
+  max-width: none;
+  margin: 0 0 8px;
+  font-size: clamp(17px, 1.2vw, 21px);
+  line-height: 1.06;
+}
+
+#requests .request-layout .intro-panel > p {
+  max-width: 620px;
+  margin: 0;
+  color: rgba(247, 243, 234, 0.64);
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+#requests .request-lane-list {
+  margin-top: 14px;
+}
+
+#requests .request-lane-list article {
+  display: block;
+  min-height: 0;
+  padding: 9px 10px;
+  border-radius: 14px 6px 14px 6px;
+}
+
+#requests .request-lane-list strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 10px;
+  line-height: 1.15;
+}
+
+#requests .request-lane-list span {
+  display: block;
+  font-size: 10.5px;
+  line-height: 1.32;
+}
+
+#requests .request-form .primary-button {
+  justify-self: center;
+}
