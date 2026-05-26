@@ -11496,3 +11496,321 @@ h1[data-page-title] {
     width: 100%;
   }
 }
+
+/* Benefits polish: compact guide intro and more editorial support cards. */
+#benefits .benefits-guide .policy-hero {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.35fr) minmax(0, 0.65fr);
+  align-items: end;
+  gap: 6px 20px;
+  min-height: 0;
+  margin: 14px 18px 10px;
+  padding: 16px 18px;
+  border-radius: 20px 8px 20px 8px;
+}
+
+#benefits .benefits-guide .policy-hero::after {
+  right: 16px;
+  bottom: 10px;
+  width: 64px;
+  opacity: 0.36;
+}
+
+#benefits .benefits-guide .policy-hero .eyebrow {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 8px;
+  line-height: 1.1;
+}
+
+#benefits .benefits-guide .policy-hero h3 {
+  max-width: none;
+  margin: 0;
+  font-size: clamp(18px, 1.35vw, 24px);
+  line-height: 1.04;
+}
+
+#benefits .benefits-guide .policy-hero p:not(.eyebrow) {
+  max-width: 720px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+#benefits .benefits-showcase {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 12px 18px 14px;
+}
+
+#benefits .benefits-showcase article {
+  grid-template-columns: 38px minmax(0, 1fr);
+  min-height: 92px;
+  padding: 13px 15px;
+  border-radius: 18px 8px 18px 8px;
+}
+
+#benefits .benefits-showcase .showcase-icon {
+  grid-row: 1 / span 2;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+}
+
+#benefits .benefits-showcase strong {
+  font-size: 12px;
+  line-height: 1.15;
+}
+
+#benefits .benefits-showcase small {
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+#benefits .benefits-infographic {
+  gap: 14px;
+  margin: 16px 18px;
+}
+
+#benefits .benefit-category-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  border: 0;
+  background: transparent;
+}
+
+#benefits .benefit-category-grid article {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 4px 12px;
+  min-height: 104px;
+  padding: 14px;
+  border: 1px solid rgba(203, 169, 92, 0.24);
+  border-radius: 18px 8px 18px 8px;
+  background:
+    radial-gradient(circle at 86% 22%, rgba(203, 169, 92, 0.12), transparent 28%),
+    linear-gradient(135deg, rgba(247, 243, 234, 0.055), transparent 56%),
+    rgba(11, 11, 13, 0.9);
+}
+
+#benefits .benefit-category-icon {
+  grid-row: 1 / span 2;
+  width: 38px;
+  height: 38px;
+  margin: 0;
+  border-radius: 50%;
+}
+
+#benefits .benefit-category-icon svg {
+  width: 23px;
+}
+
+#benefits .benefit-category-grid strong {
+  font-size: 12px;
+  line-height: 1.15;
+}
+
+#benefits .benefit-category-grid small {
+  margin-top: 2px;
+  font-size: 11px;
+  line-height: 1.34;
+}
+
+#benefits .benefit-snapshot {
+  gap: 10px;
+  border: 0;
+  background: transparent;
+}
+
+#benefits .benefit-snapshot article {
+  min-height: 128px;
+  padding: 14px;
+  border: 1px solid rgba(203, 169, 92, 0.22);
+  border-radius: 18px 8px 18px 8px;
+}
+
+#benefits .benefit-snapshot span {
+  font-size: 9px;
+}
+
+#benefits .benefit-snapshot strong {
+  margin: 10px 0 6px;
+  font-size: clamp(26px, 2.3vw, 34px);
+}
+
+#benefits .benefit-snapshot p {
+  min-height: 0;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+#benefits .benefit-meter {
+  height: 6px;
+  margin-top: 12px;
+}
+
+#benefits .policy-section {
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 14px;
+  margin: 18px;
+  padding-top: 18px;
+}
+
+#benefits .policy-section > span {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid rgba(203, 169, 92, 0.34);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 28%, rgba(203, 169, 92, 0.18), transparent 34%),
+    rgba(5, 5, 6, 0.72);
+  color: var(--gold);
+  font-size: 9px;
+}
+
+#benefits .policy-section h4 {
+  margin-bottom: 10px;
+  font-size: clamp(15px, 1.2vw, 18px);
+  line-height: 1.12;
+}
+
+#benefits .benefit-stack {
+  counter-reset: benefit-card;
+  gap: 12px;
+}
+
+#benefits .benefit-stack article {
+  position: relative;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  gap: 6px 12px;
+  min-height: 124px;
+  padding: 15px 16px;
+  border-color: rgba(203, 169, 92, 0.22);
+  border-radius: 20px 8px 20px 8px;
+  background:
+    radial-gradient(circle at 90% 12%, rgba(203, 169, 92, 0.14), transparent 26%),
+    linear-gradient(150deg, rgba(231, 55, 47, 0.08), transparent 44%),
+    rgba(13, 13, 15, 0.88);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 243, 234, 0.04),
+    0 16px 36px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+  counter-increment: benefit-card;
+}
+
+#benefits .benefit-stack article::before {
+  display: grid;
+  grid-row: 1 / span 2;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid rgba(203, 169, 92, 0.42);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 36% 26%, rgba(247, 243, 234, 0.15), transparent 34%),
+    rgba(5, 5, 6, 0.92);
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  content: counter(benefit-card, decimal-leading-zero);
+}
+
+#benefits .benefit-stack article::after {
+  position: absolute;
+  right: -30px;
+  bottom: -34px;
+  width: 92px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(203, 169, 92, 0.14);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(203, 169, 92, 0.08), transparent 62%);
+  content: "";
+}
+
+#benefits .benefit-stack strong {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.16;
+}
+
+#benefits .benefit-stack p {
+  grid-column: 2;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+:root[data-theme="light"] #benefits .benefits-guide .policy-hero,
+:root[data-theme="light"] #benefits .benefits-showcase article,
+:root[data-theme="light"] #benefits .benefit-category-grid article,
+:root[data-theme="light"] #benefits .benefit-snapshot article,
+:root[data-theme="light"] #benefits .benefit-stack article {
+  border-color: rgba(169, 121, 47, 0.24);
+  background:
+    radial-gradient(circle at 88% 18%, rgba(169, 121, 47, 0.09), transparent 27%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), transparent 58%),
+    rgba(255, 253, 248, 0.96);
+  box-shadow: 0 14px 30px rgba(76, 52, 19, 0.08);
+}
+
+:root[data-theme="light"] #benefits .policy-section > span,
+:root[data-theme="light"] #benefits .benefit-stack article::before {
+  border-color: rgba(169, 121, 47, 0.32);
+  background:
+    radial-gradient(circle at 36% 26%, rgba(255, 255, 255, 0.88), transparent 34%),
+    rgba(255, 248, 235, 0.95);
+  color: #9b6f25;
+}
+
+:root[data-theme="light"] #benefits .benefit-stack article::after {
+  border-color: rgba(169, 121, 47, 0.14);
+  background: radial-gradient(circle, rgba(169, 121, 47, 0.08), transparent 62%);
+}
+
+@media (max-width: 980px) {
+  #benefits .benefits-guide .policy-hero {
+    grid-template-columns: 1fr;
+  }
+
+  #benefits .benefits-showcase,
+  #benefits .benefit-category-grid,
+  #benefits .benefit-snapshot,
+  #benefits .benefit-stack,
+  #benefits .benefit-stack.compact {
+    grid-template-columns: 1fr;
+  }
+
+  #benefits .benefit-stack article {
+    min-height: 108px;
+  }
+}
+
+@media (max-width: 720px) {
+  #benefits .benefits-guide .policy-hero,
+  #benefits .benefits-showcase,
+  #benefits .benefits-infographic,
+  #benefits .policy-section,
+  #benefits .benefit-key,
+  #benefits .policy-footer {
+    margin-right: 12px;
+    margin-left: 12px;
+  }
+
+  #benefits .benefits-guide .policy-hero {
+    padding: 14px;
+  }
+
+  #benefits .policy-section {
+    grid-template-columns: 1fr;
+  }
+
+  #benefits .policy-section > span {
+    width: 28px;
+    height: 28px;
+  }
+}
