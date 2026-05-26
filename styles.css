@@ -12976,3 +12976,224 @@ h1[data-page-title] {
 #requests .request-form .primary-button {
   justify-self: center;
 }
+
+/* Admin operations polish: compact operational cards in the current dark guide style. */
+#admin .admin-grid {
+  gap: 12px;
+  align-items: start;
+}
+
+#admin .admin-card {
+  position: relative;
+  gap: 12px;
+  align-content: start;
+  padding: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(203, 169, 92, 0.22);
+  border-left: 3px solid rgba(203, 169, 92, 0.62);
+  border-radius: 16px 6px 16px 6px;
+  background:
+    radial-gradient(circle at 94% 12%, rgba(203, 169, 92, 0.1), transparent 24%),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.055), transparent 50%),
+    rgba(10, 10, 12, 0.9);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 243, 234, 0.04),
+    0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+#admin .admin-card::before {
+  display: block;
+  width: 34px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--gold), rgba(231, 55, 47, 0.58));
+  content: "";
+}
+
+#admin .admin-card::after {
+  position: absolute;
+  right: -24px;
+  bottom: -34px;
+  width: 78px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(203, 169, 92, 0.14);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+#admin .admin-card > div:first-child {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 4px;
+}
+
+#admin .admin-card .eyebrow {
+  margin: 0;
+  color: var(--gold);
+  font-size: 7.5px;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+}
+
+#admin .admin-card h3 {
+  margin: 0;
+  color: var(--ink-strong);
+  font-size: clamp(15px, 1.08vw, 18px);
+  line-height: 1.08;
+}
+
+#admin .admin-note {
+  max-width: 720px;
+  margin: 3px 0 0;
+  color: rgba(247, 243, 234, 0.6);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.42;
+}
+
+#admin .admin-card label {
+  gap: 6px;
+  color: rgba(247, 243, 234, 0.78);
+  font-size: 9.5px;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+}
+
+#admin .admin-form-grid {
+  gap: 10px;
+}
+
+#admin .admin-card input,
+#admin .admin-card select,
+#admin .admin-card textarea {
+  min-height: 36px;
+  border-color: rgba(247, 243, 234, 0.12);
+  border-radius: 12px;
+  background: rgba(5, 5, 6, 0.78);
+  color: rgba(247, 243, 234, 0.9);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+#admin .admin-card textarea {
+  min-height: 92px;
+}
+
+#admin .admin-card .email-field {
+  min-height: 36px;
+  border-color: rgba(247, 243, 234, 0.12);
+  border-radius: 12px;
+  background: rgba(5, 5, 6, 0.78);
+}
+
+#admin .admin-card .email-field input {
+  min-height: 34px;
+  background: transparent;
+}
+
+#admin .admin-card .email-field span {
+  color: rgba(247, 243, 234, 0.52);
+  font-size: 11px;
+}
+
+#admin .admin-card .checkbox-row {
+  width: fit-content;
+  padding: 6px 9px;
+  border-color: rgba(203, 169, 92, 0.2);
+  background: rgba(247, 243, 234, 0.035);
+  color: rgba(247, 243, 234, 0.76);
+  font-size: 10px;
+  letter-spacing: 0.01em;
+}
+
+#admin .admin-card .checkbox-row input {
+  width: 14px;
+  min-height: 14px;
+}
+
+#admin .admin-card .primary-button {
+  justify-self: center;
+  min-height: 34px;
+  padding: 0 15px;
+  border-color: rgba(203, 169, 92, 0.44);
+  background: rgba(203, 169, 92, 0.12);
+  font-size: 11px;
+}
+
+#admin .admin-card.wide {
+  padding: 16px;
+}
+
+#admin .admin-table-wrap {
+  position: relative;
+  z-index: 1;
+  border-color: rgba(203, 169, 92, 0.16);
+  border-radius: 14px 6px 14px 6px;
+  background: rgba(5, 5, 6, 0.48);
+}
+
+#admin .admin-table th {
+  padding: 10px 12px;
+  background: rgba(5, 5, 6, 0.82);
+  color: var(--gold);
+  font-size: 9.5px;
+  letter-spacing: 0.03em;
+}
+
+#admin .admin-table td {
+  padding: 10px 12px;
+  color: rgba(247, 243, 234, 0.68);
+  font-size: 11.5px;
+}
+
+#admin .admin-table strong {
+  font-size: 12px;
+}
+
+#admin .admin-table small {
+  font-size: 10px;
+}
+
+#admin .admin-table input[type="text"],
+#admin .admin-table select,
+#admin .admin-table input[type="number"] {
+  min-height: 32px;
+  border-color: rgba(247, 243, 234, 0.12);
+  border-radius: 10px;
+  background: rgba(5, 5, 6, 0.78);
+  font-size: 11px;
+}
+
+#admin .admin-actions {
+  justify-content: center;
+}
+
+#admin .admin-actions .request-status {
+  flex-basis: 100%;
+}
+
+@media (min-width: 1080px) {
+  #admin form.admin-card {
+    grid-column: span 6;
+  }
+
+  #admin form.admin-card[data-create-user-form] {
+    grid-column: span 6;
+  }
+
+  #admin form.admin-card.system-message-admin-card {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 780px) {
+  #admin .admin-card {
+    padding: 14px;
+  }
+
+  #admin .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
