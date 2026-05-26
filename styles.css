@@ -12281,3 +12281,203 @@ h1[data-page-title] {
     grid-column: 2;
   }
 }
+
+/* Guide support cards: compact, consistent cards across Benefits, Holidays, and Culture. */
+.policy-document .section-showcase-strip {
+  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+  gap: 10px;
+  margin: 12px 18px 14px;
+}
+
+.policy-document .section-showcase-strip article {
+  grid-template-columns: 38px minmax(0, 1fr);
+  min-height: 92px;
+  padding: 13px 15px;
+  border-color: rgba(203, 169, 92, 0.22);
+  border-radius: 18px 8px 18px 8px;
+  background:
+    radial-gradient(circle at 88% 18%, rgba(203, 169, 92, 0.12), transparent 27%),
+    linear-gradient(135deg, rgba(247, 243, 234, 0.055), transparent 58%),
+    rgba(10, 10, 12, 0.82);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 243, 234, 0.04),
+    0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+.policy-document .section-showcase-strip article::after {
+  right: -28px;
+  bottom: -32px;
+  width: 76px;
+}
+
+.policy-document .section-showcase-strip .showcase-icon {
+  grid-row: 1 / span 2;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+}
+
+.policy-document .section-showcase-strip strong {
+  align-self: end;
+  font-size: 12px;
+  line-height: 1.15;
+}
+
+.policy-document .section-showcase-strip small {
+  grid-column: 2;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.policy-document .policy-callout {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34px auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  margin: 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(203, 169, 92, 0.24);
+  border-left: 3px solid rgba(203, 169, 92, 0.64);
+  border-radius: 16px 6px 16px 6px;
+  background:
+    radial-gradient(circle at 94% 18%, rgba(203, 169, 92, 0.1), transparent 24%),
+    linear-gradient(135deg, rgba(247, 243, 234, 0.055), transparent 55%),
+    rgba(10, 10, 12, 0.86);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 243, 234, 0.04),
+    0 16px 34px rgba(0, 0, 0, 0.14);
+}
+
+.policy-document .policy-callout::before {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid rgba(203, 169, 92, 0.38);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 28%, rgba(247, 243, 234, 0.18), transparent 34%),
+    rgba(5, 5, 6, 0.82);
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 900;
+  content: "i";
+}
+
+.policy-document .policy-callout strong {
+  margin: 0;
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+.policy-document .policy-callout p {
+  grid-column: 3;
+  margin: 0;
+  color: rgba(247, 243, 234, 0.66);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+#holidays .holiday-flow {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+#holidays .holiday-flow article {
+  position: relative;
+  min-height: 96px;
+  padding: 15px 16px;
+  border-color: rgba(203, 169, 92, 0.22);
+  border-radius: 16px 6px 16px 6px;
+  background:
+    radial-gradient(circle at 90% 12%, rgba(203, 169, 92, 0.12), transparent 25%),
+    linear-gradient(150deg, rgba(231, 55, 47, 0.06), transparent 44%),
+    rgba(13, 13, 15, 0.84);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 243, 234, 0.04),
+    0 14px 30px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+#holidays .holiday-flow article::before {
+  display: block;
+  width: 34px;
+  height: 3px;
+  margin-bottom: 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--gold), rgba(231, 55, 47, 0.58));
+  content: "";
+}
+
+#holidays .holiday-flow article::after {
+  position: absolute;
+  right: -28px;
+  bottom: -34px;
+  width: 78px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(203, 169, 92, 0.14);
+  border-radius: 50%;
+  content: "";
+}
+
+#holidays .holiday-flow span {
+  display: none;
+}
+
+#holidays .holiday-flow strong {
+  margin: 0 0 7px;
+  font-size: 13px;
+  line-height: 1.16;
+}
+
+#holidays .holiday-flow p {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.42;
+}
+
+:root[data-theme="light"] .policy-document .section-showcase-strip article,
+:root[data-theme="light"] .policy-document .policy-callout,
+:root[data-theme="light"] #holidays .holiday-flow article {
+  border-color: rgba(169, 121, 47, 0.22);
+  background:
+    radial-gradient(circle at 90% 16%, rgba(169, 121, 47, 0.09), transparent 25%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), transparent 60%),
+    rgba(255, 253, 248, 0.96);
+  box-shadow: 0 14px 30px rgba(76, 52, 19, 0.08);
+}
+
+:root[data-theme="light"] .policy-document .policy-callout::before {
+  border-color: rgba(169, 121, 47, 0.34);
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.88), transparent 34%),
+    rgba(255, 248, 235, 0.96);
+  color: #9b6f25;
+}
+
+:root[data-theme="light"] .policy-document .policy-callout p,
+:root[data-theme="light"] #holidays .holiday-flow p {
+  color: rgba(39, 35, 29, 0.68);
+}
+
+:root[data-theme="light"] #holidays .holiday-flow article::before {
+  background: linear-gradient(90deg, #a9792f, rgba(196, 66, 54, 0.6));
+}
+
+@media (max-width: 780px) {
+  .policy-document .section-showcase-strip,
+  #holidays .holiday-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .policy-document .policy-callout {
+    grid-template-columns: 32px minmax(0, 1fr);
+  }
+
+  .policy-document .policy-callout p {
+    grid-column: 2;
+  }
+}
