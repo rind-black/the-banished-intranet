@@ -13228,3 +13228,134 @@ h1[data-page-title] {
     grid-template-columns: 1fr;
   }
 }
+
+/* Challenge status strip: compact metrics in the current portal guide style. */
+#monthly-challenge .challenge-game-panel {
+  grid-template-columns: minmax(0, 1.15fr) minmax(210px, 0.8fr) minmax(0, 0.85fr);
+  gap: 10px;
+  align-items: stretch;
+  margin: 0 0 14px;
+}
+
+#monthly-challenge .challenge-player-card,
+#monthly-challenge .challenge-reward-card {
+  position: relative;
+  display: grid;
+  min-height: 92px;
+  overflow: hidden;
+  border: 1px solid rgba(203, 169, 92, 0.22);
+  border-left: 3px solid rgba(203, 169, 92, 0.62);
+  border-radius: 16px 6px 16px 6px;
+  background:
+    radial-gradient(circle at 94% 12%, rgba(203, 169, 92, 0.1), transparent 24%),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.055), transparent 50%),
+    rgba(10, 10, 12, 0.9);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 243, 234, 0.04),
+    0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+#monthly-challenge .challenge-player-card {
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  padding: 14px 16px;
+}
+
+#monthly-challenge .challenge-reward-card {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 12px;
+  width: auto;
+  place-items: stretch;
+  justify-self: stretch;
+  align-content: center;
+  padding: 14px 16px;
+  text-align: left;
+}
+
+#monthly-challenge .challenge-player-card::before,
+#monthly-challenge .challenge-reward-card::before {
+  display: block;
+  width: 34px;
+  height: 3px;
+  margin-bottom: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--gold), rgba(231, 55, 47, 0.58));
+  content: "";
+}
+
+#monthly-challenge .challenge-player-card::after,
+#monthly-challenge .challenge-reward-card::after {
+  position: absolute;
+  right: -24px;
+  bottom: -34px;
+  width: 78px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(203, 169, 92, 0.14);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+#monthly-challenge .challenge-player-card span,
+#monthly-challenge .challenge-reward-card span {
+  margin: 0 0 4px;
+  color: var(--gold);
+  font-size: 8px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+}
+
+#monthly-challenge .challenge-player-card strong,
+#monthly-challenge .challenge-reward-card strong {
+  margin: 0 0 5px;
+  color: var(--ink-strong);
+  font-size: clamp(17px, 1.35vw, 22px);
+  font-weight: 900;
+  line-height: 1.04;
+}
+
+#monthly-challenge .challenge-reward-card strong {
+  color: var(--gold);
+  font-size: clamp(20px, 1.75vw, 28px);
+}
+
+#monthly-challenge .challenge-player-card p,
+#monthly-challenge .challenge-reward-card small {
+  max-width: 360px;
+  color: rgba(247, 243, 234, 0.62);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.42;
+}
+
+#monthly-challenge .challenge-reward-card small {
+  margin: 0;
+}
+
+#monthly-challenge .challenge-orbit {
+  grid-column: 2;
+  grid-row: 1 / span 4;
+  align-self: center;
+  width: 50px;
+  height: 50px;
+  margin: 0;
+}
+
+#monthly-challenge .challenge-orbit span {
+  font-size: 10px;
+}
+
+#monthly-challenge .challenge-progress {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 4px;
+  margin-top: 6px;
+  border-radius: 999px;
+}
+
+@media (max-width: 980px) {
+  #monthly-challenge .challenge-game-panel {
+    grid-template-columns: 1fr;
+  }
+}
