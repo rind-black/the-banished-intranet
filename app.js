@@ -3238,7 +3238,6 @@ function renderMonthlyChallenge() {
     const title = document.createElement("strong");
     const summary = document.createElement("small");
     const credits = document.createElement("em");
-    const action = document.createElement("span");
     const agent = document.createElement("span");
     const agentHead = document.createElement("span");
     const agentHair = document.createElement("span");
@@ -3264,8 +3263,6 @@ function renderMonthlyChallenge() {
     summary.textContent = challenge.summary;
     credits.className = "challenge-credit-pill";
     credits.textContent = `Reward +${challenge.credits} bonus credits`;
-    action.className = "challenge-action";
-    action.textContent = "Open challenge";
     agent.className = "challenge-agent";
     agent.dataset.role = difficulty.key;
     agent.dataset.lane = department.key;
@@ -3308,7 +3305,7 @@ function renderMonthlyChallenge() {
     detail.append(detailTitle, stats, detailText, detailList);
 
     content.append(meta, title, summary);
-    button.append(icon, content, agent, credits, action);
+    button.append(icon, content, agent, credits);
     card.append(button, detail);
     challengeList.append(card);
 
@@ -3318,12 +3315,8 @@ function renderMonthlyChallenge() {
       challengeList.querySelectorAll(".challenge-card.open").forEach((openCard) => {
         const openButton = openCard.querySelector(".challenge-card-button");
         const openDetail = openCard.querySelector(".challenge-card-detail");
-        const openAction = openCard.querySelector(".challenge-action");
         openCard.classList.remove("open");
         openButton?.setAttribute("aria-expanded", "false");
-        if (openAction) {
-          openAction.textContent = "Open challenge";
-        }
 
         if (openDetail) {
           openDetail.hidden = true;
@@ -3333,7 +3326,6 @@ function renderMonthlyChallenge() {
       if (!isOpen) {
         card.classList.add("open");
         button.setAttribute("aria-expanded", "true");
-        action.textContent = "Challenge open";
         detail.hidden = false;
       }
     });
