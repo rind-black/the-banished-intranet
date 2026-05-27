@@ -4768,7 +4768,8 @@ h3 {
 .holiday-popover {
   position: absolute;
   right: 12px;
-  bottom: calc(100% + 12px);
+  top: calc(100% + 12px);
+  bottom: auto;
   left: 12px;
   z-index: 40;
   margin: 0;
