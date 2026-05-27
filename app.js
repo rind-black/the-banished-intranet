@@ -5652,16 +5652,39 @@ holidayCards.forEach((card) => {
   detail.textContent = description;
   card.append(detail);
 
+  const placeHolidayPopover = () => {
+    const cardRect = card.getBoundingClientRect();
+    const preferredWidth = Math.min(286, Math.max(220, window.innerWidth * 0.28));
+    const sideGap = 18;
+    const spaceRight = window.innerWidth - cardRect.right;
+    const spaceLeft = cardRect.left;
+
+    detail.classList.remove("align-left", "align-below");
+
+    if (window.innerWidth <= 780 || (spaceRight < preferredWidth + sideGap && spaceLeft < preferredWidth + sideGap)) {
+      detail.classList.add("align-below");
+      return;
+    }
+
+    if (spaceRight < preferredWidth + sideGap && spaceLeft >= preferredWidth + sideGap) {
+      detail.classList.add("align-left");
+    }
+  };
+
   const toggleHoliday = () => {
     const isOpen = !detail.hidden;
 
     holidayCards.forEach((holidayCard) => {
       holidayCard.classList.remove("open");
       holidayCard.setAttribute("aria-expanded", "false");
-      holidayCard.querySelector(".holiday-popover").hidden = true;
+      const popover = holidayCard.querySelector(".holiday-popover");
+
+      popover.classList.remove("align-left", "align-below");
+      popover.hidden = true;
     });
 
     if (!isOpen) {
+      placeHolidayPopover();
       detail.hidden = false;
       card.classList.add("open");
       card.setAttribute("aria-expanded", "true");
