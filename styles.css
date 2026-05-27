@@ -13726,3 +13726,142 @@ h1[data-page-title] {
     min-width: 32px;
   }
 }
+
+/* Holidays page: align long holiday lists and sections with the current dark guide-card language. */
+#holidays .policy-section {
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 12px;
+  margin: 12px 18px;
+  padding: 16px;
+  border: 1px solid rgba(203, 169, 92, 0.18);
+  border-left: 3px solid rgba(203, 169, 92, 0.58);
+  border-radius: 16px 6px 16px 6px;
+  background:
+    radial-gradient(circle at 96% 12%, rgba(203, 169, 92, 0.075), transparent 24%),
+    linear-gradient(135deg, rgba(247, 243, 234, 0.035), transparent 58%),
+    rgba(8, 8, 10, 0.78);
+}
+
+#holidays .policy-section > span {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid rgba(203, 169, 92, 0.34);
+  border-radius: 50%;
+  background: rgba(5, 5, 6, 0.74);
+  color: var(--gold);
+  font-size: 10px;
+  line-height: 1;
+}
+
+#holidays .policy-section h4 {
+  margin-bottom: 10px;
+  font-size: 15px;
+  line-height: 1.12;
+}
+
+#holidays .policy-section p,
+#holidays .policy-section li {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.48;
+}
+
+#holidays .policy-section ul,
+#holidays .policy-section ol {
+  gap: 7px;
+}
+
+#holidays .holiday-list,
+#holidays .holiday-list.compact {
+  grid-template-columns: repeat(auto-fill, minmax(206px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+#holidays .holiday-list article {
+  min-height: 104px;
+  padding: 14px;
+  overflow: visible;
+  border-color: rgba(203, 169, 92, 0.18);
+  border-left: 3px solid rgba(203, 169, 92, 0.52);
+  border-radius: 16px 6px 16px 6px;
+  background:
+    radial-gradient(circle at 94% 12%, rgba(203, 169, 92, 0.09), transparent 24%),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.035), transparent 48%),
+    rgba(10, 10, 12, 0.84);
+  box-shadow: inset 0 1px 0 rgba(247, 243, 234, 0.035);
+}
+
+#holidays .holiday-list article::after {
+  position: absolute;
+  right: -20px;
+  bottom: -26px;
+  width: 62px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(203, 169, 92, 0.11);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+#holidays .holiday-list article:hover,
+#holidays .holiday-list article:focus-visible,
+#holidays .holiday-list article.open {
+  border-color: rgba(203, 169, 92, 0.44);
+  background:
+    radial-gradient(circle at 94% 12%, rgba(203, 169, 92, 0.13), transparent 24%),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.055), transparent 48%),
+    rgba(12, 12, 14, 0.94);
+}
+
+#holidays .holiday-list strong {
+  margin-bottom: 7px;
+  font-size: 10px;
+  letter-spacing: 0.03em;
+}
+
+#holidays .holiday-list span {
+  max-width: 92%;
+  font-size: 12.5px;
+  line-height: 1.18;
+}
+
+#holidays .holiday-list small {
+  max-width: 92%;
+  margin-top: 6px;
+  font-size: 10.8px;
+  font-weight: 500;
+  line-height: 1.36;
+}
+
+#holidays .holiday-popover {
+  right: 10px;
+  left: 10px;
+  padding: 13px 14px;
+  border-color: rgba(203, 169, 92, 0.42);
+  border-radius: 14px 6px 14px 6px;
+  background:
+    radial-gradient(circle at 94% 12%, rgba(203, 169, 92, 0.12), transparent 24%),
+    rgba(6, 6, 7, 0.92);
+  color: rgba(247, 243, 234, 0.82);
+  font-size: 11.5px;
+  line-height: 1.48;
+}
+
+@media (max-width: 780px) {
+  #holidays .policy-section {
+    grid-template-columns: 1fr;
+  }
+
+  #holidays .policy-section > span {
+    width: fit-content;
+    min-width: 32px;
+  }
+
+  #holidays .holiday-list,
+  #holidays .holiday-list.compact {
+    grid-template-columns: 1fr;
+  }
+}
