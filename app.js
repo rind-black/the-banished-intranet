@@ -3263,7 +3263,7 @@ function renderMonthlyChallenge() {
     title.textContent = challenge.title;
     summary.textContent = challenge.summary;
     credits.className = "challenge-credit-pill";
-    credits.textContent = `Reward +${challenge.credits} / $${challenge.credits}`;
+    credits.textContent = `Reward +${challenge.credits} bonus credits`;
     action.className = "challenge-action";
     action.textContent = "Open challenge";
     agent.className = "challenge-agent";
@@ -3298,7 +3298,7 @@ function renderMonthlyChallenge() {
     detailText.textContent = challenge.details;
     statDifficulty.innerHTML = `<strong>${difficulty.label}</strong><small>Tier ${difficulty.tier}</small>`;
     statProof.innerHTML = `<strong>${department.label}</strong><small>Department lane</small>`;
-    statReward.innerHTML = `<strong>+${challenge.credits}</strong><small>Credits / $${challenge.credits}</small>`;
+    statReward.innerHTML = `<strong>+${challenge.credits}</strong><small>Bonus credits</small>`;
     stats.append(statDifficulty, statProof, statReward);
     detailSteps.forEach((step) => {
       const item = document.createElement("li");
