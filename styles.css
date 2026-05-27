@@ -13501,3 +13501,82 @@ h1[data-page-title] {
     grid-template-columns: 1fr;
   }
 }
+
+/* Training resources: keep the existing icons, but make the card shells match the portal guide style. */
+#training .intro-panel {
+  padding: 18px;
+  border-color: rgba(203, 169, 92, 0.16);
+  border-radius: 18px 6px 18px 6px;
+  background:
+    radial-gradient(circle at 96% 8%, rgba(203, 169, 92, 0.08), transparent 24%),
+    linear-gradient(135deg, rgba(247, 243, 234, 0.035), transparent 58%),
+    rgba(7, 7, 8, 0.78);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 243, 234, 0.035),
+    0 18px 42px rgba(0, 0, 0, 0.16);
+}
+
+#training .intro-panel::before {
+  display: none;
+}
+
+#training .intro-panel > p {
+  max-width: 820px;
+  margin: 0 0 14px;
+  color: rgba(247, 243, 234, 0.62);
+  font-size: 13px;
+  font-weight: 520;
+  line-height: 1.5;
+}
+
+#training .training-resource-grid {
+  grid-template-columns: repeat(auto-fill, minmax(228px, 1fr));
+  gap: 10px;
+  margin-top: 0;
+}
+
+#training .resource-orbit-card {
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 7px 12px;
+  align-content: start;
+  min-height: 126px;
+  padding: 14px;
+  border-color: rgba(203, 169, 92, 0.18);
+  border-left: 3px solid rgba(203, 169, 92, 0.62);
+  border-radius: 16px 6px 16px 6px;
+  background:
+    radial-gradient(circle at 96% 12%, rgba(203, 169, 92, 0.08), transparent 23%),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.045), transparent 48%),
+    rgba(10, 10, 12, 0.86);
+  box-shadow: inset 0 1px 0 rgba(247, 243, 234, 0.035);
+}
+
+#training .resource-orbit-card::after {
+  right: -24px;
+  bottom: -30px;
+  width: 70px;
+  border-color: rgba(203, 169, 92, 0.12);
+}
+
+#training .resource-orbit-card .resource-icon {
+  grid-row: 1 / span 2;
+}
+
+#training .resource-orbit-card strong {
+  align-self: end;
+  font-size: 12.5px;
+  line-height: 1.15;
+}
+
+#training .resource-orbit-card small {
+  grid-column: 2;
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.38;
+}
+
+@media (max-width: 680px) {
+  #training .training-resource-grid {
+    grid-template-columns: 1fr;
+  }
+}
