@@ -12792,14 +12792,7 @@ h1[data-page-title] {
 }
 
 #internship .internship-step::after {
-  position: absolute;
-  top: 19px;
-  left: 82px;
-  width: 28px;
-  height: 3px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--gold), rgba(231, 55, 47, 0.55));
-  content: "";
+  content: none;
 }
 
 #internship .internship-step:hover,
