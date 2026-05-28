@@ -411,12 +411,19 @@ async function sendWithSmtp({ to, subject, text, replyTo }) {
     return false;
   }
 
+  const user = process.env.SMTP_USER || "";
+  const pass = process.env.SMTP_PASS || "";
+
+  if (!user || !pass) {
+    throw new HttpError(503, "SMTP is configured, but SMTP_USER or SMTP_PASS is missing.");
+  }
+
   const config = {
     host,
     port: Number(process.env.SMTP_PORT || 587),
     secure: process.env.SMTP_SECURE === "true" || Number(process.env.SMTP_PORT || 587) === 465,
-    user: process.env.SMTP_USER || "",
-    pass: process.env.SMTP_PASS || "",
+    user,
+    pass,
   };
   let socket = await openSocket(config);
   let reader = createSmtpReader(socket);

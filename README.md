@@ -49,11 +49,12 @@ You can also copy `.env.example` to `.env`, fill the same values there, and rest
 Or SMTP:
 
 ```bash
-SMTP_HOST=smtp.example.com \
-SMTP_PORT=587 \
-SMTP_USER=support@the-banished.com \
+SMTP_HOST=mail.the-banished.com \
+SMTP_PORT=465 \
+SMTP_SECURE=true \
+SMTP_USER=production@the-banished.com \
 SMTP_PASS=your_password \
-SMTP_FROM=support@the-banished.com \
+SMTP_FROM=production@the-banished.com \
 node server.js
 ```
 
