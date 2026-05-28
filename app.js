@@ -104,6 +104,7 @@ const comicReviewForm = document.querySelector("[data-comic-review-form]");
 const comicReviewStatus = document.querySelector("[data-comic-review-status]");
 const comicFilesInput = document.querySelector("[data-comic-files]");
 const comicPreview = document.querySelector("[data-comic-preview]");
+const reviewQueueList = document.querySelector("[data-review-queue-list]");
 const requestDestination = document.querySelector("[data-request-destination]");
 const calendarGrid = document.querySelector("[data-calendar-grid]");
 const calendarFilterButtons = document.querySelectorAll("[data-calendar-filter]");
@@ -133,6 +134,9 @@ const scriptDraftStoreKey = "tb-script-studio-draft";
 const themeStoreKey = "tb-internal-theme";
 const inviteTempPassword = "PortalInvite12!";
 const companyEmailDomain = "@the-banished.com";
+const comicReviewDepartment = "Art Department";
+const comicReviewRecipient = "art@the-banished.com";
+const comicReviewStatusOptions = ["Submitted", "In review", "Revision requested", "Approved", "On hold"];
 let activeChallengeDepartment = "all";
 let activeProjectFilter = "all";
 let activeCalendarFilter = "my";
@@ -286,6 +290,7 @@ const titles = {
   "script-studio": "Script Studio",
   storyboards: "AI Storyboards",
   "comic-review": "Comic Artist Review",
+  "review-queue": "Review Queue",
   bonuses: "Bonuses",
   "bonus-detail": "Bonus document",
   benefits: "Benefits and support",
@@ -1213,6 +1218,7 @@ const roleSectionAccess = {
     "script-studio",
     "storyboards",
     "comic-review",
+    "review-queue",
     "bonuses",
     "monthly-challenge",
     "benefits",
@@ -1298,6 +1304,7 @@ const roleSectionAccess = {
   "Art Director": [
     ...creativeProductionSections,
     "actors",
+    "review-queue",
   ],
   Musician: [
     ...creativeProductionSections,
@@ -1546,11 +1553,67 @@ function applyTheme() {
 }
 
 function getRequests() {
-  return readJson(requestsStoreKey, []);
+  const requests = readJson(requestsStoreKey, []);
+
+  if (!Array.isArray(requests)) {
+    return [];
+  }
+
+  let changed = false;
+  const normalized = requests.map((request, index) => {
+    const nextRequest = { ...request };
+
+    if (!nextRequest.id) {
+      nextRequest.id = `request-${index}-${String(nextRequest.createdAt || Date.now()).replace(/[^a-z0-9]+/gi, "-")}`;
+      changed = true;
+    }
+
+    if (isComicReviewRequest(nextRequest)) {
+      if (!nextRequest.status) {
+        nextRequest.status = "Submitted";
+        changed = true;
+      }
+
+      if (!nextRequest.department) {
+        nextRequest.department = comicReviewDepartment;
+        changed = true;
+      }
+    }
+
+    return nextRequest;
+  });
+
+  if (changed) {
+    setRequests(normalized);
+  }
+
+  return normalized;
 }
 
 function setRequests(requests) {
   writeJson(requestsStoreKey, requests);
+}
+
+function createRequestId(prefix = "request") {
+  return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function isComicReviewRequest(request = {}) {
+  return request.label === "Comic Art Review" || String(request.type || "").startsWith("Comic Art Review");
+}
+
+function comicReviewRequestsForProfile(profile = currentProfile()) {
+  const email = profile?.email || "";
+
+  return getRequests()
+    .filter(isComicReviewRequest)
+    .filter((request) => !email || request.from === email)
+    .slice()
+    .reverse();
+}
+
+function statusClassName(status = "") {
+  return `status-${String(status || "Submitted").toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 }
 
 function getContentItems() {
@@ -2651,12 +2714,35 @@ function renderComicPreviews() {
   comicPreview.innerHTML = "";
 
   if (!files.length) {
-    comicPreview.innerHTML = "<article><strong>No files selected</strong><span>Uploaded artwork previews will appear here.</span></article>";
+    const reviews = comicReviewRequestsForProfile();
+
+    if (!reviews.length) {
+      comicPreview.innerHTML = `
+        <article class="comic-route-card">
+          <strong>No review submitted</strong>
+          <span>After upload, the destination department and review status will appear here.</span>
+        </article>
+      `;
+      return;
+    }
+
+    comicPreview.innerHTML = reviews
+      .slice(0, 3)
+      .map((request) => `
+        <article class="comic-route-card">
+          <span class="review-status-pill ${statusClassName(request.status)}">${escapeHtml(request.status || "Submitted")}</span>
+          <strong>${escapeHtml(request.project || request.type || "Comic art review")}</strong>
+          <small>${escapeHtml(request.department || comicReviewDepartment)} · ${escapeHtml(request.stage || "Artwork")}</small>
+          <small>${escapeHtml(request.createdAt || "")}${request.reviewedAt ? ` · Updated ${escapeHtml(request.reviewedAt)}` : ""}</small>
+        </article>
+      `)
+      .join("");
     return;
   }
 
   files.forEach((file) => {
     const card = document.createElement("article");
+    card.className = "comic-file-card";
     const isImage = file.type.startsWith("image/");
     const preview = isImage
       ? `<img src="${URL.createObjectURL(file)}" alt="" />`
@@ -2664,7 +2750,7 @@ function renderComicPreviews() {
     card.innerHTML = `
       ${preview}
       <strong>${escapeHtml(file.name)}</strong>
-      <span>${Math.max(1, Math.round(file.size / 1024))} KB</span>
+      <span>Ready for ${comicReviewDepartment} · ${Math.max(1, Math.round(file.size / 1024))} KB</span>
     `;
     comicPreview.append(card);
   });
@@ -3536,6 +3622,8 @@ function applyProfile(profile) {
   renderAdmin();
   renderSystemMessages(profile);
   renderActorProjectAccess(profile);
+  renderComicPreviews();
+  renderReviewQueue();
 }
 
 function unlockPortal(profile) {
@@ -3698,6 +3786,92 @@ function renderRequests() {
       </tr>
     `)
     .join("");
+}
+
+function renderReviewQueue() {
+  if (!reviewQueueList) {
+    return;
+  }
+
+  const reviews = getRequests()
+    .filter(isComicReviewRequest)
+    .slice()
+    .reverse();
+
+  if (!reviews.length) {
+    reviewQueueList.innerHTML = `
+      <article class="review-queue-empty">
+        <strong>No comic art reviews yet</strong>
+        <span>Submitted review requests will appear here for ${comicReviewDepartment}.</span>
+      </article>
+    `;
+    return;
+  }
+
+  reviewQueueList.innerHTML = reviews
+    .map((request) => {
+      const currentStatus = request.status || "Submitted";
+      const options = comicReviewStatusOptions
+        .map((status) => `<option ${status === currentStatus ? "selected" : ""}>${escapeHtml(status)}</option>`)
+        .join("");
+      const files = Array.isArray(request.files) && request.files.length
+        ? request.files.map((file) => escapeHtml(file.name || file)).join(", ")
+        : "No file list captured";
+
+      return `
+        <article class="review-queue-card" data-review-id="${escapeAttribute(request.id || "")}">
+          <div class="review-queue-card-head">
+            <span class="review-status-pill ${statusClassName(currentStatus)}">${escapeHtml(currentStatus)}</span>
+            <small>${escapeHtml(request.createdAt || "")}</small>
+          </div>
+          <strong>${escapeHtml(request.project || "Comic art review")}</strong>
+          <p>${escapeHtml(request.stage || "Artwork")} · ${escapeHtml(request.department || comicReviewDepartment)}</p>
+          <dl>
+            <div><dt>Artist</dt><dd>${escapeHtml(request.artistName || request.from || "Unknown")}</dd></div>
+            <div><dt>Files</dt><dd>${files}</dd></div>
+            <div><dt>Notes</dt><dd>${escapeHtml(request.details || "No notes added.")}</dd></div>
+          </dl>
+          <label>
+            Status
+            <select data-review-status-select>
+              ${options}
+            </select>
+          </label>
+        </article>
+      `;
+    })
+    .join("");
+}
+
+function updateComicReviewStatus(reviewId, status) {
+  const requests = getRequests();
+  const request = requests.find((item) => item.id === reviewId);
+
+  if (!request) {
+    return;
+  }
+
+  const reviewedAt = new Date().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  request.status = status;
+  request.reviewedAt = reviewedAt;
+  request.reviewedBy = currentProfile()?.email || "Reviewer";
+  setRequests(requests);
+  renderReviewQueue();
+  renderComicPreviews();
+  renderRequests();
+  publishSystemMessage({
+    title: "Comic art review updated",
+    body: `${request.project || "Comic art review"} is now ${status}.`,
+    source: "Review Queue",
+    section: "review-queue",
+  });
+  appendAuditLog("Comic art review status updated", `${request.project || request.id}: ${status}`);
 }
 
 function renderAuditLogs() {
@@ -4881,6 +5055,7 @@ function renderSectionAdminTools(profile) {
 function renderAdmin() {
   renderUsers();
   renderRequests();
+  renderReviewQueue();
   renderContentRows();
   renderAuditLogs();
   renderContentItems();
@@ -5033,19 +5208,36 @@ storyboardForm?.addEventListener("submit", async (event) => {
 
 comicFilesInput?.addEventListener("change", renderComicPreviews);
 
+reviewQueueList?.addEventListener("change", (event) => {
+  const select = event.target.closest("[data-review-status-select]");
+
+  if (!select) {
+    return;
+  }
+
+  const card = select.closest("[data-review-id]");
+  const reviewId = card?.dataset.reviewId || "";
+
+  updateComicReviewStatus(reviewId, select.value);
+});
+
 comicReviewForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const formData = new FormData(comicReviewForm);
   const profile = currentProfile();
   const files = Array.from(comicFilesInput?.files || []);
-  const recipient = "art@the-banished.com";
+  const recipient = comicReviewRecipient;
   const label = "Comic Art Review";
   const artistName = String(formData.get("artistName") || profile?.name || "Unknown").trim();
   const project = String(formData.get("comicProject") || "New / exploratory");
   const stage = String(formData.get("comicStage") || "Concept sketches");
-  const focus = String(formData.get("comicFocus") || "Composition");
   const notes = String(formData.get("comicNotes") || "").trim();
+  const fileList = files.map((file) => ({
+    name: file.name,
+    sizeKb: Math.max(1, Math.round(file.size / 1024)),
+    type: file.type || "file",
+  }));
   const createdAt = new Date().toLocaleString("en-US", {
     month: "short",
     day: "numeric",
@@ -5070,10 +5262,10 @@ comicReviewForm?.addEventListener("submit", async (event) => {
         `Employee email: ${profile?.email || ""}`,
         `Project: ${project}`,
         `Stage: ${stage}`,
-        `Review focus: ${focus}`,
+        `Department: ${comicReviewDepartment}`,
         "",
         "Uploaded files listed in portal:",
-        files.map((file) => `- ${file.name} (${Math.max(1, Math.round(file.size / 1024))} KB)`).join("\n"),
+        fileList.map((file) => `- ${file.name} (${file.sizeKb} KB)`).join("\n"),
         "",
         "Notes:",
         notes || "No additional notes.",
@@ -5089,15 +5281,24 @@ comicReviewForm?.addEventListener("submit", async (event) => {
 
     const requests = getRequests();
     requests.push({
+      id: createRequestId("comic-review"),
       createdAt,
       from: profile?.email || "Unknown",
       type: `Comic Art Review - ${stage}`,
       recipient,
       label,
+      department: comicReviewDepartment,
+      status: "Submitted",
+      artistName,
+      project,
+      stage,
+      details: notes,
+      files: fileList,
     });
     setRequests(requests);
     renderRequests();
-    setRequestStatus(comicReviewStatus, `Art review request sent to ${recipient}.`);
+    renderReviewQueue();
+    setRequestStatus(comicReviewStatus, `Art review request sent to ${comicReviewDepartment}. Status: Submitted.`);
     comicReviewForm.reset();
     renderComicPreviews();
   } catch (error) {

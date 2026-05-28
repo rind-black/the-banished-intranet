@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>The Banished Internal Portal</title>
-    <link rel="stylesheet" href="styles.css?v=comic-review-style-1" />
+    <link rel="stylesheet" href="styles.css?v=review-queue-1" />
   </head>
   <body>
     <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
@@ -83,36 +83,40 @@
             <span aria-hidden="true">08</span>
             Comic Review
           </a>
-          <a class="nav-link" href="#bonuses" data-section-link="bonuses">
+          <a class="nav-link" href="#review-queue" data-section-link="review-queue">
             <span aria-hidden="true">09</span>
+            Review Queue
+          </a>
+          <a class="nav-link" href="#bonuses" data-section-link="bonuses">
+            <span aria-hidden="true">10</span>
             Bonuses
           </a>
           <a class="nav-link" href="#benefits" data-section-link="benefits">
-            <span aria-hidden="true">10</span>
+            <span aria-hidden="true">11</span>
             Benefits
           </a>
           <a class="nav-link" href="#holidays" data-section-link="holidays">
-            <span aria-hidden="true">11</span>
+            <span aria-hidden="true">12</span>
             Holidays
           </a>
           <a class="nav-link" href="#culture" data-section-link="culture">
-            <span aria-hidden="true">12</span>
+            <span aria-hidden="true">13</span>
             Culture
           </a>
           <a class="nav-link" href="#training" data-section-link="training">
-            <span aria-hidden="true">13</span>
+            <span aria-hidden="true">14</span>
             Training
           </a>
           <a class="nav-link" href="#internship" data-section-link="internship">
-            <span aria-hidden="true">14</span>
+            <span aria-hidden="true">15</span>
             Internship
           </a>
           <a class="nav-link" href="#requests" data-section-link="requests">
-            <span aria-hidden="true">15</span>
+            <span aria-hidden="true">16</span>
             Requests
           </a>
           <a class="nav-link" href="#admin" data-section-link="admin" data-admin-only hidden>
-            <span aria-hidden="true">16</span>
+            <span aria-hidden="true">17</span>
             Admin
           </a>
         </nav>
@@ -1477,21 +1481,11 @@
                     <option>Lettered pages</option>
                   </select>
                 </label>
-                <label>
-                  Review focus
-                  <select name="comicFocus">
-                    <option>Composition</option>
-                    <option>Character consistency</option>
-                    <option>Panel flow</option>
-                    <option>Color and mood</option>
-                    <option>Ready for production</option>
-                  </select>
-                </label>
               </div>
               <label class="comic-upload-zone">
                 Upload files
-                <input name="comicFiles" type="file" accept="image/*,.pdf" multiple data-comic-files />
-                <span>Drop images or PDF pages. Previews stay local in this portal session.</span>
+                <input name="comicFiles" type="file" accept=".png,.jpg,.jpeg,.webp,.gif,.svg,.tif,.tiff,.pdf,image/png,image/jpeg,image/webp,image/gif,image/svg+xml,image/tiff,application/pdf" multiple data-comic-files />
+                <span>Accepted formats: PNG, JPG, JPEG, WEBP, GIF, SVG, TIFF, TIF, and PDF. Previews stay local in this portal session.</span>
               </label>
               <label>
                 Notes
@@ -1502,16 +1496,37 @@
             </form>
             <section class="comic-preview-console">
               <div>
-                <p class="eyebrow">Preview deck</p>
-                <h3>Pages queued for review</h3>
+                <p class="eyebrow">Review route</p>
+                <h3>Department and status</h3>
               </div>
               <div class="comic-preview-grid" data-comic-preview>
                 <article>
-                  <strong>No files selected</strong>
-                  <span>Uploaded artwork previews will appear here.</span>
+                  <strong>No review submitted</strong>
+                  <span>After upload, the destination department and review status will appear here.</span>
                 </article>
               </div>
             </section>
+          </div>
+        </section>
+
+        <section class="portal-section" id="review-queue" data-section="review-queue" aria-labelledby="review-queue-title">
+          <h2 class="sr-only" id="review-queue-title">Review Queue</h2>
+
+          <div class="review-queue-layout">
+            <article class="review-queue-hero">
+              <p class="eyebrow">Reviewer workspace</p>
+              <h3>Comic art review queue</h3>
+              <p>
+                Reviewers update the status of submitted comic artwork here. The submitting artist sees the same
+                status inside Comic Artist Review.
+              </p>
+            </article>
+            <div class="review-queue-board" data-review-queue-list>
+              <article class="review-queue-empty">
+                <strong>No comic art reviews yet</strong>
+                <span>Submitted review requests will appear here for the Art Department.</span>
+              </article>
+            </div>
           </div>
         </section>
 
@@ -3252,6 +3267,6 @@
       </main>
     </div>
 
-    <script src="app.js?v=comic-review-style-1"></script>
+    <script src="app.js?v=review-queue-1"></script>
   </body>
 </html>
