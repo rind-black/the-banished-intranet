@@ -14175,7 +14175,7 @@ h1[data-page-title] {
 
 #comic-review .comic-preview-console {
   align-content: start;
-  min-height: 260px;
+  min-height: 0;
 }
 
 #comic-review .comic-review-form > div:first-child,
@@ -14191,7 +14191,8 @@ h1[data-page-title] {
 
 #comic-review .comic-review-form h3,
 #comic-review .comic-preview-console h3 {
-  font-size: clamp(16px, 1.15vw, 20px);
+  margin: 0;
+  font-size: clamp(14px, 1vw, 18px);
   line-height: 1.06;
 }
 
@@ -14327,6 +14328,20 @@ h1[data-page-title] {
   align-content: center;
 }
 
+#comic-review .comic-preview-grid .comic-route-card:has(.review-status-pill) {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "title status"
+    "meta status"
+    "time status";
+  align-items: center;
+  align-content: start;
+  column-gap: 14px;
+  row-gap: 5px;
+  min-height: 94px;
+  padding: 13px 14px;
+}
+
 #comic-review .comic-preview-grid article::after {
   position: absolute;
   right: -24px;
@@ -14357,6 +14372,11 @@ h1[data-page-title] {
   line-height: 1.16;
 }
 
+#comic-review .comic-preview-grid .comic-route-card:has(.review-status-pill) strong {
+  grid-area: title;
+  max-width: 100%;
+}
+
 #comic-review .comic-preview-grid span {
   margin-top: 5px;
   color: rgba(247, 243, 234, 0.56);
@@ -14367,16 +14387,16 @@ h1[data-page-title] {
 .review-status-pill {
   display: inline-grid;
   width: fit-content;
-  min-height: 26px;
+  min-height: 22px;
   place-items: center;
-  padding: 0 10px;
+  padding: 0 9px;
   border: 1px solid rgba(203, 169, 92, 0.28);
   border-radius: 999px;
   background:
     radial-gradient(circle at 86% 18%, rgba(203, 169, 92, 0.12), transparent 28%),
     rgba(5, 5, 6, 0.72);
   color: var(--gold);
-  font-size: 9px;
+  font-size: 8.5px;
   font-weight: 900;
   letter-spacing: 0.025em;
   line-height: 1;
@@ -14404,7 +14424,9 @@ h1[data-page-title] {
 }
 
 #comic-review .comic-preview-grid .review-status-pill {
-  margin: 0 0 10px;
+  grid-area: status;
+  align-self: start;
+  margin: 0;
   color: var(--gold);
 }
 
@@ -14432,6 +14454,18 @@ h1[data-page-title] {
   font-size: 10.5px;
   font-weight: 650;
   line-height: 1.34;
+}
+
+#comic-review .comic-route-card:has(.review-status-pill) small {
+  margin-top: 0;
+}
+
+#comic-review .comic-route-card:has(.review-status-pill) small:first-of-type {
+  grid-area: meta;
+}
+
+#comic-review .comic-route-card:has(.review-status-pill) small:last-of-type {
+  grid-area: time;
 }
 
 .review-queue-layout {
@@ -14630,5 +14664,14 @@ h1[data-page-title] {
 @media (max-width: 620px) {
   #comic-review .script-form-grid {
     grid-template-columns: 1fr;
+  }
+
+  #comic-review .comic-preview-grid .comic-route-card:has(.review-status-pill) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "status"
+      "title"
+      "meta"
+      "time";
   }
 }
