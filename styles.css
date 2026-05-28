@@ -14184,6 +14184,11 @@ h1[data-page-title] {
   gap: 4px;
 }
 
+#comic-review .comic-review-form .eyebrow,
+#comic-review .comic-preview-console .eyebrow {
+  color: var(--gold);
+}
+
 #comic-review .comic-review-form h3,
 #comic-review .comic-preview-console h3 {
   font-size: clamp(16px, 1.15vw, 20px);
