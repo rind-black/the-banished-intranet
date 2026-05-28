@@ -51,6 +51,8 @@ loadEnvFile(".env.local");
 const port = Number(process.env.PORT || 4173);
 const host = process.env.HOST || "127.0.0.1";
 const companyDomain = "@the-banished.com";
+const maxRequestBodyBytes = Number(process.env.PORTAL_MAX_REQUEST_BYTES || 25 * 1024 * 1024);
+const maxAttachmentBytes = Number(process.env.PORTAL_MAX_ATTACHMENT_BYTES || 20 * 1024 * 1024);
 const allowedRecipients = new Set([
   "support@the-banished.com",
   "hr@the-banished.com",
@@ -74,6 +76,9 @@ const mimeTypes = {
   ".pdf": "application/pdf",
   ".svg": "image/svg+xml",
   ".webp": "image/webp",
+  ".gif": "image/gif",
+  ".tif": "image/tiff",
+  ".tiff": "image/tiff",
 };
 
 class HttpError extends Error {
@@ -94,11 +99,13 @@ function sendJson(response, status, payload) {
 function readBody(request) {
   return new Promise((resolve, reject) => {
     let body = "";
+    let receivedBytes = 0;
 
     request.on("data", (chunk) => {
+      receivedBytes += chunk.length;
       body += chunk;
 
-      if (body.length > 1024 * 1024) {
+      if (receivedBytes > maxRequestBodyBytes) {
         reject(new HttpError(413, "Request is too large."));
         request.destroy();
       }
@@ -129,6 +136,60 @@ function cleanHeader(value) {
 
 function cleanEmail(value) {
   return String(value || "").replace(/[<>\r\n]/g, "").trim().toLowerCase();
+}
+
+function cleanFilename(value) {
+  const filename = path.basename(String(value || "attachment").replace(/[<>:"/\\|?*\r\n]+/g, "-")).trim();
+
+  return (filename || "attachment").slice(0, 140);
+}
+
+function cleanContentType(value, filename) {
+  const contentType = cleanHeader(value).toLowerCase();
+
+  if (/^[a-z0-9.+-]+\/[a-z0-9.+-]+$/i.test(contentType)) {
+    return contentType;
+  }
+
+  return (mimeTypes[path.extname(filename).toLowerCase()] || "application/octet-stream").split(";")[0];
+}
+
+function wrapBase64(value) {
+  return String(value || "").replace(/.{1,76}/g, "$&\r\n").trim();
+}
+
+function cleanAttachments(value) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  let totalBytes = 0;
+
+  return value.slice(0, 10).map((item, index) => {
+    const filename = cleanFilename(item?.filename || item?.name || `attachment-${index + 1}`);
+    const contentType = cleanContentType(item?.contentType || item?.type, filename);
+    const content = String(item?.content || item?.base64 || "")
+      .replace(/^data:[^,]+,/i, "")
+      .replace(/\s+/g, "");
+
+    if (!content || !/^[a-z0-9+/]*={0,2}$/i.test(content)) {
+      throw new HttpError(400, `Attachment ${filename} is missing valid base64 content.`);
+    }
+
+    const sizeBytes = Buffer.byteLength(content, "base64");
+    totalBytes += sizeBytes;
+
+    if (totalBytes > maxAttachmentBytes) {
+      throw new HttpError(413, "Attachments are too large. Keep the total under 20 MB.");
+    }
+
+    return {
+      filename,
+      contentType,
+      content,
+      sizeBytes,
+    };
+  });
 }
 
 function cleanCountryCode(value) {
@@ -284,7 +345,7 @@ function getFromAddress() {
   return cleanEmail(process.env.PORTAL_MAIL_FROM || process.env.SMTP_FROM || process.env.SMTP_USER || "support@the-banished.com");
 }
 
-function buildMessage({ to, subject, text, replyTo }) {
+function buildMessage({ to, subject, text, replyTo, attachments = [] }) {
   const fromAddress = getFromAddress();
   const fromName = process.env.PORTAL_MAIL_FROM_NAME || "The Banished Internal Portal";
   const headers = [
@@ -294,18 +355,45 @@ function buildMessage({ to, subject, text, replyTo }) {
     `Date: ${new Date().toUTCString()}`,
     `Message-ID: <${crypto.randomUUID()}@the-banished.com>`,
     "MIME-Version: 1.0",
-    "Content-Type: text/plain; charset=UTF-8",
-    "Content-Transfer-Encoding: 8bit",
   ];
 
   if (replyTo && isCompanyEmail(replyTo)) {
     headers.push(`Reply-To: ${cleanEmail(replyTo)}`);
   }
 
-  return `${headers.join("\r\n")}\r\n\r\n${String(text || "").replace(/\r?\n/g, "\r\n")}`;
+  if (!attachments.length) {
+    headers.push("Content-Type: text/plain; charset=UTF-8", "Content-Transfer-Encoding: 8bit");
+
+    return `${headers.join("\r\n")}\r\n\r\n${String(text || "").replace(/\r?\n/g, "\r\n")}`;
+  }
+
+  const boundary = `----=_TheBanished_${crypto.randomUUID()}`;
+  const parts = [
+    `--${boundary}`,
+    "Content-Type: text/plain; charset=UTF-8",
+    "Content-Transfer-Encoding: 8bit",
+    "",
+    String(text || "").replace(/\r?\n/g, "\r\n"),
+  ];
+
+  attachments.forEach((attachment) => {
+    parts.push(
+      `--${boundary}`,
+      `Content-Type: ${attachment.contentType}; name="${attachment.filename.replace(/"/g, "'")}"`,
+      "Content-Transfer-Encoding: base64",
+      `Content-Disposition: attachment; filename="${attachment.filename.replace(/"/g, "'")}"`,
+      "",
+      wrapBase64(attachment.content)
+    );
+  });
+
+  parts.push(`--${boundary}--`);
+  headers.push(`Content-Type: multipart/mixed; boundary="${boundary}"`);
+
+  return `${headers.join("\r\n")}\r\n\r\n${parts.join("\r\n")}`;
 }
 
-async function sendWithResend({ to, subject, text, replyTo }) {
+async function sendWithResend({ to, subject, text, replyTo, attachments = [] }) {
   const apiKey = process.env.RESEND_API_KEY;
 
   if (!apiKey) {
@@ -324,6 +412,12 @@ async function sendWithResend({ to, subject, text, replyTo }) {
       subject: cleanHeader(subject),
       text,
       reply_to: replyTo && isCompanyEmail(replyTo) ? cleanEmail(replyTo) : undefined,
+      attachments: attachments.length
+        ? attachments.map((attachment) => ({
+          filename: attachment.filename,
+          content: attachment.content,
+        }))
+        : undefined,
     }),
   });
 
@@ -404,7 +498,7 @@ async function sendCommand(socket, reader, command, expectedCodes) {
   return reader.read(expectedCodes);
 }
 
-async function sendWithSmtp({ to, subject, text, replyTo }) {
+async function sendWithSmtp({ to, subject, text, replyTo, attachments = [] }) {
   const host = process.env.SMTP_HOST;
 
   if (!host) {
@@ -450,7 +544,7 @@ async function sendWithSmtp({ to, subject, text, replyTo }) {
     await sendCommand(socket, reader, `MAIL FROM:<${getFromAddress()}>`, [250]);
     await sendCommand(socket, reader, `RCPT TO:<${cleanEmail(to)}>`, [250, 251]);
     await sendCommand(socket, reader, "DATA", [354]);
-    socket.write(`${dotStuff(buildMessage({ to, subject, text, replyTo }))}\r\n.\r\n`);
+    socket.write(`${dotStuff(buildMessage({ to, subject, text, replyTo, attachments }))}\r\n.\r\n`);
     await reader.read([250]);
     await sendCommand(socket, reader, "QUIT", [221]).catch(() => {});
   } finally {
@@ -516,6 +610,7 @@ async function handleRequest(request, response) {
   const payload = await readJson(request);
   const recipient = cleanEmail(payload.recipient);
   const from = cleanEmail(payload.from);
+  const attachments = cleanAttachments(payload.attachments);
 
   if (!allowedRecipients.has(recipient)) {
     throw new HttpError(400, "This request can only be sent to an approved The Banished request mailbox.");
@@ -530,6 +625,7 @@ async function handleRequest(request, response) {
     subject: cleanHeader(payload.subject || payload.label || "Internal Portal Request"),
     text: String(payload.body || ""),
     replyTo: from,
+    attachments,
   });
 
   sendJson(response, 200, { ok: true });

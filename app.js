@@ -140,6 +140,7 @@ const companyEmailDomain = "@the-banished.com";
 const comicReviewDepartment = "Production Department";
 const comicReviewRecipient = "production@the-banished.com";
 const comicReviewStatusOptions = ["Submitted", "In review", "Revision requested", "Approved", "On hold"];
+const emailAttachmentTotalLimitBytes = 18 * 1024 * 1024;
 let activeChallengeDepartment = "all";
 let activeProjectFilter = "all";
 let activeCalendarFilter = "my";
@@ -5159,6 +5160,30 @@ async function postPortalEmail(endpoint, payload) {
   return data;
 }
 
+function readFileAsEmailAttachment(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.addEventListener("load", () => {
+      const result = String(reader.result || "");
+      const base64 = result.includes(",") ? result.slice(result.indexOf(",") + 1) : result;
+
+      resolve({
+        filename: file.name || "attachment",
+        contentType: file.type || "application/octet-stream",
+        content: base64,
+        sizeBytes: file.size,
+      });
+    });
+
+    reader.addEventListener("error", () => {
+      reject(new Error(`Could not read ${file.name || "the selected file"} for email attachment.`));
+    });
+
+    reader.readAsDataURL(file);
+  });
+}
+
 getUsers();
 
 navLinks.forEach((link) => {
@@ -5278,9 +5303,20 @@ comicReviewForm?.addEventListener("submit", async (event) => {
     return;
   }
 
-  setRequestStatus(comicReviewStatus, `Sending comic review request to ${recipient}...`, "pending");
+  const totalAttachmentBytes = files.reduce((sum, file) => sum + file.size, 0);
+
+  if (totalAttachmentBytes > emailAttachmentTotalLimitBytes) {
+    setRequestStatus(comicReviewStatus, "Please keep uploaded files under 18 MB total before sending.", "error");
+    return;
+  }
+
+  setRequestStatus(comicReviewStatus, `Preparing ${files.length} attachment${files.length === 1 ? "" : "s"}...`, "pending");
 
   try {
+    const attachments = await Promise.all(files.map(readFileAsEmailAttachment));
+
+    setRequestStatus(comicReviewStatus, `Sending comic review request to ${recipient}...`, "pending");
+
     await postPortalEmail("/api/requests", {
       recipient,
       label,
@@ -5293,7 +5329,7 @@ comicReviewForm?.addEventListener("submit", async (event) => {
         `Stage: ${stage}`,
         `Department: ${comicReviewDepartment}`,
         "",
-        "Uploaded files listed in portal:",
+        "Attached files:",
         fileList.map((file) => `- ${file.name} (${file.sizeKb} KB)`).join("\n"),
         "",
         "Notes:",
@@ -5306,6 +5342,7 @@ comicReviewForm?.addEventListener("submit", async (event) => {
         name: artistName,
         details: notes,
       },
+      attachments,
     });
 
     const requests = getRequests();
