@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>The Banished Internal Portal</title>
-    <link rel="stylesheet" href="styles.css?v=review-queue-1" />
+    <link rel="stylesheet" href="styles.css?v=comic-review-workflow-1" />
   </head>
   <body>
     <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
@@ -1455,12 +1455,22 @@
               <div>
                 <p class="eyebrow">Upload work</p>
                 <h3>Send pages for art review</h3>
-                <p class="form-intro">Upload concept art, comic drafts, uncolored pages, colored pages, or final lettered versions and tell the reviewer what decision you need.</p>
               </div>
               <div class="script-form-grid">
                 <label>
-                  Artist name
-                  <input name="artistName" type="text" placeholder="Your name" />
+                  Submitted by
+                  <input name="submittedBy" type="text" placeholder="Your name" data-comic-sender />
+                </label>
+                <label>
+                  Artist
+                  <select name="artistName" data-comic-artist-select>
+                    <option>Test Admin</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+                <label class="comic-other-artist-field" data-comic-other-artist-field hidden>
+                  Other artist
+                  <input name="comicOtherArtist" type="text" placeholder="Artist name" data-comic-other-artist />
                 </label>
                 <label>
                   Project
@@ -1483,6 +1493,10 @@
                     <option>Colored Comic</option>
                     <option>Final Version</option>
                   </select>
+                </label>
+                <label>
+                  Review needed by
+                  <input name="reviewDueDate" type="date" />
                 </label>
               </div>
               <label class="comic-upload-zone">
@@ -3270,6 +3284,6 @@
       </main>
     </div>
 
-    <script src="app.js?v=review-queue-1"></script>
+    <script src="app.js?v=comic-review-workflow-1"></script>
   </body>
 </html>

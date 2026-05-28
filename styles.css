@@ -14146,7 +14146,7 @@ h1[data-page-title] {
 #comic-review .comic-preview-console {
   position: relative;
   overflow: hidden;
-  gap: 13px;
+  gap: 16px;
   padding: 18px;
   border-color: rgba(203, 169, 92, 0.22);
   border-left: 3px solid rgba(203, 169, 92, 0.56);
@@ -14205,11 +14205,12 @@ h1[data-page-title] {
 }
 
 #comic-review .script-form-grid {
-  gap: 10px;
+  gap: 14px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-#comic-review .comic-new-project-field {
+#comic-review .comic-new-project-field,
+#comic-review .comic-other-artist-field {
   grid-column: 1 / -1;
 }
 
@@ -14231,6 +14232,10 @@ h1[data-page-title] {
     rgba(5, 5, 6, 0.72);
   color: rgba(247, 243, 234, 0.84);
   font-size: 11.5px;
+}
+
+#comic-review .comic-review-form input[type="date"] {
+  color-scheme: dark;
 }
 
 #comic-review .comic-review-form textarea {
@@ -14328,18 +14333,20 @@ h1[data-page-title] {
   align-content: center;
 }
 
+#comic-review .comic-preview-grid .comic-route-card--submitted,
 #comic-review .comic-preview-grid .comic-route-card:has(.review-status-pill) {
+  display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas:
     "title status"
     "meta status"
     "time status";
-  align-items: center;
+  align-items: start;
   align-content: start;
-  column-gap: 14px;
-  row-gap: 5px;
-  min-height: 94px;
-  padding: 13px 14px;
+  column-gap: 18px;
+  row-gap: 8px;
+  min-height: 104px;
+  padding: 16px;
 }
 
 #comic-review .comic-preview-grid article::after {
@@ -14372,6 +14379,7 @@ h1[data-page-title] {
   line-height: 1.16;
 }
 
+#comic-review .comic-preview-grid .comic-route-card--submitted strong,
 #comic-review .comic-preview-grid .comic-route-card:has(.review-status-pill) strong {
   grid-area: title;
   max-width: 100%;
@@ -14423,6 +14431,11 @@ h1[data-page-title] {
   color: rgba(247, 243, 234, 0.64);
 }
 
+.review-status-pill.status-closed {
+  border-color: rgba(247, 243, 234, 0.18);
+  color: rgba(247, 243, 234, 0.48);
+}
+
 #comic-review .comic-preview-grid .review-status-pill {
   grid-area: status;
   align-self: start;
@@ -14446,6 +14459,10 @@ h1[data-page-title] {
   color: rgba(247, 243, 234, 0.64);
 }
 
+#comic-review .comic-preview-grid .review-status-pill.status-closed {
+  color: rgba(247, 243, 234, 0.48);
+}
+
 #comic-review .comic-route-card small,
 #comic-review .comic-file-card small {
   display: block;
@@ -14456,14 +14473,17 @@ h1[data-page-title] {
   line-height: 1.34;
 }
 
+#comic-review .comic-route-card--submitted small,
 #comic-review .comic-route-card:has(.review-status-pill) small {
   margin-top: 0;
 }
 
+#comic-review .comic-route-card--submitted small:first-of-type,
 #comic-review .comic-route-card:has(.review-status-pill) small:first-of-type {
   grid-area: meta;
 }
 
+#comic-review .comic-route-card--submitted small:last-of-type,
 #comic-review .comic-route-card:has(.review-status-pill) small:last-of-type {
   grid-area: time;
 }
@@ -14666,6 +14686,7 @@ h1[data-page-title] {
     grid-template-columns: 1fr;
   }
 
+  #comic-review .comic-preview-grid .comic-route-card--submitted,
   #comic-review .comic-preview-grid .comic-route-card:has(.review-status-pill) {
     grid-template-columns: 1fr;
     grid-template-areas:

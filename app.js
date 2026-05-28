@@ -102,6 +102,10 @@ const storyboardOutput = document.querySelector("[data-storyboard-output]");
 const storyboardStatus = document.querySelector("[data-storyboard-status]");
 const comicReviewForm = document.querySelector("[data-comic-review-form]");
 const comicReviewStatus = document.querySelector("[data-comic-review-status]");
+const comicSenderInput = document.querySelector("[data-comic-sender]");
+const comicArtistSelect = document.querySelector("[data-comic-artist-select]");
+const comicOtherArtistField = document.querySelector("[data-comic-other-artist-field]");
+const comicOtherArtistInput = document.querySelector("[data-comic-other-artist]");
 const comicProjectSelect = document.querySelector("[data-comic-project-select]");
 const comicNewProjectField = document.querySelector("[data-comic-new-project-field]");
 const comicNewProjectInput = document.querySelector("[data-comic-new-project]");
@@ -139,7 +143,7 @@ const inviteTempPassword = "PortalInvite12!";
 const companyEmailDomain = "@the-banished.com";
 const comicReviewDepartment = "Production Department";
 const comicReviewRecipient = "production@the-banished.com";
-const comicReviewStatusOptions = ["Submitted", "In review", "Revision requested", "Approved", "On hold"];
+const comicReviewStatusOptions = ["Submitted", "In review", "Revision requested", "Approved", "On hold", "Closed"];
 const emailAttachmentTotalLimitBytes = 18 * 1024 * 1024;
 let activeChallengeDepartment = "all";
 let activeProjectFilter = "all";
@@ -1611,6 +1615,7 @@ function comicReviewRequestsForProfile(profile = currentProfile()) {
 
   return getRequests()
     .filter(isComicReviewRequest)
+    .filter((request) => statusClassName(request.status) !== "status-closed")
     .filter((request) => !email || request.from === email)
     .slice()
     .reverse();
@@ -2723,8 +2728,8 @@ function renderComicPreviews() {
     if (!reviews.length) {
       comicPreview.innerHTML = `
         <article class="comic-route-card">
-          <strong>No review submitted</strong>
-          <span>After upload, the destination department and review status will appear here.</span>
+          <strong>No active review routed</strong>
+          <span>Submitted comic reviews will appear here until they are closed.</span>
         </article>
       `;
       return;
@@ -2733,11 +2738,11 @@ function renderComicPreviews() {
     comicPreview.innerHTML = reviews
       .slice(0, 3)
       .map((request) => `
-        <article class="comic-route-card">
+        <article class="comic-route-card comic-route-card--submitted">
           <span class="review-status-pill ${statusClassName(request.status)}">${escapeHtml(request.status || "Submitted")}</span>
           <strong>${escapeHtml(request.project || request.type || "Comic art review")}</strong>
           <small>${escapeHtml(request.department || comicReviewDepartment)} · ${escapeHtml(request.stage || "Artwork")}</small>
-          <small>${escapeHtml(request.createdAt || "")}${request.reviewedAt ? ` · Updated ${escapeHtml(request.reviewedAt)}` : ""}</small>
+          <small>${request.reviewDueDate ? `Due ${escapeHtml(request.reviewDueDate)} · ` : ""}${escapeHtml(request.createdAt || "")}${request.reviewedAt ? ` · Updated ${escapeHtml(request.reviewedAt)}` : ""}</small>
         </article>
       `)
       .join("");
@@ -2774,6 +2779,90 @@ function syncComicNewProjectField() {
       comicNewProjectInput.value = "";
     }
   }
+}
+
+function populateComicProjectOptions() {
+  if (!comicProjectSelect) {
+    return;
+  }
+
+  const selectedProject = comicProjectSelect.value || "The Banished";
+  const projects = Object.values(projectPages).map((project) => project.title);
+  const projectNames = Array.from(new Set(projects)).filter(Boolean);
+
+  comicProjectSelect.replaceChildren();
+  projectNames.forEach((projectName) => {
+    const option = document.createElement("option");
+    option.value = projectName;
+    option.textContent = projectName;
+    comicProjectSelect.append(option);
+  });
+
+  const newOption = document.createElement("option");
+  newOption.value = "New / exploratory";
+  newOption.textContent = "New / exploratory";
+  comicProjectSelect.append(newOption);
+
+  comicProjectSelect.value = projectNames.includes(selectedProject) || selectedProject === "New / exploratory"
+    ? selectedProject
+    : "The Banished";
+  syncComicNewProjectField();
+}
+
+function syncComicOtherArtistField() {
+  const isOtherArtist = comicArtistSelect?.value === "Other";
+
+  if (comicOtherArtistField) {
+    comicOtherArtistField.hidden = !isOtherArtist;
+  }
+
+  if (comicOtherArtistInput) {
+    comicOtherArtistInput.required = isOtherArtist;
+
+    if (!isOtherArtist) {
+      comicOtherArtistInput.value = "";
+    }
+  }
+}
+
+function populateComicArtistOptions(profile = currentProfile()) {
+  if (!comicArtistSelect) {
+    return;
+  }
+
+  const selectedArtist = comicArtistSelect.value || profile?.name || "";
+  const users = getUsers();
+  const names = Object.values(users)
+    .map((user) => user.name)
+    .concat(profile?.name || [])
+    .map((name) => String(name || "").trim())
+    .filter(Boolean);
+  const artistNames = Array.from(new Set(names)).sort((left, right) => left.localeCompare(right));
+
+  comicArtistSelect.replaceChildren();
+  artistNames.forEach((artistName) => {
+    const option = document.createElement("option");
+    option.value = artistName;
+    option.textContent = artistName;
+    comicArtistSelect.append(option);
+  });
+
+  const otherOption = document.createElement("option");
+  otherOption.value = "Other";
+  otherOption.textContent = "Other";
+  comicArtistSelect.append(otherOption);
+
+  comicArtistSelect.value = artistNames.includes(selectedArtist) ? selectedArtist : artistNames[0] || "Other";
+  syncComicOtherArtistField();
+}
+
+function syncComicReviewFormDefaults(profile = currentProfile()) {
+  if (comicSenderInput && !comicSenderInput.value) {
+    comicSenderInput.value = profile?.name || "";
+  }
+
+  populateComicProjectOptions();
+  populateComicArtistOptions(profile);
 }
 
 function currentProfile() {
@@ -3642,6 +3731,7 @@ function applyProfile(profile) {
   renderAdmin();
   renderSystemMessages(profile);
   renderActorProjectAccess(profile);
+  syncComicReviewFormDefaults(profile);
   renderComicPreviews();
   renderReviewQueue();
 }
@@ -3847,7 +3937,9 @@ function renderReviewQueue() {
           <strong>${escapeHtml(request.project || "Comic art review")}</strong>
           <p>${escapeHtml(request.stage || "Artwork")} · ${escapeHtml(request.department || comicReviewDepartment)}</p>
           <dl>
+            <div><dt>Submitted by</dt><dd>${escapeHtml(request.submittedBy || request.from || "Unknown")}</dd></div>
             <div><dt>Artist</dt><dd>${escapeHtml(request.artistName || request.from || "Unknown")}</dd></div>
+            <div><dt>Needed by</dt><dd>${escapeHtml(request.reviewDueDate || "Not specified")}</dd></div>
             <div><dt>Files</dt><dd>${files}</dd></div>
             <div><dt>Notes</dt><dd>${escapeHtml(request.details || "No notes added.")}</dd></div>
           </dl>
@@ -5252,7 +5344,10 @@ storyboardForm?.addEventListener("submit", async (event) => {
 
 comicFilesInput?.addEventListener("change", renderComicPreviews);
 comicProjectSelect?.addEventListener("change", syncComicNewProjectField);
+comicArtistSelect?.addEventListener("change", syncComicOtherArtistField);
+syncComicReviewFormDefaults();
 syncComicNewProjectField();
+syncComicOtherArtistField();
 
 reviewQueueList?.addEventListener("change", (event) => {
   const select = event.target.closest("[data-review-status-select]");
@@ -5275,11 +5370,15 @@ comicReviewForm?.addEventListener("submit", async (event) => {
   const files = Array.from(comicFilesInput?.files || []);
   const recipient = comicReviewRecipient;
   const label = "Comic Art Review";
-  const artistName = String(formData.get("artistName") || profile?.name || "Unknown").trim();
+  const submittedBy = String(formData.get("submittedBy") || profile?.name || "Unknown").trim();
+  const artistChoice = String(formData.get("artistName") || "").trim();
+  const otherArtist = String(formData.get("comicOtherArtist") || "").trim();
+  const artistName = artistChoice === "Other" ? otherArtist : artistChoice || submittedBy || "Unknown";
   const projectChoice = String(formData.get("comicProject") || "New / exploratory").trim();
   const newProject = String(formData.get("comicNewProject") || "").trim();
   const project = projectChoice === "New / exploratory" ? newProject : projectChoice;
   const stage = String(formData.get("comicStage") || "Concept Art");
+  const reviewDueDate = String(formData.get("reviewDueDate") || "").trim();
   const notes = String(formData.get("comicNotes") || "").trim();
   const fileList = files.map((file) => ({
     name: file.name,
@@ -5303,6 +5402,11 @@ comicReviewForm?.addEventListener("submit", async (event) => {
     return;
   }
 
+  if (!artistName) {
+    setRequestStatus(comicReviewStatus, "Please select or enter the artist name before sending.", "error");
+    return;
+  }
+
   const totalAttachmentBytes = files.reduce((sum, file) => sum + file.size, 0);
 
   if (totalAttachmentBytes > emailAttachmentTotalLimitBytes) {
@@ -5322,11 +5426,13 @@ comicReviewForm?.addEventListener("submit", async (event) => {
       label,
       subject: `Comic Art Review: ${project} / ${stage}`,
       body: [
+        `Submitted by: ${submittedBy}`,
         `Artist: ${artistName}`,
         `Employee email: ${profile?.email || ""}`,
         `Project: ${project}`,
         projectChoice === "New / exploratory" ? "Project source: New / exploratory" : "",
         `Stage: ${stage}`,
+        `Review needed by: ${reviewDueDate || "Not specified"}`,
         `Department: ${comicReviewDepartment}`,
         "",
         "Attached files:",
@@ -5339,7 +5445,7 @@ comicReviewForm?.addEventListener("submit", async (event) => {
       request: {
         type: `Comic Art Review - ${stage}`,
         priority: "Normal",
-        name: artistName,
+        name: submittedBy,
         details: notes,
       },
       attachments,
@@ -5355,10 +5461,12 @@ comicReviewForm?.addEventListener("submit", async (event) => {
       label,
       department: comicReviewDepartment,
       status: "Submitted",
+      submittedBy,
       artistName,
       project,
       projectSource: projectChoice,
       stage,
+      reviewDueDate,
       details: notes,
       files: fileList,
     });
@@ -5367,7 +5475,7 @@ comicReviewForm?.addEventListener("submit", async (event) => {
     renderReviewQueue();
     setRequestStatus(comicReviewStatus, `Comic review request sent to ${comicReviewDepartment}. Status: Submitted.`);
     comicReviewForm.reset();
-    syncComicNewProjectField();
+    syncComicReviewFormDefaults(profile);
     renderComicPreviews();
   } catch (error) {
     const message = /Email service is not configured/i.test(error.message)
