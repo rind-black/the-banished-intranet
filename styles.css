@@ -14109,3 +14109,260 @@ h1[data-page-title] {
     min-width: 430px;
   }
 }
+
+/* Comic Artist Review: polished dark production-review workspace. */
+#comic-review .section-admin-panel {
+  margin-bottom: 14px;
+}
+
+#comic-review .section-admin-toggle {
+  min-height: 34px;
+  padding: 0 13px;
+  border-color: rgba(203, 169, 92, 0.28);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 88% 18%, rgba(203, 169, 92, 0.12), transparent 28%),
+    rgba(9, 9, 11, 0.78);
+  color: rgba(247, 243, 234, 0.78);
+  font-size: 10px;
+  letter-spacing: 0.025em;
+}
+
+#comic-review .section-admin-toggle:hover,
+#comic-review .section-admin-panel.open .section-admin-toggle {
+  border-color: rgba(203, 169, 92, 0.58);
+  background:
+    radial-gradient(circle at 88% 18%, rgba(203, 169, 92, 0.18), transparent 28%),
+    rgba(13, 13, 15, 0.92);
+}
+
+#comic-review .comic-review-layout {
+  grid-template-columns: minmax(360px, 0.56fr) minmax(320px, 0.44fr);
+  gap: 14px;
+  align-items: start;
+}
+
+#comic-review .comic-review-form,
+#comic-review .comic-preview-console {
+  position: relative;
+  overflow: hidden;
+  gap: 13px;
+  padding: 18px;
+  border-color: rgba(203, 169, 92, 0.22);
+  border-left: 3px solid rgba(203, 169, 92, 0.56);
+  border-radius: 18px 6px 18px 6px;
+  background:
+    radial-gradient(circle at 94% 10%, rgba(203, 169, 92, 0.1), transparent 24%),
+    linear-gradient(135deg, rgba(247, 243, 234, 0.04), transparent 58%),
+    rgba(9, 9, 11, 0.86);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 243, 234, 0.04),
+    0 16px 34px rgba(0, 0, 0, 0.16);
+}
+
+#comic-review .comic-review-form::after,
+#comic-review .comic-preview-console::after {
+  position: absolute;
+  right: -34px;
+  bottom: -38px;
+  width: 88px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(203, 169, 92, 0.12);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+#comic-review .comic-preview-console {
+  align-content: start;
+  min-height: 260px;
+}
+
+#comic-review .comic-review-form > div:first-child,
+#comic-review .comic-preview-console > div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+#comic-review .comic-review-form h3,
+#comic-review .comic-preview-console h3 {
+  font-size: clamp(16px, 1.15vw, 20px);
+  line-height: 1.06;
+}
+
+#comic-review .form-intro {
+  max-width: 58ch;
+  margin: 0;
+  color: rgba(247, 243, 234, 0.58);
+  font-size: 11.5px;
+  line-height: 1.38;
+}
+
+#comic-review .script-form-grid {
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#comic-review .comic-review-form label {
+  gap: 7px;
+  color: rgba(247, 243, 234, 0.7);
+  font-size: 9.5px;
+  letter-spacing: 0.03em;
+}
+
+#comic-review .comic-review-form input:not([type="file"]),
+#comic-review .comic-review-form select,
+#comic-review .comic-review-form textarea {
+  min-height: 38px;
+  border-color: rgba(203, 169, 92, 0.22);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 96% 12%, rgba(203, 169, 92, 0.055), transparent 26%),
+    rgba(5, 5, 6, 0.72);
+  color: rgba(247, 243, 234, 0.84);
+  font-size: 11.5px;
+}
+
+#comic-review .comic-review-form textarea {
+  min-height: 92px;
+  line-height: 1.42;
+}
+
+#comic-review .comic-review-form input:focus,
+#comic-review .comic-review-form select:focus,
+#comic-review .comic-review-form textarea:focus {
+  border-color: rgba(203, 169, 92, 0.58);
+  box-shadow: 0 0 0 3px rgba(203, 169, 92, 0.08);
+}
+
+#comic-review .comic-upload-zone {
+  min-height: 104px;
+  padding: 14px;
+  border-color: rgba(203, 169, 92, 0.26);
+  border-left: 3px solid rgba(203, 169, 92, 0.46);
+  border-radius: 16px 6px 16px 6px;
+  background:
+    radial-gradient(circle at 92% 14%, rgba(203, 169, 92, 0.08), transparent 24%),
+    linear-gradient(135deg, rgba(231, 55, 47, 0.045), transparent 48%),
+    rgba(8, 8, 10, 0.76);
+}
+
+#comic-review .comic-upload-zone input[type="file"] {
+  min-height: 36px;
+  padding: 7px 8px;
+  border: 1px solid rgba(203, 169, 92, 0.2);
+  border-radius: 999px;
+  background: rgba(5, 5, 6, 0.76);
+  color: rgba(247, 243, 234, 0.66);
+  font-size: 10.5px;
+}
+
+#comic-review .comic-upload-zone input[type="file"]::file-selector-button {
+  min-height: 26px;
+  margin-right: 10px;
+  padding: 0 11px;
+  border: 1px solid rgba(203, 169, 92, 0.36);
+  border-radius: 999px;
+  background: rgba(203, 169, 92, 0.12);
+  color: rgba(247, 243, 234, 0.86);
+  font: inherit;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+#comic-review .comic-upload-zone span {
+  max-width: 54ch;
+  color: rgba(247, 243, 234, 0.5);
+  font-size: 11px;
+  line-height: 1.36;
+}
+
+#comic-review .comic-review-form .primary-button {
+  justify-self: center;
+  min-height: 34px;
+  padding: 0 16px;
+  border-color: rgba(203, 169, 92, 0.42);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 88% 18%, rgba(203, 169, 92, 0.16), transparent 28%),
+    rgba(203, 169, 92, 0.11);
+  font-size: 11px;
+}
+
+#comic-review .comic-preview-grid {
+  grid-template-columns: repeat(auto-fit, minmax(138px, 1fr));
+  gap: 10px;
+}
+
+#comic-review .comic-preview-grid:has(article:only-child) {
+  grid-template-columns: 1fr;
+}
+
+#comic-review .comic-preview-grid article {
+  position: relative;
+  min-height: 132px;
+  padding: 14px;
+  overflow: hidden;
+  border-color: rgba(203, 169, 92, 0.2);
+  border-radius: 16px 6px 16px 6px;
+  background:
+    radial-gradient(circle at 94% 12%, rgba(203, 169, 92, 0.09), transparent 24%),
+    linear-gradient(135deg, rgba(247, 243, 234, 0.035), transparent 58%),
+    rgba(8, 8, 10, 0.78);
+  box-shadow: inset 0 1px 0 rgba(247, 243, 234, 0.035);
+}
+
+#comic-review .comic-preview-grid article:only-child {
+  display: grid;
+  min-height: 126px;
+  align-content: center;
+}
+
+#comic-review .comic-preview-grid article::after {
+  position: absolute;
+  right: -24px;
+  bottom: -28px;
+  width: 68px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(203, 169, 92, 0.11);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+#comic-review .comic-preview-grid img,
+#comic-review .comic-file-icon {
+  margin-bottom: 10px;
+  border-color: rgba(203, 169, 92, 0.18);
+  border-radius: 14px 5px 14px 5px;
+  background: rgba(5, 5, 6, 0.78);
+}
+
+#comic-review .comic-file-icon {
+  color: rgba(203, 169, 92, 0.9);
+  font-size: 18px;
+}
+
+#comic-review .comic-preview-grid strong {
+  font-size: 11.5px;
+  line-height: 1.16;
+}
+
+#comic-review .comic-preview-grid span {
+  margin-top: 5px;
+  color: rgba(247, 243, 234, 0.56);
+  font-size: 10.5px;
+  line-height: 1.32;
+}
+
+@media (max-width: 980px) {
+  #comic-review .comic-review-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  #comic-review .script-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
