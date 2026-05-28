@@ -134,8 +134,8 @@ const scriptDraftStoreKey = "tb-script-studio-draft";
 const themeStoreKey = "tb-internal-theme";
 const inviteTempPassword = "PortalInvite12!";
 const companyEmailDomain = "@the-banished.com";
-const comicReviewDepartment = "Art Department";
-const comicReviewRecipient = "art@the-banished.com";
+const comicReviewDepartment = "Production Department";
+const comicReviewRecipient = "production@the-banished.com";
 const comicReviewStatusOptions = ["Submitted", "In review", "Revision requested", "Approved", "On hold"];
 let activeChallengeDepartment = "all";
 let activeProjectFilter = "all";
@@ -5231,7 +5231,7 @@ comicReviewForm?.addEventListener("submit", async (event) => {
   const label = "Comic Art Review";
   const artistName = String(formData.get("artistName") || profile?.name || "Unknown").trim();
   const project = String(formData.get("comicProject") || "New / exploratory");
-  const stage = String(formData.get("comicStage") || "Concept sketches");
+  const stage = String(formData.get("comicStage") || "Concept Art");
   const notes = String(formData.get("comicNotes") || "").trim();
   const fileList = files.map((file) => ({
     name: file.name,
@@ -5246,11 +5246,11 @@ comicReviewForm?.addEventListener("submit", async (event) => {
   });
 
   if (!files.length) {
-    setRequestStatus(comicReviewStatus, "Art review needs at least one uploaded file.", "error");
+    setRequestStatus(comicReviewStatus, "Please upload at least one file before sending.", "error");
     return;
   }
 
-  setRequestStatus(comicReviewStatus, `Sending art review request to ${recipient}...`, "pending");
+  setRequestStatus(comicReviewStatus, `Sending comic review request to ${recipient}...`, "pending");
 
   try {
     await postPortalEmail("/api/requests", {
@@ -5298,11 +5298,11 @@ comicReviewForm?.addEventListener("submit", async (event) => {
     setRequests(requests);
     renderRequests();
     renderReviewQueue();
-    setRequestStatus(comicReviewStatus, `Art review request sent to ${comicReviewDepartment}. Status: Submitted.`);
+    setRequestStatus(comicReviewStatus, `Comic review request sent to ${comicReviewDepartment}. Status: Submitted.`);
     comicReviewForm.reset();
     renderComicPreviews();
   } catch (error) {
-    setRequestStatus(comicReviewStatus, `Art review failed. ${error.message}`, "error");
+    setRequestStatus(comicReviewStatus, `Comic review failed. ${error.message}`, "error");
   }
 });
 

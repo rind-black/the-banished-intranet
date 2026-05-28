@@ -1455,7 +1455,7 @@
               <div>
                 <p class="eyebrow">Upload work</p>
                 <h3>Send pages for art review</h3>
-                <p class="form-intro">Upload concept art, thumbnails, pencils, inks, colors, or lettered pages and tell the reviewer what decision you need.</p>
+                <p class="form-intro">Upload concept art, comic drafts, uncolored pages, colored pages, or final lettered versions and tell the reviewer what decision you need.</p>
               </div>
               <div class="script-form-grid">
                 <label>
@@ -1473,25 +1473,24 @@
                 <label>
                   Stage
                   <select name="comicStage">
-                    <option>Concept sketches</option>
-                    <option>Thumbnails</option>
-                    <option>Pencils</option>
-                    <option>Inks</option>
-                    <option>Colors</option>
-                    <option>Lettered pages</option>
+                    <option>Concept Art</option>
+                    <option>Comic Draft</option>
+                    <option>Uncolored Comic</option>
+                    <option>Colored Comic</option>
+                    <option>Final Version</option>
                   </select>
                 </label>
               </div>
               <label class="comic-upload-zone">
                 Upload files
                 <input name="comicFiles" type="file" accept=".png,.jpg,.jpeg,.webp,.gif,.svg,.tif,.tiff,.pdf,image/png,image/jpeg,image/webp,image/gif,image/svg+xml,image/tiff,application/pdf" multiple data-comic-files />
-                <span>Accepted formats: PNG, JPG, JPEG, WEBP, GIF, SVG, TIFF, TIF, and PDF. Previews stay local in this portal session.</span>
+                <span>Accepted formats: PNG, JPG, JPEG, WEBP, GIF, SVG, TIFF, TIF, and PDF.</span>
               </label>
               <label>
                 Notes
                 <textarea name="comicNotes" rows="4" placeholder="Add page numbers, specific concerns, or what decision you need from review."></textarea>
               </label>
-              <button class="primary-button" type="submit">Send art review</button>
+              <button class="primary-button" type="submit">Send to production</button>
               <p class="request-status" data-comic-review-status hidden></p>
             </form>
             <section class="comic-preview-console">
@@ -1524,7 +1523,7 @@
             <div class="review-queue-board" data-review-queue-list>
               <article class="review-queue-empty">
                 <strong>No comic art reviews yet</strong>
-                <span>Submitted review requests will appear here for the Art Department.</span>
+                <span>Submitted review requests will appear here for the Production Department.</span>
               </article>
             </div>
           </div>
