@@ -102,6 +102,9 @@ const storyboardOutput = document.querySelector("[data-storyboard-output]");
 const storyboardStatus = document.querySelector("[data-storyboard-status]");
 const comicReviewForm = document.querySelector("[data-comic-review-form]");
 const comicReviewStatus = document.querySelector("[data-comic-review-status]");
+const comicProjectSelect = document.querySelector("[data-comic-project-select]");
+const comicNewProjectField = document.querySelector("[data-comic-new-project-field]");
+const comicNewProjectInput = document.querySelector("[data-comic-new-project]");
 const comicFilesInput = document.querySelector("[data-comic-files]");
 const comicPreview = document.querySelector("[data-comic-preview]");
 const reviewQueueList = document.querySelector("[data-review-queue-list]");
@@ -2756,6 +2759,22 @@ function renderComicPreviews() {
   });
 }
 
+function syncComicNewProjectField() {
+  const isNewProject = comicProjectSelect?.value === "New / exploratory";
+
+  if (comicNewProjectField) {
+    comicNewProjectField.hidden = !isNewProject;
+  }
+
+  if (comicNewProjectInput) {
+    comicNewProjectInput.required = isNewProject;
+
+    if (!isNewProject) {
+      comicNewProjectInput.value = "";
+    }
+  }
+}
+
 function currentProfile() {
   return getProfile();
 }
@@ -5207,6 +5226,8 @@ storyboardForm?.addEventListener("submit", async (event) => {
 });
 
 comicFilesInput?.addEventListener("change", renderComicPreviews);
+comicProjectSelect?.addEventListener("change", syncComicNewProjectField);
+syncComicNewProjectField();
 
 reviewQueueList?.addEventListener("change", (event) => {
   const select = event.target.closest("[data-review-status-select]");
@@ -5230,7 +5251,9 @@ comicReviewForm?.addEventListener("submit", async (event) => {
   const recipient = comicReviewRecipient;
   const label = "Comic Art Review";
   const artistName = String(formData.get("artistName") || profile?.name || "Unknown").trim();
-  const project = String(formData.get("comicProject") || "New / exploratory");
+  const projectChoice = String(formData.get("comicProject") || "New / exploratory").trim();
+  const newProject = String(formData.get("comicNewProject") || "").trim();
+  const project = projectChoice === "New / exploratory" ? newProject : projectChoice;
   const stage = String(formData.get("comicStage") || "Concept Art");
   const notes = String(formData.get("comicNotes") || "").trim();
   const fileList = files.map((file) => ({
@@ -5250,6 +5273,11 @@ comicReviewForm?.addEventListener("submit", async (event) => {
     return;
   }
 
+  if (!project) {
+    setRequestStatus(comicReviewStatus, "Please name the new project before sending.", "error");
+    return;
+  }
+
   setRequestStatus(comicReviewStatus, `Sending comic review request to ${recipient}...`, "pending");
 
   try {
@@ -5261,6 +5289,7 @@ comicReviewForm?.addEventListener("submit", async (event) => {
         `Artist: ${artistName}`,
         `Employee email: ${profile?.email || ""}`,
         `Project: ${project}`,
+        projectChoice === "New / exploratory" ? "Project source: New / exploratory" : "",
         `Stage: ${stage}`,
         `Department: ${comicReviewDepartment}`,
         "",
@@ -5291,6 +5320,7 @@ comicReviewForm?.addEventListener("submit", async (event) => {
       status: "Submitted",
       artistName,
       project,
+      projectSource: projectChoice,
       stage,
       details: notes,
       files: fileList,
@@ -5300,9 +5330,13 @@ comicReviewForm?.addEventListener("submit", async (event) => {
     renderReviewQueue();
     setRequestStatus(comicReviewStatus, `Comic review request sent to ${comicReviewDepartment}. Status: Submitted.`);
     comicReviewForm.reset();
+    syncComicNewProjectField();
     renderComicPreviews();
   } catch (error) {
-    setRequestStatus(comicReviewStatus, `Comic review failed. ${error.message}`, "error");
+    const message = /Email service is not configured/i.test(error.message)
+      ? "Comic review was not emailed because the portal email service is not configured. Add RESEND_API_KEY or SMTP settings on the server, then retry."
+      : `Comic review failed. ${error.message}`;
+    setRequestStatus(comicReviewStatus, message, "error");
   }
 });
 

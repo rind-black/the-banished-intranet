@@ -44,6 +44,8 @@ PORTAL_MAIL_FROM=support@the-banished.com \
 node server.js
 ```
 
+You can also copy `.env.example` to `.env`, fill the same values there, and restart the server.
+
 Or SMTP:
 
 ```bash

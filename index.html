@@ -1464,11 +1464,15 @@
                 </label>
                 <label>
                   Project
-                  <select name="comicProject">
+                  <select name="comicProject" data-comic-project-select>
                     <option>The Banished</option>
                     <option>Four Horsemen of the Apocalypse</option>
                     <option>New / exploratory</option>
                   </select>
+                </label>
+                <label class="comic-new-project-field" data-comic-new-project-field hidden>
+                  New project
+                  <input name="comicNewProject" type="text" placeholder="Project title or short description" data-comic-new-project />
                 </label>
                 <label>
                   Stage

@@ -9,6 +9,45 @@ const tls = require("tls");
 const { once } = require("events");
 
 const rootDir = __dirname;
+
+function loadEnvFile(fileName) {
+  const filePath = path.join(rootDir, fileName);
+
+  if (!fs.existsSync(filePath)) {
+    return;
+  }
+
+  const lines = fs.readFileSync(filePath, "utf8").split(/\r?\n/);
+
+  lines.forEach((line) => {
+    const trimmed = line.trim();
+
+    if (!trimmed || trimmed.startsWith("#")) {
+      return;
+    }
+
+    const match = trimmed.replace(/^export\s+/, "").match(/^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)$/);
+
+    if (!match) {
+      return;
+    }
+
+    const [, key, rawValue] = match;
+    let value = rawValue.trim();
+
+    if ((value.startsWith("\"") && value.endsWith("\"")) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+
+    if (process.env[key] === undefined) {
+      process.env[key] = value;
+    }
+  });
+}
+
+loadEnvFile(".env");
+loadEnvFile(".env.local");
+
 const port = Number(process.env.PORT || 4173);
 const host = process.env.HOST || "127.0.0.1";
 const companyDomain = "@the-banished.com";
