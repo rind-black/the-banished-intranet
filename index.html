@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>The Banished Internal Portal</title>
-    <link rel="stylesheet" href="styles.css?v=comic-review-workflow-1" />
+    <link rel="stylesheet" href="styles.css?v=comic-review-roster-1" />
   </head>
   <body>
     <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
@@ -1464,7 +1464,7 @@
                 <label>
                   Artist
                   <select name="artistName" data-comic-artist-select>
-                    <option>Test Admin</option>
+                    <option>Raul Lara</option>
                     <option>Other</option>
                   </select>
                 </label>
@@ -3017,6 +3017,21 @@
               <p class="request-status" data-system-message-status hidden></p>
             </form>
 
+            <form class="admin-card" data-comic-artist-form>
+              <div>
+                <p class="eyebrow">Review roster</p>
+                <h3>Comic artists</h3>
+                <p class="admin-note">Names added here appear in the Comic Artist Review artist selector.</p>
+              </div>
+              <label>
+                Artist name
+                <input name="comicArtistName" type="text" placeholder="Artist name" required />
+              </label>
+              <button class="primary-button" type="submit">Add artist</button>
+              <div class="admin-pill-list" data-comic-artist-list></div>
+              <p class="request-status" data-comic-artist-status hidden></p>
+            </form>
+
             <div class="admin-card wide">
               <div>
                 <p class="eyebrow">Users</p>
@@ -3284,6 +3299,6 @@
       </main>
     </div>
 
-    <script src="app.js?v=comic-review-workflow-1"></script>
+    <script src="app.js?v=comic-review-roster-1"></script>
   </body>
 </html>

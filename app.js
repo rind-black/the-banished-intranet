@@ -78,6 +78,9 @@ const userRows = document.querySelector("[data-user-rows]");
 const requestRows = document.querySelector("[data-request-rows]");
 const saveUsersButton = document.querySelector("[data-save-users]");
 const saveUsersStatus = document.querySelector("[data-save-users-status]");
+const comicArtistForm = document.querySelector("[data-comic-artist-form]");
+const comicArtistList = document.querySelector("[data-comic-artist-list]");
+const comicArtistStatus = document.querySelector("[data-comic-artist-status]");
 const contentForm = document.querySelector("[data-content-form]");
 const contentStatus = document.querySelector("[data-content-status]");
 const contentRows = document.querySelector("[data-content-rows]");
@@ -137,6 +140,7 @@ const contentStoreKey = "tb-internal-content";
 const auditLogStoreKey = "tb-internal-audit-log";
 const systemMessagesStoreKey = "tb-internal-system-messages";
 const systemMessageReadStoreKey = "tb-internal-system-message-read";
+const comicArtistsStoreKey = "tb-comic-review-artists";
 const scriptDraftStoreKey = "tb-script-studio-draft";
 const themeStoreKey = "tb-internal-theme";
 const inviteTempPassword = "PortalInvite12!";
@@ -145,6 +149,8 @@ const comicReviewDepartment = "Production Department";
 const comicReviewRecipient = "production@the-banished.com";
 const comicReviewStatusOptions = ["Submitted", "In review", "Revision requested", "Approved", "On hold", "Closed"];
 const emailAttachmentTotalLimitBytes = 18 * 1024 * 1024;
+const defaultComicArtists = ["Raul Lara"];
+const hiddenComicReviewProjects = new Set(["AI Casting Platform", "Marco de Marlo"]);
 let activeChallengeDepartment = "all";
 let activeProjectFilter = "all";
 let activeCalendarFilter = "my";
@@ -1602,6 +1608,24 @@ function setRequests(requests) {
   writeJson(requestsStoreKey, requests);
 }
 
+function normalizeComicArtistName(name = "") {
+  return String(name || "").trim().replace(/\s+/g, " ");
+}
+
+function getComicArtists() {
+  const savedArtists = readJson(comicArtistsStoreKey, null);
+  const source = Array.isArray(savedArtists) ? savedArtists : defaultComicArtists;
+  const artists = source
+    .map(normalizeComicArtistName)
+    .filter(Boolean);
+
+  return Array.from(new Set(artists.length ? artists : defaultComicArtists));
+}
+
+function setComicArtists(artists) {
+  writeJson(comicArtistsStoreKey, Array.from(new Set(artists.map(normalizeComicArtistName).filter(Boolean))));
+}
+
 function createRequestId(prefix = "request") {
   return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
@@ -2787,7 +2811,9 @@ function populateComicProjectOptions() {
   }
 
   const selectedProject = comicProjectSelect.value || "The Banished";
-  const projects = Object.values(projectPages).map((project) => project.title);
+  const projects = Object.values(projectPages)
+    .map((project) => project.title)
+    .filter((title) => !hiddenComicReviewProjects.has(title));
   const projectNames = Array.from(new Set(projects)).filter(Boolean);
 
   comicProjectSelect.replaceChildren();
@@ -2830,14 +2856,8 @@ function populateComicArtistOptions(profile = currentProfile()) {
     return;
   }
 
-  const selectedArtist = comicArtistSelect.value || profile?.name || "";
-  const users = getUsers();
-  const names = Object.values(users)
-    .map((user) => user.name)
-    .concat(profile?.name || [])
-    .map((name) => String(name || "").trim())
-    .filter(Boolean);
-  const artistNames = Array.from(new Set(names)).sort((left, right) => left.localeCompare(right));
+  const selectedArtist = comicArtistSelect.value || "";
+  const artistNames = getComicArtists().sort((left, right) => left.localeCompare(right));
 
   comicArtistSelect.replaceChildren();
   artistNames.forEach((artistName) => {
@@ -3903,23 +3923,22 @@ function renderReviewQueue() {
     return;
   }
 
-  const reviews = getRequests()
+  const allReviews = getRequests()
     .filter(isComicReviewRequest)
     .slice()
     .reverse();
+  const openReviews = allReviews.filter((request) => statusClassName(request.status) !== "status-closed");
+  const closedReviews = allReviews.filter((request) => statusClassName(request.status) === "status-closed");
 
-  if (!reviews.length) {
-    reviewQueueList.innerHTML = `
+  const emptyMarkup = `
       <article class="review-queue-empty">
-        <strong>No comic art reviews yet</strong>
-        <span>Submitted review requests will appear here for ${comicReviewDepartment}.</span>
+        <strong>${allReviews.length ? "No active comic reviews" : "No comic art reviews yet"}</strong>
+        <span>${allReviews.length ? "Closed reviews are stored in the archive below." : `Submitted review requests will appear here for ${comicReviewDepartment}.`}</span>
       </article>
     `;
-    return;
-  }
 
-  reviewQueueList.innerHTML = reviews
-    .map((request) => {
+  const openMarkup = openReviews.length
+    ? openReviews.map((request) => {
       const currentStatus = request.status || "Submitted";
       const options = comicReviewStatusOptions
         .map((status) => `<option ${status === currentStatus ? "selected" : ""}>${escapeHtml(status)}</option>`)
@@ -3951,8 +3970,43 @@ function renderReviewQueue() {
           </label>
         </article>
       `;
-    })
-    .join("");
+    }).join("")
+    : emptyMarkup;
+  const archiveMarkup = closedReviews.length
+    ? `
+      <details class="review-queue-archive">
+        <summary>
+          <span>Closed archive</span>
+          <small>${closedReviews.length} closed review${closedReviews.length === 1 ? "" : "s"}</small>
+        </summary>
+        <div class="review-queue-archive-grid">
+          ${closedReviews.map((request) => {
+            const files = Array.isArray(request.files) && request.files.length
+              ? request.files.map((file) => escapeHtml(file.name || file)).join(", ")
+              : "No file list captured";
+
+            return `
+              <article class="review-queue-card review-queue-card-archived">
+                <div class="review-queue-card-head">
+                  <span class="review-status-pill ${statusClassName(request.status)}">${escapeHtml(request.status || "Closed")}</span>
+                  <small>${escapeHtml(request.reviewedAt || request.createdAt || "")}</small>
+                </div>
+                <strong>${escapeHtml(request.project || "Comic art review")}</strong>
+                <p>${escapeHtml(request.stage || "Artwork")} · ${escapeHtml(request.department || comicReviewDepartment)}</p>
+                <dl>
+                  <div><dt>Submitted by</dt><dd>${escapeHtml(request.submittedBy || request.from || "Unknown")}</dd></div>
+                  <div><dt>Artist</dt><dd>${escapeHtml(request.artistName || request.from || "Unknown")}</dd></div>
+                  <div><dt>Files</dt><dd>${files}</dd></div>
+                </dl>
+              </article>
+            `;
+          }).join("")}
+        </div>
+      </details>
+    `
+    : "";
+
+  reviewQueueList.innerHTML = `${openMarkup}${archiveMarkup}`;
 }
 
 function updateComicReviewStatus(reviewId, status) {
@@ -5172,6 +5226,23 @@ function renderAdmin() {
   renderAuditLogs();
   renderContentItems();
   renderSystemMessages();
+  renderComicArtistAdminList();
+}
+
+function renderComicArtistAdminList() {
+  if (!comicArtistList) {
+    return;
+  }
+
+  const artists = getComicArtists();
+  comicArtistList.innerHTML = artists
+    .map((artist) => `
+      <span class="admin-pill-item">
+        ${escapeHtml(artist)}
+        <button type="button" data-remove-comic-artist="${escapeAttribute(artist)}" aria-label="Remove ${escapeAttribute(artist)}">Remove</button>
+      </span>
+    `)
+    .join("");
 }
 
 function createDisplayName(email) {
@@ -5702,6 +5773,50 @@ systemMessageForm?.addEventListener("submit", (event) => {
   appendAuditLog("System message published", title);
   setRequestStatus(systemMessageStatus, "System message published.");
   systemMessageForm.reset();
+});
+
+comicArtistForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(comicArtistForm);
+  const artistName = normalizeComicArtistName(formData.get("comicArtistName"));
+
+  if (!artistName) {
+    setRequestStatus(comicArtistStatus, "Artist was not added. Enter a name.", "error");
+    return;
+  }
+
+  const artists = getComicArtists();
+
+  if (artists.some((artist) => artist.toLowerCase() === artistName.toLowerCase())) {
+    setRequestStatus(comicArtistStatus, `${artistName} is already in the artist selector.`, "pending");
+    return;
+  }
+
+  artists.push(artistName);
+  setComicArtists(artists);
+  renderComicArtistAdminList();
+  populateComicArtistOptions(currentProfile());
+  appendAuditLog("Comic artist added", artistName);
+  setRequestStatus(comicArtistStatus, `${artistName} added to Comic Artist Review.`);
+  comicArtistForm.reset();
+});
+
+comicArtistList?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-remove-comic-artist]");
+
+  if (!button) {
+    return;
+  }
+
+  const artistName = button.dataset.removeComicArtist || "";
+  const artists = getComicArtists().filter((artist) => artist !== artistName);
+
+  setComicArtists(artists.length ? artists : defaultComicArtists);
+  renderComicArtistAdminList();
+  populateComicArtistOptions(currentProfile());
+  appendAuditLog("Comic artist removed", artistName);
+  setRequestStatus(comicArtistStatus, `${artistName} removed from Comic Artist Review.`);
 });
 
 roleButtons.forEach((button) => {
