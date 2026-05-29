@@ -14462,8 +14462,11 @@ h1[data-page-title] {
 }
 
 .review-status-pill.status-revision-requested {
-  border-color: rgba(231, 55, 47, 0.38);
-  color: #f0a39d;
+  border-color: rgba(203, 169, 92, 0.42);
+  background:
+    radial-gradient(circle at 86% 18%, rgba(203, 169, 92, 0.15), transparent 28%),
+    rgba(5, 5, 6, 0.74);
+  color: rgba(224, 194, 126, 0.96);
 }
 
 .review-status-pill.status-approved {
@@ -14493,7 +14496,7 @@ h1[data-page-title] {
 }
 
 #comic-review .comic-preview-grid .review-status-pill.status-revision-requested {
-  color: #f0a39d;
+  color: rgba(224, 194, 126, 0.96);
 }
 
 #comic-review .comic-preview-grid .review-status-pill.status-approved {
@@ -14536,19 +14539,19 @@ h1[data-page-title] {
 #comic-review .comic-review-feedback {
   display: grid;
   grid-column: 1 / -1;
-  gap: 5px;
+  gap: 9px;
   margin-top: 4px;
-  padding: 10px;
-  border: 1px solid rgba(231, 55, 47, 0.24);
+  padding: 11px;
+  border: 1px solid rgba(203, 169, 92, 0.22);
   border-radius: 12px 4px 12px 4px;
   background:
-    radial-gradient(circle at 96% 10%, rgba(231, 55, 47, 0.08), transparent 24%),
-    rgba(231, 55, 47, 0.045);
+    radial-gradient(circle at 96% 10%, rgba(203, 169, 92, 0.08), transparent 24%),
+    rgba(5, 5, 6, 0.54);
 }
 
 #comic-review .comic-review-feedback span {
   margin: 0;
-  color: rgba(240, 163, 157, 0.9);
+  color: rgba(203, 169, 92, 0.92);
   font-size: 8.5px;
   font-weight: 900;
   letter-spacing: 0.03em;
@@ -14556,11 +14559,65 @@ h1[data-page-title] {
   text-transform: uppercase;
 }
 
-#comic-review .comic-review-feedback p {
+#comic-review .comic-review-feedback p,
+#comic-review .comic-review-feedback label {
   margin: 0;
   color: rgba(247, 243, 234, 0.7);
   font-size: 11px;
   line-height: 1.38;
+}
+
+#comic-review .comic-review-feedback label {
+  display: grid;
+  gap: 6px;
+  color: rgba(203, 169, 92, 0.88);
+  font-size: 8.5px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+#comic-review .comic-review-feedback textarea {
+  min-height: 74px;
+  padding: 10px;
+  resize: vertical;
+  border: 1px solid rgba(203, 169, 92, 0.2);
+  border-radius: 12px 4px 12px 4px;
+  background: rgba(5, 5, 6, 0.72);
+  color: rgba(247, 243, 234, 0.84);
+  font: inherit;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.comic-review-feedback-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.comic-review-feedback-footer button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border: 1px solid rgba(203, 169, 92, 0.3);
+  border-radius: 999px;
+  background: rgba(203, 169, 92, 0.08);
+  color: rgba(247, 243, 234, 0.82);
+  cursor: pointer;
+  font: inherit;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.comic-review-feedback-footer button:hover {
+  border-color: rgba(203, 169, 92, 0.5);
+  background: rgba(203, 169, 92, 0.13);
 }
 
 .review-queue-layout {
@@ -14623,7 +14680,9 @@ h1[data-page-title] {
 
 .review-queue-board {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 420px));
+  align-items: start;
+  justify-content: start;
   gap: 12px;
 }
 
@@ -14663,22 +14722,23 @@ h1[data-page-title] {
 
 .review-queue-archive-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 390px));
+  align-items: start;
   gap: 10px;
   padding: 0 12px 12px;
 }
 
 .review-queue-card-archived {
-  min-height: 150px;
+  min-height: 0;
   opacity: 0.74;
 }
 
 .review-queue-card,
 .review-queue-empty {
   display: grid;
-  gap: 11px;
-  min-height: 220px;
-  padding: 16px;
+  gap: 8px;
+  min-height: 0;
+  padding: 14px;
 }
 
 .review-queue-card {
@@ -14700,7 +14760,7 @@ h1[data-page-title] {
 }
 
 .review-queue-card.is-open {
-  grid-column: span 2;
+  grid-column: auto;
   min-height: 0;
 }
 
@@ -14773,7 +14833,7 @@ h1[data-page-title] {
 }
 
 .review-queue-card.review-queue-card-archived {
-  min-height: 150px;
+  min-height: 0;
   opacity: 0.74;
 }
 
@@ -14824,7 +14884,8 @@ h1[data-page-title] {
 
 .review-queue-card dl {
   display: grid;
-  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px 10px;
   margin: 0;
 }
 
@@ -15123,9 +15184,9 @@ h1[data-page-title] {
 }
 
 .review-feedback-panel.is-active {
-  border-color: rgba(231, 55, 47, 0.28);
+  border-color: rgba(203, 169, 92, 0.3);
   background:
-    radial-gradient(circle at 96% 10%, rgba(231, 55, 47, 0.08), transparent 24%),
+    radial-gradient(circle at 96% 10%, rgba(203, 169, 92, 0.09), transparent 24%),
     rgba(8, 8, 10, 0.72);
 }
 
@@ -15154,7 +15215,7 @@ h1[data-page-title] {
 
 .review-feedback-panel textarea {
   width: 100%;
-  min-height: 116px;
+  min-height: 94px;
   padding: 12px;
   resize: vertical;
   border: 1px solid rgba(203, 169, 92, 0.22);
@@ -15165,6 +15226,68 @@ h1[data-page-title] {
   color: rgba(247, 243, 234, 0.84);
   font: inherit;
   font-size: 12px;
+  line-height: 1.42;
+}
+
+.review-thread {
+  display: grid;
+  gap: 8px;
+}
+
+.review-thread-empty {
+  min-height: 36px;
+  padding: 10px;
+  border: 1px dashed rgba(203, 169, 92, 0.18);
+  border-radius: 12px 4px 12px 4px;
+  color: rgba(247, 243, 234, 0.46);
+  font-size: 10.5px;
+  font-weight: 750;
+}
+
+.review-thread-message {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid rgba(203, 169, 92, 0.16);
+  border-radius: 13px 4px 13px 4px;
+  background: rgba(247, 243, 234, 0.035);
+}
+
+.review-thread-message.is-submitter {
+  border-color: rgba(247, 243, 234, 0.12);
+  background: rgba(247, 243, 234, 0.05);
+}
+
+.review-thread-message div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.review-thread-message strong {
+  color: rgba(203, 169, 92, 0.9);
+  font-size: 8.5px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.review-thread-message.is-submitter strong {
+  color: rgba(247, 243, 234, 0.7);
+}
+
+.review-thread-message small {
+  color: rgba(247, 243, 234, 0.44);
+  font-size: 9.5px;
+  font-weight: 750;
+}
+
+.review-thread-message p {
+  margin: 0;
+  color: rgba(247, 243, 234, 0.68);
+  font-size: 11.5px;
   line-height: 1.42;
 }
 
@@ -15385,6 +15508,15 @@ h1[data-page-title] {
 }
 
 @media (max-width: 620px) {
+  .review-queue-board,
+  .review-queue-archive-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .review-queue-card dl {
+    grid-template-columns: 1fr;
+  }
+
   .review-detail-meta,
   .review-full-file-head {
     grid-template-columns: 1fr;
