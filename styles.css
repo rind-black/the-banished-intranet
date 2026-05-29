@@ -14461,6 +14461,14 @@ h1[data-page-title] {
   color: #9fc9ef;
 }
 
+.review-status-pill.status-awaiting-reviewer {
+  border-color: rgba(203, 169, 92, 0.44);
+  background:
+    radial-gradient(circle at 86% 18%, rgba(203, 169, 92, 0.16), transparent 28%),
+    rgba(5, 5, 6, 0.74);
+  color: rgba(224, 194, 126, 0.98);
+}
+
 .review-status-pill.status-revision-requested {
   border-color: rgba(203, 169, 92, 0.42);
   background:
@@ -14493,6 +14501,10 @@ h1[data-page-title] {
 
 #comic-review .comic-preview-grid .review-status-pill.status-in-review {
   color: #9fc9ef;
+}
+
+#comic-review .comic-preview-grid .review-status-pill.status-awaiting-reviewer {
+  color: rgba(224, 194, 126, 0.98);
 }
 
 #comic-review .comic-preview-grid .review-status-pill.status-revision-requested {
@@ -14565,6 +14577,16 @@ h1[data-page-title] {
   color: rgba(247, 243, 234, 0.7);
   font-size: 11px;
   line-height: 1.38;
+}
+
+#comic-review .comic-review-feedback .comic-review-waiting-copy {
+  padding: 8px 10px;
+  border: 1px solid rgba(203, 169, 92, 0.14);
+  border-radius: 11px 4px 11px 4px;
+  background: rgba(247, 243, 234, 0.035);
+  color: rgba(247, 243, 234, 0.58);
+  font-size: 10.5px;
+  font-weight: 750;
 }
 
 #comic-review .comic-review-feedback label {
@@ -15068,9 +15090,9 @@ h1[data-page-title] {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  min-height: 112px;
-  padding: 18px;
+  gap: 14px;
+  min-height: 82px;
+  padding: 14px 16px;
   overflow: hidden;
   border: 1px solid rgba(203, 169, 92, 0.22);
   border-left: 3px solid rgba(203, 169, 92, 0.56);
@@ -15103,15 +15125,25 @@ h1[data-page-title] {
 
 .review-detail-hero h3 {
   color: var(--ink-strong);
-  font-size: clamp(18px, 1.45vw, 28px);
+  font-size: clamp(15px, 1.05vw, 20px);
   line-height: 1.02;
   text-transform: uppercase;
 }
 
+.review-detail-hero .eyebrow,
+.review-feedback-panel .eyebrow,
+#review-detail .section-heading .eyebrow {
+  margin: 0;
+  color: rgba(203, 169, 92, 0.9);
+  font-size: 8.5px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+}
+
 .review-detail-hero p:not(.eyebrow) {
-  margin-top: 7px;
+  margin-top: 5px;
   color: rgba(247, 243, 234, 0.58);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
 }
 

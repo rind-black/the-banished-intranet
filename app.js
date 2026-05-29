@@ -149,7 +149,7 @@ const inviteTempPassword = "PortalInvite12!";
 const companyEmailDomain = "@the-banished.com";
 const comicReviewDepartment = "Production Department";
 const comicReviewRecipient = "production@the-banished.com";
-const comicReviewStatusOptions = ["Submitted", "In review", "Revision requested", "Approved", "On hold", "Closed"];
+const comicReviewStatusOptions = ["Submitted", "In review", "Revision requested", "Awaiting reviewer", "Approved", "On hold", "Closed"];
 const emailAttachmentTotalLimitBytes = 18 * 1024 * 1024;
 const defaultComicArtists = ["Raul Lara"];
 const hiddenComicReviewProjects = new Set(["AI Casting Platform", "Marco de Marlo"]);
@@ -1658,6 +1658,10 @@ function isRevisionRequestedStatus(status = "") {
   return statusClassName(status) === "status-revision-requested";
 }
 
+function isAwaitingReviewerStatus(status = "") {
+  return statusClassName(status) === "status-awaiting-reviewer";
+}
+
 function reviewFeedbackBody(request = {}) {
   const messages = reviewThreadMessages(request).filter((message) => message.role !== "Submitter");
   const latestMessage = messages[messages.length - 1];
@@ -3012,19 +3016,25 @@ function renderComicPreviews() {
     comicPreview.innerHTML = reviews
       .slice(0, 3)
       .map((request) => {
-        const feedbackMarkup = isRevisionRequestedStatus(request.status)
+        const waitingOnReviewer = isAwaitingReviewerStatus(request.status);
+        const needsReply = isRevisionRequestedStatus(request.status);
+        const feedbackMarkup = needsReply || waitingOnReviewer
           ? `
             <div class="comic-review-feedback">
-              <span>Reviewer notes</span>
+              <span>${waitingOnReviewer ? "Waiting on reviewer" : "Reviewer notes"}</span>
               ${renderReviewThread(request)}
-              <label>
-                Reply
-                <textarea data-review-reply-text rows="3" placeholder="Write a concise reply or note what you changed."></textarea>
-              </label>
-              <div class="comic-review-feedback-footer">
-                <button type="button" data-review-reply-send="${escapeAttribute(request.id || "")}">Send reply</button>
-                <p class="request-status" data-review-reply-status hidden></p>
-              </div>
+              ${needsReply
+                ? `
+                  <label>
+                    Reply
+                    <textarea data-review-reply-text rows="3" placeholder="Write a concise reply or note what you changed."></textarea>
+                  </label>
+                  <div class="comic-review-feedback-footer">
+                    <button type="button" data-review-reply-send="${escapeAttribute(request.id || "")}">Send reply</button>
+                    <p class="request-status" data-review-reply-status hidden></p>
+                  </div>
+                `
+                : `<p class="comic-review-waiting-copy">Your reply is in the review thread. The next action is with the reviewer.</p>`}
             </div>
           `
           : "";
@@ -4515,6 +4525,8 @@ function saveReviewReply(reviewId, reply) {
       from: repliedBy,
     },
   ];
+  request.status = "Awaiting reviewer";
+  request.reviewedAt = repliedAt;
   request.lastReplyAt = repliedAt;
 
   setRequests(requests);
@@ -4531,8 +4543,8 @@ function saveReviewReply(reviewId, reply) {
   }
 
   publishSystemMessage({
-    title: "Review reply posted",
-    body: `${request.project || "Comic art review"} has a new submitter reply.`,
+    title: "Review waiting on reviewer",
+    body: `${request.project || "Comic art review"} has a submitter reply and is waiting for reviewer follow-up.`,
     source: "Comic Artist Review",
     section: "review-queue",
   });
@@ -4540,7 +4552,7 @@ function saveReviewReply(reviewId, reply) {
 
   return {
     ok: true,
-    message: "Reply sent to the review thread.",
+    message: "Reply sent. Status changed to Awaiting reviewer.",
   };
 }
 
