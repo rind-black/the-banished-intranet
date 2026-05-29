@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>The Banished Internal Portal</title>
-    <link rel="stylesheet" href="styles.css?v=review-awaiting-1" />
+    <link rel="stylesheet" href="styles.css?v=script-review-1" />
   </head>
   <body>
     <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
@@ -1380,6 +1380,19 @@
               </div>
             </div>
           </form>
+
+          <section class="script-review-console" aria-label="Script review route">
+            <div>
+              <p class="eyebrow">Review route</p>
+              <h3>Story team status</h3>
+            </div>
+            <div class="script-review-preview" data-script-review-preview>
+              <article>
+                <strong>No script review submitted</strong>
+                <span>After submission, status and reviewer notes will appear here.</span>
+              </article>
+            </div>
+          </section>
         </section>
 
         <section class="portal-section" id="storyboards" data-section="storyboards" aria-labelledby="storyboards-title">
@@ -1532,10 +1545,10 @@
           <div class="review-queue-layout">
             <article class="review-queue-hero">
               <p class="eyebrow">Reviewer workspace</p>
-              <h3>Comic art review queue</h3>
+              <h3>Creative review queue</h3>
               <p>
-                Reviewers update the status of submitted comic artwork here. The submitting artist sees the same
-                status inside Comic Artist Review.
+                Reviewers update submitted artwork and script packages here. The submitter sees the same status,
+                notes, and replies inside the original portal section.
               </p>
             </article>
             <div class="review-queue-board" data-review-queue-list>
@@ -3310,6 +3323,6 @@
       </main>
     </div>
 
-    <script src="app.js?v=review-awaiting-1"></script>
+    <script src="app.js?v=script-review-1"></script>
   </body>
 </html>
