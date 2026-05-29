@@ -1654,6 +1654,29 @@ function statusClassName(status = "") {
   return `status-${String(status || "Submitted").toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 }
 
+function isRevisionRequestedStatus(status = "") {
+  return statusClassName(status) === "status-revision-requested";
+}
+
+function reviewFeedbackBody(request = {}) {
+  if (typeof request.revisionFeedback === "string") {
+    return request.revisionFeedback.trim();
+  }
+
+  return String(request.revisionFeedback?.body || "").trim();
+}
+
+function reviewFeedbackMeta(request = {}) {
+  if (!request.revisionFeedback || typeof request.revisionFeedback === "string") {
+    return "";
+  }
+
+  const reviewer = request.revisionFeedback.from || request.reviewedBy || "Reviewer";
+  const createdAt = request.revisionFeedback.createdAt || request.reviewedAt || "";
+
+  return [createdAt, reviewer].filter(Boolean).join(" · ");
+}
+
 function reviewFileName(file = {}) {
   return typeof file === "string" ? file : file.name || file.filename || "Uploaded file";
 }
@@ -2915,14 +2938,27 @@ function renderComicPreviews() {
 
     comicPreview.innerHTML = reviews
       .slice(0, 3)
-      .map((request) => `
-        <article class="comic-route-card comic-route-card--submitted">
-          <span class="review-status-pill ${statusClassName(request.status)}">${escapeHtml(request.status || "Submitted")}</span>
-          <strong>${escapeHtml(request.project || request.type || "Comic art review")}</strong>
-          <small>${escapeHtml(request.department || comicReviewDepartment)} · ${escapeHtml(request.stage || "Artwork")}</small>
-          <small>${request.reviewDueDate ? `Due ${escapeHtml(request.reviewDueDate)} · ` : ""}${escapeHtml(request.createdAt || "")}${request.reviewedAt ? ` · Updated ${escapeHtml(request.reviewedAt)}` : ""}</small>
-        </article>
-      `)
+      .map((request) => {
+        const feedback = reviewFeedbackBody(request);
+        const feedbackMarkup = isRevisionRequestedStatus(request.status)
+          ? `
+            <div class="comic-review-feedback">
+              <span>Reviewer notes</span>
+              <p>${escapeHtml(feedback || "Revision notes have not been added yet.")}</p>
+            </div>
+          `
+          : "";
+
+        return `
+          <article class="comic-route-card comic-route-card--submitted">
+            <span class="review-status-pill ${statusClassName(request.status)}">${escapeHtml(request.status || "Submitted")}</span>
+            <strong>${escapeHtml(request.project || request.type || "Comic art review")}</strong>
+            <small>${escapeHtml(request.department || comicReviewDepartment)} · ${escapeHtml(request.stage || "Artwork")}</small>
+            <small>${request.reviewDueDate ? `Due ${escapeHtml(request.reviewDueDate)} · ` : ""}${escapeHtml(request.createdAt || "")}${request.reviewedAt ? ` · Updated ${escapeHtml(request.reviewedAt)}` : ""}</small>
+            ${feedbackMarkup}
+          </article>
+        `;
+      })
       .join("");
     return;
   }
@@ -4177,7 +4213,10 @@ function renderReviewDetail(reviewId) {
   activeReviewDetailId = request.id;
   const currentStatus = request.status || "Submitted";
   const isClosed = statusClassName(currentStatus) === "status-closed";
+  const isRevisionRequested = isRevisionRequestedStatus(currentStatus);
   const files = Array.isArray(request.files) ? request.files : [];
+  const feedback = reviewFeedbackBody(request);
+  const feedbackMeta = reviewFeedbackMeta(request);
   const options = comicReviewStatusOptions
     .map((status) => `<option ${status === currentStatus ? "selected" : ""}>${escapeHtml(status)}</option>`)
     .join("");
@@ -4187,7 +4226,7 @@ function renderReviewDetail(reviewId) {
     <article class="review-detail-shell" data-review-id="${escapeAttribute(request.id || "")}">
       <header class="review-detail-hero">
         <div>
-          <p class="eyebrow">Full submission</p>
+          <p class="eyebrow">Review package</p>
           <h3 id="review-detail-title">${escapeHtml(request.project || "Comic art review")}</h3>
           <p>${escapeHtml(request.stage || "Artwork")} · ${escapeHtml(request.department || comicReviewDepartment)}</p>
         </div>
@@ -4209,6 +4248,20 @@ function renderReviewDetail(reviewId) {
           </select>
         </label>
         ${isClosed ? `<button class="review-archive-delete" type="button" data-delete-archived-review="${escapeAttribute(request.id || "")}">Delete from archive</button>` : ""}
+      </section>
+
+      <section class="review-feedback-panel ${isRevisionRequested ? "is-active" : ""}">
+        <div>
+          <p class="eyebrow">Reviewer feedback</p>
+          <h4>Revision notes</h4>
+          <p>${isRevisionRequested ? "These notes are visible to the person who submitted the review." : "Use this when the status is Revision requested."}</p>
+        </div>
+        <textarea data-review-feedback-text rows="5" placeholder="Write specific revision notes, required changes, page numbers, or approval blockers.">${escapeHtml(feedback)}</textarea>
+        <div class="review-feedback-footer">
+          <small>${escapeHtml(feedbackMeta || "No revision notes saved yet.")}</small>
+          <button class="review-feedback-save" type="button" data-review-feedback-save>Save feedback</button>
+        </div>
+        <p class="request-status" data-review-feedback-status hidden></p>
       </section>
 
       <section class="review-full-gallery" aria-label="Submitted review files">
@@ -4266,6 +4319,68 @@ function deleteArchivedReview(reviewId) {
     showSection("review-queue");
     history.replaceState(null, "", "#review-queue");
   }
+}
+
+function saveReviewFeedback(reviewId, feedback) {
+  const cleanFeedback = String(feedback || "").trim();
+
+  if (!cleanFeedback) {
+    return {
+      ok: false,
+      message: "Add revision notes before saving feedback.",
+    };
+  }
+
+  const requests = getRequests();
+  const request = requests.find((item) => item.id === reviewId);
+
+  if (!request || !isComicReviewRequest(request)) {
+    return {
+      ok: false,
+      message: "Review was not found.",
+    };
+  }
+
+  const reviewedAt = new Date().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  const reviewedBy = currentProfile()?.email || "Reviewer";
+
+  request.status = "Revision requested";
+  request.reviewedAt = reviewedAt;
+  request.reviewedBy = reviewedBy;
+  request.revisionFeedback = {
+    body: cleanFeedback,
+    createdAt: reviewedAt,
+    from: reviewedBy,
+  };
+
+  setRequests(requests);
+  renderReviewQueue();
+  renderComicPreviews();
+  renderRequests();
+
+  const detailTitle = renderReviewDetail(reviewId);
+
+  if (pageTitle && detailTitle) {
+    pageTitle.textContent = detailTitle;
+  }
+
+  publishSystemMessage({
+    title: "Revision requested",
+    body: `${request.project || "Comic art review"} needs revision. Reviewer notes are available in Comic Artist Review.`,
+    source: "Review Queue",
+    section: "comic-review",
+  });
+  appendAuditLog("Comic art revision feedback saved", `${request.project || request.id}: ${cleanFeedback.slice(0, 80)}`);
+
+  return {
+    ok: true,
+    message: "Revision feedback saved and visible to the submitter.",
+  };
 }
 
 function renderReviewQueue() {
@@ -4339,10 +4454,12 @@ function updateComicReviewStatus(reviewId, status) {
   }
 
   publishSystemMessage({
-    title: "Comic art review updated",
-    body: `${request.project || "Comic art review"} is now ${status}.`,
+    title: isRevisionRequestedStatus(status) ? "Revision requested" : "Comic art review updated",
+    body: isRevisionRequestedStatus(status)
+      ? `${request.project || "Comic art review"} needs revision. Reviewer notes may be added from the review detail page.`
+      : `${request.project || "Comic art review"} is now ${status}.`,
     source: "Review Queue",
-    section: "review-queue",
+    section: isRevisionRequestedStatus(status) ? "comic-review" : "review-queue",
   });
   appendAuditLog("Comic art review status updated", `${request.project || request.id}: ${status}`);
 }
@@ -5738,6 +5855,11 @@ reviewQueueList?.addEventListener("change", (event) => {
   const reviewId = card?.dataset.reviewId || "";
 
   updateComicReviewStatus(reviewId, select.value);
+
+  if (isRevisionRequestedStatus(select.value)) {
+    openReviewDetail(reviewId);
+    reviewDetailContent?.querySelector("[data-review-feedback-text]")?.focus();
+  }
 });
 
 reviewQueueList?.addEventListener("click", (event) => {
@@ -5790,9 +5912,26 @@ reviewDetailContent?.addEventListener("change", (event) => {
   const reviewId = shell?.dataset.reviewId || activeReviewDetailId;
 
   updateComicReviewStatus(reviewId, select.value);
+
+  if (isRevisionRequestedStatus(select.value)) {
+    reviewDetailContent?.querySelector("[data-review-feedback-text]")?.focus();
+  }
 });
 
 reviewDetailContent?.addEventListener("click", (event) => {
+  const saveButton = event.target.closest("[data-review-feedback-save]");
+
+  if (saveButton) {
+    const shell = saveButton.closest("[data-review-id]");
+    const reviewId = shell?.dataset.reviewId || activeReviewDetailId;
+    const textarea = shell?.querySelector("[data-review-feedback-text]");
+    const result = saveReviewFeedback(reviewId, textarea?.value || "");
+    const status = reviewDetailContent?.querySelector("[data-review-feedback-status]");
+
+    setRequestStatus(status, result.message, result.ok ? "success" : "error");
+    return;
+  }
+
   const deleteButton = event.target.closest("[data-delete-archived-review]");
 
   if (deleteButton) {

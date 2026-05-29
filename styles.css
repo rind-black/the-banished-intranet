@@ -14533,6 +14533,36 @@ h1[data-page-title] {
   grid-area: time;
 }
 
+#comic-review .comic-review-feedback {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 5px;
+  margin-top: 4px;
+  padding: 10px;
+  border: 1px solid rgba(231, 55, 47, 0.24);
+  border-radius: 12px 4px 12px 4px;
+  background:
+    radial-gradient(circle at 96% 10%, rgba(231, 55, 47, 0.08), transparent 24%),
+    rgba(231, 55, 47, 0.045);
+}
+
+#comic-review .comic-review-feedback span {
+  margin: 0;
+  color: rgba(240, 163, 157, 0.9);
+  font-size: 8.5px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+#comic-review .comic-review-feedback p {
+  margin: 0;
+  color: rgba(247, 243, 234, 0.7);
+  font-size: 11px;
+  line-height: 1.38;
+}
+
 .review-queue-layout {
   display: grid;
   gap: 14px;
@@ -14942,6 +14972,12 @@ h1[data-page-title] {
 .review-detail-shell {
   position: relative;
   overflow: hidden;
+}
+
+.review-detail-empty {
+  display: grid;
+  gap: 8px;
+  padding: 22px;
   border: 1px solid rgba(203, 169, 92, 0.22);
   border-left: 3px solid rgba(203, 169, 92, 0.56);
   border-radius: 20px 6px 20px 6px;
@@ -14954,12 +14990,6 @@ h1[data-page-title] {
     0 18px 40px rgba(0, 0, 0, 0.2);
 }
 
-.review-detail-empty {
-  display: grid;
-  gap: 8px;
-  padding: 22px;
-}
-
 .review-detail-empty h3,
 .review-detail-empty p {
   margin: 0;
@@ -14968,16 +14998,41 @@ h1[data-page-title] {
 .review-detail-shell {
   display: grid;
   gap: 16px;
-  padding: 18px;
+  overflow: visible;
 }
 
 .review-detail-hero {
-  display: flex;
-  align-items: start;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid rgba(247, 243, 234, 0.08);
+  min-height: 112px;
+  padding: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(203, 169, 92, 0.22);
+  border-left: 3px solid rgba(203, 169, 92, 0.56);
+  border-radius: 18px 6px 18px 6px;
+  background:
+    radial-gradient(circle at 94% 12%, rgba(203, 169, 92, 0.1), transparent 24%),
+    linear-gradient(135deg, rgba(247, 243, 234, 0.045), transparent 58%),
+    rgba(9, 9, 11, 0.86);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 243, 234, 0.04),
+    0 16px 34px rgba(0, 0, 0, 0.16);
+}
+
+.review-detail-hero::after {
+  position: absolute;
+  right: -34px;
+  bottom: -38px;
+  width: 88px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(203, 169, 92, 0.12);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
 }
 
 .review-detail-hero h3,
@@ -14987,8 +15042,8 @@ h1[data-page-title] {
 
 .review-detail-hero h3 {
   color: var(--ink-strong);
-  font-size: clamp(24px, 2.2vw, 42px);
-  line-height: 0.98;
+  font-size: clamp(18px, 1.45vw, 28px);
+  line-height: 1.02;
   text-transform: uppercase;
 }
 
@@ -15054,6 +15109,105 @@ h1[data-page-title] {
   color: rgba(247, 243, 234, 0.84);
   font: inherit;
   font-size: 11.5px;
+}
+
+.review-feedback-panel {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(203, 169, 92, 0.18);
+  border-radius: 18px 6px 18px 6px;
+  background:
+    radial-gradient(circle at 96% 10%, rgba(203, 169, 92, 0.08), transparent 24%),
+    rgba(5, 5, 6, 0.56);
+}
+
+.review-feedback-panel.is-active {
+  border-color: rgba(231, 55, 47, 0.28);
+  background:
+    radial-gradient(circle at 96% 10%, rgba(231, 55, 47, 0.08), transparent 24%),
+    rgba(8, 8, 10, 0.72);
+}
+
+.review-feedback-panel > div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+.review-feedback-panel h4,
+.review-feedback-panel p {
+  margin: 0;
+}
+
+.review-feedback-panel h4 {
+  color: var(--ink-strong);
+  font-size: 15px;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.review-feedback-panel p:not(.eyebrow) {
+  color: rgba(247, 243, 234, 0.58);
+  font-size: 11.5px;
+  line-height: 1.35;
+}
+
+.review-feedback-panel textarea {
+  width: 100%;
+  min-height: 116px;
+  padding: 12px;
+  resize: vertical;
+  border: 1px solid rgba(203, 169, 92, 0.22);
+  border-radius: 14px 5px 14px 5px;
+  background:
+    radial-gradient(circle at 96% 12%, rgba(203, 169, 92, 0.055), transparent 26%),
+    rgba(5, 5, 6, 0.72);
+  color: rgba(247, 243, 234, 0.84);
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.review-feedback-panel textarea:focus {
+  border-color: rgba(203, 169, 92, 0.58);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(203, 169, 92, 0.08);
+}
+
+.review-feedback-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.review-feedback-footer small {
+  color: rgba(247, 243, 234, 0.48);
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.review-feedback-save {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0 13px;
+  border: 1px solid rgba(203, 169, 92, 0.34);
+  border-radius: 999px;
+  background: rgba(203, 169, 92, 0.1);
+  color: rgba(247, 243, 234, 0.86);
+  cursor: pointer;
+  font: inherit;
+  font-size: 9.5px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.review-feedback-save:hover {
+  border-color: rgba(203, 169, 92, 0.54);
+  background: rgba(203, 169, 92, 0.15);
 }
 
 .review-full-gallery {
@@ -15198,9 +15352,14 @@ h1[data-page-title] {
   }
 
   .review-detail-hero,
-  .review-detail-actions {
+  .review-detail-actions,
+  .review-feedback-footer {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .review-detail-hero {
+    grid-template-columns: 1fr;
   }
 
   .review-detail-meta {
@@ -15232,7 +15391,8 @@ h1[data-page-title] {
   }
 
   .review-download-button,
-  .review-archive-delete {
+  .review-archive-delete,
+  .review-feedback-save {
     width: 100%;
   }
 
