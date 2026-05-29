@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>The Banished Internal Portal</title>
-    <link rel="stylesheet" href="styles.css?v=comic-review-files-1" />
+    <link rel="stylesheet" href="styles.css?v=review-detail-1" />
   </head>
   <body>
     <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
@@ -1544,6 +1544,17 @@
                 <span>Submitted review requests will appear here for the Production Department.</span>
               </article>
             </div>
+          </div>
+        </section>
+
+        <section class="portal-section detail-page" id="review-detail" data-section="review-detail" aria-labelledby="review-detail-title">
+          <button class="back-button" type="button" data-review-detail-back>Back to Review Queue</button>
+          <div class="review-detail-page" data-review-detail-content>
+            <article class="review-detail-empty">
+              <p class="eyebrow">Review detail</p>
+              <h3 id="review-detail-title">Select a review</h3>
+              <p>Open a submission from Review Queue to view files at full size.</p>
+            </article>
           </div>
         </section>
 
@@ -3299,6 +3310,6 @@
       </main>
     </div>
 
-    <script src="app.js?v=comic-review-files-1"></script>
+    <script src="app.js?v=review-detail-1"></script>
   </body>
 </html>

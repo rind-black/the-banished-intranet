@@ -115,6 +115,8 @@ const comicNewProjectInput = document.querySelector("[data-comic-new-project]");
 const comicFilesInput = document.querySelector("[data-comic-files]");
 const comicPreview = document.querySelector("[data-comic-preview]");
 const reviewQueueList = document.querySelector("[data-review-queue-list]");
+const reviewDetailContent = document.querySelector("[data-review-detail-content]");
+const reviewDetailBack = document.querySelector("[data-review-detail-back]");
 const requestDestination = document.querySelector("[data-request-destination]");
 const calendarGrid = document.querySelector("[data-calendar-grid]");
 const calendarFilterButtons = document.querySelectorAll("[data-calendar-filter]");
@@ -154,6 +156,7 @@ const hiddenComicReviewProjects = new Set(["AI Casting Platform", "Marco de Marl
 let activeChallengeDepartment = "all";
 let activeProjectFilter = "all";
 let activeCalendarFilter = "my";
+let activeReviewDetailId = "";
 let selectedCalendarDate = "";
 let pendingAvatarDataUrl = null;
 let scriptAutosaveTimer = null;
@@ -305,6 +308,7 @@ const titles = {
   storyboards: "AI Storyboards",
   "comic-review": "Comic Artist Review",
   "review-queue": "Review Queue",
+  "review-detail": "Review detail",
   bonuses: "Bonuses",
   "bonus-detail": "Bonus document",
   benefits: "Benefits and support",
@@ -1352,6 +1356,7 @@ const detailSectionParents = {
   "document-detail": "documents",
   "project-detail": "projects",
   "bonus-detail": "bonuses",
+  "review-detail": "review-queue",
 };
 
 function normalizeRole(role) {
@@ -1711,6 +1716,91 @@ function renderReviewFileGrid(files = []) {
       </a>
     `;
   }).join("");
+}
+
+function renderReviewCardFilePreview(files = []) {
+  const list = (Array.isArray(files) ? files : []).slice(0, 3);
+
+  if (!list.length) {
+    return `<div class="review-card-file-preview is-empty"><span>No files</span></div>`;
+  }
+
+  return `
+    <div class="review-card-file-preview">
+      ${list.map((file) => {
+        const name = reviewFileName(file);
+        const url = reviewFileUrl(file);
+
+        if (isReviewImageFile(file) && url) {
+          return `<img src="${escapeAttribute(url)}" alt="${escapeAttribute(name)} preview" />`;
+        }
+
+        return `<span>${name.toLowerCase().endsWith(".pdf") ? "PDF" : "FILE"}</span>`;
+      }).join("")}
+    </div>
+  `;
+}
+
+function renderReviewFullFile(file = {}, index = 0) {
+  const name = reviewFileName(file);
+  const url = reviewFileUrl(file);
+  const number = String(index + 1).padStart(2, "0");
+  const download = url
+    ? `<a class="review-download-button" href="${escapeAttribute(url)}" download="${escapeAttribute(name)}" target="_blank" rel="noopener">Download</a>`
+    : `<span class="review-download-button is-disabled">File unavailable</span>`;
+
+  if (!url) {
+    return `
+      <article class="review-full-file is-missing">
+        <div class="review-full-file-head">
+          <span>${number}</span>
+          <strong>${escapeHtml(name)}</strong>
+          ${download}
+        </div>
+        <div class="review-full-placeholder">No portal file link is available for this item.</div>
+      </article>
+    `;
+  }
+
+  if (isReviewImageFile(file)) {
+    return `
+      <figure class="review-full-file">
+        <div class="review-full-file-head">
+          <span>${number}</span>
+          <strong>${escapeHtml(name)}</strong>
+          ${download}
+        </div>
+        <a class="review-full-image-link" href="${escapeAttribute(url)}" target="_blank" rel="noopener">
+          <img src="${escapeAttribute(url)}" alt="${escapeAttribute(name)} full-size review file" />
+        </a>
+        <figcaption>${escapeHtml(reviewFileMeta(file))}</figcaption>
+      </figure>
+    `;
+  }
+
+  if (name.toLowerCase().endsWith(".pdf") || String(file.type || "").includes("pdf")) {
+    return `
+      <article class="review-full-file">
+        <div class="review-full-file-head">
+          <span>${number}</span>
+          <strong>${escapeHtml(name)}</strong>
+          ${download}
+        </div>
+        <iframe class="review-full-document" src="${escapeAttribute(url)}" title="${escapeAttribute(name)}"></iframe>
+      </article>
+    `;
+  }
+
+  return `
+    <article class="review-full-file">
+      <div class="review-full-file-head">
+        <span>${number}</span>
+        <strong>${escapeHtml(name)}</strong>
+        ${download}
+      </div>
+      <div class="review-full-placeholder">${escapeHtml(reviewFileMeta(file))}</div>
+    </article>
+  `;
 }
 
 function getContentItems() {
@@ -3194,13 +3284,33 @@ function requestPaneFromSection(sectionId) {
 }
 
 function normalizeSectionId(sectionId) {
+  const rawSection = String(sectionId || "").trim();
+
+  if (rawSection.startsWith("review-detail/")) {
+    return "review-detail";
+  }
+
   return {
     "it-requests": "requests",
     "hr-requests": "requests",
     "org-requests": "requests",
     "ed-requests": "requests",
     "legal-requests": "requests",
-  }[sectionId] || sectionId;
+  }[rawSection] || rawSection;
+}
+
+function reviewDetailIdFromSection(sectionId) {
+  const rawSection = String(sectionId || "").trim();
+
+  if (!rawSection.startsWith("review-detail/")) {
+    return "";
+  }
+
+  try {
+    return decodeURIComponent(rawSection.slice("review-detail/".length));
+  } catch {
+    return rawSection.slice("review-detail/".length);
+  }
 }
 
 function setRequestDestination(type = "it") {
@@ -3865,14 +3975,27 @@ function showDocumentRole(roleId) {
 function showSection(sectionId) {
   const profile = currentProfile();
   const requestedSection = sectionId || "overview";
+  const requestedReviewDetailId = reviewDetailIdFromSection(requestedSection);
   const requestPane = requestPaneFromSection(requestedSection);
   const normalizedSection = normalizeSectionId(requestedSection);
   const nextSection = canAccessSection(normalizedSection, profile) ? normalizedSection : firstAllowedSection(profile);
   const target = document.querySelector(`[data-section="${nextSection}"]`);
   const navSection = sectionAccessKey(nextSection);
+  let detailTitle = "";
 
   if (!target) {
     return;
+  }
+
+  if (nextSection === "review-detail") {
+    const reviewId = requestedReviewDetailId || activeReviewDetailId;
+    detailTitle = renderReviewDetail(reviewId);
+
+    if (!detailTitle) {
+      showSection("review-queue");
+      history.replaceState(null, "", "#review-queue");
+      return;
+    }
   }
 
   updateRoleNavigation(profile);
@@ -3894,7 +4017,7 @@ function showSection(sectionId) {
   }
 
   if (pageTitle) {
-    pageTitle.textContent = titles[nextSection] || titles.overview;
+    pageTitle.textContent = detailTitle || titles[nextSection] || titles.overview;
   }
 
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -4007,7 +4130,7 @@ function reviewQueueCardMarkup(request, { archived = false } = {}) {
       data-review-card
       role="button"
       tabindex="0"
-      aria-expanded="false"
+      aria-label="Open full review for ${escapeAttribute(request.project || "comic art review")}"
     >
       <div class="review-queue-card-head">
         <span class="review-status-pill ${statusClassName(currentStatus)}">${escapeHtml(currentStatus)}</span>
@@ -4015,29 +4138,134 @@ function reviewQueueCardMarkup(request, { archived = false } = {}) {
       </div>
       <strong>${escapeHtml(request.project || "Comic art review")}</strong>
       <p>${escapeHtml(request.stage || "Artwork")} · ${escapeHtml(request.department || comicReviewDepartment)}</p>
+      ${renderReviewCardFilePreview(files)}
       <dl class="review-queue-summary">
         <div><dt>Submitted by</dt><dd>${escapeHtml(request.submittedBy || request.from || "Unknown")}</dd></div>
         <div><dt>Artist</dt><dd>${escapeHtml(request.artistName || request.from || "Unknown")}</dd></div>
         <div><dt>Needed by</dt><dd>${escapeHtml(request.reviewDueDate || "Not specified")}</dd></div>
         <div><dt>Files</dt><dd>${fileCount ? `${fileCount} portal file${fileCount === 1 ? "" : "s"}` : "No file link captured"}</dd></div>
       </dl>
-      <span class="review-queue-open-note">Open submission files</span>
-      <div class="review-queue-detail" data-review-detail hidden>
-        <div class="review-queue-detail-head">
-          <span>Submitted files</span>
-          <small>${fileCount ? `${fileCount} item${fileCount === 1 ? "" : "s"}` : "No files"}</small>
-        </div>
-        <div class="review-file-grid">
-          ${renderReviewFileGrid(files)}
-        </div>
-        <div class="review-detail-notes">
-          <span>Notes</span>
-          <p>${escapeHtml(request.details || "No notes added.")}</p>
-        </div>
-      </div>
+      <span class="review-queue-open-note">Open full review</span>
       ${statusControl}
+      ${archived ? `<button class="review-archive-delete" type="button" data-delete-archived-review="${escapeAttribute(request.id || "")}">Delete from archive</button>` : ""}
     </article>
   `;
+}
+
+function findComicReviewRequest(reviewId) {
+  return getRequests().find((request) => isComicReviewRequest(request) && request.id === reviewId) || null;
+}
+
+function renderReviewDetail(reviewId) {
+  if (!reviewDetailContent) {
+    return "";
+  }
+
+  const request = findComicReviewRequest(reviewId);
+
+  if (!request) {
+    reviewDetailContent.innerHTML = `
+      <article class="review-detail-empty">
+        <p class="eyebrow">Review detail</p>
+        <h3 id="review-detail-title">Review not found</h3>
+        <p>This submission may have been removed from the queue.</p>
+      </article>
+    `;
+    return "";
+  }
+
+  activeReviewDetailId = request.id;
+  const currentStatus = request.status || "Submitted";
+  const isClosed = statusClassName(currentStatus) === "status-closed";
+  const files = Array.isArray(request.files) ? request.files : [];
+  const options = comicReviewStatusOptions
+    .map((status) => `<option ${status === currentStatus ? "selected" : ""}>${escapeHtml(status)}</option>`)
+    .join("");
+  const title = `${request.project || "Comic art review"} / ${request.stage || "Artwork"}`;
+
+  reviewDetailContent.innerHTML = `
+    <article class="review-detail-shell" data-review-id="${escapeAttribute(request.id || "")}">
+      <header class="review-detail-hero">
+        <div>
+          <p class="eyebrow">Full submission</p>
+          <h3 id="review-detail-title">${escapeHtml(request.project || "Comic art review")}</h3>
+          <p>${escapeHtml(request.stage || "Artwork")} · ${escapeHtml(request.department || comicReviewDepartment)}</p>
+        </div>
+        <span class="review-status-pill ${statusClassName(currentStatus)}">${escapeHtml(currentStatus)}</span>
+      </header>
+
+      <section class="review-detail-meta" aria-label="Review metadata">
+        <article><span>Submitted by</span><strong>${escapeHtml(request.submittedBy || request.from || "Unknown")}</strong></article>
+        <article><span>Artist</span><strong>${escapeHtml(request.artistName || request.from || "Unknown")}</strong></article>
+        <article><span>Needed by</span><strong>${escapeHtml(request.reviewDueDate || "Not specified")}</strong></article>
+        <article><span>Received</span><strong>${escapeHtml(request.createdAt || "Unknown")}</strong></article>
+      </section>
+
+      <section class="review-detail-actions">
+        <label>
+          Status
+          <select data-review-detail-status-select>
+            ${options}
+          </select>
+        </label>
+        ${isClosed ? `<button class="review-archive-delete" type="button" data-delete-archived-review="${escapeAttribute(request.id || "")}">Delete from archive</button>` : ""}
+      </section>
+
+      <section class="review-full-gallery" aria-label="Submitted review files">
+        ${files.length ? files.map(renderReviewFullFile).join("") : renderReviewFileGrid(files)}
+      </section>
+
+      <section class="review-detail-notes is-full">
+        <span>Notes</span>
+        <p>${escapeHtml(request.details || "No notes added.")}</p>
+      </section>
+    </article>
+  `;
+
+  return title;
+}
+
+function openReviewDetail(reviewId, updateHistory = true) {
+  const detailTitle = renderReviewDetail(reviewId);
+
+  if (!detailTitle) {
+    return;
+  }
+
+  showSection("review-detail");
+
+  if (pageTitle) {
+    pageTitle.textContent = detailTitle;
+  }
+
+  if (updateHistory) {
+    history.replaceState(null, "", `#review-detail/${encodeURIComponent(reviewId)}`);
+  }
+}
+
+function deleteArchivedReview(reviewId) {
+  const requests = getRequests();
+  const request = requests.find((item) => item.id === reviewId);
+
+  if (!request || statusClassName(request.status) !== "status-closed") {
+    return;
+  }
+
+  if (!window.confirm(`Delete ${request.project || "this review"} from the closed archive?`)) {
+    return;
+  }
+
+  setRequests(requests.filter((item) => item.id !== reviewId));
+  appendAuditLog("Comic art review removed from archive", request.project || reviewId);
+  renderRequests();
+  renderReviewQueue();
+  renderComicPreviews();
+
+  if (activeReviewDetailId === reviewId) {
+    activeReviewDetailId = "";
+    showSection("review-queue");
+    history.replaceState(null, "", "#review-queue");
+  }
 }
 
 function renderReviewQueue() {
@@ -4101,6 +4329,15 @@ function updateComicReviewStatus(reviewId, status) {
   renderReviewQueue();
   renderComicPreviews();
   renderRequests();
+
+  if (activeReviewDetailId === reviewId) {
+    const detailTitle = renderReviewDetail(reviewId);
+
+    if (pageTitle && detailTitle) {
+      pageTitle.textContent = detailTitle;
+    }
+  }
+
   publishSystemMessage({
     title: "Comic art review updated",
     body: `${request.project || "Comic art review"} is now ${status}.`,
@@ -5503,21 +5740,14 @@ reviewQueueList?.addEventListener("change", (event) => {
   updateComicReviewStatus(reviewId, select.value);
 });
 
-function toggleReviewQueueCard(card) {
-  const detail = card?.querySelector("[data-review-detail]");
+reviewQueueList?.addEventListener("click", (event) => {
+  const deleteButton = event.target.closest("[data-delete-archived-review]");
 
-  if (!detail) {
+  if (deleteButton) {
+    deleteArchivedReview(deleteButton.dataset.deleteArchivedReview || "");
     return;
   }
 
-  const isOpen = !detail.hidden;
-
-  detail.hidden = isOpen;
-  card.setAttribute("aria-expanded", String(!isOpen));
-  card.classList.toggle("is-open", !isOpen);
-}
-
-reviewQueueList?.addEventListener("click", (event) => {
   if (event.target.closest("a, button, input, select, textarea, label")) {
     return;
   }
@@ -5525,7 +5755,7 @@ reviewQueueList?.addEventListener("click", (event) => {
   const card = event.target.closest("[data-review-card]");
 
   if (card) {
-    toggleReviewQueueCard(card);
+    openReviewDetail(card.dataset.reviewId || "");
   }
 });
 
@@ -5541,7 +5771,33 @@ reviewQueueList?.addEventListener("keydown", (event) => {
   }
 
   event.preventDefault();
-  toggleReviewQueueCard(card);
+  openReviewDetail(card.dataset.reviewId || "");
+});
+
+reviewDetailBack?.addEventListener("click", () => {
+  showSection("review-queue");
+  history.replaceState(null, "", "#review-queue");
+});
+
+reviewDetailContent?.addEventListener("change", (event) => {
+  const select = event.target.closest("[data-review-detail-status-select]");
+
+  if (!select) {
+    return;
+  }
+
+  const shell = select.closest("[data-review-id]");
+  const reviewId = shell?.dataset.reviewId || activeReviewDetailId;
+
+  updateComicReviewStatus(reviewId, select.value);
+});
+
+reviewDetailContent?.addEventListener("click", (event) => {
+  const deleteButton = event.target.closest("[data-delete-archived-review]");
+
+  if (deleteButton) {
+    deleteArchivedReview(deleteButton.dataset.deleteArchivedReview || "");
+  }
 });
 
 comicReviewForm?.addEventListener("submit", async (event) => {
