@@ -9,6 +9,8 @@ const tls = require("tls");
 const { once } = require("events");
 
 const rootDir = __dirname;
+const portalUploadsDir = path.join(rootDir, "portal-uploads");
+const portalUploadsUrlPath = "/portal-uploads";
 
 function loadEnvFile(fileName) {
   const filePath = path.join(rootDir, fileName);
@@ -154,6 +156,18 @@ function cleanContentType(value, filename) {
   return (mimeTypes[path.extname(filename).toLowerCase()] || "application/octet-stream").split(";")[0];
 }
 
+function safeStorageName(value, fallback = "upload") {
+  return String(value || fallback)
+    .trim()
+    .replace(/[^a-z0-9._-]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 96) || fallback;
+}
+
+function encodeUrlPath(parts) {
+  return parts.map((part) => encodeURIComponent(part)).join("/");
+}
+
 function wrapBase64(value) {
   return String(value || "").replace(/.{1,76}/g, "$&\r\n").trim();
 }
@@ -188,6 +202,35 @@ function cleanAttachments(value) {
       contentType,
       content,
       sizeBytes,
+    };
+  });
+}
+
+function savePortalFiles(attachments, context = {}) {
+  if (!attachments.length) {
+    return [];
+  }
+
+  const requestId = safeStorageName(context.id || crypto.randomUUID(), "review");
+  const uploadDir = path.join(portalUploadsDir, requestId);
+
+  fs.mkdirSync(uploadDir, { recursive: true });
+
+  return attachments.map((attachment, index) => {
+    const filename = cleanFilename(attachment.filename || `upload-${index + 1}`);
+    const storedName = `${String(index + 1).padStart(2, "0")}-${crypto.randomBytes(4).toString("hex")}-${safeStorageName(filename, "upload")}`;
+    const storedPath = path.join(uploadDir, storedName);
+    const content = Buffer.from(attachment.content, "base64");
+
+    fs.writeFileSync(storedPath, content);
+
+    return {
+      name: filename,
+      storedName,
+      type: attachment.contentType,
+      sizeBytes: content.length,
+      sizeKb: Math.max(1, Math.round(content.length / 1024)),
+      url: `/${encodeUrlPath([portalUploadsUrlPath.replace(/^\//, ""), requestId, storedName])}`,
     };
   });
 }
@@ -620,15 +663,37 @@ async function handleRequest(request, response) {
     throw new HttpError(400, "Employee email must be a @the-banished.com address.");
   }
 
-  await sendEmail({
-    to: recipient,
-    subject: cleanHeader(payload.subject || payload.label || "Internal Portal Request"),
-    text: String(payload.body || ""),
-    replyTo: from,
-    attachments,
-  });
+  const storedFiles = payload.storeAttachments
+    ? savePortalFiles(attachments, payload.uploadContext || payload.request || {})
+    : [];
+  const emailAttachments = payload.emailAttachments === false ? [] : attachments;
 
-  sendJson(response, 200, { ok: true });
+  let notificationSent = true;
+  let notificationError = "";
+
+  try {
+    await sendEmail({
+      to: recipient,
+      subject: cleanHeader(payload.subject || payload.label || "Internal Portal Request"),
+      text: String(payload.body || ""),
+      replyTo: from,
+      attachments: emailAttachments,
+    });
+  } catch (error) {
+    if (!payload.allowNotificationFailure) {
+      throw error;
+    }
+
+    notificationSent = false;
+    notificationError = error.message || "Notification email failed.";
+  }
+
+  sendJson(response, 200, {
+    ok: true,
+    files: storedFiles,
+    notificationSent,
+    notificationError,
+  });
 }
 
 async function handleLocation(request, response) {

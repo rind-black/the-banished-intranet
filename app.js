@@ -1649,6 +1649,70 @@ function statusClassName(status = "") {
   return `status-${String(status || "Submitted").toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 }
 
+function reviewFileName(file = {}) {
+  return typeof file === "string" ? file : file.name || file.filename || "Uploaded file";
+}
+
+function reviewFileUrl(file = {}) {
+  return typeof file === "object" && file ? file.url || "" : "";
+}
+
+function reviewFileMeta(file = {}) {
+  if (typeof file !== "object" || !file) {
+    return "Uploaded file";
+  }
+
+  const size = file.sizeKb ? `${file.sizeKb} KB` : "";
+  const type = file.type ? file.type.replace(/^image\//, "").toUpperCase() : "";
+
+  return [type, size].filter(Boolean).join(" · ") || "Uploaded file";
+}
+
+function isReviewImageFile(file = {}) {
+  const type = typeof file === "object" && file ? String(file.type || "") : "";
+  const name = reviewFileName(file).toLowerCase();
+
+  return type.startsWith("image/") || /\.(png|jpe?g|webp|gif|svg|tiff?)$/i.test(name);
+}
+
+function renderReviewFileGrid(files = []) {
+  const list = Array.isArray(files) ? files : [];
+
+  if (!list.length) {
+    return `
+      <article class="review-file-card is-missing">
+        <span class="review-file-icon">FILE</span>
+        <strong>No files captured</strong>
+        <small>The submission exists, but no portal file link is available.</small>
+      </article>
+    `;
+  }
+
+  return list.map((file) => {
+    const name = reviewFileName(file);
+    const url = reviewFileUrl(file);
+    const preview = isReviewImageFile(file) && url
+      ? `<img src="${escapeAttribute(url)}" alt="${escapeAttribute(name)} preview" />`
+      : `<span class="review-file-icon">${name.toLowerCase().endsWith(".pdf") ? "PDF" : "FILE"}</span>`;
+    const content = `
+      ${preview}
+      <strong>${escapeHtml(name)}</strong>
+      <small>${escapeHtml(reviewFileMeta(file))}</small>
+      <span>${url ? "Download" : "File link unavailable"}</span>
+    `;
+
+    if (!url) {
+      return `<article class="review-file-card is-missing">${content}</article>`;
+    }
+
+    return `
+      <a class="review-file-card" href="${escapeAttribute(url)}" download="${escapeAttribute(name)}" target="_blank" rel="noopener">
+        ${content}
+      </a>
+    `;
+  }).join("");
+}
+
 function getContentItems() {
   return readJson(contentStoreKey, []);
 }
@@ -3918,6 +3982,64 @@ function renderRequests() {
     .join("");
 }
 
+function reviewQueueCardMarkup(request, { archived = false } = {}) {
+  const currentStatus = request.status || (archived ? "Closed" : "Submitted");
+  const files = Array.isArray(request.files) ? request.files : [];
+  const fileCount = files.length;
+  const options = comicReviewStatusOptions
+    .map((status) => `<option ${status === currentStatus ? "selected" : ""}>${escapeHtml(status)}</option>`)
+    .join("");
+  const statusControl = archived
+    ? ""
+    : `
+      <label class="review-status-control">
+        Status
+        <select data-review-status-select>
+          ${options}
+        </select>
+      </label>
+    `;
+
+  return `
+    <article
+      class="review-queue-card ${archived ? "review-queue-card-archived" : ""}"
+      data-review-id="${escapeAttribute(request.id || "")}"
+      data-review-card
+      role="button"
+      tabindex="0"
+      aria-expanded="false"
+    >
+      <div class="review-queue-card-head">
+        <span class="review-status-pill ${statusClassName(currentStatus)}">${escapeHtml(currentStatus)}</span>
+        <small>${escapeHtml(archived ? request.reviewedAt || request.createdAt || "" : request.createdAt || "")}</small>
+      </div>
+      <strong>${escapeHtml(request.project || "Comic art review")}</strong>
+      <p>${escapeHtml(request.stage || "Artwork")} · ${escapeHtml(request.department || comicReviewDepartment)}</p>
+      <dl class="review-queue-summary">
+        <div><dt>Submitted by</dt><dd>${escapeHtml(request.submittedBy || request.from || "Unknown")}</dd></div>
+        <div><dt>Artist</dt><dd>${escapeHtml(request.artistName || request.from || "Unknown")}</dd></div>
+        <div><dt>Needed by</dt><dd>${escapeHtml(request.reviewDueDate || "Not specified")}</dd></div>
+        <div><dt>Files</dt><dd>${fileCount ? `${fileCount} portal file${fileCount === 1 ? "" : "s"}` : "No file link captured"}</dd></div>
+      </dl>
+      <span class="review-queue-open-note">Open submission files</span>
+      <div class="review-queue-detail" data-review-detail hidden>
+        <div class="review-queue-detail-head">
+          <span>Submitted files</span>
+          <small>${fileCount ? `${fileCount} item${fileCount === 1 ? "" : "s"}` : "No files"}</small>
+        </div>
+        <div class="review-file-grid">
+          ${renderReviewFileGrid(files)}
+        </div>
+        <div class="review-detail-notes">
+          <span>Notes</span>
+          <p>${escapeHtml(request.details || "No notes added.")}</p>
+        </div>
+      </div>
+      ${statusControl}
+    </article>
+  `;
+}
+
 function renderReviewQueue() {
   if (!reviewQueueList) {
     return;
@@ -3938,39 +4060,7 @@ function renderReviewQueue() {
     `;
 
   const openMarkup = openReviews.length
-    ? openReviews.map((request) => {
-      const currentStatus = request.status || "Submitted";
-      const options = comicReviewStatusOptions
-        .map((status) => `<option ${status === currentStatus ? "selected" : ""}>${escapeHtml(status)}</option>`)
-        .join("");
-      const files = Array.isArray(request.files) && request.files.length
-        ? request.files.map((file) => escapeHtml(file.name || file)).join(", ")
-        : "No file list captured";
-
-      return `
-        <article class="review-queue-card" data-review-id="${escapeAttribute(request.id || "")}">
-          <div class="review-queue-card-head">
-            <span class="review-status-pill ${statusClassName(currentStatus)}">${escapeHtml(currentStatus)}</span>
-            <small>${escapeHtml(request.createdAt || "")}</small>
-          </div>
-          <strong>${escapeHtml(request.project || "Comic art review")}</strong>
-          <p>${escapeHtml(request.stage || "Artwork")} · ${escapeHtml(request.department || comicReviewDepartment)}</p>
-          <dl>
-            <div><dt>Submitted by</dt><dd>${escapeHtml(request.submittedBy || request.from || "Unknown")}</dd></div>
-            <div><dt>Artist</dt><dd>${escapeHtml(request.artistName || request.from || "Unknown")}</dd></div>
-            <div><dt>Needed by</dt><dd>${escapeHtml(request.reviewDueDate || "Not specified")}</dd></div>
-            <div><dt>Files</dt><dd>${files}</dd></div>
-            <div><dt>Notes</dt><dd>${escapeHtml(request.details || "No notes added.")}</dd></div>
-          </dl>
-          <label>
-            Status
-            <select data-review-status-select>
-              ${options}
-            </select>
-          </label>
-        </article>
-      `;
-    }).join("")
+    ? openReviews.map((request) => reviewQueueCardMarkup(request)).join("")
     : emptyMarkup;
   const archiveMarkup = closedReviews.length
     ? `
@@ -3980,27 +4070,7 @@ function renderReviewQueue() {
           <small>${closedReviews.length} closed review${closedReviews.length === 1 ? "" : "s"}</small>
         </summary>
         <div class="review-queue-archive-grid">
-          ${closedReviews.map((request) => {
-            const files = Array.isArray(request.files) && request.files.length
-              ? request.files.map((file) => escapeHtml(file.name || file)).join(", ")
-              : "No file list captured";
-
-            return `
-              <article class="review-queue-card review-queue-card-archived">
-                <div class="review-queue-card-head">
-                  <span class="review-status-pill ${statusClassName(request.status)}">${escapeHtml(request.status || "Closed")}</span>
-                  <small>${escapeHtml(request.reviewedAt || request.createdAt || "")}</small>
-                </div>
-                <strong>${escapeHtml(request.project || "Comic art review")}</strong>
-                <p>${escapeHtml(request.stage || "Artwork")} · ${escapeHtml(request.department || comicReviewDepartment)}</p>
-                <dl>
-                  <div><dt>Submitted by</dt><dd>${escapeHtml(request.submittedBy || request.from || "Unknown")}</dd></div>
-                  <div><dt>Artist</dt><dd>${escapeHtml(request.artistName || request.from || "Unknown")}</dd></div>
-                  <div><dt>Files</dt><dd>${files}</dd></div>
-                </dl>
-              </article>
-            `;
-          }).join("")}
+          ${closedReviews.map((request) => reviewQueueCardMarkup(request, { archived: true })).join("")}
         </div>
       </details>
     `
@@ -5340,7 +5410,7 @@ function readFileAsEmailAttachment(file) {
     });
 
     reader.addEventListener("error", () => {
-      reject(new Error(`Could not read ${file.name || "the selected file"} for email attachment.`));
+      reject(new Error(`Could not read ${file.name || "the selected file"} for portal upload.`));
     });
 
     reader.readAsDataURL(file);
@@ -5433,6 +5503,47 @@ reviewQueueList?.addEventListener("change", (event) => {
   updateComicReviewStatus(reviewId, select.value);
 });
 
+function toggleReviewQueueCard(card) {
+  const detail = card?.querySelector("[data-review-detail]");
+
+  if (!detail) {
+    return;
+  }
+
+  const isOpen = !detail.hidden;
+
+  detail.hidden = isOpen;
+  card.setAttribute("aria-expanded", String(!isOpen));
+  card.classList.toggle("is-open", !isOpen);
+}
+
+reviewQueueList?.addEventListener("click", (event) => {
+  if (event.target.closest("a, button, input, select, textarea, label")) {
+    return;
+  }
+
+  const card = event.target.closest("[data-review-card]");
+
+  if (card) {
+    toggleReviewQueueCard(card);
+  }
+});
+
+reviewQueueList?.addEventListener("keydown", (event) => {
+  if (!["Enter", " "].includes(event.key)) {
+    return;
+  }
+
+  const card = event.target.closest("[data-review-card]");
+
+  if (!card || event.target !== card) {
+    return;
+  }
+
+  event.preventDefault();
+  toggleReviewQueueCard(card);
+});
+
 comicReviewForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -5481,22 +5592,26 @@ comicReviewForm?.addEventListener("submit", async (event) => {
   const totalAttachmentBytes = files.reduce((sum, file) => sum + file.size, 0);
 
   if (totalAttachmentBytes > emailAttachmentTotalLimitBytes) {
-    setRequestStatus(comicReviewStatus, "Please keep uploaded files under 18 MB total before sending.", "error");
+    setRequestStatus(comicReviewStatus, "Please keep uploaded files under 18 MB total before posting.", "error");
     return;
   }
 
-  setRequestStatus(comicReviewStatus, `Preparing ${files.length} attachment${files.length === 1 ? "" : "s"}...`, "pending");
+  setRequestStatus(comicReviewStatus, `Uploading ${files.length} portal file${files.length === 1 ? "" : "s"}...`, "pending");
 
   try {
+    const requestId = createRequestId("comic-review");
     const attachments = await Promise.all(files.map(readFileAsEmailAttachment));
 
-    setRequestStatus(comicReviewStatus, `Sending comic review request to ${recipient}...`, "pending");
+    setRequestStatus(comicReviewStatus, `Notifying ${comicReviewDepartment}...`, "pending");
 
-    await postPortalEmail("/api/requests", {
+    const delivery = await postPortalEmail("/api/requests", {
       recipient,
       label,
       subject: `Comic Art Review: ${project} / ${stage}`,
       body: [
+        "A new comic art review has been submitted in The Banished Internal Portal.",
+        "Open Review Queue to view the uploaded files, download artwork, and update the status.",
+        "",
         `Submitted by: ${submittedBy}`,
         `Artist: ${artistName}`,
         `Employee email: ${profile?.email || ""}`,
@@ -5506,7 +5621,7 @@ comicReviewForm?.addEventListener("submit", async (event) => {
         `Review needed by: ${reviewDueDate || "Not specified"}`,
         `Department: ${comicReviewDepartment}`,
         "",
-        "Attached files:",
+        "Files available in Review Queue:",
         fileList.map((file) => `- ${file.name} (${file.sizeKb} KB)`).join("\n"),
         "",
         "Notes:",
@@ -5520,11 +5635,20 @@ comicReviewForm?.addEventListener("submit", async (event) => {
         details: notes,
       },
       attachments,
+      storeAttachments: true,
+      emailAttachments: false,
+      allowNotificationFailure: true,
+      uploadContext: {
+        id: requestId,
+        kind: "comic-review",
+        project,
+        stage,
+      },
     });
 
     const requests = getRequests();
     requests.push({
-      id: createRequestId("comic-review"),
+      id: requestId,
       createdAt,
       from: profile?.email || "Unknown",
       type: `Comic Art Review - ${stage}`,
@@ -5539,18 +5663,24 @@ comicReviewForm?.addEventListener("submit", async (event) => {
       stage,
       reviewDueDate,
       details: notes,
-      files: fileList,
+      files: Array.isArray(delivery.files) && delivery.files.length ? delivery.files : fileList,
     });
     setRequests(requests);
     renderRequests();
     renderReviewQueue();
-    setRequestStatus(comicReviewStatus, `Comic review request sent to ${comicReviewDepartment}. Status: Submitted.`);
+    setRequestStatus(
+      comicReviewStatus,
+      delivery.notificationSent === false
+        ? `Comic review posted in Review Queue. Notification email was not sent: ${delivery.notificationError || "email service failed"}.`
+        : `Comic review posted in Review Queue. ${comicReviewDepartment} was notified.`,
+      delivery.notificationSent === false ? "pending" : "success"
+    );
     comicReviewForm.reset();
     syncComicReviewFormDefaults(profile);
     renderComicPreviews();
   } catch (error) {
     const message = /Email service is not configured/i.test(error.message)
-      ? "Comic review was not emailed because the portal email service is not configured. Add RESEND_API_KEY or SMTP settings on the server, then retry."
+      ? "Comic review was not posted because the portal notification email service is not configured. Add RESEND_API_KEY or SMTP settings on the server, then retry."
       : `Comic review failed. ${error.message}`;
     setRequestStatus(comicReviewStatus, message, "error");
   }
