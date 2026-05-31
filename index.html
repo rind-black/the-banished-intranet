@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>The Banished Internal Portal</title>
-    <link rel="stylesheet" href="styles.css?v=script-review-1" />
+    <link rel="stylesheet" href="styles.css?v=script-review-separate-1" />
   </head>
   <body>
     <section class="auth-screen" data-auth-screen aria-labelledby="auth-title">
@@ -75,48 +75,52 @@
             <span aria-hidden="true">06</span>
             Script Studio
           </a>
-          <a class="nav-link" href="#storyboards" data-section-link="storyboards">
+          <a class="nav-link" href="#script-review-queue" data-section-link="script-review-queue">
             <span aria-hidden="true">07</span>
+            Script Review Queue
+          </a>
+          <a class="nav-link" href="#storyboards" data-section-link="storyboards">
+            <span aria-hidden="true">08</span>
             Storyboards
           </a>
           <a class="nav-link" href="#comic-review" data-section-link="comic-review">
-            <span aria-hidden="true">08</span>
+            <span aria-hidden="true">09</span>
             Comic Review
           </a>
           <a class="nav-link" href="#review-queue" data-section-link="review-queue">
-            <span aria-hidden="true">09</span>
-            Review Queue
+            <span aria-hidden="true">10</span>
+            Comic Review Queue
           </a>
           <a class="nav-link" href="#bonuses" data-section-link="bonuses">
-            <span aria-hidden="true">10</span>
+            <span aria-hidden="true">11</span>
             Bonuses
           </a>
           <a class="nav-link" href="#benefits" data-section-link="benefits">
-            <span aria-hidden="true">11</span>
+            <span aria-hidden="true">12</span>
             Benefits
           </a>
           <a class="nav-link" href="#holidays" data-section-link="holidays">
-            <span aria-hidden="true">12</span>
+            <span aria-hidden="true">13</span>
             Holidays
           </a>
           <a class="nav-link" href="#culture" data-section-link="culture">
-            <span aria-hidden="true">13</span>
+            <span aria-hidden="true">14</span>
             Culture
           </a>
           <a class="nav-link" href="#training" data-section-link="training">
-            <span aria-hidden="true">14</span>
+            <span aria-hidden="true">15</span>
             Training
           </a>
           <a class="nav-link" href="#internship" data-section-link="internship">
-            <span aria-hidden="true">15</span>
+            <span aria-hidden="true">16</span>
             Internship
           </a>
           <a class="nav-link" href="#requests" data-section-link="requests">
-            <span aria-hidden="true">16</span>
+            <span aria-hidden="true">17</span>
             Requests
           </a>
           <a class="nav-link" href="#admin" data-section-link="admin" data-admin-only hidden>
-            <span aria-hidden="true">17</span>
+            <span aria-hidden="true">18</span>
             Admin
           </a>
         </nav>
@@ -1395,6 +1399,38 @@
           </section>
         </section>
 
+        <section class="portal-section" id="script-review-queue" data-section="script-review-queue" aria-labelledby="script-review-queue-title">
+          <h2 class="sr-only" id="script-review-queue-title">Script Review Queue</h2>
+
+          <div class="review-queue-layout">
+            <article class="review-queue-hero">
+              <p class="eyebrow">Story team workspace</p>
+              <h3>Script review queue</h3>
+              <p>
+                Reviewers update submitted script packages here. The writer sees the same status, notes, and replies
+                inside Script Studio.
+              </p>
+            </article>
+            <div class="review-queue-board" data-script-review-queue-list>
+              <article class="review-queue-empty">
+                <strong>No script reviews yet</strong>
+                <span>Submitted script packages will appear here for the Story Department.</span>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="portal-section detail-page" id="script-review-detail" data-section="script-review-detail" aria-labelledby="script-review-detail-title">
+          <button class="back-button" type="button" data-script-review-detail-back>Back to Script Review Queue</button>
+          <div class="review-detail-page" data-script-review-detail-content>
+            <article class="review-detail-empty">
+              <p class="eyebrow">Script review detail</p>
+              <h3 id="script-review-detail-title">Select a script review</h3>
+              <p>Open a submission from Script Review Queue to read the pages and leave notes.</p>
+            </article>
+          </div>
+        </section>
+
         <section class="portal-section" id="storyboards" data-section="storyboards" aria-labelledby="storyboards-title">
           <h2 class="sr-only" id="storyboards-title">AI Storyboards</h2>
 
@@ -1545,10 +1581,10 @@
           <div class="review-queue-layout">
             <article class="review-queue-hero">
               <p class="eyebrow">Reviewer workspace</p>
-              <h3>Creative review queue</h3>
+              <h3>Comic art review queue</h3>
               <p>
-                Reviewers update submitted artwork and script packages here. The submitter sees the same status,
-                notes, and replies inside the original portal section.
+                Reviewers update the status of submitted comic artwork here. The submitting artist sees the same
+                status, notes, and replies inside Comic Artist Review.
               </p>
             </article>
             <div class="review-queue-board" data-review-queue-list>
@@ -3323,6 +3359,6 @@
       </main>
     </div>
 
-    <script src="app.js?v=script-review-1"></script>
+    <script src="app.js?v=script-review-separate-1"></script>
   </body>
 </html>

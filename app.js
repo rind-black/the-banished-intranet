@@ -118,6 +118,9 @@ const comicPreview = document.querySelector("[data-comic-preview]");
 const reviewQueueList = document.querySelector("[data-review-queue-list]");
 const reviewDetailContent = document.querySelector("[data-review-detail-content]");
 const reviewDetailBack = document.querySelector("[data-review-detail-back]");
+const scriptReviewQueueList = document.querySelector("[data-script-review-queue-list]");
+const scriptReviewDetailContent = document.querySelector("[data-script-review-detail-content]");
+const scriptReviewDetailBack = document.querySelector("[data-script-review-detail-back]");
 const requestDestination = document.querySelector("[data-request-destination]");
 const calendarGrid = document.querySelector("[data-calendar-grid]");
 const calendarFilterButtons = document.querySelectorAll("[data-calendar-filter]");
@@ -160,6 +163,7 @@ let activeChallengeDepartment = "all";
 let activeProjectFilter = "all";
 let activeCalendarFilter = "my";
 let activeReviewDetailId = "";
+let activeScriptReviewDetailId = "";
 let selectedCalendarDate = "";
 let pendingAvatarDataUrl = null;
 let scriptAutosaveTimer = null;
@@ -308,6 +312,8 @@ const titles = {
   actors: "Actor Hub",
   "weekly-report": "Weekly Report",
   "script-studio": "Script Studio",
+  "script-review-queue": "Script Review Queue",
+  "script-review-detail": "Script review detail",
   storyboards: "AI Storyboards",
   "comic-review": "Comic Artist Review",
   "review-queue": "Review Queue",
@@ -1237,6 +1243,7 @@ const roleSectionAccess = {
     "actors",
     "weekly-report",
     "script-studio",
+    "script-review-queue",
     "storyboards",
     "comic-review",
     "review-queue",
@@ -1320,6 +1327,7 @@ const roleSectionAccess = {
   Director: [
     ...creativeProductionSections,
     "script-studio",
+    "script-review-queue",
     "actors",
   ],
   "Art Director": [
@@ -1360,6 +1368,7 @@ const detailSectionParents = {
   "project-detail": "projects",
   "bonus-detail": "bonuses",
   "review-detail": "review-queue",
+  "script-review-detail": "script-review-queue",
 };
 
 function normalizeRole(role) {
@@ -1647,18 +1656,6 @@ function isScriptReviewRequest(request = {}) {
   return looksLikeScriptReview && Boolean(request.id || request.scriptTitle || request.pages);
 }
 
-function isCreativeReviewRequest(request = {}) {
-  return isComicReviewRequest(request) || isScriptReviewRequest(request);
-}
-
-function reviewSectionId(request = {}) {
-  return isScriptReviewRequest(request) ? "script-studio" : "comic-review";
-}
-
-function reviewSourceLabel(request = {}) {
-  return isScriptReviewRequest(request) ? "Script Studio" : "Comic Artist Review";
-}
-
 function reviewTypeLabel(request = {}) {
   return isScriptReviewRequest(request) ? "Script review" : "Comic art review";
 }
@@ -1679,17 +1676,7 @@ function reviewDepartmentLabel(request = {}) {
   return request.department || (isScriptReviewRequest(request) ? scriptReviewDepartment : comicReviewDepartment);
 }
 
-function reviewPersonLabel(request = {}) {
-  return isScriptReviewRequest(request) ? "Writer" : "Artist";
-}
-
-function reviewPersonName(request = {}) {
-  return isScriptReviewRequest(request)
-    ? request.writerName || request.submittedBy || request.from || "Unknown"
-    : request.artistName || request.submittedBy || request.from || "Unknown";
-}
-
-function reviewRequestsForProfile(profile = currentProfile(), predicate = isCreativeReviewRequest) {
+function reviewRequestsForProfile(profile = currentProfile(), predicate = isComicReviewRequest) {
   const email = profile?.email || "";
 
   return getRequests()
@@ -3526,6 +3513,10 @@ function requestPaneFromSection(sectionId) {
 function normalizeSectionId(sectionId) {
   const rawSection = String(sectionId || "").trim();
 
+  if (rawSection.startsWith("script-review-detail/")) {
+    return "script-review-detail";
+  }
+
   if (rawSection.startsWith("review-detail/")) {
     return "review-detail";
   }
@@ -3550,6 +3541,20 @@ function reviewDetailIdFromSection(sectionId) {
     return decodeURIComponent(rawSection.slice("review-detail/".length));
   } catch {
     return rawSection.slice("review-detail/".length);
+  }
+}
+
+function scriptReviewDetailIdFromSection(sectionId) {
+  const rawSection = String(sectionId || "").trim();
+
+  if (!rawSection.startsWith("script-review-detail/")) {
+    return "";
+  }
+
+  try {
+    return decodeURIComponent(rawSection.slice("script-review-detail/".length));
+  } catch {
+    return rawSection.slice("script-review-detail/".length);
   }
 }
 
@@ -4169,6 +4174,7 @@ function applyProfile(profile) {
   renderComicPreviews();
   renderScriptReviewPreviews();
   renderReviewQueue();
+  renderScriptReviewQueue();
 }
 
 function unlockPortal(profile) {
@@ -4217,6 +4223,7 @@ function showSection(sectionId) {
   const profile = currentProfile();
   const requestedSection = sectionId || "overview";
   const requestedReviewDetailId = reviewDetailIdFromSection(requestedSection);
+  const requestedScriptReviewDetailId = scriptReviewDetailIdFromSection(requestedSection);
   const requestPane = requestPaneFromSection(requestedSection);
   const normalizedSection = normalizeSectionId(requestedSection);
   const nextSection = canAccessSection(normalizedSection, profile) ? normalizedSection : firstAllowedSection(profile);
@@ -4235,6 +4242,17 @@ function showSection(sectionId) {
     if (!detailTitle) {
       showSection("review-queue");
       history.replaceState(null, "", "#review-queue");
+      return;
+    }
+  }
+
+  if (nextSection === "script-review-detail") {
+    const reviewId = requestedScriptReviewDetailId || activeScriptReviewDetailId;
+    detailTitle = renderScriptReviewDetail(reviewId);
+
+    if (!detailTitle) {
+      showSection("script-review-queue");
+      history.replaceState(null, "", "#script-review-queue");
       return;
     }
   }
@@ -4351,11 +4369,6 @@ function reviewQueueCardMarkup(request, { archived = false } = {}) {
   const files = Array.isArray(request.files) ? request.files : [];
   const fileCount = files.length;
   const noteCount = reviewThreadMessages(request).length;
-  const isScript = isScriptReviewRequest(request);
-  const title = reviewTitle(request);
-  const stage = reviewStageLabel(request);
-  const department = reviewDepartmentLabel(request);
-  const words = request.wordCount ? `${request.wordCount} words` : "Pages saved";
   const options = comicReviewStatusOptions
     .map((status) => `<option ${status === currentStatus ? "selected" : ""}>${escapeHtml(status)}</option>`)
     .join("");
@@ -4377,19 +4390,19 @@ function reviewQueueCardMarkup(request, { archived = false } = {}) {
       data-review-card
       role="button"
       tabindex="0"
-      aria-label="Open full review for ${escapeAttribute(title)}"
+      aria-label="Open full review for ${escapeAttribute(request.project || "comic art review")}"
     >
       <div class="review-queue-card-head">
         <span class="review-status-pill ${statusClassName(currentStatus)}">${escapeHtml(currentStatus)}</span>
         <small>${escapeHtml(archived ? request.reviewedAt || request.createdAt || "" : request.createdAt || "")}</small>
       </div>
-      <strong>${escapeHtml(title)}</strong>
-      <p>${escapeHtml(stage)} · ${escapeHtml(department)}</p>
+      <strong>${escapeHtml(request.project || "Comic art review")}</strong>
+      <p>${escapeHtml(request.stage || "Artwork")} · ${escapeHtml(request.department || comicReviewDepartment)}</p>
       <dl class="review-queue-summary">
         <div><dt>Submitted by</dt><dd>${escapeHtml(request.submittedBy || request.from || "Unknown")}</dd></div>
-        <div><dt>${reviewPersonLabel(request)}</dt><dd>${escapeHtml(reviewPersonName(request))}</dd></div>
-        <div><dt>${isScript ? "Need" : "Needed by"}</dt><dd>${escapeHtml(isScript ? request.priority || "General notes" : request.reviewDueDate || "Not specified")}</dd></div>
-        <div><dt>${isScript ? "Pages" : "Files"}</dt><dd>${escapeHtml(isScript ? words : fileCount ? `${fileCount} portal file${fileCount === 1 ? "" : "s"}` : "No file link captured")}</dd></div>
+        <div><dt>Artist</dt><dd>${escapeHtml(request.artistName || request.from || "Unknown")}</dd></div>
+        <div><dt>Needed by</dt><dd>${escapeHtml(request.reviewDueDate || "Not specified")}</dd></div>
+        <div><dt>Files</dt><dd>${escapeHtml(fileCount ? `${fileCount} portal file${fileCount === 1 ? "" : "s"}` : "No file link captured")}</dd></div>
         <div><dt>Notes</dt><dd>${noteCount || "None yet"}</dd></div>
       </dl>
       <span class="review-queue-open-note">Open full review</span>
@@ -4399,8 +4412,59 @@ function reviewQueueCardMarkup(request, { archived = false } = {}) {
   `;
 }
 
-function findCreativeReviewRequest(reviewId) {
-  return getRequests().find((request) => isCreativeReviewRequest(request) && request.id === reviewId) || null;
+function scriptReviewQueueCardMarkup(request, { archived = false } = {}) {
+  const currentStatus = request.status || (archived ? "Closed" : "Submitted");
+  const noteCount = reviewThreadMessages(request).length;
+  const words = request.wordCount ? `${request.wordCount} words` : "Pages saved";
+  const options = comicReviewStatusOptions
+    .map((status) => `<option ${status === currentStatus ? "selected" : ""}>${escapeHtml(status)}</option>`)
+    .join("");
+  const statusControl = archived
+    ? ""
+    : `
+      <label class="review-status-control">
+        Status
+        <select data-script-review-status-select>
+          ${options}
+        </select>
+      </label>
+    `;
+
+  return `
+    <article
+      class="review-queue-card ${archived ? "review-queue-card-archived" : ""}"
+      data-review-id="${escapeAttribute(request.id || "")}"
+      data-script-review-card
+      role="button"
+      tabindex="0"
+      aria-label="Open full script review for ${escapeAttribute(reviewTitle(request))}"
+    >
+      <div class="review-queue-card-head">
+        <span class="review-status-pill ${statusClassName(currentStatus)}">${escapeHtml(currentStatus)}</span>
+        <small>${escapeHtml(archived ? request.reviewedAt || request.createdAt || "" : request.createdAt || "")}</small>
+      </div>
+      <strong>${escapeHtml(reviewTitle(request))}</strong>
+      <p>${escapeHtml(reviewStageLabel(request))} · ${escapeHtml(scriptReviewDepartment)}</p>
+      <dl class="review-queue-summary">
+        <div><dt>Submitted by</dt><dd>${escapeHtml(request.submittedBy || request.from || "Unknown")}</dd></div>
+        <div><dt>Writer</dt><dd>${escapeHtml(request.writerName || request.submittedBy || request.from || "Unknown")}</dd></div>
+        <div><dt>Need</dt><dd>${escapeHtml(request.priority || "General notes")}</dd></div>
+        <div><dt>Pages</dt><dd>${escapeHtml(words)}</dd></div>
+        <div><dt>Notes</dt><dd>${noteCount || "None yet"}</dd></div>
+      </dl>
+      <span class="review-queue-open-note">Open script review</span>
+      ${statusControl}
+      ${archived ? `<button class="review-archive-delete" type="button" data-delete-archived-script-review="${escapeAttribute(request.id || "")}">Delete from archive</button>` : ""}
+    </article>
+  `;
+}
+
+function findComicReviewRequest(reviewId) {
+  return getRequests().find((request) => isComicReviewRequest(request) && request.id === reviewId) || null;
+}
+
+function findScriptReviewRequest(reviewId) {
+  return getRequests().find((request) => isScriptReviewRequest(request) && request.id === reviewId) || null;
 }
 
 function renderScriptReviewFullContent(request = {}) {
@@ -4430,7 +4494,7 @@ function renderReviewDetail(reviewId) {
     return "";
   }
 
-  const request = findCreativeReviewRequest(reviewId);
+  const request = findComicReviewRequest(reviewId);
 
   if (!request) {
     reviewDetailContent.innerHTML = `
@@ -4447,30 +4511,29 @@ function renderReviewDetail(reviewId) {
   const currentStatus = request.status || "Submitted";
   const isClosed = statusClassName(currentStatus) === "status-closed";
   const isRevisionRequested = isRevisionRequestedStatus(currentStatus);
-  const isScript = isScriptReviewRequest(request);
   const files = Array.isArray(request.files) ? request.files : [];
   const feedbackMeta = reviewFeedbackMeta(request);
   const threadCount = reviewThreadMessages(request).length;
   const options = comicReviewStatusOptions
     .map((status) => `<option ${status === currentStatus ? "selected" : ""}>${escapeHtml(status)}</option>`)
     .join("");
-  const title = `${reviewTitle(request)} / ${reviewStageLabel(request)}`;
+  const title = `${request.project || "Comic art review"} / ${request.stage || "Artwork"}`;
 
   reviewDetailContent.innerHTML = `
     <article class="review-detail-shell" data-review-id="${escapeAttribute(request.id || "")}">
       <header class="review-detail-hero">
         <div>
           <p class="eyebrow">Package</p>
-          <h3 id="review-detail-title">${escapeHtml(reviewTitle(request))}</h3>
-          <p>${escapeHtml(reviewStageLabel(request))} · ${escapeHtml(reviewDepartmentLabel(request))}</p>
+          <h3 id="review-detail-title">${escapeHtml(request.project || "Comic art review")}</h3>
+          <p>${escapeHtml(request.stage || "Artwork")} · ${escapeHtml(request.department || comicReviewDepartment)}</p>
         </div>
         <span class="review-status-pill ${statusClassName(currentStatus)}">${escapeHtml(currentStatus)}</span>
       </header>
 
       <section class="review-detail-meta" aria-label="Review metadata">
         <article><span>Submitted by</span><strong>${escapeHtml(request.submittedBy || request.from || "Unknown")}</strong></article>
-        <article><span>${reviewPersonLabel(request)}</span><strong>${escapeHtml(reviewPersonName(request))}</strong></article>
-        <article><span>${isScript ? "Review need" : "Needed by"}</span><strong>${escapeHtml(isScript ? request.priority || "General notes" : request.reviewDueDate || "Not specified")}</strong></article>
+        <article><span>Artist</span><strong>${escapeHtml(request.artistName || request.from || "Unknown")}</strong></article>
+        <article><span>Needed by</span><strong>${escapeHtml(request.reviewDueDate || "Not specified")}</strong></article>
         <article><span>Received</span><strong>${escapeHtml(request.createdAt || "Unknown")}</strong></article>
       </section>
 
@@ -4499,11 +4562,93 @@ function renderReviewDetail(reviewId) {
         <p class="request-status" data-review-feedback-status hidden></p>
       </section>
 
-      ${isScript
-        ? renderScriptReviewFullContent(request)
-        : `<section class="review-full-gallery" aria-label="Submitted review files">
-            ${files.length ? files.map(renderReviewFullFile).join("") : renderReviewFileGrid(files)}
-          </section>`}
+      <section class="review-full-gallery" aria-label="Submitted review files">
+        ${files.length ? files.map(renderReviewFullFile).join("") : renderReviewFileGrid(files)}
+      </section>
+
+      <section class="review-detail-notes is-full">
+        <span>Notes</span>
+        <p>${escapeHtml(request.details || "No notes added.")}</p>
+      </section>
+    </article>
+  `;
+
+  return title;
+}
+
+function renderScriptReviewDetail(reviewId) {
+  if (!scriptReviewDetailContent) {
+    return "";
+  }
+
+  const request = findScriptReviewRequest(reviewId);
+
+  if (!request) {
+    scriptReviewDetailContent.innerHTML = `
+      <article class="review-detail-empty">
+        <p class="eyebrow">Script review detail</p>
+        <h3 id="script-review-detail-title">Review not found</h3>
+        <p>This script package may have been removed from the queue.</p>
+      </article>
+    `;
+    return "";
+  }
+
+  activeScriptReviewDetailId = request.id;
+  const currentStatus = request.status || "Submitted";
+  const isClosed = statusClassName(currentStatus) === "status-closed";
+  const isRevisionRequested = isRevisionRequestedStatus(currentStatus);
+  const feedbackMeta = reviewFeedbackMeta(request);
+  const threadCount = reviewThreadMessages(request).length;
+  const options = comicReviewStatusOptions
+    .map((status) => `<option ${status === currentStatus ? "selected" : ""}>${escapeHtml(status)}</option>`)
+    .join("");
+  const title = `${reviewTitle(request)} / ${reviewStageLabel(request)}`;
+
+  scriptReviewDetailContent.innerHTML = `
+    <article class="review-detail-shell" data-review-id="${escapeAttribute(request.id || "")}">
+      <header class="review-detail-hero">
+        <div>
+          <p class="eyebrow">Script package</p>
+          <h3 id="script-review-detail-title">${escapeHtml(reviewTitle(request))}</h3>
+          <p>${escapeHtml(reviewStageLabel(request))} · ${escapeHtml(scriptReviewDepartment)}</p>
+        </div>
+        <span class="review-status-pill ${statusClassName(currentStatus)}">${escapeHtml(currentStatus)}</span>
+      </header>
+
+      <section class="review-detail-meta" aria-label="Script review metadata">
+        <article><span>Submitted by</span><strong>${escapeHtml(request.submittedBy || request.from || "Unknown")}</strong></article>
+        <article><span>Writer</span><strong>${escapeHtml(request.writerName || request.submittedBy || request.from || "Unknown")}</strong></article>
+        <article><span>Review need</span><strong>${escapeHtml(request.priority || "General notes")}</strong></article>
+        <article><span>Received</span><strong>${escapeHtml(request.createdAt || "Unknown")}</strong></article>
+      </section>
+
+      <section class="review-detail-actions">
+        <label>
+          Status
+          <select data-script-review-detail-status-select>
+            ${options}
+          </select>
+        </label>
+        ${isClosed ? `<button class="review-archive-delete" type="button" data-delete-archived-script-review="${escapeAttribute(request.id || "")}">Delete from archive</button>` : ""}
+      </section>
+
+      <section class="review-feedback-panel ${isRevisionRequested ? "is-active" : ""}">
+        <div>
+          <p class="eyebrow">Script review conversation</p>
+          <h4>Notes and replies</h4>
+          <p>Reviewer notes and writer replies stay attached to this script package.</p>
+        </div>
+        ${renderReviewThread(request)}
+        <textarea data-script-review-feedback-text rows="4" placeholder="Add reviewer notes, requested changes, page numbers, or approval blockers."></textarea>
+        <div class="review-feedback-footer">
+          <small>${escapeHtml(feedbackMeta || `${threadCount} note${threadCount === 1 ? "" : "s"} in this review`)}</small>
+          <button class="review-feedback-save" type="button" data-script-review-feedback-save>Add reviewer note</button>
+        </div>
+        <p class="request-status" data-script-review-feedback-status hidden></p>
+      </section>
+
+      ${renderScriptReviewFullContent(request)}
 
       <section class="review-detail-notes is-full">
         <span>Notes</span>
@@ -4533,29 +4678,71 @@ function openReviewDetail(reviewId, updateHistory = true) {
   }
 }
 
+function openScriptReviewDetail(reviewId, updateHistory = true) {
+  const detailTitle = renderScriptReviewDetail(reviewId);
+
+  if (!detailTitle) {
+    return;
+  }
+
+  showSection("script-review-detail");
+
+  if (pageTitle) {
+    pageTitle.textContent = detailTitle;
+  }
+
+  if (updateHistory) {
+    history.replaceState(null, "", `#script-review-detail/${encodeURIComponent(reviewId)}`);
+  }
+}
+
 function deleteArchivedReview(reviewId) {
   const requests = getRequests();
   const request = requests.find((item) => item.id === reviewId);
 
-  if (!request || !isCreativeReviewRequest(request) || statusClassName(request.status) !== "status-closed") {
+  if (!request || !isComicReviewRequest(request) || statusClassName(request.status) !== "status-closed") {
     return;
   }
 
-  if (!window.confirm(`Delete ${reviewTitle(request)} from the closed archive?`)) {
+  if (!window.confirm(`Delete ${request.project || "this review"} from the closed archive?`)) {
     return;
   }
 
   setRequests(requests.filter((item) => item.id !== reviewId));
-  appendAuditLog("Review removed from archive", reviewTitle(request) || reviewId);
+  appendAuditLog("Comic art review removed from archive", request.project || reviewId);
   renderRequests();
   renderReviewQueue();
   renderComicPreviews();
-  renderScriptReviewPreviews();
 
   if (activeReviewDetailId === reviewId) {
     activeReviewDetailId = "";
     showSection("review-queue");
     history.replaceState(null, "", "#review-queue");
+  }
+}
+
+function deleteArchivedScriptReview(reviewId) {
+  const requests = getRequests();
+  const request = requests.find((item) => item.id === reviewId);
+
+  if (!request || !isScriptReviewRequest(request) || statusClassName(request.status) !== "status-closed") {
+    return;
+  }
+
+  if (!window.confirm(`Delete ${reviewTitle(request)} from the closed script archive?`)) {
+    return;
+  }
+
+  setRequests(requests.filter((item) => item.id !== reviewId));
+  appendAuditLog("Script review removed from archive", reviewTitle(request) || reviewId);
+  renderRequests();
+  renderScriptReviewQueue();
+  renderScriptReviewPreviews();
+
+  if (activeScriptReviewDetailId === reviewId) {
+    activeScriptReviewDetailId = "";
+    showSection("script-review-queue");
+    history.replaceState(null, "", "#script-review-queue");
   }
 }
 
@@ -4572,7 +4759,7 @@ function saveReviewFeedback(reviewId, feedback) {
   const requests = getRequests();
   const request = requests.find((item) => item.id === reviewId);
 
-  if (!request || !isCreativeReviewRequest(request)) {
+  if (!request || !isComicReviewRequest(request)) {
     return {
       ok: false,
       message: "Review was not found.",
@@ -4610,7 +4797,6 @@ function saveReviewFeedback(reviewId, feedback) {
   setRequests(requests);
   renderReviewQueue();
   renderComicPreviews();
-  renderScriptReviewPreviews();
   renderRequests();
 
   const detailTitle = renderReviewDetail(reviewId);
@@ -4621,15 +4807,87 @@ function saveReviewFeedback(reviewId, feedback) {
 
   publishSystemMessage({
     title: "Revision requested",
-    body: `${reviewTitle(request)} needs revision. Reviewer notes are available in ${reviewSourceLabel(request)}.`,
+    body: `${request.project || "Comic art review"} needs revision. Reviewer notes are available in Comic Artist Review.`,
     source: "Review Queue",
-    section: reviewSectionId(request),
+    section: "comic-review",
   });
-  appendAuditLog("Review feedback saved", `${reviewTitle(request) || request.id}: ${cleanFeedback.slice(0, 80)}`);
+  appendAuditLog("Comic art revision feedback saved", `${request.project || request.id}: ${cleanFeedback.slice(0, 80)}`);
 
   return {
     ok: true,
     message: "Reviewer note saved and visible to the submitter.",
+  };
+}
+
+function saveScriptReviewFeedback(reviewId, feedback) {
+  const cleanFeedback = String(feedback || "").trim();
+
+  if (!cleanFeedback) {
+    return {
+      ok: false,
+      message: "Add revision notes before saving feedback.",
+    };
+  }
+
+  const requests = getRequests();
+  const request = requests.find((item) => item.id === reviewId);
+
+  if (!request || !isScriptReviewRequest(request)) {
+    return {
+      ok: false,
+      message: "Script review was not found.",
+    };
+  }
+
+  const reviewedAt = new Date().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  const reviewedBy = currentProfile()?.email || "Reviewer";
+
+  request.status = "Revision requested";
+  request.reviewedAt = reviewedAt;
+  request.reviewedBy = reviewedBy;
+  request.revisionFeedback = {
+    body: cleanFeedback,
+    createdAt: reviewedAt,
+    from: reviewedBy,
+  };
+  request.reviewThread = [
+    ...reviewThreadMessages(request),
+    {
+      id: createRequestId("script-review-note"),
+      role: "Reviewer",
+      body: cleanFeedback,
+      createdAt: reviewedAt,
+      from: reviewedBy,
+    },
+  ];
+
+  setRequests(requests);
+  renderScriptReviewQueue();
+  renderScriptReviewPreviews();
+  renderRequests();
+
+  const detailTitle = renderScriptReviewDetail(reviewId);
+
+  if (pageTitle && detailTitle) {
+    pageTitle.textContent = detailTitle;
+  }
+
+  publishSystemMessage({
+    title: "Script revision requested",
+    body: `${reviewTitle(request)} needs revision. Reviewer notes are available in Script Studio.`,
+    source: "Script Review Queue",
+    section: "script-studio",
+  });
+  appendAuditLog("Script revision feedback saved", `${reviewTitle(request) || request.id}: ${cleanFeedback.slice(0, 80)}`);
+
+  return {
+    ok: true,
+    message: "Reviewer note saved and visible to the writer.",
   };
 }
 
@@ -4646,7 +4904,7 @@ function saveReviewReply(reviewId, reply) {
   const requests = getRequests();
   const request = requests.find((item) => item.id === reviewId);
 
-  if (!request || !isCreativeReviewRequest(request)) {
+  if (!request || !isComicReviewRequest(request)) {
     return {
       ok: false,
       message: "Review was not found.",
@@ -4679,7 +4937,6 @@ function saveReviewReply(reviewId, reply) {
   setRequests(requests);
   renderReviewQueue();
   renderComicPreviews();
-  renderScriptReviewPreviews();
   renderRequests();
 
   if (activeReviewDetailId === reviewId) {
@@ -4692,11 +4949,81 @@ function saveReviewReply(reviewId, reply) {
 
   publishSystemMessage({
     title: "Review waiting on reviewer",
-    body: `${reviewTitle(request)} has a submitter reply and is waiting for reviewer follow-up.`,
-    source: reviewSourceLabel(request),
+    body: `${request.project || "Comic art review"} has a submitter reply and is waiting for reviewer follow-up.`,
+    source: "Comic Artist Review",
     section: "review-queue",
   });
-  appendAuditLog("Review reply saved", `${reviewTitle(request) || request.id}: ${cleanReply.slice(0, 80)}`);
+  appendAuditLog("Comic art review reply saved", `${request.project || request.id}: ${cleanReply.slice(0, 80)}`);
+
+  return {
+    ok: true,
+    message: "Reply sent. Status changed to Awaiting reviewer.",
+  };
+}
+
+function saveScriptReviewReply(reviewId, reply) {
+  const cleanReply = String(reply || "").trim();
+
+  if (!cleanReply) {
+    return {
+      ok: false,
+      message: "Write a reply before sending.",
+    };
+  }
+
+  const requests = getRequests();
+  const request = requests.find((item) => item.id === reviewId);
+
+  if (!request || !isScriptReviewRequest(request)) {
+    return {
+      ok: false,
+      message: "Script review was not found.",
+    };
+  }
+
+  const repliedAt = new Date().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  const profile = currentProfile();
+  const repliedBy = profile?.fullName || profile?.email || "Writer";
+
+  request.reviewThread = [
+    ...reviewThreadMessages(request),
+    {
+      id: createRequestId("script-review-reply"),
+      role: "Submitter",
+      body: cleanReply,
+      createdAt: repliedAt,
+      from: repliedBy,
+    },
+  ];
+  request.status = "Awaiting reviewer";
+  request.reviewedAt = repliedAt;
+  request.lastReplyAt = repliedAt;
+
+  setRequests(requests);
+  renderScriptReviewQueue();
+  renderScriptReviewPreviews();
+  renderRequests();
+
+  if (activeScriptReviewDetailId === reviewId) {
+    const detailTitle = renderScriptReviewDetail(reviewId);
+
+    if (pageTitle && detailTitle) {
+      pageTitle.textContent = detailTitle;
+    }
+  }
+
+  publishSystemMessage({
+    title: "Script review waiting on reviewer",
+    body: `${reviewTitle(request)} has a writer reply and is waiting for reviewer follow-up.`,
+    source: "Script Studio",
+    section: "script-review-queue",
+  });
+  appendAuditLog("Script review reply saved", `${reviewTitle(request) || request.id}: ${cleanReply.slice(0, 80)}`);
 
   return {
     ok: true,
@@ -4710,7 +5037,7 @@ function renderReviewQueue() {
   }
 
   const allReviews = getRequests()
-    .filter(isCreativeReviewRequest)
+    .filter(isComicReviewRequest)
     .slice()
     .reverse();
   const openReviews = allReviews.filter((request) => statusClassName(request.status) !== "status-closed");
@@ -4718,8 +5045,8 @@ function renderReviewQueue() {
 
   const emptyMarkup = `
       <article class="review-queue-empty">
-        <strong>${allReviews.length ? "No active reviews" : "No creative reviews yet"}</strong>
-        <span>${allReviews.length ? "Closed reviews are stored in the archive below." : "Submitted artwork and script review requests will appear here."}</span>
+        <strong>${allReviews.length ? "No active comic reviews" : "No comic art reviews yet"}</strong>
+        <span>${allReviews.length ? "Closed reviews are stored in the archive below." : `Submitted review requests will appear here for ${comicReviewDepartment}.`}</span>
       </article>
     `;
 
@@ -4743,11 +5070,48 @@ function renderReviewQueue() {
   reviewQueueList.innerHTML = `${openMarkup}${archiveMarkup}`;
 }
 
+function renderScriptReviewQueue() {
+  if (!scriptReviewQueueList) {
+    return;
+  }
+
+  const allReviews = getRequests()
+    .filter(isScriptReviewRequest)
+    .slice()
+    .reverse();
+  const openReviews = allReviews.filter((request) => statusClassName(request.status) !== "status-closed");
+  const closedReviews = allReviews.filter((request) => statusClassName(request.status) === "status-closed");
+  const emptyMarkup = `
+      <article class="review-queue-empty">
+        <strong>${allReviews.length ? "No active script reviews" : "No script reviews yet"}</strong>
+        <span>${allReviews.length ? "Closed script reviews are stored in the archive below." : `Submitted script packages will appear here for the ${scriptReviewDepartment}.`}</span>
+      </article>
+    `;
+  const openMarkup = openReviews.length
+    ? openReviews.map((request) => scriptReviewQueueCardMarkup(request)).join("")
+    : emptyMarkup;
+  const archiveMarkup = closedReviews.length
+    ? `
+      <details class="review-queue-archive">
+        <summary>
+          <span>Closed archive</span>
+          <small>${closedReviews.length} closed script review${closedReviews.length === 1 ? "" : "s"}</small>
+        </summary>
+        <div class="review-queue-archive-grid">
+          ${closedReviews.map((request) => scriptReviewQueueCardMarkup(request, { archived: true })).join("")}
+        </div>
+      </details>
+    `
+    : "";
+
+  scriptReviewQueueList.innerHTML = `${openMarkup}${archiveMarkup}`;
+}
+
 function updateComicReviewStatus(reviewId, status) {
   const requests = getRequests();
   const request = requests.find((item) => item.id === reviewId);
 
-  if (!request || !isCreativeReviewRequest(request)) {
+  if (!request || !isComicReviewRequest(request)) {
     return;
   }
 
@@ -4764,7 +5128,6 @@ function updateComicReviewStatus(reviewId, status) {
   setRequests(requests);
   renderReviewQueue();
   renderComicPreviews();
-  renderScriptReviewPreviews();
   renderRequests();
 
   if (activeReviewDetailId === reviewId) {
@@ -4776,14 +5139,56 @@ function updateComicReviewStatus(reviewId, status) {
   }
 
   publishSystemMessage({
-    title: isRevisionRequestedStatus(status) ? "Revision requested" : "Review updated",
+    title: isRevisionRequestedStatus(status) ? "Revision requested" : "Comic art review updated",
     body: isRevisionRequestedStatus(status)
-      ? `${reviewTitle(request)} needs revision. Reviewer notes may be added from the review detail page.`
-      : `${reviewTitle(request)} is now ${status}.`,
+      ? `${request.project || "Comic art review"} needs revision. Reviewer notes may be added from the review detail page.`
+      : `${request.project || "Comic art review"} is now ${status}.`,
     source: "Review Queue",
-    section: isRevisionRequestedStatus(status) ? reviewSectionId(request) : "review-queue",
+    section: isRevisionRequestedStatus(status) ? "comic-review" : "review-queue",
   });
-  appendAuditLog("Review status updated", `${reviewTitle(request) || request.id}: ${status}`);
+  appendAuditLog("Comic art review status updated", `${request.project || request.id}: ${status}`);
+}
+
+function updateScriptReviewStatus(reviewId, status) {
+  const requests = getRequests();
+  const request = requests.find((item) => item.id === reviewId);
+
+  if (!request || !isScriptReviewRequest(request)) {
+    return;
+  }
+
+  const reviewedAt = new Date().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+  request.status = status;
+  request.reviewedAt = reviewedAt;
+  request.reviewedBy = currentProfile()?.email || "Reviewer";
+  setRequests(requests);
+  renderScriptReviewQueue();
+  renderScriptReviewPreviews();
+  renderRequests();
+
+  if (activeScriptReviewDetailId === reviewId) {
+    const detailTitle = renderScriptReviewDetail(reviewId);
+
+    if (pageTitle && detailTitle) {
+      pageTitle.textContent = detailTitle;
+    }
+  }
+
+  publishSystemMessage({
+    title: isRevisionRequestedStatus(status) ? "Script revision requested" : "Script review updated",
+    body: isRevisionRequestedStatus(status)
+      ? `${reviewTitle(request)} needs revision. Reviewer notes may be added from the script review detail page.`
+      : `${reviewTitle(request)} is now ${status}.`,
+    source: "Script Review Queue",
+    section: isRevisionRequestedStatus(status) ? "script-studio" : "script-review-queue",
+  });
+  appendAuditLog("Script review status updated", `${reviewTitle(request) || request.id}: ${status}`);
 }
 
 function renderAuditLogs() {
@@ -5968,6 +6373,7 @@ function renderAdmin() {
   renderUsers();
   renderRequests();
   renderReviewQueue();
+  renderScriptReviewQueue();
   renderContentRows();
   renderAuditLogs();
   renderContentItems();
@@ -6195,7 +6601,7 @@ scriptReviewPreview?.addEventListener("click", (event) => {
   const card = replyButton.closest("[data-review-id]");
   const textarea = card?.querySelector("[data-review-reply-text]");
   const status = card?.querySelector("[data-review-reply-status]");
-  const result = saveReviewReply(replyButton.dataset.reviewReplySend || card?.dataset.reviewId || "", textarea?.value || "");
+  const result = saveScriptReviewReply(replyButton.dataset.reviewReplySend || card?.dataset.reviewId || "", textarea?.value || "");
 
   setRequestStatus(status, result.message, result.ok ? "success" : "error");
 
@@ -6296,6 +6702,101 @@ reviewDetailContent?.addEventListener("click", (event) => {
 
   if (deleteButton) {
     deleteArchivedReview(deleteButton.dataset.deleteArchivedReview || "");
+  }
+});
+
+scriptReviewQueueList?.addEventListener("change", (event) => {
+  const select = event.target.closest("[data-script-review-status-select]");
+
+  if (!select) {
+    return;
+  }
+
+  const card = select.closest("[data-review-id]");
+  const reviewId = card?.dataset.reviewId || "";
+
+  updateScriptReviewStatus(reviewId, select.value);
+
+  if (isRevisionRequestedStatus(select.value)) {
+    openScriptReviewDetail(reviewId);
+    scriptReviewDetailContent?.querySelector("[data-script-review-feedback-text]")?.focus();
+  }
+});
+
+scriptReviewQueueList?.addEventListener("click", (event) => {
+  const deleteButton = event.target.closest("[data-delete-archived-script-review]");
+
+  if (deleteButton) {
+    deleteArchivedScriptReview(deleteButton.dataset.deleteArchivedScriptReview || "");
+    return;
+  }
+
+  if (event.target.closest("a, button, input, select, textarea, label")) {
+    return;
+  }
+
+  const card = event.target.closest("[data-script-review-card]");
+
+  if (card) {
+    openScriptReviewDetail(card.dataset.reviewId || "");
+  }
+});
+
+scriptReviewQueueList?.addEventListener("keydown", (event) => {
+  if (!["Enter", " "].includes(event.key)) {
+    return;
+  }
+
+  const card = event.target.closest("[data-script-review-card]");
+
+  if (!card || event.target !== card) {
+    return;
+  }
+
+  event.preventDefault();
+  openScriptReviewDetail(card.dataset.reviewId || "");
+});
+
+scriptReviewDetailBack?.addEventListener("click", () => {
+  showSection("script-review-queue");
+  history.replaceState(null, "", "#script-review-queue");
+});
+
+scriptReviewDetailContent?.addEventListener("change", (event) => {
+  const select = event.target.closest("[data-script-review-detail-status-select]");
+
+  if (!select) {
+    return;
+  }
+
+  const shell = select.closest("[data-review-id]");
+  const reviewId = shell?.dataset.reviewId || activeScriptReviewDetailId;
+
+  updateScriptReviewStatus(reviewId, select.value);
+
+  if (isRevisionRequestedStatus(select.value)) {
+    scriptReviewDetailContent?.querySelector("[data-script-review-feedback-text]")?.focus();
+  }
+});
+
+scriptReviewDetailContent?.addEventListener("click", (event) => {
+  const saveButton = event.target.closest("[data-script-review-feedback-save]");
+
+  if (saveButton) {
+    const shell = saveButton.closest("[data-review-id]");
+    const reviewId = shell?.dataset.reviewId || activeScriptReviewDetailId;
+    const textarea = shell?.querySelector("[data-script-review-feedback-text]");
+    const result = saveScriptReviewFeedback(reviewId, textarea?.value || "");
+    const status = scriptReviewDetailContent?.querySelector("[data-script-review-feedback-status]");
+
+    setRequestStatus(status, result.message, result.ok ? "success" : "error");
+    return;
+  }
+
+  const deleteButton = event.target.closest("[data-delete-archived-script-review]");
+
+  if (deleteButton) {
+    deleteArchivedScriptReview(deleteButton.dataset.deleteArchivedScriptReview || "");
   }
 });
 
@@ -7261,13 +7762,13 @@ scriptReviewForm?.addEventListener("submit", async (event) => {
     });
     setRequests(requests);
     renderRequests();
-    renderReviewQueue();
+    renderScriptReviewQueue();
     renderScriptReviewPreviews();
     setRequestStatus(
       scriptReviewStatus,
       delivery.notificationSent === false
-        ? `Script review posted in Review Queue. Notification email was not sent: ${delivery.notificationError || "email service failed"}.`
-        : `Script review posted in Review Queue. ${scriptReviewDepartment} was notified.`,
+        ? `Script review posted in Script Review Queue. Notification email was not sent: ${delivery.notificationError || "email service failed"}.`
+        : `Script review posted in Script Review Queue. ${scriptReviewDepartment} was notified.`,
       delivery.notificationSent === false ? "pending" : "success"
     );
     scriptReviewForm.reset();

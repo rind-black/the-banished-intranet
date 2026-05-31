@@ -15518,7 +15518,8 @@ h1[data-page-title] {
 
 .review-detail-hero .eyebrow,
 .review-feedback-panel .eyebrow,
-#review-detail .section-heading .eyebrow {
+#review-detail .section-heading .eyebrow,
+#script-review-detail .section-heading .eyebrow {
   margin: 0;
   color: rgba(203, 169, 92, 0.9);
   font-size: 8.5px;
