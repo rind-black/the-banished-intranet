@@ -14155,7 +14155,7 @@ h1[data-page-title] {
 }
 
 /* Script Studio: align writing, review, and reply surfaces with the current dark portal language. */
-#script-studio {
+#script-studio.active {
   display: grid;
   gap: 14px;
 }
